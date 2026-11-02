@@ -3,17 +3,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#160329">
 <title>EarnGig | Play. Read. Earn. Shop.</title>
 
 <style>
 :root {
-  --purple:#18042e;
-  --purple2:#36075d;
+  --bg:#120322;
+  --purple:#260644;
+  --purple2:#4b087f;
   --lime:#caff19;
   --gold:#ffc928;
-  --pink:#dc28ff;
+  --pink:#d92cff;
   --white:#fff;
 }
 * {box-sizing:border-box;margin:0;padding:0}
@@ -22,39 +23,39 @@ body {
   font-family:Arial,Helvetica,sans-serif;
   color:white;
   background:
-    radial-gradient(ellipse at 80% 15%,#501080 0%,transparent 38%),
-    radial-gradient(ellipse at 0% 75%,#510d78 0%,transparent 35%),
-    linear-gradient(135deg,#10021e,#23063e 55%,#10021e);
+    radial-gradient(ellipse at 85% 15%,#4c087a 0%,transparent 38%),
+    radial-gradient(ellipse at 0% 70%,#570c80 0%,transparent 32%),
+    linear-gradient(135deg,#10021d,#23063e 55%,#10021d);
   overflow-x:hidden;
 }
 a {color:inherit;text-decoration:none}
 button {font:inherit;cursor:pointer}
 
+/* NAVIGATION */
 header {
-  min-height:78px;
-  padding:13px 4%;
+  min-height:76px;
+  padding:12px 4%;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:18px;
+  gap:15px;
   background:#160329ed;
   border-bottom:1px solid #a72cff55;
   position:relative;
-  z-index:10;
+  z-index:20;
 }
 .logo {
-  font-size:34px;
+  font-size:32px;
   font-weight:900;
   letter-spacing:-2px;
   white-space:nowrap;
 }
 .logo .crown {color:var(--gold)}
 .logo span {color:var(--lime)}
-
 nav {
   display:flex;
   align-items:center;
-  gap:19px;
+  gap:17px;
 }
 nav a {
   font-size:13px;
@@ -63,8 +64,7 @@ nav a {
   transition:.2s;
 }
 nav a:hover {color:var(--lime)}
-
-.header-actions {display:flex;gap:10px;align-items:center}
+.header-actions {display:flex;gap:9px;align-items:center}
 .btn {
   display:inline-flex;
   align-items:center;
@@ -95,16 +95,15 @@ nav a:hover {color:var(--lime)}
   font-size:28px;
 }
 
-/* HERO */
+/* HERO SECTION */
 .hero {
   max-width:1500px;
   margin:auto;
-  padding:40px 4% 20px;
+  padding:42px 4% 20px;
   display:grid;
-  grid-template-columns:.88fr 1.12fr;
+  grid-template-columns:.9fr 1.1fr;
   align-items:center;
-  gap:15px;
-  position:relative;
+  gap:10px;
 }
 .hero-copy {position:relative;z-index:2}
 .welcome {
@@ -138,53 +137,73 @@ nav a:hover {color:var(--lime)}
 }
 .hero-buttons {display:flex;gap:13px;flex-wrap:wrap}
 
-/* ORIGINAL VECTOR GAMER ILLUSTRATION */
+/* MONEY ILLUSTRATION */
 .hero-art {
   width:100%;
+  max-width:760px;
+  margin:auto;
   position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-width:0;
 }
-.hero-art::before {
+.hero-art:before {
   content:"";
   position:absolute;
-  width:75%;
-  height:65%;
+  inset:15%;
   border-radius:50%;
-  background:#9d19ff;
+  background:#a000ff;
   filter:blur(90px);
-  opacity:.35;
+  opacity:.32;
 }
-.hero-svg {
-  position:relative;
-  display:block;
+.money-svg {
   width:100%;
-  max-width:760px;
   height:auto;
+  display:block;
+  position:relative;
   overflow:visible;
-  filter:drop-shadow(0 0 25px #b52cff55);
-  animation:heroFloat 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 25px #a51cff55);
+  animation:artFloat 5s ease-in-out infinite;
 }
-@keyframes heroFloat {
+.cash-note {
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:cashFloat 4s ease-in-out infinite;
+}
+.cash-note.delay1 {animation-delay:1s}
+.cash-note.delay2 {animation-delay:2s}
+.gold-coin {
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:coinFloat 3s ease-in-out infinite;
+}
+.gold-coin.delay1 {animation-delay:1s}
+.gold-coin.delay2 {animation-delay:1.7s}
+.sparkle {
+  animation:sparkle 2s ease-in-out infinite alternate;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+@keyframes artFloat {
   0%,100% {transform:translateY(0)}
   50% {transform:translateY(-9px)}
 }
-.float-coin {animation:coinFloat 3s ease-in-out infinite}
-.float-coin:nth-of-type(2) {animation-delay:.6s}
-.float-coin:nth-of-type(3) {animation-delay:1.2s}
+@keyframes cashFloat {
+  0%,100% {transform:translateY(0) rotate(0)}
+  50% {transform:translateY(-17px) rotate(4deg)}
+}
 @keyframes coinFloat {
-  0%,100% {transform:translateY(0)}
-  50% {transform:translateY(-12px)}
+  0%,100% {transform:translateY(0) rotate(0)}
+  50% {transform:translateY(-18px) rotate(12deg)}
+}
+@keyframes sparkle {
+  from {opacity:.35;transform:scale(.75)}
+  to {opacity:1;transform:scale(1.2)}
 }
 
-/* SPOTLIGHT */
+/* ADVERTISING BANNER */
 .spotlight {
   max-width:1450px;
   width:94%;
   margin:15px auto 35px;
-  padding:20px 30px;
+  padding:22px 30px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -206,9 +225,13 @@ nav a:hover {color:var(--lime)}
   padding-left:27px;
 }
 .spotlight-copy strong {font-size:22px}
-.spotlight-copy p {margin-top:7px;color:#eadcf7;line-height:1.4}
+.spotlight-copy p {
+  margin-top:7px;
+  color:#eadcf7;
+  line-height:1.4;
+}
 
-/* FEATURE CARDS */
+/* WAYS TO EARN */
 .section {
   max-width:1500px;
   margin:38px auto;
@@ -243,7 +266,11 @@ nav a:hover {color:var(--lime)}
 .feature:nth-child(4) {border-color:#37e77c}
 .feature-icon {font-size:39px;margin-bottom:12px}
 .feature h3 {font-size:21px;margin-bottom:9px}
-.feature p {font-size:14px;line-height:1.5;color:#e7ddef}
+.feature p {
+  font-size:14px;
+  line-height:1.5;
+  color:#e7ddef;
+}
 .feature a {
   display:inline-block;
   color:#ffed00;
@@ -251,7 +278,7 @@ nav a:hover {color:var(--lime)}
   margin-top:16px;
 }
 
-/* DISCOVERY */
+/* DISCOVER */
 .discover-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -264,11 +291,18 @@ nav a:hover {color:var(--lime)}
   border:1px solid #9b38cf;
   transition:.25s;
 }
-.discover-card:hover {transform:translateY(-5px);border-color:var(--lime)}
+.discover-card:hover {
+  transform:translateY(-5px);
+  border-color:var(--lime);
+}
 .discover-card h3 {font-size:23px;margin-bottom:10px}
-.discover-card p {color:#d7c9e5;line-height:1.5;margin-bottom:18px}
+.discover-card p {
+  color:#d7c9e5;
+  line-height:1.5;
+  margin-bottom:18px;
+}
 
-/* BOTTOM */
+/* JOIN BANNER */
 .bottom-cta {
   margin:50px 3% 30px;
   padding:35px 20px;
@@ -279,8 +313,13 @@ nav a:hover {color:var(--lime)}
   box-shadow:0 0 35px #b52cff50;
 }
 .bottom-cta h2 {font-size:30px;margin-bottom:10px}
-.bottom-cta p {color:#f0ddff;margin-bottom:20px;line-height:1.5}
+.bottom-cta p {
+  color:#f0ddff;
+  margin-bottom:20px;
+  line-height:1.5;
+}
 
+/* FOOTER */
 footer {
   padding:35px 4%;
   display:flex;
@@ -296,16 +335,18 @@ footer a:hover {color:var(--lime)}
 
 /* TABLET */
 @media(max-width:1050px) {
-  nav {gap:11px}
+  nav {gap:10px}
   nav a {font-size:11px}
   .feature-grid {grid-template-columns:repeat(2,1fr)}
-  .hero {grid-template-columns:.9fr 1.1fr}
 }
 
 /* MOBILE */
 @media(max-width:760px) {
-  header {padding:13px 5%;min-height:68px}
-  .logo {font-size:29px}
+  header {
+    padding:13px 5%;
+    min-height:68px;
+  }
+  .logo {font-size:28px}
   .menu-toggle {display:block}
   nav {
     display:none;
@@ -343,10 +384,9 @@ footer a:hover {color:var(--lime)}
   .hero-buttons {justify-content:center}
   .hero-art {
     width:100%;
-    max-width:580px;
-    margin:18px auto 5px;
+    max-width:540px;
+    margin:15px auto 5px;
   }
-  .hero-svg {width:100%}
   .spotlight {
     width:92%;
     padding:22px;
@@ -368,16 +408,19 @@ footer a:hover {color:var(--lime)}
   .spotlight-copy strong {font-size:20px}
   .spotlight .btn {width:100%}
   .discover-grid {grid-template-columns:1fr}
-  footer {justify-content:center;text-align:center}
+  footer {
+    justify-content:center;
+    text-align:center;
+  }
   .footer-links {justify-content:center}
 }
 
 /* SMALL PHONES */
 @media(max-width:430px) {
-  .logo {font-size:26px}
+  .logo {font-size:25px}
   .header-actions .btn-outline {display:none}
   .hero {padding-top:28px}
-  .hero h1 {font-size:48px}
+  .hero h1 {font-size:47px}
   .hero-art {margin-top:12px}
   .feature-grid {grid-template-columns:1fr}
   .section-heading {font-size:27px}
@@ -414,6 +457,7 @@ footer a:hover {color:var(--lime)}
 
 <main>
 
+<!-- HERO -->
 <section class="hero">
 
   <div class="hero-copy">
@@ -433,258 +477,205 @@ footer a:hover {color:var(--lime)}
     </div>
   </div>
 
-  <!-- Original illustrated gaming scene -->
+  <!-- CUSTOM CASH AND COINS ILLUSTRATION -->
   <div class="hero-art">
-
-    <svg class="hero-svg" viewBox="0 0 760 540"
-         xmlns="http://www.w3.org/2000/svg"
-         role="img" aria-label="A young man and woman playing mobile games with glowing coins and cash">
+    <svg class="money-svg" viewBox="0 0 700 500"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img" aria-label="Flying Nigerian naira notes and a pile of gold coins">
 
       <defs>
-        <linearGradient id="hoodie" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#a52bff"/>
-          <stop offset="1" stop-color="#35006c"/>
-        </linearGradient>
-        <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#f5c4ff"/>
-          <stop offset="1" stop-color="#9d42d9"/>
-        </linearGradient>
-        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#bd704b"/>
-          <stop offset="1" stop-color="#71351f"/>
+        <linearGradient id="bill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#b8ff9a"/>
+          <stop offset="48%" stop-color="#31c66b"/>
+          <stop offset="100%" stop-color="#08713c"/>
         </linearGradient>
         <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#fff49a"/>
-          <stop offset=".45" stop-color="#ffc400"/>
-          <stop offset="1" stop-color="#b86a00"/>
+          <stop offset="0%" stop-color="#fff5a0"/>
+          <stop offset="35%" stop-color="#ffd33d"/>
+          <stop offset="75%" stop-color="#e99a00"/>
+          <stop offset="100%" stop-color="#9d5200"/>
         </linearGradient>
-        <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#461080"/>
-          <stop offset="1" stop-color="#10051e"/>
+        <linearGradient id="purpleCash" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#45dc79"/>
+          <stop offset="100%" stop-color="#08743e"/>
         </linearGradient>
         <filter id="glow">
           <feGaussianBlur stdDeviation="7" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
         </filter>
-        <filter id="softshadow">
-          <feGaussianBlur stdDeviation="10"/>
+        <filter id="shadow">
+          <feGaussianBlur stdDeviation="12"/>
         </filter>
       </defs>
 
-      <!-- Purple energy halo -->
-      <ellipse cx="380" cy="350" rx="330" ry="175"
-        fill="#a000ff" opacity=".14" filter="url(#softshadow)"/>
-      <path d="M45 360 C10 160 200 30 380 75 S730 170 715 345"
-        fill="none" stroke="#db31ff" stroke-width="5"
-        opacity=".9" filter="url(#glow)"/>
-      <path d="M30 395 C130 500 290 505 410 455 S680 490 735 355"
-        fill="none" stroke="#a62aff" stroke-width="4"
-        filter="url(#glow)"/>
+      <!-- Background glow -->
+      <ellipse cx="350" cy="370" rx="260" ry="95"
+        fill="#b000ff" opacity=".25" filter="url(#shadow)"/>
+      <ellipse cx="350" cy="340" rx="280" ry="155"
+        fill="none" stroke="#d42bff" stroke-width="5"
+        opacity=".75" filter="url(#glow)"/>
+      <ellipse cx="350" cy="340" rx="230" ry="120"
+        fill="none" stroke="#ed6aff" stroke-width="2" opacity=".7"/>
 
-      <!-- Floating money -->
-      <g transform="rotate(-19 380 85)">
-        <rect x="330" y="60" width="95" height="43" rx="7"
-          fill="#42c95e" stroke="#a4ff9b" stroke-width="3"/>
-        <rect x="340" y="67" width="75" height="29" rx="4"
-          fill="none" stroke="#b9ffab" stroke-width="2"/>
-        <circle cx="378" cy="81" r="12" fill="#a6f18b"/>
-        <path d="M378 70v22m-7-16h12" stroke="#248d3c" stroke-width="3"/>
-      </g>
-      <g transform="rotate(20 645 250)">
-        <rect x="620" y="230" width="70" height="35" rx="5"
-          fill="#40c85b" stroke="#c0ff8c" stroke-width="2"/>
-        <circle cx="655" cy="247" r="10" fill="#a7ed8c"/>
+      <!-- Flying naira note left -->
+      <g class="cash-note">
+        <g transform="rotate(-24 130 140)">
+          <rect x="55" y="105" width="150" height="78" rx="9"
+            fill="url(#bill)" stroke="#c6ff9e" stroke-width="4"/>
+          <rect x="67" y="117" width="126" height="54" rx="5"
+            fill="none" stroke="#e5ffbb" stroke-width="2"/>
+          <circle cx="130" cy="144" r="22"
+            fill="#baff8a" stroke="#168b49" stroke-width="3"/>
+          <text x="130" y="153" text-anchor="middle"
+            font-size="29" font-weight="900" fill="#08743e">₦</text>
+        </g>
       </g>
 
-      <!-- Floating gold coins -->
-      <g class="float-coin" filter="url(#glow)">
-        <circle cx="120" cy="155" r="35" fill="url(#gold)" stroke="#ffe98a" stroke-width="4"/>
-        <circle cx="120" cy="155" r="26" fill="none" stroke="#c47c00" stroke-width="3"/>
-        <text x="120" y="166" text-anchor="middle" font-size="30" font-weight="900" fill="#a15c00">₦</text>
-      </g>
-      <g class="float-coin" filter="url(#glow)">
-        <circle cx="650" cy="130" r="30" fill="url(#gold)" stroke="#ffe98a" stroke-width="4"/>
-        <circle cx="650" cy="130" r="22" fill="none" stroke="#c47c00" stroke-width="3"/>
-        <text x="650" y="140" text-anchor="middle" font-size="25" font-weight="900" fill="#a15c00">₦</text>
-      </g>
-      <g class="float-coin">
-        <circle cx="570" cy="350" r="25" fill="url(#gold)" stroke="#ffe98a" stroke-width="3"/>
-        <text x="570" y="359" text-anchor="middle" font-size="21" font-weight="900" fill="#a15c00">₦</text>
-      </g>
-      <g class="float-coin">
-        <circle cx="190" cy="380" r="25" fill="url(#gold)" stroke="#ffe98a" stroke-width="3"/>
-        <text x="190" y="389" text-anchor="middle" font-size="21" font-weight="900" fill="#a15c00">₦</text>
+      <!-- Flying naira note right -->
+      <g class="cash-note delay1">
+        <g transform="rotate(22 570 120)">
+          <rect x="500" y="80" width="145" height="75" rx="9"
+            fill="url(#bill)" stroke="#c6ff9e" stroke-width="4"/>
+          <rect x="512" y="92" width="121" height="51" rx="5"
+            fill="none" stroke="#e5ffbb" stroke-width="2"/>
+          <circle cx="572" cy="117" r="20"
+            fill="#baff8a" stroke="#168b49" stroke-width="3"/>
+          <text x="572" y="126" text-anchor="middle"
+            font-size="27" font-weight="900" fill="#08743e">₦</text>
+        </g>
       </g>
 
-      <!-- Man's body -->
-      <path d="M40 535 Q48 380 140 335 Q205 300 305 345
-        Q350 390 350 540Z" fill="url(#hoodie)" stroke="#a83bff" stroke-width="4"/>
-
-      <!-- Man's neck -->
-      <path d="M170 260 L170 333 Q200 370 235 332 L230 250Z"
-        fill="url(#skin)"/>
-
-      <!-- Man's ears -->
-      <ellipse cx="103" cy="198" rx="20" ry="30" fill="#914a30"/>
-      <ellipse cx="267" cy="198" rx="20" ry="30" fill="#914a30"/>
-
-      <!-- Man's face -->
-      <path d="M108 143 Q108 80 184 80 Q270 84 266 170
-        L255 236 Q242 290 187 300 Q125 286 111 233Z"
-        fill="url(#skin)"/>
-
-      <!-- Man's hair -->
-      <path d="M105 171 Q65 115 112 74 Q125 35 177 49
-        Q218 21 255 61 Q292 80 270 145
-        Q253 120 230 116 Q197 139 165 117
-        Q138 150 105 171Z" fill="#17101c"/>
-      <g fill="#261624">
-        <circle cx="115" cy="90" r="22"/>
-        <circle cx="140" cy="64" r="24"/>
-        <circle cx="173" cy="59" r="25"/>
-        <circle cx="204" cy="63" r="24"/>
-        <circle cx="237" cy="82" r="25"/>
-        <circle cx="258" cy="111" r="22"/>
-        <circle cx="103" cy="124" r="18"/>
+      <!-- Small flying note -->
+      <g class="cash-note delay2" transform="rotate(-13 550 260)">
+        <rect x="510" y="238" width="85" height="45" rx="6"
+          fill="url(#bill)" stroke="#d3ffac" stroke-width="3"/>
+        <circle cx="552" cy="260" r="13" fill="#c2ff9b"/>
+        <text x="552" y="267" text-anchor="middle"
+          font-size="18" font-weight="900" fill="#08743e">₦</text>
       </g>
 
-      <!-- Man's eyes and eyebrows -->
-      <path d="M130 185 Q150 171 168 184" stroke="#2a1514" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <path d="M204 184 Q226 169 246 184" stroke="#2a1514" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <ellipse cx="151" cy="204" rx="11" ry="13" fill="#fff"/>
-      <ellipse cx="225" cy="204" rx="11" ry="13" fill="#fff"/>
-      <circle cx="154" cy="204" r="7" fill="#21100b"/>
-      <circle cx="228" cy="204" r="7" fill="#21100b"/>
-      <circle cx="156" cy="200" r="3" fill="#fff"/>
-      <circle cx="230" cy="200" r="3" fill="#fff"/>
-      <path d="M185 204 Q171 231 188 232" stroke="#71351f" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path d="M159 251 Q190 282 227 250" stroke="#421b1a" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <path d="M164 251 Q190 271 222 250" fill="#fff"/>
-
-      <!-- Woman's body -->
-      <path d="M420 540 Q420 385 480 347 Q555 305 655 355
-        Q720 405 740 540Z" fill="url(#shirt)" stroke="#df76ff" stroke-width="4"/>
-
-      <!-- Woman's neck -->
-      <path d="M500 270 L500 337 Q550 374 589 332 L575 255Z"
-        fill="url(#skin)"/>
-
-      <!-- Woman's ears -->
-      <ellipse cx="466" cy="197" rx="18" ry="29" fill="#87452f"/>
-      <ellipse cx="622" cy="197" rx="18" ry="29" fill="#87452f"/>
-
-      <!-- Woman's face -->
-      <path d="M468 145 Q475 80 544 76 Q618 77 624 159
-        L613 236 Q596 290 547 298 Q487 285 473 235Z"
-        fill="url(#skin)"/>
-
-      <!-- Woman's braids and bun -->
-      <g fill="#211020">
-        <circle cx="530" cy="65" r="40"/>
-        <circle cx="563" cy="55" r="37"/>
-        <circle cx="589" cy="79" r="30"/>
-        <path d="M475 153 Q435 180 462 290 Q475 320 489 295
-          Q471 238 498 177Z"/>
-        <path d="M600 132 Q655 170 628 293 Q614 320 604 293
-          Q623 220 592 176Z"/>
-        <path d="M489 91 Q451 70 465 37 Q478 9 510 31
-          Q536 8 553 30 Q587 8 606 43 Q628 72 601 111
-          Q570 80 543 99 Q514 115 489 91Z"/>
-      </g>
-      <g stroke="#4c2348" stroke-width="8" fill="none" stroke-linecap="round">
-        <path d="M475 120 Q445 190 476 265"/>
-        <path d="M493 105 Q465 200 492 280"/>
-        <path d="M612 119 Q642 190 614 270"/>
-        <path d="M594 103 Q624 185 600 260"/>
-      </g>
-      <path d="M480 85 Q535 45 604 88" stroke="#ffc928" stroke-width="5" fill="none"/>
-
-      <!-- Woman's eyes and eyebrows -->
-      <path d="M489 184 Q508 168 527 182" stroke="#281515" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <path d="M560 182 Q581 166 601 182" stroke="#281515" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <ellipse cx="507" cy="203" rx="11" ry="13" fill="#fff"/>
-      <ellipse cx="582" cy="203" rx="11" ry="13" fill="#fff"/>
-      <circle cx="510" cy="204" r="7" fill="#21100b"/>
-      <circle cx="585" cy="204" r="7" fill="#21100b"/>
-      <circle cx="512" cy="200" r="3" fill="#fff"/>
-      <circle cx="587" cy="200" r="3" fill="#fff"/>
-      <path d="M546 204 Q535 230 549 233" stroke="#71351f" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path d="M516 251 Q551 283 586 249" stroke="#421b1a" stroke-width="7" fill="none" stroke-linecap="round"/>
-      <path d="M521 251 Q551 273 581 250" fill="#fff"/>
-
-      <!-- Woman's gold earrings -->
-      <ellipse cx="466" cy="245" rx="12" ry="20" fill="none" stroke="#ffd44b" stroke-width="6"/>
-      <ellipse cx="622" cy="245" rx="12" ry="20" fill="none" stroke="#ffd44b" stroke-width="6"/>
-
-      <!-- Left phone -->
-      <g transform="rotate(-8 285 400)">
-        <rect x="200" y="353" width="175" height="92" rx="17"
-          fill="url(#phone)" stroke="#d44aff" stroke-width="5"/>
-        <rect x="215" y="365" width="145" height="66" rx="9"
-          fill="#21083d"/>
-        <path d="M270 390 l30 17 -30 17Z" fill="#caff19"/>
-        <circle cx="350" cy="375" r="4" fill="#d8aaff"/>
+      <!-- Left coin stack -->
+      <g transform="translate(85 345)" filter="url(#glow)">
+        <rect x="0" y="65" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="65" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <rect x="0" y="43" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="43" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <rect x="0" y="21" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="21" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <text x="57" y="28" text-anchor="middle"
+          font-size="22" font-weight="900" fill="#995400">₦</text>
       </g>
 
-      <!-- Right phone -->
-      <g transform="rotate(8 480 400)">
-        <rect x="390" y="353" width="175" height="92" rx="17"
-          fill="url(#phone)" stroke="#d44aff" stroke-width="5"/>
-        <rect x="405" y="365" width="145" height="66" rx="9"
-          fill="#21083d"/>
-        <path d="M460 390 l30 17 -30 17Z" fill="#caff19"/>
-        <circle cx="540" cy="375" r="4" fill="#d8aaff"/>
+      <!-- Right coin stack -->
+      <g transform="translate(500 345)" filter="url(#glow)">
+        <rect x="0" y="65" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="65" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <rect x="0" y="43" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="43" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <rect x="0" y="21" width="115" height="20" rx="10"
+          fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+        <ellipse cx="57" cy="21" rx="57" ry="14"
+          fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+        <text x="57" y="28" text-anchor="middle"
+          font-size="22" font-weight="900" fill="#995400">₦</text>
       </g>
 
-      <!-- Hands holding phones -->
-      <path d="M180 350 Q175 327 196 325 L230 342 L253 371
-        Q263 385 247 396 Q230 403 217 385 L194 374Z"
-        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
-      <path d="M350 350 Q375 331 390 349 L385 377
-        Q370 399 350 384 L337 370Z"
-        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
-      <path d="M405 350 Q390 332 376 350 L380 378
-        Q396 398 416 381 L425 366Z"
-        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
-      <path d="M560 350 Q584 327 600 342 L625 367
-        Q635 388 616 397 Q596 398 583 379 L563 372Z"
-        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
-
-      <!-- Reward pile -->
+      <!-- Main bundle of money -->
       <g filter="url(#glow)">
-        <ellipse cx="380" cy="492" rx="150" ry="20" fill="#ffbb00" opacity=".22"/>
-        <ellipse cx="380" cy="470" rx="110" ry="24" fill="url(#gold)" stroke="#fff08a" stroke-width="3"/>
-        <ellipse cx="380" cy="455" rx="95" ry="19" fill="#ffcb22" stroke="#ffe889" stroke-width="3"/>
-        <ellipse cx="380" cy="440" rx="75" ry="16" fill="#ffdb43" stroke="#fff0a1" stroke-width="3"/>
+        <g transform="rotate(-5 350 310)">
+          <rect x="205" y="245" width="290" height="145" rx="14"
+            fill="#08713c" stroke="#8cff86" stroke-width="4"/>
+          <rect x="216" y="256" width="268" height="123" rx="9"
+            fill="url(#purpleCash)" stroke="#d4ff9f" stroke-width="3"/>
+          <rect x="315" y="250" width="65" height="135"
+            fill="#e7ffb4" opacity=".85"/>
+          <rect x="330" y="250" width="35" height="135"
+            fill="#aeea87"/>
+          <circle cx="350" cy="318" r="43"
+            fill="#a1eb7d" stroke="#168849" stroke-width="4"/>
+          <text x="350" y="337" text-anchor="middle"
+            font-size="55" font-weight="900" fill="#08743e">₦</text>
+        </g>
+
+        <g transform="rotate(6 350 220)">
+          <rect x="230" y="185" width="240" height="85" rx="12"
+            fill="#168b4b" stroke="#b4ff91" stroke-width="4"/>
+          <rect x="243" y="196" width="214" height="63" rx="7"
+            fill="url(#purpleCash)" stroke="#e2ffbd" stroke-width="3"/>
+          <rect x="320" y="189" width="60" height="77"
+            fill="#e6ffb8"/>
+          <text x="350" y="241" text-anchor="middle"
+            font-size="36" font-weight="900" fill="#08743e">₦</text>
+        </g>
       </g>
-      <circle cx="380" cy="435" r="35" fill="url(#gold)" stroke="#fff2a3" stroke-width="4" filter="url(#glow)"/>
-      <text x="380" y="443" text-anchor="middle" font-size="24" font-weight="900" fill="#8e4b00">₦</text>
+
+      <!-- Large floating coin left -->
+      <g class="gold-coin" filter="url(#glow)">
+        <circle cx="225" cy="105" r="35"
+          fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
+        <circle cx="225" cy="105" r="25"
+          fill="none" stroke="#b66b00" stroke-width="3"/>
+        <text x="225" y="117" text-anchor="middle"
+          font-size="31" font-weight="900" fill="#985200">₦</text>
+      </g>
+
+      <!-- Floating coin right -->
+      <g class="gold-coin delay1" filter="url(#glow)">
+        <circle cx="480" cy="180" r="31"
+          fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
+        <circle cx="480" cy="180" r="22"
+          fill="none" stroke="#b66b00" stroke-width="3"/>
+        <text x="480" y="191" text-anchor="middle"
+          font-size="27" font-weight="900" fill="#985200">₦</text>
+      </g>
+
+      <!-- Smaller floating coin -->
+      <g class="gold-coin delay2">
+        <circle cx="350" cy="105" r="24"
+          fill="url(#gold)" stroke="#fff3a0" stroke-width="3"/>
+        <text x="350" y="114" text-anchor="middle"
+          font-size="22" font-weight="900" fill="#985200">₦</text>
+      </g>
 
       <!-- Sparkles -->
-      <g fill="#fff48b" filter="url(#glow)">
-        <path d="M75 270 L83 293 L106 301 L83 309 L75 332 L67 309 L44 301 L67 293Z"/>
-        <path d="M680 310 L686 328 L704 334 L686 340 L680 358 L674 340 L656 334 L674 328Z"/>
-        <path d="M375 160 L381 176 L397 182 L381 188 L375 204 L369 188 L353 182 L369 176Z"/>
-        <circle cx="320" cy="235" r="5"/>
-        <circle cx="650" cy="410" r="5"/>
-        <circle cx="110" cy="430" r="4"/>
+      <g class="sparkle" fill="#fff18c" filter="url(#glow)">
+        <path d="M65 240l9 24 24 9-24 9-9 24-9-24-24-9 24-9z"/>
+        <path d="M630 310l7 19 19 7-19 7-7 19-7-19-19-7 19-7z"/>
+        <path d="M360 35l6 17 17 6-17 6-6 17-6-17-17-6 17-6z"/>
+        <circle cx="170" cy="215" r="5"/>
+        <circle cx="570" cy="65" r="6"/>
+        <circle cx="620" cy="420" r="5"/>
+        <circle cx="90" cy="410" r="5"/>
       </g>
 
-      <!-- Small game controller -->
-      <g transform="translate(330 100) rotate(-8)" filter="url(#glow)">
-        <path d="M0 25 Q5 0 28 7 L65 7 Q90 0 96 25
-          L104 53 Q107 76 86 75 L70 61 L31 61 L15 75
-          Q-7 77 -4 52Z" fill="#271047" stroke="#e33bff" stroke-width="4"/>
-        <path d="M25 25v23 M14 36h22" stroke="#caff19" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="72" cy="29" r="6" fill="#ffdb2f"/>
-        <circle cx="85" cy="42" r="6" fill="#45e6ff"/>
+      <g fill="#ffcf35">
+        <circle cx="150" cy="270" r="4"/>
+        <circle cx="540" cy="220" r="5"/>
+        <circle cx="280" cy="160" r="4"/>
+        <circle cx="430" cy="90" r="4"/>
+        <circle cx="600" cy="390" r="4"/>
+        <circle cx="100" cy="170" r="3"/>
       </g>
+
     </svg>
-
   </div>
+
 </section>
 
-<!-- ADVERTISING SPOTLIGHT -->
+<!-- EARNGIG SPOTLIGHT -->
 <section class="spotlight">
   <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
   <div class="spotlight-copy">
@@ -731,7 +722,7 @@ footer a:hover {color:var(--lime)}
   </div>
 </section>
 
-<!-- DISCOVER -->
+<!-- EXPLORE EARNGIG -->
 <section class="section" id="discover">
   <h2 class="section-heading">Explore <span>EarnGig</span></h2>
 
@@ -758,7 +749,7 @@ footer a:hover {color:var(--lime)}
   </div>
 </section>
 
-<!-- JOIN EARNGIG -->
+<!-- JOIN BANNER -->
 <section class="bottom-cta">
   <h2>Your next chapter starts here.</h2>
   <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
@@ -767,6 +758,7 @@ footer a:hover {color:var(--lime)}
 
 </main>
 
+<!-- FOOTER -->
 <footer>
   <a class="logo" href="index.html"><b class="crown">♛</b> Earn<span>Gig</span></a>
 
