@@ -10,23 +10,23 @@
   --pink:#ff65a3;
   --yellow:#ffe36e;
   --mint:#62e8ba;
-  --ink:#473044;
-  --muted:#765e78;
+  --ink:#493448;
+  --muted:#806b7d;
 }
 *{box-sizing:border-box}
 body{
   margin:0;padding:12px;min-height:100vh;
-  font-family:Arial,sans-serif;color:#493448;
+  font-family:Arial,sans-serif;color:var(--ink);
   background:
-    radial-gradient(ellipse at 50% 0%,#fff4c9 0%,transparent 48%),
+    radial-gradient(ellipse at 50% 0%,#fff4c9,transparent 48%),
     linear-gradient(145deg,#ffe4ee,#fff2d9 48%,#e5f8ff);
 }
-button{font:inherit}
 .topbar{
   max-width:650px;margin:auto;display:flex;
-  justify-content:space-between;align-items:center;padding:8px 2px 18px;
+  justify-content:space-between;align-items:center;
+  padding:8px 2px 18px;
 }
-.brand{font-size:22px;font-weight:900;color:#50334b}
+.brand{font-size:22px;font-weight:900}
 .brand span{color:#edaa27}
 .back{
   color:#573b52;text-decoration:none;padding:10px 14px;
@@ -53,7 +53,8 @@ button{font:inherit}
 }
 .primary{
   border:0;border-radius:15px;padding:15px 30px;
-  font-weight:900;color:#fff;background:linear-gradient(135deg,#ff69a6,#ff9c74);
+  font-weight:900;color:#fff;
+  background:linear-gradient(135deg,#ff69a6,#ff9c74);
   box-shadow:0 6px 18px #f27ba344;cursor:pointer;
 }
 .hidden{display:none!important}
@@ -94,16 +95,17 @@ button{font:inherit}
   border-radius:10px;
   background:linear-gradient(145deg,#f9e9f4,#eddaef);
   border:1px solid #ffffff;
-  overflow:visible;touch-action:none;
+  overflow:hidden;touch-action:none;
 }
 .candy{
   width:84%;height:84%;position:relative;
   display:flex;align-items:center;justify-content:center;
   border-radius:35% 39% 35% 39%;
   font-size:clamp(19px,5vw,34px);
-  box-shadow:inset 2px 3px 4px #ffffffa8,inset -3px -5px 6px #0003,0 4px 5px #76516b44;
-  transition:transform .18s ease,filter .18s ease;
+  box-shadow:inset 2px 3px 4px #ffffffa8,
+    inset -3px -5px 6px #0003,0 4px 5px #76516b44;
   transform:rotate(-4deg);
+  pointer-events:none;
 }
 .candy:before{
   content:"";position:absolute;width:38%;height:15%;
@@ -116,13 +118,14 @@ button{font:inherit}
 .candy.green{background:radial-gradient(circle at 30% 25%,#e0ffbd,#7edb64 65%,#328a41)}
 .candy.blue{background:radial-gradient(circle at 30% 25%,#d0f8ff,#45b7f4 65%,#2562b0)}
 .candy.purple{background:radial-gradient(circle at 30% 25%,#f5d2ff,#bd73ee 65%,#7035a3)}
-.tile.selected .candy{transform:scale(1.13) rotate(0);filter:brightness(1.12)}
+.tile.selected .candy{filter:brightness(1.13)}
+.tile.selected{outline:3px solid white;outline-offset:-3px;z-index:2}
 .tile.jelly{
   box-shadow:inset 0 0 0 2px #61d9f5;
 }
 .tile.jelly:after{
   content:"";position:absolute;inset:0;border-radius:9px;
-  pointer-events:none;z-index:2;
+  pointer-events:none;z-index:3;
   background:linear-gradient(135deg,#eaffff80,#7be6ff45 45%,#ffffff15 60%,#4ec9f25c);
   border:2px solid #80e8ff;
   box-shadow:inset 0 0 8px #9af0ff;
@@ -130,7 +133,7 @@ button{font:inherit}
 .tile.jelly:before{
   content:"";position:absolute;width:10px;height:5px;
   top:5px;left:6px;border-radius:50%;
-  background:#fff;z-index:3;filter:blur(.4px);
+  background:#fff;z-index:4;filter:blur(.4px);
 }
 .legend{text-align:center;color:#91798d;font-size:12px;margin:13px 0 0;line-height:1.5}
 .controls{text-align:center;margin-top:13px}
@@ -152,6 +155,7 @@ button{font:inherit}
 </style>
 </head>
 <body>
+
 <header class="topbar">
   <div class="brand"><span>♛</span> EarnGig</div>
   <a href="games.html" class="back" id="backLink">← Games</a>
@@ -191,7 +195,7 @@ button{font:inherit}
       <div id="objectiveProgress">0 / 0</div>
     </div>
     <div class="board-shell"><div id="board"></div></div>
-    <p class="legend">Swipe a candy up, down, left or right. Invalid moves slide back. You can also tap two neighbouring candies.</p>
+    <p class="legend">Swipe a candy up, down, left or right. Invalid moves slide back. Jelly stays in its own square while candies move over it.</p>
     <div class="controls"><button class="secondary" id="hintButton">Show possible move</button></div>
   </section>
 
@@ -207,243 +211,548 @@ button{font:inherit}
 <script>
 (()=>{
 "use strict";
-const ACTIVE_KEY="earngig_candymatch_active",SIZE=8;
+
+const ACTIVE_KEY="earngig_candymatch_active";
+const SIZE=8;
 const $=id=>document.getElementById(id);
+
 if(sessionStorage.getItem(ACTIVE_KEY)==="yes"){
   sessionStorage.removeItem(ACTIVE_KEY);
   location.replace("games.html");
   return;
 }
-const CANDIES=[
-  {id:"red",emoji:"🍓"},{id:"orange",emoji:"🍊"},
-  {id:"yellow",emoji:"🍋"},{id:"green",emoji:"🍏"},
-  {id:"blue",emoji:"🫐"},{id:"purple",emoji:"🍇"}
-];
-let board=[],objective=null,selected=null,movesLeft=0,score=0;
-let collected={},jellyRemaining=0,busy=false,ended=false,hintCells=[];
-let pointerStart=null,lastTap=0,lastTapped=null;
 
-const shuffle=a=>{
-  a=[...a];for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];
-  }return a;
+const CANDIES=[
+  {id:"red",emoji:"🍓"},
+  {id:"orange",emoji:"🍊"},
+  {id:"yellow",emoji:"🍋"},
+  {id:"green",emoji:"🍏"},
+  {id:"blue",emoji:"🫐"},
+  {id:"purple",emoji:"🍇"}
+];
+
+let candies=[];
+let jelly=[];
+let objective=null;
+let selected=null;
+let movesLeft=0;
+let score=0;
+let collected={};
+let busy=false;
+let ended=false;
+let hintCells=[];
+let pointerStart=null;
+
+const shuffle=array=>{
+  const a=[...array];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 };
+
 const randomCandy=()=>CANDIES[Math.floor(Math.random()*CANDIES.length)].id;
 const emoji=id=>CANDIES.find(x=>x.id===id)?.emoji||"";
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
+/* Move limits are calculated from the actual target. */
 function makeObjective(){
-  const type=["collect","twoColors","jelly","score","mixed"][Math.floor(Math.random()*5)];
-  const first=randomCandy();let second=randomCandy();
+  const types=["collect","twoColors","jelly","score","mixed"];
+  const type=types[Math.floor(Math.random()*types.length)];
+  const first=randomCandy();
+  let second=randomCandy();
   while(second===first)second=randomCandy();
+
   if(type==="collect"){
-    const n=18+Math.floor(Math.random()*13);
-    return{type,colors:[first],targets:[n],moves:16+Math.ceil(n*.48),icon:emoji(first),text:`Collect ${n} ${first} candies`};
+    const target=12+Math.floor(Math.random()*9);
+    return {
+      type,colors:[first],targets:[target],
+      moves:Math.min(25,13+Math.ceil((target-12)*0.5)),
+      icon:emoji(first),
+      text:`Collect ${target} ${first} candies`
+    };
   }
+
   if(type==="twoColors"){
-    const a=12+Math.floor(Math.random()*7),b=12+Math.floor(Math.random()*7);
-    return{type,colors:[first,second],targets:[a,b],moves:22+Math.ceil((a+b)*.35),icon:"🌈",text:`Collect ${a} ${first} and ${b} ${second} candies`};
+    const a=10+Math.floor(Math.random()*5);
+    const b=10+Math.floor(Math.random()*5);
+    return {
+      type,colors:[first,second],targets:[a,b],
+      moves:Math.min(25,15+Math.ceil((a+b-20)*0.5)),
+      icon:"🌈",
+      text:`Collect ${a} ${first} and ${b} ${second} candies`
+    };
   }
-  if(type==="jelly")return{type,colors:[],targets:[],moves:20+Math.floor(Math.random()*7),jellyTarget:12,icon:"🧊",text:"Clear all 12 jelly tiles"};
+
+  if(type==="jelly"){
+    const target=12;
+    return {
+      type,colors:[],targets:[],jellyTarget:target,
+      moves:15+Math.ceil((target-12)*0.5),
+      icon:"🧊",
+      text:`Clear all ${target} jelly tiles`
+    };
+  }
+
   if(type==="score"){
-    const n=3000+Math.floor(Math.random()*2501);
-    return{type,colors:[],targets:[],scoreTarget:n,moves:20+Math.floor(Math.random()*12),icon:"⭐",text:`Reach ${n.toLocaleString()} points`};
+    const target=2500+Math.floor(Math.random()*1501);
+    return {
+      type,colors:[],targets:[],scoreTarget:target,
+      moves:16+Math.ceil((target-2500)/500),
+      icon:"⭐",
+      text:`Reach ${target.toLocaleString()} points`
+    };
   }
-  const n=10+Math.floor(Math.random()*5);
-  return{type,colors:[first],targets:[n],jellyTarget:8,moves:23+Math.floor(Math.random()*9),icon:"🍬",text:`Collect ${n} ${first} candies and clear 8 jelly tiles`};
+
+  const target=10+Math.floor(Math.random()*4);
+  return {
+    type,colors:[first],targets:[target],jellyTarget:8,
+    moves:20+Math.ceil((target-10)*0.5),
+    icon:"🍬",
+    text:`Collect ${target} ${first} candies and clear 8 jelly tiles`
+  };
 }
-function emptyTile(){return{color:null,jelly:0};}
-function candyAt(r,c){return board[r][c].color;}
+
+/* Candy and jelly are stored separately.
+   Candy swaps never move the jelly layer. */
+function candyAt(r,c){return candies[r][c];}
+
 function makeBoard(){
-  board=Array.from({length:8},()=>Array.from({length:8},emptyTile));
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-    const choices=CANDIES.map(x=>x.id).filter(color=>
-      !(c>=2&&candyAt(r,c-1)===color&&candyAt(r,c-2)===color)&&
-      !(r>=2&&candyAt(r-1,c)===color&&candyAt(r-2,c)===color)
-    );
-    board[r][c].color=choices[Math.floor(Math.random()*choices.length)];
+  candies=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
+  jelly=Array.from({length:SIZE},()=>Array(SIZE).fill(false));
+
+  for(let r=0;r<SIZE;r++){
+    for(let c=0;c<SIZE;c++){
+      const options=CANDIES.map(x=>x.id).filter(color=>
+        !(c>=2&&candyAt(r,c-1)===color&&candyAt(r,c-2)===color)&&
+        !(r>=2&&candyAt(r-1,c)===color&&candyAt(r-2,c)===color)
+      );
+      candies[r][c]=options[Math.floor(Math.random()*options.length)];
+    }
   }
-  const count=objective.type==="jelly"?12:objective.type==="mixed"?8:0;
-  jellyRemaining=count;
-  if(count)shuffle(Array.from({length:64},(_,i)=>i)).slice(0,count).forEach(i=>board[Math.floor(i/8)][i%8].jelly=1);
+
+  const count=objective.type==="jelly"?12:
+    objective.type==="mixed"?8:0;
+
+  if(count){
+    const positions=shuffle(Array.from({length:64},(_,i)=>i));
+    positions.slice(0,count).forEach(i=>{
+      jelly[Math.floor(i/SIZE)][i%SIZE]=true;
+    });
+  }
+
   if(!findMove())makeBoard();
 }
+
 function matches(){
-  const set=new Set();
-  for(let r=0;r<8;r++){
-    let c=0;while(c<8){
-      const color=candyAt(r,c);let end=c+1;
-      while(color&&end<8&&candyAt(r,end)===color)end++;
-      if(color&&end-c>=3)for(let x=c;x<end;x++)set.add(r*8+x);
+  const found=new Set();
+
+  for(let r=0;r<SIZE;r++){
+    let c=0;
+    while(c<SIZE){
+      const color=candyAt(r,c);
+      let end=c+1;
+      while(color&&end<SIZE&&candyAt(r,end)===color)end++;
+      if(color&&end-c>=3){
+        for(let x=c;x<end;x++)found.add(r*SIZE+x);
+      }
       c=end;
     }
   }
-  for(let c=0;c<8;c++){
-    let r=0;while(r<8){
-      const color=candyAt(r,c);let end=r+1;
-      while(color&&end<8&&candyAt(end,c)===color)end++;
-      if(color&&end-r>=3)for(let x=r;x<end;x++)set.add(x*8+c);
+
+  for(let c=0;c<SIZE;c++){
+    let r=0;
+    while(r<SIZE){
+      const color=candyAt(r,c);
+      let end=r+1;
+      while(color&&end<SIZE&&candyAt(end,c)===color)end++;
+      if(color&&end-r>=3){
+        for(let x=r;x<end;x++)found.add(x*SIZE+c);
+      }
       r=end;
     }
   }
-  return[...set];
+  return [...found];
 }
-function swap(a,b){[board[a.r][a.c],board[b.r][b.c]]=[board[b.r][b.c],board[a.r][a.c]];}
-function adjacent(a,b){return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1;}
+
+function swapCandies(a,b){
+  const temp=candies[a.r][a.c];
+  candies[a.r][a.c]=candies[b.r][b.c];
+  candies[b.r][b.c]=temp;
+}
+
+function adjacent(a,b){
+  return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1;
+}
+
 function findMove(){
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++)for(const b of [{r:r+1,c},{r,c:c+1}]){
-    if(b.r>=8||b.c>=8)continue;
-    const a={r,c};swap(a,b);const valid=matches().length>0;swap(a,b);
-    if(valid)return[a,b];
+  for(let r=0;r<SIZE;r++){
+    for(let c=0;c<SIZE;c++){
+      for(const b of [{r:r+1,c},{r,c:c+1}]){
+        if(b.r>=SIZE||b.c>=SIZE)continue;
+        const a={r,c};
+        swapCandies(a,b);
+        const valid=matches().length>0;
+        swapCandies(a,b);
+        if(valid)return [a,b];
+      }
+    }
   }
   return null;
 }
+
 function render(){
-  const root=$("board");root.innerHTML="";
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-    const tile=board[r][c],cell=document.createElement("div");
-    cell.className="tile";cell.dataset.r=r;cell.dataset.c=c;
-    if(tile.jelly)cell.classList.add("jelly");
-    if(selected&&selected.r===r&&selected.c===c)cell.classList.add("selected");
-    if(hintCells.some(p=>p.r===r&&p.c===c))cell.classList.add("selected");
-    if(tile.color){
-      const candy=document.createElement("div");
-      candy.className="candy "+tile.color;candy.textContent=emoji(tile.color);
-      cell.appendChild(candy);
-    }else cell.classList.add("empty");
-    root.appendChild(cell);
-  }
-}
-function renderStats(){
-  $("moves").textContent=movesLeft;$("score").textContent=score.toLocaleString();
-  let done=0,total=0;
-  objective.colors.forEach((color,i)=>{
-    total+=objective.targets[i];done+=Math.min(collected[color]||0,objective.targets[i]);
-  });
-  if(objective.type==="jelly"||objective.type==="mixed"){
-    total+=objective.jellyTarget;done+=objective.jellyTarget-jellyRemaining;
-  }
-  if(objective.type==="score"){total=objective.scoreTarget;done=Math.min(score,total);}
-  $("objectiveProgress").textContent=`${done.toLocaleString()} / ${total.toLocaleString()}`;
-}
-function completeObjective(){
-  if(objective.colors.some((color,i)=>(collected[color]||0)<objective.targets[i]))return false;
-  if((objective.type==="jelly"||objective.type==="mixed")&&jellyRemaining>0)return false;
-  if(objective.type==="score"&&score<objective.scoreTarget)return false;
-  return true;
-}
-function clearMatches(list){
-  list.forEach(index=>{
-    const r=Math.floor(index/8),c=index%8,t=board[r][c];
-    if(!t.color)return;
-    if(objective.colors.includes(t.color))collected[t.color]=(collected[t.color]||0)+1;
-    score+=60;if(t.jelly){t.jelly=0;jellyRemaining--;}
-    t.color=null;
-  });
-  score+=Math.max(0,list.length-3)*35;
-}
-function collapse(){
-  for(let c=0;c<8;c++){
-    const remaining=[];
-    for(let r=7;r>=0;r--)if(board[r][c].color)remaining.push(board[r][c]);
-    for(let r=7;r>=0;r--){
-      board[r][c]=r>=8-remaining.length?remaining[7-r]:{color:randomCandy(),jelly:0};
+  const root=$("board");
+  root.innerHTML="";
+
+  for(let r=0;r<SIZE;r++){
+    for(let c=0;c<SIZE;c++){
+      const cell=document.createElement("div");
+      cell.className="tile";
+      cell.dataset.r=r;
+      cell.dataset.c=c;
+
+      if(jelly[r][c])cell.classList.add("jelly");
+      if(selected&&selected.r===r&&selected.c===c)cell.classList.add("selected");
+      if(hintCells.some(p=>p.r===r&&p.c===c))cell.classList.add("selected");
+
+      const candy=candies[r][c];
+      if(candy){
+        const element=document.createElement("div");
+        element.className="candy "+candy;
+        element.textContent=emoji(candy);
+        cell.appendChild(element);
+      }
+
+      root.appendChild(cell);
     }
   }
 }
+
+function renderStats(){
+  $("moves").textContent=movesLeft;
+  $("score").textContent=score.toLocaleString();
+
+  let progress=0;
+  let total=0;
+
+  objective.colors.forEach((color,i)=>{
+    total+=objective.targets[i];
+    progress+=Math.min(collected[color]||0,objective.targets[i]);
+  });
+
+  if(objective.type==="jelly"||objective.type==="mixed"){
+    total+=objective.jellyTarget;
+    const remaining=jelly.flat().filter(Boolean).length;
+    progress+=objective.jellyTarget-remaining;
+  }
+
+  if(objective.type==="score"){
+    total=objective.scoreTarget;
+    progress=Math.min(score,total);
+  }
+
+  $("objectiveProgress").textContent=
+    `${progress.toLocaleString()} / ${total.toLocaleString()}`;
+}
+
+function completeObjective(){
+  if(objective.colors.some((color,i)=>
+    (collected[color]||0)<objective.targets[i]))return false;
+
+  if(objective.type==="jelly"||objective.type==="mixed"){
+    if(jelly.flat().some(Boolean))return false;
+  }
+
+  if(objective.type==="score"&&score<objective.scoreTarget)return false;
+  return true;
+}
+
+function clearMatches(list){
+  list.forEach(index=>{
+    const r=Math.floor(index/SIZE);
+    const c=index%SIZE;
+    const color=candies[r][c];
+
+    if(!color)return;
+
+    if(objective.colors.includes(color)){
+      collected[color]=(collected[color]||0)+1;
+    }
+
+    score+=60;
+
+    // Jelly is destroyed only at its fixed board position
+    // when a candy is successfully matched on that square.
+    if(jelly[r][c])jelly[r][c]=false;
+
+    candies[r][c]=null;
+  });
+
+  score+=Math.max(0,list.length-3)*35;
+}
+
+function collapseCandies(){
+  for(let c=0;c<SIZE;c++){
+    const existing=[];
+
+    for(let r=SIZE-1;r>=0;r--){
+      if(candies[r][c])existing.push(candies[r][c]);
+    }
+
+    for(let r=SIZE-1;r>=0;r--){
+      if(r>=SIZE-existing.length){
+        candies[r][c]=existing[SIZE-1-r];
+      }else{
+        candies[r][c]=randomCandy();
+      }
+    }
+  }
+}
+
 async function resolveMatches(){
-  let found=matches(),chain=0;
+  let found=matches();
+  let chain=0;
+
   while(found.length&&chain<15&&!ended){
-    clearMatches(found);renderStats();render();await wait(180);
-    collapse();render();await wait(180);found=matches();chain++;
+    clearMatches(found);
+    renderStats();
+    render();
+    await wait(180);
+
+    collapseCandies();
+    render();
+    await wait(180);
+
+    found=matches();
+    chain++;
   }
-  renderStats();render();
+
+  renderStats();
+  render();
 }
-function tileElement(pos){return $("board").querySelector(`[data-r="${pos.r}"][data-c="${pos.c}"]`);}
+
+function tileElement(pos){
+  return $("board").querySelector(
+    `[data-r="${pos.r}"][data-c="${pos.c}"] .candy`
+  );
+}
+
+/* Animate only the candy elements, never the jelly squares. */
 async function animateSwap(a,b,valid){
-  const first=tileElement(a),second=tileElement(b);
+  const first=tileElement(a);
+  const second=tileElement(b);
   if(!first||!second)return;
-  const dx=(b.c-a.c)*first.getBoundingClientRect().width;
-  const dy=(b.r-a.r)*first.getBoundingClientRect().height;
-  [first,second].forEach(el=>{el.style.zIndex="5";el.style.transition="transform 190ms ease";});
-  first.style.transform=`translate(${dx}px,${dy}px)`;
-  second.style.transform=`translate(${-dx}px,${-dy}px)`;
-  await wait(200);
+
+  const rectA=first.parentElement.getBoundingClientRect();
+  const rectB=second.parentElement.getBoundingClientRect();
+  const dx=rectB.left-rectA.left;
+  const dy=rectB.top-rectA.top;
+
+  const options={
+    duration:210,
+    easing:"cubic-bezier(.2,.8,.3,1)",
+    fill:"forwards"
+  };
+
+  const animationA=first.animate(
+    [{transform:"translate(0,0) rotate(-4deg)"},
+     {transform:`translate(${dx}px,${dy}px) rotate(0deg)`}],
+    options
+  );
+
+  const animationB=second.animate(
+    [{transform:"translate(0,0) rotate(-4deg)"},
+     {transform:`translate(${-dx}px,${-dy}px) rotate(0deg)`}],
+    options
+  );
+
+  await Promise.all([animationA.finished,animationB.finished]);
+
   if(valid){
-    swap(a,b);render();
-    return;
+    swapCandies(a,b);
+    render();
+  }else{
+    const reverseA=first.animate(
+      [{transform:`translate(${dx}px,${dy}px) rotate(0deg)`},
+       {transform:"translate(0,0) rotate(-4deg)"}],
+      {duration:190,easing:"ease-in-out"}
+    );
+    const reverseB=second.animate(
+      [{transform:`translate(${-dx}px,${-dy}px) rotate(0deg)`},
+       {transform:"translate(0,0) rotate(-4deg)"}],
+      {duration:190,easing:"ease-in-out"}
+    );
+    await Promise.all([reverseA.finished,reverseB.finished]);
   }
-  first.style.transition="transform 190ms ease";
-  second.style.transition="transform 190ms ease";
-  first.style.transform="translate(0,0)";
-  second.style.transform="translate(0,0)";
-  await wait(200);
-  first.style.transform="";second.style.transform="";
-  first.style.zIndex="";second.style.zIndex="";
 }
+
 async function performSwap(a,b){
   if(busy||ended||!adjacent(a,b))return;
-  hintCells=[];swap(a,b);const valid=matches().length>0;swap(a,b);
-  busy=true;selected=null;
+
+  hintCells=[];
+
+  swapCandies(a,b);
+  const valid=matches().length>0;
+  swapCandies(a,b);
+
+  busy=true;
+  selected=null;
+
   await animateSwap(a,b,valid);
-  if(!valid){busy=false;return;}
-  movesLeft--;renderStats();
-  await resolveMatches();busy=false;
+
+  if(!valid){
+    busy=false;
+    return;
+  }
+
+  movesLeft--;
+  renderStats();
+
+  await resolveMatches();
+  busy=false;
+
   if(completeObjective())endGame(true);
   else if(movesLeft<=0)endGame(false);
 }
+
 function tileAt(x,y){
-  const el=document.elementFromPoint(x,y)?.closest(".tile");
-  return el?{r:Number(el.dataset.r),c:Number(el.dataset.c)}:null;
+  const element=document.elementFromPoint(x,y)?.closest(".tile");
+  return element?{
+    r:Number(element.dataset.r),
+    c:Number(element.dataset.c)
+  }:null;
 }
+
 function selectOrSwap(pos){
   if(!pos||busy||ended)return;
-  if(!selected){selected=pos;render();return;}
-  if(selected.r===pos.r&&selected.c===pos.c){selected=null;render();return;}
-  if(adjacent(selected,pos))performSwap(selected,pos);
-  else{selected=pos;render();}
+
+  if(!selected){
+    selected=pos;
+    render();
+    return;
+  }
+
+  if(selected.r===pos.r&&selected.c===pos.c){
+    selected=null;
+    render();
+    return;
+  }
+
+  if(adjacent(selected,pos)){
+    performSwap(selected,pos);
+  }else{
+    selected=pos;
+    render();
+  }
 }
+
+/* Drag/swipe controls. */
 $("board").addEventListener("pointerdown",event=>{
   if(busy||ended)return;
-  const pos=tileAt(event.clientX,event.clientY);if(!pos)return;
-  pointerStart={x:event.clientX,y:event.clientY,pos};
+  const pos=tileAt(event.clientX,event.clientY);
+  if(!pos)return;
+
+  pointerStart={
+    x:event.clientX,
+    y:event.clientY,
+    pos
+  };
 });
+
 $("board").addEventListener("pointerup",event=>{
   if(!pointerStart||busy||ended)return;
-  const start=pointerStart;pointerStart=null;
-  const dx=event.clientX-start.x,dy=event.clientY-start.y;
-  if(Math.hypot(dx,dy)<12){selectOrSwap(start.pos);return;}
-  const b={
+
+  const start=pointerStart;
+  pointerStart=null;
+
+  const dx=event.clientX-start.x;
+  const dy=event.clientY-start.y;
+
+  if(Math.hypot(dx,dy)<12){
+    selectOrSwap(start.pos);
+    return;
+  }
+
+  const target={
     r:start.pos.r+(Math.abs(dy)>Math.abs(dx)?Math.sign(dy):0),
     c:start.pos.c+(Math.abs(dx)>=Math.abs(dy)?Math.sign(dx):0)
   };
-  if(b.r>=0&&b.r<8&&b.c>=0&&b.c<8)performSwap(start.pos,b);
+
+  if(target.r>=0&&target.r<SIZE&&target.c>=0&&target.c<SIZE){
+    performSwap(start.pos,target);
+  }
 });
+
 $("board").addEventListener("pointercancel",()=>pointerStart=null);
+
 function showHint(){
-  if(busy||ended)return;const move=findMove();if(!move)return;
-  hintCells=move;render();setTimeout(()=>{hintCells=[];if(!ended)render();},900);
+  if(busy||ended)return;
+  const move=findMove();
+  if(!move)return;
+
+  hintCells=move;
+  render();
+
+  setTimeout(()=>{
+    hintCells=[];
+    if(!ended)render();
+  },900);
 }
+
 function endGame(won){
-  if(ended)return;ended=true;busy=false;sessionStorage.removeItem(ACTIVE_KEY);
-  $("gameScreen").classList.add("hidden");$("resultScreen").classList.remove("hidden");
+  if(ended)return;
+  ended=true;
+  busy=false;
+  sessionStorage.removeItem(ACTIVE_KEY);
+
+  $("gameScreen").classList.add("hidden");
+  $("resultScreen").classList.remove("hidden");
+
   $("resultIcon").textContent=won?"🏆":"😢";
   $("resultTitle").textContent=won?"Level completed!":"Out of moves!";
-  $("resultMessage").textContent=won?"Amazing! You completed the candy challenge.":"You ran out of moves before completing the objective.";
+  $("resultMessage").textContent=won
+    ?"Amazing! You completed the candy challenge."
+    :"You ran out of moves before completing the objective.";
+
   $("finalScore").textContent=score.toLocaleString();
 }
+
 function startGame(){
-  objective=makeObjective();movesLeft=objective.moves;score=0;collected={};
-  selected=null;hintCells=[];busy=false;ended=false;makeBoard();
-  $("objectiveIcon").textContent=objective.icon;$("objectiveText").textContent=objective.text;
-  $("startScreen").classList.add("hidden");$("resultScreen").classList.add("hidden");
-  $("gameScreen").classList.remove("hidden");sessionStorage.setItem(ACTIVE_KEY,"yes");
-  renderStats();render();
+  objective=makeObjective();
+  movesLeft=objective.moves;
+  score=0;
+  collected={};
+  selected=null;
+  hintCells=[];
+  busy=false;
+  ended=false;
+
+  makeBoard();
+
+  $("objectiveIcon").textContent=objective.icon;
+  $("objectiveText").textContent=objective.text;
+
+  $("startScreen").classList.add("hidden");
+  $("resultScreen").classList.add("hidden");
+  $("gameScreen").classList.remove("hidden");
+
+  sessionStorage.setItem(ACTIVE_KEY,"yes");
+
+  renderStats();
+  render();
 }
+
 $("startButton").addEventListener("click",startGame);
 $("hintButton").addEventListener("click",showHint);
-$("backLink").addEventListener("click",()=>sessionStorage.removeItem(ACTIVE_KEY));
-$("finishLink").addEventListener("click",()=>sessionStorage.removeItem(ACTIVE_KEY));
+$("backLink").addEventListener("click",()=>{
+  sessionStorage.removeItem(ACTIVE_KEY);
+});
+$("finishLink").addEventListener("click",()=>{
+  sessionStorage.removeItem(ACTIVE_KEY);
+});
+
 })();
 </script>
 </body>
