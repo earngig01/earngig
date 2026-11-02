@@ -6,156 +6,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Candy Match | EarnGig</title>
 <style>
-:root{
-  --pink:#ff65a3;
-  --yellow:#ffe36e;
-  --mint:#62e8ba;
-  --ink:#493448;
-  --muted:#806b7d;
-}
+:root{--pink:#ff65a3;--yellow:#ffe36e;--ink:#493448}
 *{box-sizing:border-box}
-body{
-  margin:0;padding:12px;min-height:100vh;
-  font-family:Arial,sans-serif;color:var(--ink);
-  background:
-    radial-gradient(ellipse at 50% 0%,#fff4c9,transparent 48%),
-    linear-gradient(145deg,#ffe4ee,#fff2d9 48%,#e5f8ff);
-}
-.topbar{
-  max-width:650px;margin:auto;display:flex;
-  justify-content:space-between;align-items:center;
-  padding:8px 2px 18px;
-}
-.brand{font-size:22px;font-weight:900}
-.brand span{color:#edaa27}
-.back{
-  color:#573b52;text-decoration:none;padding:10px 14px;
-  border-radius:12px;background:#fff9;border:1px solid #e9cbdc;
-}
+body{margin:0;padding:12px;min-height:100vh;font-family:Arial,sans-serif;color:var(--ink);background:radial-gradient(ellipse at 50% 0%,#fff4c9,transparent 48%),linear-gradient(145deg,#ffe4ee,#fff2d9 48%,#e5f8ff)}
+.topbar{max-width:650px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:8px 2px 18px}
+.brand{font-size:22px;font-weight:900}.brand span{color:#edaa27}
+.back{color:#573b52;text-decoration:none;padding:10px 14px;border-radius:12px;background:#fff9;border:1px solid #e9cbdc}
 .container{max-width:650px;margin:auto}
 .heading{text-align:center;margin:4px 0 18px}
 .heading h1{font-size:clamp(28px,5vw,39px);margin:0 0 7px;color:#55334e}
 .heading p{margin:0;color:#826d7e}
-.panel{
-  background:linear-gradient(145deg,#fffdfd,#fff3f8);
-  border:1px solid #f2d7e5;border-radius:23px;
-  padding:clamp(14px,4vw,22px);
-  box-shadow:0 12px 35px #9a66842b;
-}
+.panel{background:linear-gradient(145deg,#fffdfd,#fff3f8);border:1px solid #f2d7e5;border-radius:23px;padding:clamp(14px,4vw,22px);box-shadow:0 12px 35px #9a66842b}
 .start,.result{max-width:530px;margin:35px auto;text-align:center}
 .big-icon{font-size:65px;margin:5px 0 15px}
 .start h2,.result h2{font-size:27px;margin:0 0 10px;color:#55334e}
 .start p,.result p{color:#826d7e;line-height:1.7}
-.rules{
-  text-align:left;padding:15px 18px;background:#fff7fb;
-  border:1px solid #f1dce8;border-radius:15px;
-  line-height:2;margin:20px 0;color:#62485f;
-}
-.primary{
-  border:0;border-radius:15px;padding:15px 30px;
-  font-weight:900;color:#fff;
-  background:linear-gradient(135deg,#ff69a6,#ff9c74);
-  box-shadow:0 6px 18px #f27ba344;cursor:pointer;
-}
+.rules{text-align:left;padding:15px 18px;background:#fff7fb;border:1px solid #f1dce8;border-radius:15px;line-height:2;margin:20px 0;color:#62485f}
+.primary{border:0;border-radius:15px;padding:15px 30px;font-weight:900;color:#fff;background:linear-gradient(135deg,#ff69a6,#ff9c74);box-shadow:0 6px 18px #f27ba344;cursor:pointer}
 .hidden{display:none!important}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.stat{
-  border-radius:15px;padding:12px;
-  background:linear-gradient(145deg,#fff,#fff1f7);
-  border:1px solid #f2d8e6;
-}
+.stat{border-radius:15px;padding:12px;background:linear-gradient(145deg,#fff,#fff1f7);border:1px solid #f2d8e6}
 .stat small{display:block;color:#987f91;font-size:11px;letter-spacing:1px;margin-bottom:5px}
 .stat strong{font-size:26px}
-#moves{color:#e69b22}
-#score{color:#159f79}
-.objective{
-  display:flex;align-items:center;gap:12px;
-  border-radius:15px;padding:12px 14px;
-  background:linear-gradient(110deg,#fff3d9,#fff0f7);
-  border:1px solid #f0d8d5;margin-bottom:14px;
-}
-.objective-icon{font-size:30px}
-.objective-info{flex:1;min-width:0}
+#moves{color:#e69b22}#score{color:#159f79}
+.objective{display:flex;align-items:center;gap:12px;border-radius:15px;padding:12px 14px;background:linear-gradient(110deg,#fff3d9,#fff0f7);border:1px solid #f0d8d5;margin-bottom:14px}
+.objective-icon{font-size:30px}.objective-info{flex:1;min-width:0}
 .objective-info small{display:block;color:#987f91;font-size:10px;letter-spacing:1px;margin-bottom:5px}
 .objective-info strong{font-size:13px;line-height:1.4;color:#573b52}
 #objectiveProgress{font-weight:900;color:#d58c1e;font-size:13px;white-space:nowrap}
-.board-shell{
-  max-width:510px;margin:auto;border-radius:20px;padding:8px;
-  background:linear-gradient(145deg,#f8c9dc,#d8b9e9);
-  border:2px solid #e9c7df;
-  box-shadow:inset 0 2px 8px #ffffffaa,0 8px 20px #a87c9b33;
-}
-#board{
-  display:grid;grid-template-columns:repeat(8,minmax(0,1fr));
-  gap:4px;touch-action:none;user-select:none;
-}
-.tile{
-  aspect-ratio:1;position:relative;min-width:0;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:10px;
-  background:linear-gradient(145deg,#f9e9f4,#eddaef);
-  border:1px solid #ffffff;
-  overflow:hidden;touch-action:none;
-}
-.candy{
-  width:84%;height:84%;position:relative;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:35% 39% 35% 39%;
-  font-size:clamp(19px,5vw,34px);
-  box-shadow:inset 2px 3px 4px #ffffffa8,
-    inset -3px -5px 6px #0003,0 4px 5px #76516b44;
-  transform:rotate(-4deg);
-  pointer-events:none;
-}
-.candy:before{
-  content:"";position:absolute;width:38%;height:15%;
-  top:11%;left:18%;border-radius:50%;
-  background:#ffffffb5;filter:blur(2px);transform:rotate(-25deg);
-}
+.board-shell{max-width:510px;margin:auto;border-radius:20px;padding:8px;background:linear-gradient(145deg,#f8c9dc,#d8b9e9);border:2px solid #e9c7df;box-shadow:inset 0 2px 8px #ffffffaa,0 8px 20px #a87c9b33}
+#board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;touch-action:none;user-select:none}
+.tile{aspect-ratio:1;position:relative;min-width:0;display:flex;align-items:center;justify-content:center;border-radius:10px;background:linear-gradient(145deg,#f9e9f4,#eddaef);border:1px solid #ffffff;overflow:hidden;touch-action:none}
+.candy{width:84%;height:84%;position:relative;display:flex;align-items:center;justify-content:center;border-radius:35% 39% 35% 39%;font-size:clamp(19px,5vw,34px);box-shadow:inset 2px 3px 4px #ffffffa8,inset -3px -5px 6px #0003,0 4px 5px #76516b44;transform:rotate(-4deg);pointer-events:none}
+.candy:before{content:"";position:absolute;width:38%;height:15%;top:11%;left:18%;border-radius:50%;background:#ffffffb5;filter:blur(2px);transform:rotate(-25deg)}
 .candy.red{background:radial-gradient(circle at 30% 25%,#ffc3c0,#ff416e 65%,#b51d4a)}
 .candy.orange{background:radial-gradient(circle at 30% 25%,#fff0b5,#ff9d31 65%,#c45a13)}
 .candy.yellow{background:radial-gradient(circle at 30% 25%,#fffbd0,#f5d53e 65%,#b18a12)}
 .candy.green{background:radial-gradient(circle at 30% 25%,#e0ffbd,#7edb64 65%,#328a41)}
 .candy.blue{background:radial-gradient(circle at 30% 25%,#d0f8ff,#45b7f4 65%,#2562b0)}
 .candy.purple{background:radial-gradient(circle at 30% 25%,#f5d2ff,#bd73ee 65%,#7035a3)}
-.tile.selected .candy{filter:brightness(1.13)}
 .tile.selected{outline:3px solid white;outline-offset:-3px;z-index:2}
-.tile.jelly{
-  box-shadow:inset 0 0 0 2px #61d9f5;
-}
-.tile.jelly:after{
-  content:"";position:absolute;inset:0;border-radius:9px;
-  pointer-events:none;z-index:3;
-  background:linear-gradient(135deg,#eaffff80,#7be6ff45 45%,#ffffff15 60%,#4ec9f25c);
-  border:2px solid #80e8ff;
-  box-shadow:inset 0 0 8px #9af0ff;
-}
-.tile.jelly:before{
-  content:"";position:absolute;width:10px;height:5px;
-  top:5px;left:6px;border-radius:50%;
-  background:#fff;z-index:4;filter:blur(.4px);
-}
+.tile.jelly{box-shadow:inset 0 0 0 2px #61d9f5}
+.tile.jelly:after{content:"";position:absolute;inset:0;border-radius:9px;pointer-events:none;z-index:3;background:linear-gradient(135deg,#eaffff80,#7be6ff45 45%,#ffffff15 60%,#4ec9f25c);border:2px solid #80e8ff;box-shadow:inset 0 0 8px #9af0ff}
+.tile.jelly:before{content:"";position:absolute;width:10px;height:5px;top:5px;left:6px;border-radius:50%;background:#fff;z-index:4;filter:blur(.4px)}
 .legend{text-align:center;color:#91798d;font-size:12px;margin:13px 0 0;line-height:1.5}
 .controls{text-align:center;margin-top:13px}
-.secondary{
-  border:1px solid #e6c9dc;background:#fff5fa;
-  color:#67465e;padding:11px 18px;border-radius:12px;
-}
+.secondary{border:1px solid #e6c9dc;background:#fff5fa;color:#67465e;padding:11px 18px;border-radius:12px}
 .result-score{padding:18px;border-radius:15px;background:#fff5fa;margin:20px 0}
 .result-score strong{display:block;font-size:36px;color:#d58c1e}
 .result .back{display:inline-block;margin-top:8px}
-@media(max-width:450px){
-  body{padding:9px}
-  .panel{padding:13px}
-  #board{gap:3px}
-  .board-shell{padding:6px}
-  .tile{border-radius:7px}
-  .candy{font-size:clamp(17px,5.5vw,28px)}
-}
+@media(max-width:450px){body{padding:9px}.panel{padding:13px}#board{gap:3px}.board-shell{padding:6px}.tile{border-radius:7px}.candy{font-size:clamp(17px,5.5vw,28px)}}
 </style>
 </head>
 <body>
-
 <header class="topbar">
   <div class="brand"><span>♛</span> EarnGig</div>
   <a href="games.html" class="back" id="backLink">← Games</a>
@@ -188,14 +91,11 @@ body{
     </div>
     <div class="objective">
       <div class="objective-icon" id="objectiveIcon">🎯</div>
-      <div class="objective-info">
-        <small>LEVEL OBJECTIVE</small>
-        <strong id="objectiveText"></strong>
-      </div>
+      <div class="objective-info"><small>LEVEL OBJECTIVE</small><strong id="objectiveText"></strong></div>
       <div id="objectiveProgress">0 / 0</div>
     </div>
     <div class="board-shell"><div id="board"></div></div>
-    <p class="legend">Swipe a candy up, down, left or right. Invalid moves slide back. Jelly stays in its own square while candies move over it.</p>
+    <p class="legend">Swipe a candy up, down, left or right. Invalid moves slide back. Jelly stays in its own square.</p>
     <div class="controls"><button class="secondary" id="hintButton">Show possible move</button></div>
   </section>
 
@@ -211,548 +111,222 @@ body{
 <script>
 (()=>{
 "use strict";
+const KEY="earngig_candymatch_active",N=8,$=id=>document.getElementById(id);
+if(sessionStorage.getItem(KEY)==="yes"){sessionStorage.removeItem(KEY);location.replace("games.html");return;}
 
-const ACTIVE_KEY="earngig_candymatch_active";
-const SIZE=8;
-const $=id=>document.getElementById(id);
-
-if(sessionStorage.getItem(ACTIVE_KEY)==="yes"){
-  sessionStorage.removeItem(ACTIVE_KEY);
-  location.replace("games.html");
-  return;
-}
-
-const CANDIES=[
-  {id:"red",emoji:"🍓"},
-  {id:"orange",emoji:"🍊"},
-  {id:"yellow",emoji:"🍋"},
-  {id:"green",emoji:"🍏"},
-  {id:"blue",emoji:"🫐"},
-  {id:"purple",emoji:"🍇"}
+const TYPES=[
+ {id:"red",emoji:"🍓"},{id:"orange",emoji:"🍊"},
+ {id:"yellow",emoji:"🍋"},{id:"green",emoji:"🍏"},
+ {id:"blue",emoji:"🫐"},{id:"purple",emoji:"🍇"}
 ];
+let candies=[],jelly=[],objective,selected=null,moves=0,score=0;
+let collected={},busy=false,ended=false,hints=[],pointerStart=null;
 
-let candies=[];
-let jelly=[];
-let objective=null;
-let selected=null;
-let movesLeft=0;
-let score=0;
-let collected={};
-let busy=false;
-let ended=false;
-let hintCells=[];
-let pointerStart=null;
-
-const shuffle=array=>{
-  const a=[...array];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-};
-
-const randomCandy=()=>CANDIES[Math.floor(Math.random()*CANDIES.length)].id;
-const emoji=id=>CANDIES.find(x=>x.id===id)?.emoji||"";
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const randomCandy=()=>TYPES[Math.floor(Math.random()*TYPES.length)].id;
+const emoji=id=>TYPES.find(x=>x.id===id)?.emoji||"";
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 
-/* Move limits are calculated from the actual target. */
 function makeObjective(){
-  const types=["collect","twoColors","jelly","score","mixed"];
-  const type=types[Math.floor(Math.random()*types.length)];
-  const first=randomCandy();
-  let second=randomCandy();
-  while(second===first)second=randomCandy();
-
-  if(type==="collect"){
-    const target=12+Math.floor(Math.random()*9);
-    return {
-      type,colors:[first],targets:[target],
-      moves:Math.min(25,13+Math.ceil((target-12)*0.5)),
-      icon:emoji(first),
-      text:`Collect ${target} ${first} candies`
-    };
-  }
-
-  if(type==="twoColors"){
-    const a=10+Math.floor(Math.random()*5);
-    const b=10+Math.floor(Math.random()*5);
-    return {
-      type,colors:[first,second],targets:[a,b],
-      moves:Math.min(25,15+Math.ceil((a+b-20)*0.5)),
-      icon:"🌈",
-      text:`Collect ${a} ${first} and ${b} ${second} candies`
-    };
-  }
-
-  if(type==="jelly"){
-    const target=12;
-    return {
-      type,colors:[],targets:[],jellyTarget:target,
-      moves:15+Math.ceil((target-12)*0.5),
-      icon:"🧊",
-      text:`Clear all ${target} jelly tiles`
-    };
-  }
-
-  if(type==="score"){
-    const target=2500+Math.floor(Math.random()*1501);
-    return {
-      type,colors:[],targets:[],scoreTarget:target,
-      moves:16+Math.ceil((target-2500)/500),
-      icon:"⭐",
-      text:`Reach ${target.toLocaleString()} points`
-    };
-  }
-
-  const target=10+Math.floor(Math.random()*4);
-  return {
-    type,colors:[first],targets:[target],jellyTarget:8,
-    moves:20+Math.ceil((target-10)*0.5),
-    icon:"🍬",
-    text:`Collect ${target} ${first} candies and clear 8 jelly tiles`
-  };
+ const type=["collect","twoColors","jelly","score","mixed"][Math.floor(Math.random()*5)];
+ const first=randomCandy();let second=randomCandy();while(second===first)second=randomCandy();
+ if(type==="collect"){let n=12+Math.floor(Math.random()*9);return{type,colors:[first],targets:[n],moves:Math.min(25,13+Math.ceil((n-12)*.5)),icon:emoji(first),text:`Collect ${n} ${first} candies`};}
+ if(type==="twoColors"){let a=10+Math.floor(Math.random()*5),b=10+Math.floor(Math.random()*5);return{type,colors:[first,second],targets:[a,b],moves:Math.min(25,15+Math.ceil((a+b-20)*.5)),icon:"🌈",text:`Collect ${a} ${first} and ${b} ${second} candies`};}
+ if(type==="jelly")return{type,colors:[],targets:[],jellyTarget:12,moves:15,icon:"🧊",text:"Clear all 12 jelly tiles"};
+ if(type==="score"){let n=2500+Math.floor(Math.random()*1501);return{type,colors:[],targets:[],scoreTarget:n,moves:16+Math.ceil((n-2500)/500),icon:"⭐",text:`Reach ${n.toLocaleString()} points`};}
+ let n=10+Math.floor(Math.random()*4);return{type,colors:[first],targets:[n],jellyTarget:8,moves:20+Math.ceil((n-10)*.5),icon:"🍬",text:`Collect ${n} ${first} candies and clear 8 jelly tiles`};
 }
-
-/* Candy and jelly are stored separately.
-   Candy swaps never move the jelly layer. */
-function candyAt(r,c){return candies[r][c];}
-
+function at(r,c){return candies[r][c];}
 function makeBoard(){
-  candies=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
-  jelly=Array.from({length:SIZE},()=>Array(SIZE).fill(false));
-
-  for(let r=0;r<SIZE;r++){
-    for(let c=0;c<SIZE;c++){
-      const options=CANDIES.map(x=>x.id).filter(color=>
-        !(c>=2&&candyAt(r,c-1)===color&&candyAt(r,c-2)===color)&&
-        !(r>=2&&candyAt(r-1,c)===color&&candyAt(r-2,c)===color)
-      );
-      candies[r][c]=options[Math.floor(Math.random()*options.length)];
-    }
-  }
-
-  const count=objective.type==="jelly"?12:
-    objective.type==="mixed"?8:0;
-
-  if(count){
-    const positions=shuffle(Array.from({length:64},(_,i)=>i));
-    positions.slice(0,count).forEach(i=>{
-      jelly[Math.floor(i/SIZE)][i%SIZE]=true;
-    });
-  }
-
-  if(!findMove())makeBoard();
+ candies=Array.from({length:N},()=>Array(N).fill(null));
+ jelly=Array.from({length:N},()=>Array(N).fill(false));
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+  let options=TYPES.map(x=>x.id).filter(color=>
+   !(c>=2&&at(r,c-1)===color&&at(r,c-2)===color)&&
+   !(r>=2&&at(r-1,c)===color&&at(r-2,c)===color));
+  candies[r][c]=options[Math.floor(Math.random()*options.length)];
+ }
+ let count=objective.type==="jelly"?12:objective.type==="mixed"?8:0;
+ if(count)shuffle(Array.from({length:64},(_,i)=>i)).slice(0,count).forEach(i=>jelly[Math.floor(i/8)][i%8]=true);
+ if(!findMove())makeBoard();
 }
-
 function matches(){
-  const found=new Set();
-
-  for(let r=0;r<SIZE;r++){
-    let c=0;
-    while(c<SIZE){
-      const color=candyAt(r,c);
-      let end=c+1;
-      while(color&&end<SIZE&&candyAt(r,end)===color)end++;
-      if(color&&end-c>=3){
-        for(let x=c;x<end;x++)found.add(r*SIZE+x);
-      }
-      c=end;
-    }
-  }
-
-  for(let c=0;c<SIZE;c++){
-    let r=0;
-    while(r<SIZE){
-      const color=candyAt(r,c);
-      let end=r+1;
-      while(color&&end<SIZE&&candyAt(end,c)===color)end++;
-      if(color&&end-r>=3){
-        for(let x=r;x<end;x++)found.add(x*SIZE+c);
-      }
-      r=end;
-    }
-  }
-  return [...found];
+ let found=new Set();
+ for(let r=0;r<N;r++){let c=0;while(c<N){let color=at(r,c),end=c+1;while(color&&end<N&&at(r,end)===color)end++;if(color&&end-c>=3)for(let x=c;x<end;x++)found.add(r*N+x);c=end;}}
+ for(let c=0;c<N;c++){let r=0;while(r<N){let color=at(r,c),end=r+1;while(color&&end<N&&at(end,c)===color)end++;if(color&&end-r>=3)for(let x=r;x<end;x++)found.add(x*N+c);r=end;}}
+ return[...found];
 }
-
-function swapCandies(a,b){
-  const temp=candies[a.r][a.c];
-  candies[a.r][a.c]=candies[b.r][b.c];
-  candies[b.r][b.c]=temp;
-}
-
-function adjacent(a,b){
-  return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1;
-}
-
+function swap(a,b){[candies[a.r][a.c],candies[b.r][b.c]]=[candies[b.r][b.c],candies[a.r][a.c]];}
+function adjacent(a,b){return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1;}
 function findMove(){
-  for(let r=0;r<SIZE;r++){
-    for(let c=0;c<SIZE;c++){
-      for(const b of [{r:r+1,c},{r,c:c+1}]){
-        if(b.r>=SIZE||b.c>=SIZE)continue;
-        const a={r,c};
-        swapCandies(a,b);
-        const valid=matches().length>0;
-        swapCandies(a,b);
-        if(valid)return [a,b];
-      }
-    }
-  }
-  return null;
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++)for(let b of [{r:r+1,c},{r,c:c+1}]){if(b.r>=N||b.c>=N)continue;let a={r,c};swap(a,b);let ok=matches().length>0;swap(a,b);if(ok)return[a,b];}
+ return null;
 }
-
 function render(){
-  const root=$("board");
-  root.innerHTML="";
-
-  for(let r=0;r<SIZE;r++){
-    for(let c=0;c<SIZE;c++){
-      const cell=document.createElement("div");
-      cell.className="tile";
-      cell.dataset.r=r;
-      cell.dataset.c=c;
-
-      if(jelly[r][c])cell.classList.add("jelly");
-      if(selected&&selected.r===r&&selected.c===c)cell.classList.add("selected");
-      if(hintCells.some(p=>p.r===r&&p.c===c))cell.classList.add("selected");
-
-      const candy=candies[r][c];
-      if(candy){
-        const element=document.createElement("div");
-        element.className="candy "+candy;
-        element.textContent=emoji(candy);
-        cell.appendChild(element);
-      }
-
-      root.appendChild(cell);
-    }
-  }
+ const root=$("board");root.innerHTML="";
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+  let cell=document.createElement("div");cell.className="tile";cell.dataset.r=r;cell.dataset.c=c;
+  if(jelly[r][c])cell.classList.add("jelly");
+  if(selected&&selected.r===r&&selected.c===c)cell.classList.add("selected");
+  if(hints.some(p=>p.r===r&&p.c===c))cell.classList.add("selected");
+  if(candies[r][c]){let candy=document.createElement("div");candy.className="candy "+candies[r][c];candy.textContent=emoji(candies[r][c]);cell.appendChild(candy);}
+  root.appendChild(cell);
+ }
 }
-
 function renderStats(){
-  $("moves").textContent=movesLeft;
-  $("score").textContent=score.toLocaleString();
-
-  let progress=0;
-  let total=0;
-
-  objective.colors.forEach((color,i)=>{
-    total+=objective.targets[i];
-    progress+=Math.min(collected[color]||0,objective.targets[i]);
-  });
-
-  if(objective.type==="jelly"||objective.type==="mixed"){
-    total+=objective.jellyTarget;
-    const remaining=jelly.flat().filter(Boolean).length;
-    progress+=objective.jellyTarget-remaining;
-  }
-
-  if(objective.type==="score"){
-    total=objective.scoreTarget;
-    progress=Math.min(score,total);
-  }
-
-  $("objectiveProgress").textContent=
-    `${progress.toLocaleString()} / ${total.toLocaleString()}`;
+ $("moves").textContent=moves;$("score").textContent=score.toLocaleString();
+ let done=0,total=0;
+ objective.colors.forEach((color,i)=>{total+=objective.targets[i];done+=Math.min(collected[color]||0,objective.targets[i]);});
+ if(objective.type==="jelly"||objective.type==="mixed"){total+=objective.jellyTarget;done+=objective.jellyTarget-jelly.flat().filter(Boolean).length;}
+ if(objective.type==="score"){total=objective.scoreTarget;done=Math.min(score,total);}
+ $("objectiveProgress").textContent=`${done.toLocaleString()} / ${total.toLocaleString()}`;
+}
+function complete(){
+ if(objective.colors.some((color,i)=>(collected[color]||0)<objective.targets[i]))return false;
+ if((objective.type==="jelly"||objective.type==="mixed")&&jelly.flat().some(Boolean))return false;
+ return objective.type!=="score"||score>=objective.scoreTarget;
 }
 
-function completeObjective(){
-  if(objective.colors.some((color,i)=>
-    (collected[color]||0)<objective.targets[i]))return false;
+/* Animate only the matched candies. Other candies remain visible. */
+async function clearMatches(list){
+ const matched=list.map(index=>({r:Math.floor(index/N),c:index%N}));
+ const elements=matched.map(p=>document.querySelector(`#board [data-r="${p.r}"][data-c="${p.c}"] .candy`)).filter(Boolean);
+ await Promise.all(elements.map(el=>el.animate(
+  [{transform:"scale(1)",opacity:1},{transform:"scale(1.22)",opacity:.8},{transform:"scale(.15)",opacity:0}],
+  {duration:150,easing:"ease-in"}
+ ).finished));
 
-  if(objective.type==="jelly"||objective.type==="mixed"){
-    if(jelly.flat().some(Boolean))return false;
-  }
-
-  if(objective.type==="score"&&score<objective.scoreTarget)return false;
-  return true;
+ for(const p of matched){
+  const color=candies[p.r][p.c];if(!color)continue;
+  if(objective.colors.includes(color))collected[color]=(collected[color]||0)+1;
+  score+=60;
+  if(jelly[p.r][p.c])jelly[p.r][p.c]=false;
+  candies[p.r][p.c]=null;
+ }
+ score+=Math.max(0,list.length-3)*35;
 }
+async function dropCandies(){
+ const oldPositions=Array.from({length:N},()=>Array(N).fill(null));
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++)oldPositions[r][c]=candies[r][c];
+ for(let c=0;c<N;c++){
+  let stack=[];
+  for(let r=N-1;r>=0;r--)if(candies[r][c])stack.push(candies[r][c]);
+  for(let r=N-1;r>=0;r--)candies[r][c]=r>=N-stack.length?stack[N-1-r]:randomCandy();
+ }
+ render();
 
-function clearMatches(list){
-  list.forEach(index=>{
-    const r=Math.floor(index/SIZE);
-    const c=index%SIZE;
-    const color=candies[r][c];
-
-    if(!color)return;
-
-    if(objective.colors.includes(color)){
-      collected[color]=(collected[color]||0)+1;
-    }
-
-    score+=60;
-
-    // Jelly is destroyed only at its fixed board position
-    // when a candy is successfully matched on that square.
-    if(jelly[r][c])jelly[r][c]=false;
-
-    candies[r][c]=null;
-  });
-
-  score+=Math.max(0,list.length-3)*35;
-}
-
-function collapseCandies(){
-  for(let c=0;c<SIZE;c++){
-    const existing=[];
-
-    for(let r=SIZE-1;r>=0;r--){
-      if(candies[r][c])existing.push(candies[r][c]);
-    }
-
-    for(let r=SIZE-1;r>=0;r--){
-      if(r>=SIZE-existing.length){
-        candies[r][c]=existing[SIZE-1-r];
-      }else{
-        candies[r][c]=randomCandy();
-      }
-    }
+ const cells=[...$("board").querySelectorAll(".tile")];
+ const animations=[];
+ for(let c=0;c<N;c++){
+  let oldCount=0;
+  for(let r=0;r<N;r++)if(oldPositions[r][c])oldCount++;
+  const newCount=N-oldCount;
+  for(let r=0;r<N;r++){
+   const el=cells[r*N+c].querySelector(".candy");
+   if(!el)continue;
+   const distance=newCount>0&&r<newCount?newCount* -1:0;
+   if(distance){
+    animations.push(el.animate(
+     [{transform:`translateY(${distance*100}%)`,opacity:.6},{transform:"translateY(0)",opacity:1}],
+     {duration:220,easing:"cubic-bezier(.2,.7,.3,1)"}
+    ).finished);
+   }
   }
+ }
+ if(animations.length)await Promise.all(animations);
 }
-
-async function resolveMatches(){
-  let found=matches();
-  let chain=0;
-
-  while(found.length&&chain<15&&!ended){
-    clearMatches(found);
-    renderStats();
-    render();
-    await wait(180);
-
-    collapseCandies();
-    render();
-    await wait(180);
-
-    found=matches();
-    chain++;
-  }
-
+async function resolve(){
+ let found=matches(),loops=0;
+ while(found.length&&loops<12&&!ended){
+  await clearMatches(found);
   renderStats();
-  render();
+  await dropCandies();
+  found=matches();
+  loops++;
+ }
+ renderStats();render();
 }
-
-function tileElement(pos){
-  return $("board").querySelector(
-    `[data-r="${pos.r}"][data-c="${pos.c}"] .candy`
-  );
-}
-
-/* Animate only the candy elements, never the jelly squares. */
 async function animateSwap(a,b,valid){
-  const first=tileElement(a);
-  const second=tileElement(b);
-  if(!first||!second)return;
-
-  const rectA=first.parentElement.getBoundingClientRect();
-  const rectB=second.parentElement.getBoundingClientRect();
-  const dx=rectB.left-rectA.left;
-  const dy=rectB.top-rectA.top;
-
-  const options={
-    duration:210,
-    easing:"cubic-bezier(.2,.8,.3,1)",
-    fill:"forwards"
-  };
-
-  const animationA=first.animate(
-    [{transform:"translate(0,0) rotate(-4deg)"},
-     {transform:`translate(${dx}px,${dy}px) rotate(0deg)`}],
-    options
-  );
-
-  const animationB=second.animate(
-    [{transform:"translate(0,0) rotate(-4deg)"},
-     {transform:`translate(${-dx}px,${-dy}px) rotate(0deg)`}],
-    options
-  );
-
-  await Promise.all([animationA.finished,animationB.finished]);
-
-  if(valid){
-    swapCandies(a,b);
-    render();
-  }else{
-    const reverseA=first.animate(
-      [{transform:`translate(${dx}px,${dy}px) rotate(0deg)`},
-       {transform:"translate(0,0) rotate(-4deg)"}],
-      {duration:190,easing:"ease-in-out"}
-    );
-    const reverseB=second.animate(
-      [{transform:`translate(${-dx}px,${-dy}px) rotate(0deg)`},
-       {transform:"translate(0,0) rotate(-4deg)"}],
-      {duration:190,easing:"ease-in-out"}
-    );
-    await Promise.all([reverseA.finished,reverseB.finished]);
-  }
+ const first=document.querySelector(`#board [data-r="${a.r}"][data-c="${a.c}"] .candy`);
+ const second=document.querySelector(`#board [data-r="${b.r}"][data-c="${b.c}"] .candy`);
+ if(!first||!second)return;
+ const rectA=first.getBoundingClientRect(),rectB=second.getBoundingClientRect();
+ const dx=rectB.left-rectA.left,dy=rectB.top-rectA.top;
+ const framesA=[{transform:"translate(0,0) rotate(-4deg)"},{transform:`translate(${dx}px,${dy}px) rotate(0deg)`}];
+ const framesB=[{transform:"translate(0,0) rotate(-4deg)"},{transform:`translate(${-dx}px,${-dy}px) rotate(0deg)`}];
+ await Promise.all([
+  first.animate(framesA,{duration:200,easing:"ease-in-out"}).finished,
+  second.animate(framesB,{duration:200,easing:"ease-in-out"}).finished
+ ]);
+ if(valid){swap(a,b);render();}
+ else{
+  await Promise.all([
+   first.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:"translate(0,0)"}],{duration:160,easing:"ease-in-out"}).finished,
+   second.animate([{transform:`translate(${-dx}px,${-dy}px)`},{transform:"translate(0,0)"}],{duration:160,easing:"ease-in-out"}).finished
+  ]);
+ }
 }
-
 async function performSwap(a,b){
-  if(busy||ended||!adjacent(a,b))return;
-
-  hintCells=[];
-
-  swapCandies(a,b);
-  const valid=matches().length>0;
-  swapCandies(a,b);
-
-  busy=true;
-  selected=null;
-
-  await animateSwap(a,b,valid);
-
-  if(!valid){
-    busy=false;
-    return;
-  }
-
-  movesLeft--;
-  renderStats();
-
-  await resolveMatches();
-  busy=false;
-
-  if(completeObjective())endGame(true);
-  else if(movesLeft<=0)endGame(false);
+ if(busy||ended||!adjacent(a,b))return;
+ hints=[];swap(a,b);let valid=matches().length>0;swap(a,b);
+ busy=true;selected=null;
+ await animateSwap(a,b,valid);
+ if(!valid){busy=false;return;}
+ swap(a,b); // Commit the move after its visible animation.
+ render();
+ moves--;renderStats();
+ await resolve();
+ busy=false;
+ if(complete())endGame(true);
+ else if(moves<=0)endGame(false);
 }
-
 function tileAt(x,y){
-  const element=document.elementFromPoint(x,y)?.closest(".tile");
-  return element?{
-    r:Number(element.dataset.r),
-    c:Number(element.dataset.c)
-  }:null;
+ const el=document.elementFromPoint(x,y)?.closest(".tile");
+ return el?{r:+el.dataset.r,c:+el.dataset.c}:null;
 }
-
-function selectOrSwap(pos){
-  if(!pos||busy||ended)return;
-
-  if(!selected){
-    selected=pos;
-    render();
-    return;
-  }
-
-  if(selected.r===pos.r&&selected.c===pos.c){
-    selected=null;
-    render();
-    return;
-  }
-
-  if(adjacent(selected,pos)){
-    performSwap(selected,pos);
-  }else{
-    selected=pos;
-    render();
-  }
+function choose(pos){
+ if(!pos||busy||ended)return;
+ if(!selected){selected=pos;render();return;}
+ if(selected.r===pos.r&&selected.c===pos.c){selected=null;render();return;}
+ if(adjacent(selected,pos))performSwap(selected,pos);
+ else{selected=pos;render();}
 }
-
-/* Drag/swipe controls. */
-$("board").addEventListener("pointerdown",event=>{
-  if(busy||ended)return;
-  const pos=tileAt(event.clientX,event.clientY);
-  if(!pos)return;
-
-  pointerStart={
-    x:event.clientX,
-    y:event.clientY,
-    pos
-  };
+$("board").addEventListener("pointerdown",e=>{
+ if(busy||ended)return;
+ const pos=tileAt(e.clientX,e.clientY);if(pos)pointerStart={x:e.clientX,y:e.clientY,pos};
 });
-
-$("board").addEventListener("pointerup",event=>{
-  if(!pointerStart||busy||ended)return;
-
-  const start=pointerStart;
-  pointerStart=null;
-
-  const dx=event.clientX-start.x;
-  const dy=event.clientY-start.y;
-
-  if(Math.hypot(dx,dy)<12){
-    selectOrSwap(start.pos);
-    return;
-  }
-
-  const target={
-    r:start.pos.r+(Math.abs(dy)>Math.abs(dx)?Math.sign(dy):0),
-    c:start.pos.c+(Math.abs(dx)>=Math.abs(dy)?Math.sign(dx):0)
-  };
-
-  if(target.r>=0&&target.r<SIZE&&target.c>=0&&target.c<SIZE){
-    performSwap(start.pos,target);
-  }
+$("board").addEventListener("pointerup",e=>{
+ if(!pointerStart||busy||ended)return;
+ const start=pointerStart;pointerStart=null;
+ const dx=e.clientX-start.x,dy=e.clientY-start.y;
+ if(Math.hypot(dx,dy)<12){choose(start.pos);return;}
+ const target={r:start.pos.r+(Math.abs(dy)>Math.abs(dx)?Math.sign(dy):0),c:start.pos.c+(Math.abs(dx)>=Math.abs(dy)?Math.sign(dx):0)};
+ if(target.r>=0&&target.r<N&&target.c>=0&&target.c<N)performSwap(start.pos,target);
 });
-
 $("board").addEventListener("pointercancel",()=>pointerStart=null);
-
-function showHint(){
-  if(busy||ended)return;
-  const move=findMove();
-  if(!move)return;
-
-  hintCells=move;
-  render();
-
-  setTimeout(()=>{
-    hintCells=[];
-    if(!ended)render();
-  },900);
+function hint(){
+ if(busy||ended)return;let move=findMove();if(!move)return;
+ hints=move;render();setTimeout(()=>{hints=[];if(!ended)render();},850);
 }
-
 function endGame(won){
-  if(ended)return;
-  ended=true;
-  busy=false;
-  sessionStorage.removeItem(ACTIVE_KEY);
-
-  $("gameScreen").classList.add("hidden");
-  $("resultScreen").classList.remove("hidden");
-
-  $("resultIcon").textContent=won?"🏆":"😢";
-  $("resultTitle").textContent=won?"Level completed!":"Out of moves!";
-  $("resultMessage").textContent=won
-    ?"Amazing! You completed the candy challenge."
-    :"You ran out of moves before completing the objective.";
-
-  $("finalScore").textContent=score.toLocaleString();
+ if(ended)return;ended=true;busy=false;sessionStorage.removeItem(KEY);
+ $("gameScreen").classList.add("hidden");$("resultScreen").classList.remove("hidden");
+ $("resultIcon").textContent=won?"🏆":"😢";
+ $("resultTitle").textContent=won?"Level completed!":"Out of moves!";
+ $("resultMessage").textContent=won?"Amazing! You completed the candy challenge.":"You ran out of moves before completing the objective.";
+ $("finalScore").textContent=score.toLocaleString();
 }
-
 function startGame(){
-  objective=makeObjective();
-  movesLeft=objective.moves;
-  score=0;
-  collected={};
-  selected=null;
-  hintCells=[];
-  busy=false;
-  ended=false;
-
-  makeBoard();
-
-  $("objectiveIcon").textContent=objective.icon;
-  $("objectiveText").textContent=objective.text;
-
-  $("startScreen").classList.add("hidden");
-  $("resultScreen").classList.add("hidden");
-  $("gameScreen").classList.remove("hidden");
-
-  sessionStorage.setItem(ACTIVE_KEY,"yes");
-
-  renderStats();
-  render();
+ objective=makeObjective();moves=objective.moves;score=0;collected={};selected=null;hints=[];busy=false;ended=false;
+ makeBoard();
+ $("objectiveIcon").textContent=objective.icon;$("objectiveText").textContent=objective.text;
+ $("startScreen").classList.add("hidden");$("resultScreen").classList.add("hidden");$("gameScreen").classList.remove("hidden");
+ sessionStorage.setItem(KEY,"yes");renderStats();render();
 }
-
 $("startButton").addEventListener("click",startGame);
-$("hintButton").addEventListener("click",showHint);
-$("backLink").addEventListener("click",()=>{
-  sessionStorage.removeItem(ACTIVE_KEY);
-});
-$("finishLink").addEventListener("click",()=>{
-  sessionStorage.removeItem(ACTIVE_KEY);
-});
-
+$("hintButton").addEventListener("click",hint);
+$("backLink").addEventListener("click",()=>sessionStorage.removeItem(KEY));
+$("finishLink").addEventListener("click",()=>sessionStorage.removeItem(KEY));
 })();
 </script>
 </body>
