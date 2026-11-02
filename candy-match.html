@@ -119,6 +119,7 @@ const TYPES=[
  {id:"yellow",emoji:"🍋"},{id:"green",emoji:"🍏"},
  {id:"blue",emoji:"🫐"},{id:"purple",emoji:"🍇"}
 ];
+
 let candies=[],jelly=[],objective,selected=null,moves=0,score=0;
 let collected={},busy=false,ended=false,hints=[],pointerStart=null;
 
@@ -137,6 +138,7 @@ function makeObjective(){
  let n=10+Math.floor(Math.random()*4);return{type,colors:[first],targets:[n],jellyTarget:8,moves:20+Math.ceil((n-10)*.5),icon:"🍬",text:`Collect ${n} ${first} candies and clear 8 jelly tiles`};
 }
 function at(r,c){return candies[r][c];}
+
 function makeBoard(){
  candies=Array.from({length:N},()=>Array(N).fill(null));
  jelly=Array.from({length:N},()=>Array(N).fill(false));
@@ -187,7 +189,7 @@ function complete(){
  return objective.type!=="score"||score>=objective.scoreTarget;
 }
 
-/* Animate only the matched candies. Other candies remain visible. */
+/* Clear matched candies and award their points and objective progress. */
 async function clearMatches(list){
  const matched=list.map(index=>({r:Math.floor(index/N),c:index%N}));
  const elements=matched.map(p=>document.querySelector(`#board [data-r="${p.r}"][data-c="${p.c}"] .candy`)).filter(Boolean);
@@ -204,6 +206,7 @@ async function clearMatches(list){
   candies[p.r][p.c]=null;
  }
  score+=Math.max(0,list.length-3)*35;
+ renderStats();
 }
 async function dropCandies(){
  const oldPositions=Array.from({length:N},()=>Array(N).fill(null));
@@ -224,7 +227,7 @@ async function dropCandies(){
   for(let r=0;r<N;r++){
    const el=cells[r*N+c].querySelector(".candy");
    if(!el)continue;
-   const distance=newCount>0&&r<newCount?newCount* -1:0;
+   const distance=newCount>0&&r<newCount?newCount*-1:0;
    if(distance){
     animations.push(el.animate(
      [{transform:`translateY(${distance*100}%)`,opacity:.6},{transform:"translateY(0)",opacity:1}],
@@ -239,7 +242,6 @@ async function resolve(){
  let found=matches(),loops=0;
  while(found.length&&loops<12&&!ended){
   await clearMatches(found);
-  renderStats();
   await dropCandies();
   found=matches();
   loops++;
@@ -249,7 +251,7 @@ async function resolve(){
 async function animateSwap(a,b,valid){
  const first=document.querySelector(`#board [data-r="${a.r}"][data-c="${a.c}"] .candy`);
  const second=document.querySelector(`#board [data-r="${b.r}"][data-c="${b.c}"] .candy`);
- if(!first||!second)return;
+ if(!first||!second)return false;
  const rectA=first.getBoundingClientRect(),rectB=second.getBoundingClientRect();
  const dx=rectB.left-rectA.left,dy=rectB.top-rectA.top;
  const framesA=[{transform:"translate(0,0) rotate(-4deg)"},{transform:`translate(${dx}px,${dy}px) rotate(0deg)`}];
@@ -258,22 +260,27 @@ async function animateSwap(a,b,valid){
   first.animate(framesA,{duration:200,easing:"ease-in-out"}).finished,
   second.animate(framesB,{duration:200,easing:"ease-in-out"}).finished
  ]);
- if(valid){swap(a,b);render();}
- else{
+ if(valid){
+  /* Commit the swap exactly once. */
+  swap(a,b);
+  render();
+  return true;
+ }else{
   await Promise.all([
    first.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:"translate(0,0)"}],{duration:160,easing:"ease-in-out"}).finished,
    second.animate([{transform:`translate(${-dx}px,${-dy}px)`},{transform:"translate(0,0)"}],{duration:160,easing:"ease-in-out"}).finished
   ]);
+  return false;
  }
 }
 async function performSwap(a,b){
  if(busy||ended||!adjacent(a,b))return;
- hints=[];swap(a,b);let valid=matches().length>0;swap(a,b);
+ hints=[];
+ swap(a,b);let valid=matches().length>0;swap(a,b);
  busy=true;selected=null;
- await animateSwap(a,b,valid);
- if(!valid){busy=false;return;}
- swap(a,b); // Commit the move after its visible animation.
- render();
+ const committed=await animateSwap(a,b,valid);
+ if(!committed){busy=false;return;}
+ /* Do not swap again here: animateSwap already committed the move. */
  moves--;renderStats();
  await resolve();
  busy=false;
