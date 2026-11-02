@@ -4,214 +4,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Car Racing | EarnGig</title>
+<title>EarnGig Car Racing</title>
 <style>
 :root {
-  --lime: #c5ff45;
-  --dark: #101820;
-  --panel: #192631;
-  --muted: #a9b7c1;
-  --gold: #ffc83d;
+  --bg:#101820;
+  --panel:#1b2933;
+  --line:#344650;
+  --lime:#caff45;
+  --gold:#ffc83d;
+  --muted:#aebdc6;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: #101820;
-  color: white;
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+  font-family:Arial,sans-serif;
 }
-header {
-  padding: 17px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #17232d;
-  border-bottom: 1px solid #34434d;
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 18px;
+  background:#182630;
+  border-bottom:1px solid var(--line);
 }
-.brand {
-  font-size: 22px;
-  font-weight: 900;
-  color: white;
+.brand{font-weight:900;font-size:22px}
+.brand span{color:var(--gold)}
+a{color:var(--lime);text-decoration:none;font-weight:bold}
+main{width:min(1050px,96%);margin:18px auto 35px}
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:18px;
+  margin-bottom:16px;
 }
-.brand span { color: var(--gold); }
-.back {
-  color: var(--lime);
-  text-decoration: none;
-  font-weight: bold;
+.heading{text-align:center;padding:15px 5px}
+.heading .icon{font-size:54px}
+h1{font-size:clamp(27px,5vw,39px);margin:8px 0}
+h2{margin-top:0}
+.muted{color:var(--muted);line-height:1.55}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.hidden{display:none!important}
+button{
+  cursor:pointer;
+  border:0;
+  border-radius:11px;
+  padding:13px 16px;
+  font-weight:800;
+  font-size:14px;
 }
-main {
-  width: min(950px, 94%);
-  margin: 24px auto;
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--lime);color:#17220d}
+.secondary{background:#344650;color:#fff}
+.full{width:100%}
+.tabs{
+  display:flex;gap:9px;overflow:auto;margin-bottom:15px
 }
-.hero {
-  text-align: center;
-  padding: 25px 15px;
+.tabs button{white-space:nowrap}
+.car-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:12px;
 }
-.hero .car-icon { font-size: 55px; }
-h1 {
-  margin: 8px 0;
-  font-size: clamp(28px, 6vw, 43px);
+.car-card{
+  background:#101b23;
+  border:1px solid #354650;
+  border-radius:13px;
+  padding:13px;
+  text-align:center;
 }
-.hero p { color: var(--muted); line-height: 1.6; }
-.panel {
-  background: var(--panel);
-  border: 1px solid #34434d;
-  border-radius: 18px;
-  padding: 22px;
-  margin-bottom: 18px;
+.car-card.selected{border:2px solid var(--lime)}
+.car-art{font-size:43px;margin:5px 0}
+.car-name{font-weight:800;margin:7px 0}
+.car-stat{font-size:12px;color:var(--muted);margin:5px 0}
+.car-card button{width:100%;margin-top:10px}
+.locked{opacity:.65}
+.upgrade-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 20px 0;
+.upgrade{
+  background:#101b23;
+  border-radius:12px;
+  padding:13px 9px;
+  text-align:center;
 }
-.stat {
-  background: #101b24;
-  padding: 15px 8px;
-  text-align: center;
-  border-radius: 12px;
+.upgrade strong{display:block;margin:7px 0;color:var(--lime)}
+.upgrade button{width:100%;padding:10px 5px;font-size:12px}
+.coins{color:var(--gold);font-weight:bold}
+.garage-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+#trackCanvas{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:13px;
+  background:#397348;
+  touch-action:none;
 }
-.stat strong {
-  display: block;
-  font-size: 23px;
-  color: var(--lime);
-  margin-bottom: 5px;
+.race-hud{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:12px;
 }
-.stat small { color: var(--muted); }
-.prizes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 15px;
+.hud-box{
+  background:#101b23;
+  padding:10px 5px;
+  border-radius:10px;
+  text-align:center;
 }
-.prize {
-  text-align: center;
-  padding: 16px 5px;
-  border-radius: 12px;
-  background: #101b24;
+.hud-box small{display:block;color:var(--muted);font-size:10px}
+.hud-box strong{display:block;margin-top:5px;font-size:17px}
+.race-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr 1.4fr;
+  gap:10px;
+  margin-top:12px;
 }
-.prize .medal { font-size: 27px; }
-.prize strong {
-  display: block;
-  color: var(--gold);
-  font-size: 21px;
-  margin: 7px 0;
+.race-controls button{
+  min-height:55px;
+  font-size:20px;
+  background:#344650;
+  color:white;
+  touch-action:none;
+  user-select:none;
 }
-.prize small { color: var(--muted); }
-button {
-  border: 0;
-  cursor: pointer;
-  border-radius: 12px;
-  padding: 15px 20px;
-  font-size: 16px;
-  font-weight: 800;
+.race-controls .accelerate{
+  background:var(--lime);
+  color:#15210d;
 }
-.primary {
-  background: var(--lime);
-  color: #15200d;
-  width: 100%;
-  margin-top: 15px;
+.race-controls .brake{background:#a83e37}
+.waiting{text-align:center;padding:35px 10px}
+.spinner{
+  width:48px;height:48px;
+  border:5px solid #394c56;
+  border-top-color:var(--lime);
+  border-radius:50%;
+  margin:20px auto;
+  animation:spin .8s linear infinite;
 }
-.primary:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+@keyframes spin{to{transform:rotate(360deg)}}
+.results{text-align:center;padding:25px 5px}
+.results-icon{font-size:60px}
+.results h2{font-size:29px}
+.results .reward{font-size:30px;color:var(--gold);font-weight:900}
+.leaderboard{
+  display:grid;
+  gap:8px;
+  margin-top:15px;
 }
-.secondary {
-  background: #34434d;
-  color: white;
-  width: 100%;
-  margin-top: 10px;
+.leader{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#101b23;border-radius:10px;padding:12px;
 }
-.notice {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-  text-align: center;
-  margin-top: 14px;
-}
-.hidden { display: none !important; }
-.queue-title {
-  text-align: center;
-  font-size: 23px;
-  font-weight: bold;
-}
-.loader {
-  width: 55px;
-  height: 55px;
-  border: 5px solid #34434d;
-  border-top-color: var(--lime);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 25px auto;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.slots {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin: 22px 0;
-}
-.slot {
-  background: #101b24;
-  border: 1px solid #34434d;
-  border-radius: 12px;
-  padding: 15px 3px;
-  text-align: center;
-  min-width: 0;
-}
-.slot .avatar { font-size: 24px; }
-.slot small {
-  display: block;
-  color: var(--muted);
-  margin-top: 7px;
-  font-size: 11px;
-  overflow-wrap: anywhere;
-}
-.status-text {
-  text-align: center;
-  color: var(--lime);
-  line-height: 1.6;
-}
-#raceCanvas {
-  display: block;
-  width: 100%;
-  background: #263d2d;
-  border-radius: 15px;
-  border: 2px solid #52635a;
-  touch-action: none;
-}
-.race-info {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 12px;
-  color: var(--lime);
-  font-weight: bold;
-}
-.controls {
-  display: flex;
-  gap: 12px;
-  margin-top: 14px;
-}
-.controls button {
-  flex: 1;
-  background: #34434d;
-  color: white;
-  font-size: 25px;
-}
-.result {
-  text-align: center;
-  padding: 25px 5px;
-}
-.result h2 { font-size: 30px; }
-.error { color: #ff9b9b; }
-@media(max-width:500px) {
-  .panel { padding: 16px; }
-  .stat strong { font-size: 19px; }
-  .prize strong { font-size: 18px; }
-  .slots { gap: 5px; }
-  .slot { padding: 12px 2px; }
+.leader.me{border:1px solid var(--lime)}
+@media(max-width:500px){
+  .panel{padding:13px}
+  .upgrade-grid{grid-template-columns:1fr 1fr}
+  .hud-box strong{font-size:14px}
+  .race-controls button{font-size:17px;padding:10px 5px}
 }
 </style>
 </head>
@@ -219,511 +173,719 @@ button {
 
 <header>
   <div class="brand">♛ EarnGig<span>.</span></div>
-  <a class="back" href="games.html">← Games</a>
+  <a href="games.html">← Games</a>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="car-icon">🏎️</div>
+  <section class="heading">
+    <div class="icon">🏎️</div>
     <h1>CAR RACING</h1>
-    <p>Five racers. One track. Three winning positions.</p>
+    <p class="muted">Choose your car. Master the track. Take the podium.</p>
   </section>
 
-  <section id="lobby" class="panel">
-    <h2>Race Entry</h2>
-    <div class="stats">
-      <div class="stat">
-        <strong>5</strong>
-        <small>Players per race</small>
-      </div>
-      <div class="stat">
-        <strong>200</strong>
-        <small>Coins to enter</small>
-      </div>
-      <div class="stat">
-        <strong>1,000</strong>
-        <small>Total prize pool</small>
+  <!-- GARAGE -->
+  <section id="garageScreen" class="panel">
+    <h2>🏁 Your Garage</h2>
+    <p class="muted">Choose your racing car before entering the race.</p>
+
+    <div class="car-grid" id="carGrid"></div>
+
+    <div class="panel" style="margin-top:16px;background:#14212a">
+      <h3>🔧 Vehicle Upgrades</h3>
+      <p class="small">Use your earned coins to improve your vehicle. Upgrades are saved on this device in this demo.</p>
+      <div class="upgrade-grid">
+        <div class="upgrade">
+          <div style="font-size:25px">⚡</div>
+          <strong>Engine Speed</strong>
+          <div class="small" id="speedLevel">Level 1</div>
+          <button class="secondary" onclick="upgrade('speed')">Upgrade</button>
+        </div>
+        <div class="upgrade">
+          <div style="font-size:25px">🚀</div>
+          <strong>Acceleration</strong>
+          <div class="small" id="accelLevel">Level 1</div>
+          <button class="secondary" onclick="upgrade('accel')">Upgrade</button>
+        </div>
+        <div class="upgrade">
+          <div style="font-size:25px">🛞</div>
+          <strong>Handling</strong>
+          <div class="small" id="handlingLevel">Level 1</div>
+          <button class="secondary" onclick="upgrade('handling')">Upgrade</button>
+        </div>
       </div>
     </div>
 
-    <h3>Prize Distribution</h3>
-    <div class="prizes">
-      <div class="prize">
-        <div class="medal">🥇</div>
-        <strong>500</strong>
-        <small>1st place</small>
+    <div class="garage-actions">
+      <div class="upgrade">
+        <div class="small">Your demo coin balance</div>
+        <strong class="coins" id="coinBalance">2,000 coins</strong>
       </div>
-      <div class="prize">
-        <div class="medal">🥈</div>
-        <strong>300</strong>
-        <small>2nd place</small>
-      </div>
-      <div class="prize">
-        <div class="medal">🥉</div>
-        <strong>200</strong>
-        <small>3rd place</small>
+      <div class="upgrade">
+        <div class="small">Selected vehicle</div>
+        <strong id="selectedName">Starter Racer</strong>
       </div>
     </div>
 
-    <p class="notice">
-      Fourth and fifth place receive no prize.
-      Your 200 coins are only charged when the server confirms your place in a race.
-    </p>
-
-    <button class="primary" id="joinBtn" onclick="joinQueue()">
-      JOIN RACE — 200 COINS
+    <button class="primary full" style="margin-top:16px" onclick="enterMatchmaking()">
+      CONTINUE TO RACE →
     </button>
-    <p class="notice" id="lobbyMessage">
-      You will be matched with four other real players. No computer opponents.
+    <p class="small" style="text-align:center;margin-top:12px">
+      Your entry fee is handled by the Games page. You will not be charged again here.
     </p>
   </section>
 
-  <section id="queue" class="panel hidden">
-    <div class="queue-title">Finding Your Racers</div>
-    <div class="loader"></div>
-    <p class="status-text" id="queueMessage">
-      Waiting for four other players...
+  <!-- MATCHMAKING -->
+  <section id="waitingScreen" class="panel hidden">
+    <div class="waiting">
+      <div style="font-size:47px">🏎️</div>
+      <h2>Preparing Your Race</h2>
+      <div class="spinner"></div>
+      <p id="waitingMessage" class="muted">Finding available racers...</p>
+      <p class="small">Five racers will compete. Computer racers fill any open positions.</p>
+      <div class="car-grid" id="waitingPlayers"></div>
+      <button class="secondary full" style="margin-top:20px" onclick="cancelMatchmaking()">Back to Garage</button>
+    </div>
+  </section>
+
+  <!-- RACE -->
+  <section id="raceScreen" class="panel hidden">
+    <div class="race-hud">
+      <div class="hud-box"><small>POSITION</small><strong id="hudPosition">1 / 5</strong></div>
+      <div class="hud-box"><small>SPEED</small><strong id="hudSpeed">0 km/h</strong></div>
+      <div class="hud-box"><small>DISTANCE</small><strong id="hudDistance">0 m</strong></div>
+      <div class="hud-box"><small>TIME</small><strong id="hudTime">00:00</strong></div>
+    </div>
+
+    <canvas id="trackCanvas" width="900" height="650"></canvas>
+
+    <div class="race-controls">
+      <button id="steerLeft">◀ LEFT</button>
+      <button id="steerRight">RIGHT ▶</button>
+      <button class="accelerate" id="accelerate">ACCELERATE</button>
+    </div>
+    <button class="secondary full" style="margin-top:9px" id="brake">BRAKE</button>
+    <p class="small" style="text-align:center">
+      Keyboard: ← / → to steer, ↑ to accelerate, ↓ to brake.
     </p>
-    <div class="slots" id="playerSlots">
-      <div class="slot"><div class="avatar">🏎️</div><small>You</small></div>
-      <div class="slot"><div class="avatar">❔</div><small>Waiting</small></div>
-      <div class="slot"><div class="avatar">❔</div><small>Waiting</small></div>
-      <div class="slot"><div class="avatar">❔</div><small>Waiting</small></div>
-      <div class="slot"><div class="avatar">❔</div><small>Waiting</small></div>
-    </div>
-    <p class="notice">The race will only begin when all five players are ready.</p>
-    <button class="secondary" onclick="leaveQueue()">Leave Queue</button>
   </section>
 
-  <section id="race" class="panel hidden">
-    <div class="race-info">
-      <span>🏁 LIVE RACE</span>
-      <span id="racePosition">Position: --</span>
+  <!-- RESULTS -->
+  <section id="resultScreen" class="panel hidden">
+    <div class="results">
+      <div class="results-icon" id="resultIcon">🏆</div>
+      <h2 id="resultTitle">Race Complete!</h2>
+      <p id="resultPosition" class="muted"></p>
+      <div id="resultReward" class="reward">0 coins</div>
+      <p id="resultDescription" class="muted"></p>
     </div>
-    <canvas id="raceCanvas" width="600" height="720"></canvas>
-    <div class="controls">
-      <button onpointerdown="sendSteering(-1)" onpointerup="sendSteering(0)" onpointerleave="sendSteering(0)">◀</button>
-      <button onpointerdown="sendSteering(1)" onpointerup="sendSteering(0)" onpointerleave="sendSteering(0)">▶</button>
-    </div>
-    <p class="notice">Use the arrow keys or the steering controls to dodge obstacles.</p>
-  </section>
-
-  <section id="finished" class="panel hidden">
-    <div class="result">
-      <div style="font-size:55px" id="resultIcon">🏁</div>
-      <h2 id="resultTitle">Race Finished</h2>
-      <p id="resultMessage"></p>
-      <button class="primary" onclick="returnToLobby()">BACK TO GAMES</button>
-    </div>
+    <h3>Race Results</h3>
+    <div class="leaderboard" id="leaderboard"></div>
+    <button class="primary full" style="margin-top:18px" onclick="returnGarage()">BACK TO GARAGE</button>
   </section>
 </main>
 
 <script>
 /*
-  BACKEND REQUIRED
+  EARNGIG CAR RACING FRONT-END PROTOTYPE
 
-  Expected endpoints:
+  This file includes a locally playable circuit race with computer
+  opponents so the driving can be tested.
 
-  POST /api/car-racing/join
-    Response: { queued: true, playerId: "..." }
+  PRODUCTION BACKEND REQUIRED:
+  - Authenticated player balance and vehicle ownership.
+  - Secure vehicle upgrades and coin deductions.
+  - Matchmaking with real players and bot filling.
+  - Server-authoritative race simulation and finishing order.
+  - Server-authoritative entry fee and prize distribution.
 
-  GET /api/car-racing/status
-    Response while waiting:
-      { status:"waiting", players:[{id,name,ready}, ...] }
-
-    Response when a full match is ready:
-      {
-        status:"racing",
-        matchId:"...",
-        players:[...exactly 5...],
-        snapshot:{
-          position: 1,
-          distance: 0,
-          obstacles: [],
-          racers: []
-        }
-      }
-
-  POST /api/car-racing/input
-    Body: { matchId:"...", steering:-1|0|1 }
-
-  POST /api/car-racing/leave
-    Body: { matchId:"..." }
-
-  GET /api/car-racing/result?matchId=...
-    Response:
-      { status:"finished", position:1, prize:500 }
-
-  The server must hold entry fees, enforce exactly five players,
-  calculate results and award prizes. Never trust browser scores.
+  Do not use the demo balance or browser-calculated prizes for real coins.
 */
 
-let queueTimer = null;
-let raceTimer = null;
-let matchId = null;
-let playerId = null;
-let steering = 0;
-let active = false;
-let canvasFrame = null;
-let lastSnapshot = null;
-
 const $ = id => document.getElementById(id);
+const DISTANCE_TO_FINISH = 1200;
 
-function showSection(section) {
-  ["lobby", "queue", "race", "finished"].forEach(id => {
-    $(id).classList.toggle("hidden", id !== section);
+const cars = [
+  {id:0,name:"Starter Racer",emoji:"🏎️",color:"#ffc83d",speed:0,price:0,description:"Your first racing car"},
+  {id:1,name:"Street Racer",emoji:"🚙",color:"#4da9ed",speed:7,price:1000,description:"A quicker machine"},
+  {id:2,name:"Sport Racer",emoji:"🏎️",color:"#e84c3d",speed:14,price:2500,description:"Built for speed"},
+  {id:3,name:"Super Racer",emoji:"🏎️",color:"#a56bff",speed:22,price:5000,description:"Serious racing power"},
+  {id:4,name:"Elite Racer",emoji:"🏎️",color:"#f5f5f5",speed:30,price:10000,description:"Top-level performance"}
+];
+
+const bots = [
+  {name:"Turbo",color:"#e84c3d"},
+  {name:"Nitro",color:"#4da9ed"},
+  {name:"Flash",color:"#a56bff"},
+  {name:"Rocket",color:"#f18b36"}
+];
+
+let saved = loadSave();
+let selectedCar = saved.car || 0;
+let balance = saved.balance ?? 2000;
+let upgrades = saved.upgrades || {speed:1,accel:1,handling:1};
+let owned = saved.owned || [0];
+
+let race = null;
+let frameId = null;
+let lastTime = 0;
+let raceStartedAt = 0;
+let controls = {left:false,right:false,accelerate:false,brake:false};
+let active = false;
+let resultsShown = false;
+
+function loadSave(){
+  try{
+    return JSON.parse(localStorage.getItem("earngig_racing_demo")) || {};
+  }catch(e){return {}}
+}
+
+function save(){
+  localStorage.setItem("earngig_racing_demo",JSON.stringify({
+    car:selectedCar,balance,upgrades,owned
+  }));
+}
+
+function show(id){
+  ["garageScreen","waitingScreen","raceScreen","resultScreen"].forEach(name=>{
+    $(name).classList.toggle("hidden",name!==id);
   });
 }
 
-async function api(url, options = {}) {
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    }
+function renderGarage(){
+  $("carGrid").innerHTML="";
+
+  cars.forEach(car=>{
+    const isOwned=owned.includes(car.id);
+    const isSelected=selectedCar===car.id;
+    const card=document.createElement("div");
+    card.className="car-card"+(isSelected?" selected":"")+(isOwned?"":" locked");
+
+    card.innerHTML=`
+      <div class="car-art">${car.emoji}</div>
+      <div class="car-name">${car.name}</div>
+      <div class="car-stat">Speed: ${100+car.speed+upgrades.speed*3} km/h</div>
+      <div class="car-stat">${car.description}</div>
+      <button class="${isSelected?"primary":"secondary"}">
+        ${isSelected?"SELECTED":isOwned?"SELECT":"🔒 "+car.price.toLocaleString()+" coins"}
+      </button>
+    `;
+
+    card.querySelector("button").onclick=()=>chooseCar(car.id);
+    $("carGrid").appendChild(card);
   });
 
-  const data = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(data.message || "Unable to contact the game server.");
-  }
-
-  return data;
+  $("coinBalance").textContent=balance.toLocaleString()+" coins";
+  $("selectedName").textContent=cars[selectedCar].name;
+  $("speedLevel").textContent="Level "+upgrades.speed;
+  $("accelLevel").textContent="Level "+upgrades.accel;
+  $("handlingLevel").textContent="Level "+upgrades.handling;
 }
 
-async function joinQueue() {
-  if (active) return;
-
-  $("joinBtn").disabled = true;
-  $("lobbyMessage").textContent = "Connecting to the race server...";
-
-  try {
-    const data = await api("/api/car-racing/join", {
-      method: "POST",
-      body: JSON.stringify({})
-    });
-
-    if (!data.queued || !data.playerId) {
-      throw new Error(data.message || "The server did not confirm your queue entry.");
-    }
-
-    playerId = data.playerId;
-    active = true;
-    showSection("queue");
-    $("queueMessage").textContent = "Waiting for four more real players...";
-    pollQueue();
-    queueTimer = setInterval(pollQueue, 2000);
-
-  } catch (error) {
-    $("lobbyMessage").textContent =
-      "Race matchmaking is not connected yet. " + error.message;
-    $("lobbyMessage").classList.add("error");
-    $("joinBtn").disabled = false;
-  }
-}
-
-async function pollQueue() {
-  if (!active) return;
-
-  try {
-    const data = await api("/api/car-racing/status");
-
-    if (data.status === "waiting") {
-      updateSlots(data.players || []);
-      $("queueMessage").textContent =
-        `Waiting for players... ${Math.min((data.players || []).length, 5)} of 5 ready`;
+function chooseCar(id){
+  const car=cars[id];
+  if(!owned.includes(id)){
+    if(balance<car.price){
+      alert("You do not have enough demo coins for this vehicle.");
       return;
     }
-
-    if (data.status === "racing") {
-      if (!data.matchId || !Array.isArray(data.players) || data.players.length !== 5) {
-        throw new Error("The server returned an invalid race group.");
-      }
-
-      clearInterval(queueTimer);
-      queueTimer = null;
-      matchId = data.matchId;
-      lastSnapshot = data.snapshot || {};
-      showSection("race");
-      startRacePolling();
-      drawRace(lastSnapshot);
-      return;
-    }
-
-    if (data.status === "cancelled") {
-      await resetQueue(data.message || "This race queue was cancelled.");
-    }
-
-  } catch (error) {
-    $("queueMessage").textContent = error.message;
+    if(!confirm(`Buy ${car.name} for ${car.price.toLocaleString()} demo coins?`))return;
+    balance-=car.price;
+    owned.push(id);
   }
+  selectedCar=id;
+  save();
+  renderGarage();
 }
 
-function updateSlots(players) {
-  const slots = $("playerSlots");
-  slots.innerHTML = "";
-
-  for (let i = 0; i < 5; i++) {
-    const player = players[i];
-    const slot = document.createElement("div");
-    slot.className = "slot";
-
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = player ? "🏎️" : "❔";
-
-    const name = document.createElement("small");
-    name.textContent = player
-      ? (player.id === playerId ? "You" : player.name || "Racer")
-      : "Waiting";
-
-    slot.append(avatar, name);
-    slots.appendChild(slot);
+function upgrade(type){
+  const level=upgrades[type];
+  if(level>=5){
+    alert("This upgrade is already at maximum level.");
+    return;
   }
+  const cost=level*500;
+  if(balance<cost){
+    alert("Not enough demo coins.");
+    return;
+  }
+  if(!confirm(`Upgrade ${type} to level ${level+1} for ${cost} demo coins?`))return;
+
+  balance-=cost;
+  upgrades[type]++;
+  save();
+  renderGarage();
 }
 
-async function leaveQueue() {
-  if (!active) return;
+function enterMatchmaking(){
+  show("waitingScreen");
+  $("waitingMessage").textContent="Preparing the circuit and finding racers...";
+  renderWaiting([
+    {name:"You",type:"human",color:cars[selectedCar].color}
+  ]);
 
-  clearInterval(queueTimer);
-  queueTimer = null;
+  // This local prototype fills the remaining four positions with bots.
+  // Production matchmaking should replace this with the server's player group.
+  setTimeout(()=>{
+    if($("waitingScreen").classList.contains("hidden"))return;
 
-  try {
-    await api("/api/car-racing/leave", {
-      method: "POST",
-      body: JSON.stringify({ matchId })
-    });
-  } catch (error) {
-    $("queueMessage").textContent =
-      "Could not confirm leaving. Please try again. " + error.message;
-    queueTimer = setInterval(pollQueue, 2000);
+    const group=[
+      {name:"You",type:"human",color:cars[selectedCar].color},
+      ...bots.map(b=>({...b,type:"bot"}))
+    ];
+    renderWaiting(group);
+    $("waitingMessage").textContent="Five racers ready! Starting race...";
+    setTimeout(()=>startRace(group),1200);
+  },1400);
+}
+
+function renderWaiting(group){
+  const container=$("waitingPlayers");
+  container.innerHTML="";
+  group.forEach(p=>{
+    const card=document.createElement("div");
+    card.className="car-card";
+    card.innerHTML=`
+      <div class="car-art">🏎️</div>
+      <div class="car-name">${p.name}</div>
+      <div class="small">${p.type==="human"?"Player":"Computer racer"}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function cancelMatchmaking(){
+  show("garageScreen");
+}
+
+function returnGarage(){
+  active=false;
+  cancelAnimationFrame(frameId);
+  race=null;
+  show("garageScreen");
+  renderGarage();
+}
+
+/*
+  Track geometry:
+  The circuit is a closed, winding Formula-style course.
+  Cars follow its centre line and can move laterally within track limits.
+  The track is drawn with a wide road surface, kerbs and grass.
+*/
+
+const trackPoints=[
+  {x:155,y:470},
+  {x:170,y:310},
+  {x:260,y:175},
+  {x:430,y:130},
+  {x:600,y:150},
+  {x:740,y:240},
+  {x:765,y:355},
+  {x:700,y:445},
+  {x:565,y:490},
+  {x:440,y:455},
+  {x:350,y:515},
+  {x:240,y:535}
+];
+
+function getTrackPoint(t){
+  const n=trackPoints.length;
+  const p=t*n;
+  const i=Math.floor(p)%n;
+  const f=p-Math.floor(p);
+
+  const a=trackPoints[(i-1+n)%n];
+  const b=trackPoints[i];
+  const c=trackPoints[(i+1)%n];
+  const d=trackPoints[(i+2)%n];
+
+  const f2=f*f,f3=f2*f;
+
+  const x=.5*((2*b.x)+(-a.x+c.x)*f+
+    (2*a.x-5*b.x+4*c.x-d.x)*f2+
+    (-a.x+3*b.x-3*c.x+d.x)*f3);
+
+  const y=.5*((2*b.y)+(-a.y+c.y)*f+
+    (2*a.y-5*b.y+4*c.y-d.y)*f2+
+    (-a.y+3*b.y-3*c.y+d.y)*f3);
+
+  const before=pointRaw(t-.001);
+  const after=pointRaw(t+.001);
+  const dx=after.x-before.x;
+  const dy=after.y-before.y;
+  const length=Math.hypot(dx,dy)||1;
+
+  return {x,y,angle:Math.atan2(dy,dx),nx:-dy/length,ny:dx/length};
+}
+
+function pointRaw(t){
+  const n=trackPoints.length;
+  const p=((t%1)+1)%1*n;
+  const i=Math.floor(p);
+  const f=p-i;
+  const a=trackPoints[i];
+  const b=trackPoints[(i+1)%n];
+  return {x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f};
+}
+
+function trackLength(){
+  let total=0;
+  let previous=getTrackPoint(0);
+  for(let i=1;i<=500;i++){
+    const p=getTrackPoint(i/500);
+    total+=Math.hypot(p.x-previous.x,p.y-previous.y);
+    previous=p;
+  }
+  return total;
+}
+
+const CIRCUIT_LENGTH=trackLength();
+
+function startRace(group){
+  if(!group||group.length!==5)return;
+
+  show("raceScreen");
+  active=true;
+  resultsShown=false;
+  raceStartedAt=performance.now();
+  lastTime=raceStartedAt;
+
+  race={
+    elapsed:0,
+    finished:false,
+    racers:group.map((p,i)=>({
+      name:p.name,
+      type:p.type,
+      color:p.color,
+      progress:0,
+      lane:(i-2)*.16,
+      speed:0,
+      maxSpeed:(
+        0.47+
+        (i===0?upgrades.speed*.012:Math.random()*.025)+
+        (i===0?cars[selectedCar].speed*.002:Math.random()*.035)
+      ),
+      accel:i===0?0.34+upgrades.accel*.025:0.31+Math.random()*.04,
+      handling:i===0?upgrades.handling:1,
+      finished:false,
+      finishTime:null,
+      wobble:Math.random()*10
+    }))
+  };
+
+  race.racers[0].isPlayer=true;
+  frameId=requestAnimationFrame(gameLoop);
+}
+
+function gameLoop(now){
+  if(!active||!race)return;
+
+  const dt=Math.min((now-lastTime)/1000,.04);
+  lastTime=now;
+  race.elapsed+=dt;
+
+  updatePhysics(dt);
+  drawCircuit();
+
+  updateHUD();
+
+  const player=race.racers[0];
+  if(player.progress>=1&&!resultsShown){
+    finishRace();
     return;
   }
 
-  await resetQueue("You left the race queue.");
+  if(race.elapsed>115&&!resultsShown){
+    finishRace();
+    return;
+  }
+
+  frameId=requestAnimationFrame(gameLoop);
 }
 
-async function resetQueue(message) {
-  active = false;
-  matchId = null;
-  playerId = null;
-  clearInterval(queueTimer);
-  clearInterval(raceTimer);
-  queueTimer = null;
-  raceTimer = null;
-  showSection("lobby");
-  $("joinBtn").disabled = false;
-  $("lobbyMessage").textContent = message;
+function updatePhysics(dt){
+  const player=race.racers[0];
+
+  if(controls.accelerate)player.speed+=player.accel*dt;
+  else player.speed-=.10*dt;
+
+  if(controls.brake)player.speed-=.65*dt;
+
+  player.speed=Math.max(0,Math.min(player.maxSpeed,player.speed));
+
+  if(controls.left)player.lane-=.72*dt*player.handling;
+  if(controls.right)player.lane+=.72*dt*player.handling;
+
+  player.lane=Math.max(-.29,Math.min(.29,player.lane));
+
+  // Moving too far off the circuit costs speed.
+  const edge=Math.abs(player.lane);
+  if(edge>.23)player.speed=Math.max(0,player.speed-.3*dt);
+
+  player.progress+=player.speed*dt*.095;
+
+  // Bots accelerate, slow for corners and make small lane changes.
+  race.racers.slice(1).forEach((bot,i)=>{
+    const curve=Math.abs(Math.sin(bot.progress*19+i));
+    const target=bot.maxSpeed*(1-curve*.13);
+    bot.speed+=(target-bot.speed)*Math.min(1,dt*1.7);
+    bot.progress+=bot.speed*dt*.095;
+    bot.lane=Math.sin(race.elapsed*.55+i*2)*.10+(i-1.5)*.045;
+  });
+
+  // Keep all positions within the race distance.
+  race.racers.forEach(r=>{
+    r.progress=Math.min(1.01,r.progress);
+  });
 }
 
-function startRacePolling() {
-  clearInterval(raceTimer);
-  raceTimer = setInterval(async () => {
-    if (!active || !matchId) return;
+function drawCircuit(){
+  const canvas=$("trackCanvas");
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width,h=canvas.height;
 
-    try {
-      const data = await api(
-        "/api/car-racing/status?matchId=" + encodeURIComponent(matchId)
-      );
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#397348";
+  ctx.fillRect(0,0,w,h);
 
-      if (data.snapshot) {
-        lastSnapshot = data.snapshot;
-        drawRace(lastSnapshot);
-      }
-
-      if (data.position) {
-        $("racePosition").textContent = "Position: " + data.position;
-      }
-
-      if (data.status === "finished") {
-        showResult(data);
-      }
-    } catch (error) {
-      $("racePosition").textContent = "Reconnecting...";
-    }
-  }, 250);
-}
-
-async function sendSteering(value) {
-  steering = value;
-  if (!active || !matchId) return;
-
-  try {
-    await api("/api/car-racing/input", {
-      method: "POST",
-      body: JSON.stringify({
-        matchId,
-        steering: value
-      })
-    });
-  } catch (error) {
-    console.warn("Steering update failed:", error.message);
+  // Grass details.
+  for(let i=0;i<110;i++){
+    const x=(i*137)%w;
+    const y=(i*83)%h;
+    ctx.fillStyle=i%2?"#3d7d4c":"#32683e";
+    ctx.fillRect(x,y,5,3);
   }
-}
 
-document.addEventListener("keydown", event => {
-  if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
-    sendSteering(-1);
-  }
-  if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
-    sendSteering(1);
-  }
-});
+  // Track shoulder and asphalt.
+  drawTrackStroke(ctx,92,"#e4e0d4");
+  drawTrackStroke(ctx,82,"#b93d38");
+  drawTrackStroke(ctx,70,"#363c42");
 
-document.addEventListener("keyup", event => {
-  if (
-    ["ArrowLeft", "ArrowRight", "a", "d"].includes(event.key) ||
-    ["a", "d"].includes(event.key.toLowerCase())
-  ) {
-    sendSteering(0);
-  }
-});
-
-function drawRace(snapshot) {
-  const canvas = $("raceCanvas");
-  const ctx = canvas.getContext("2d");
-  const w = canvas.width;
-  const h = canvas.height;
-
-  ctx.clearRect(0, 0, w, h);
-
-  // Grass
-  ctx.fillStyle = "#315d38";
-  ctx.fillRect(0, 0, w, h);
-
-  // Road
-  ctx.fillStyle = "#333b43";
-  ctx.fillRect(75, 0, 450, h);
-
-  // Road edges
-  ctx.fillStyle = "#f4d24b";
-  ctx.fillRect(75, 0, 9, h);
-  ctx.fillRect(516, 0, 9, h);
-
-  // Lane markings
-  const offset = (snapshot.roadOffset || 0) % 100;
-  ctx.strokeStyle = "#f3f0d8";
-  ctx.lineWidth = 5;
-  ctx.setLineDash([35, 35]);
-  ctx.lineDashOffset = -offset;
-
-  ctx.beginPath();
-  ctx.moveTo(225, 0);
-  ctx.lineTo(225, h);
-  ctx.moveTo(375, 0);
-  ctx.lineTo(375, h);
-  ctx.stroke();
+  // Kerbs on both sides.
+  ctx.lineWidth=5;
+  ctx.setLineDash([12,12]);
+  drawTrackStroke(ctx,87,"#f4f0e6");
   ctx.setLineDash([]);
 
-  // Obstacles supplied by the authoritative server
-  (snapshot.obstacles || []).forEach(obstacle => {
-    drawCar(ctx, obstacle.x, obstacle.y, obstacle.color || "#e84c3d");
-  });
+  // Racing line.
+  ctx.lineWidth=1.5;
+  ctx.setLineDash([9,14]);
+  drawTrackStroke(ctx,2,"rgba(255,255,255,.25)");
+  ctx.setLineDash([]);
 
-  // Other racers
-  (snapshot.racers || []).forEach(racer => {
-    if (racer.id !== playerId) {
-      drawCar(ctx, racer.x, racer.y, racer.color || "#37a6f5");
+  // Finish stripe.
+  const start=getTrackPoint(0);
+  ctx.save();
+  ctx.translate(start.x,start.y);
+  ctx.rotate(start.angle+Math.PI/2);
+  for(let i=0;i<8;i++){
+    for(let j=0;j<2;j++){
+      ctx.fillStyle=(i+j)%2?"#111":"#fff";
+      ctx.fillRect(-30+i*8,-5+j*8,8,8);
     }
-  });
+  }
+  ctx.restore();
 
-  // Player car
-  const player = snapshot.player || {};
-  drawCar(
-    ctx,
-    player.x ?? 300,
-    player.y ?? 590,
-    "#ffc83d",
-    true
-  );
-
-  // Distance
-  ctx.fillStyle = "white";
-  ctx.font = "bold 20px Arial";
-  ctx.fillText(
-    "DISTANCE: " + Math.floor(snapshot.distance || 0),
-    100, 35
-  );
+  // Cars are drawn on the actual track surface.
+  const ordered=[...race.racers].sort((a,b)=>a.progress-b.progress);
+  ordered.forEach(r=>drawRacer(ctx,r));
 }
 
-function drawCar(ctx, x, y, color, isPlayer = false) {
-  ctx.save();
-  ctx.translate(x, y);
-
-  // Wheels
-  ctx.fillStyle = "#111";
-  ctx.fillRect(-24, -28, 9, 22);
-  ctx.fillRect(15, -28, 9, 22);
-  ctx.fillRect(-24, 12, 9, 22);
-  ctx.fillRect(15, 12, 9, 22);
-
-  // Body
-  ctx.fillStyle = color;
+function drawTrackStroke(ctx,width,color){
   ctx.beginPath();
-  ctx.roundRect(-19, -35, 38, 70, 10);
+  for(let i=0;i<=500;i++){
+    const p=getTrackPoint(i/500);
+    if(i===0)ctx.moveTo(p.x,p.y);
+    else ctx.lineTo(p.x,p.y);
+  }
+  ctx.closePath();
+  ctx.lineWidth=width;
+  ctx.strokeStyle=color;
+  ctx.lineJoin="round";
+  ctx.lineCap="round";
+  ctx.stroke();
+}
+
+function drawRacer(ctx,r){
+  const p=getTrackPoint(r.progress%1);
+  const offset=r.lane*145;
+
+  const x=p.x+p.nx*offset;
+  const y=p.y+p.ny*offset;
+
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(p.angle);
+
+  // Shadow touches the road.
+  ctx.fillStyle="rgba(0,0,0,.30)";
+  ctx.beginPath();
+  ctx.ellipse(1,3,24,12,0,0,Math.PI*2);
   ctx.fill();
 
-  // Windscreen
-  ctx.fillStyle = "#bde9f5";
-  ctx.fillRect(-13, -19, 26, 19);
+  // Wheels are placed at the four corners of the chassis.
+  // Their bottom edges align with the track plane.
+  ctx.fillStyle="#111318";
+  roundedRect(ctx,-16,-13,12,8,2);
+  roundedRect(ctx,5,-13,12,8,2);
+  roundedRect(ctx,-16,7,12,8,2);
+  roundedRect(ctx,5,7,12,8,2);
 
-  // Rear window
-  ctx.fillStyle = "#83b9c9";
-  ctx.fillRect(-13, 9, 26, 13);
+  // Tyre sidewalls.
+  ctx.fillStyle="#343a40";
+  roundedRect(ctx,-15,-12,10,6,2);
+  roundedRect(ctx,6,-12,10,6,2);
+  roundedRect(ctx,-15,8,10,6,2);
+  roundedRect(ctx,6,8,10,6,2);
 
-  // Headlights
-  ctx.fillStyle = "#fff5a6";
-  ctx.fillRect(-15, -33, 8, 5);
-  ctx.fillRect(7, -33, 8, 5);
+  // Formula-style low body.
+  ctx.fillStyle=r.color;
+  ctx.beginPath();
+  ctx.moveTo(21,0);
+  ctx.lineTo(12,-7);
+  ctx.lineTo(5,-8);
+  ctx.lineTo(1,-5);
+  ctx.lineTo(-10,-6);
+  ctx.lineTo(-17,-4);
+  ctx.lineTo(-20,0);
+  ctx.lineTo(-17,4);
+  ctx.lineTo(-10,6);
+  ctx.lineTo(1,5);
+  ctx.lineTo(5,8);
+  ctx.lineTo(12,7);
+  ctx.closePath();
+  ctx.fill();
 
-  if (isPlayer) {
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold 10px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("YOU", 0, 48);
-  }
+  // Cockpit.
+  ctx.fillStyle="#bde8f1";
+  ctx.beginPath();
+  ctx.ellipse(0,0,7,4,0,0,Math.PI*2);
+  ctx.fill();
+
+  // Front wing and rear wing.
+  ctx.fillStyle="#171d22";
+  ctx.fillRect(17,-10,5,20);
+  ctx.fillRect(-19,-10,4,20);
+
+  // Highlights.
+  ctx.fillStyle="rgba(255,255,255,.4)";
+  ctx.fillRect(-7,-4,13,2);
 
   ctx.restore();
+
+  if(r.isPlayer){
+    ctx.fillStyle="#fff";
+    ctx.font="bold 11px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("YOU",x,y-20);
+  }
 }
 
-async function showResult(data) {
-  clearInterval(raceTimer);
-  raceTimer = null;
-
-  active = false;
-  const position = Number(data.position);
-  const prize = Number(data.prize || 0);
-
-  $("resultIcon").textContent =
-    position === 1 ? "🥇" :
-    position === 2 ? "🥈" :
-    position === 3 ? "🥉" : "🏁";
-
-  $("resultTitle").textContent =
-    position > 0 ? `You finished ${position}${position === 1 ? "st" : position === 2 ? "nd" : position === 3 ? "rd" : "th"}!` : "Race Finished";
-
-  $("resultMessage").textContent =
-    prize > 0
-      ? `You earned ${prize} coins.`
-      : "You did not finish in the top three. Better luck next race!";
-
-  showSection("finished");
+function roundedRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.roundRect(x,y,w,h,r);
+  ctx.fill();
 }
 
-function returnToLobby() {
-  active = false;
-  matchId = null;
-  playerId = null;
-  clearInterval(queueTimer);
-  clearInterval(raceTimer);
-  queueTimer = null;
-  raceTimer = null;
-  $("joinBtn").disabled = false;
-  $("lobbyMessage").textContent = "Ready for another race?";
-  showSection("lobby");
+function updateHUD(){
+  const player=race.racers[0];
+  const place=1+race.racers.filter(r=>r.progress>player.progress).length;
+
+  $("hudPosition").textContent=place+" / 5";
+  $("hudSpeed").textContent=Math.round(player.speed*360)+" km/h";
+  $("hudDistance").textContent=Math.min(
+    DISTANCE_TO_FINISH,
+    Math.round(player.progress*DISTANCE_TO_FINISH)
+  )+" m";
+
+  const sec=Math.floor(race.elapsed);
+  $("hudTime").textContent=
+    String(Math.floor(sec/60)).padStart(2,"0")+":"+
+    String(sec%60).padStart(2,"0");
 }
+
+function finishRace(){
+  if(resultsShown)return;
+  resultsShown=true;
+  active=false;
+  cancelAnimationFrame(frameId);
+
+  const sorted=[...race.racers].sort((a,b)=>b.progress-a.progress);
+  const playerPosition=sorted.findIndex(r=>r.isPlayer)+1;
+  const prizes=[500,300,200,0,0];
+  const prize=prizes[playerPosition-1];
+
+  $("resultIcon").textContent=
+    playerPosition===1?"🥇":
+    playerPosition===2?"🥈":
+    playerPosition===3?"🥉":"🏁";
+
+  $("resultTitle").textContent=
+    playerPosition===1?"CHAMPION!":
+    playerPosition===2?"SECOND PLACE!":
+    playerPosition===3?"THIRD PLACE!":"RACE FINISHED";
+
+  $("resultPosition").textContent=
+    `You finished in position ${playerPosition} out of 5.`;
+
+  $("resultReward").textContent=prize+" coins";
+
+  $("resultDescription").textContent=
+    prize>0
+      ?"Congratulations on your race result!"
+      :"You finished outside the top three. Keep practising!";
+
+  $("leaderboard").innerHTML="";
+
+  sorted.forEach((r,i)=>{
+    const row=document.createElement("div");
+    row.className="leader"+(r.isPlayer?" me":"");
+
+    const name=document.createElement("strong");
+    name.textContent=`${i+1}. ${r.name}${r.isPlayer?" (You)":""}`;
+
+    const reward=document.createElement("span");
+    reward.className="coins";
+    reward.textContent=prizes[i]+" coins";
+
+    row.append(name,reward);
+    $("leaderboard").appendChild(row);
+  });
+
+  show("resultScreen");
+}
+
+/* Control handling */
+function bindHold(id,key){
+  const button=$(id);
+  button.addEventListener("pointerdown",e=>{
+    e.preventDefault();
+    controls[key]=true;
+    button.setPointerCapture(e.pointerId);
+  });
+  ["pointerup","pointercancel","lostpointercapture","pointerleave"].forEach(type=>{
+    button.addEventListener(type,()=>controls[key]=false);
+  });
+}
+bindHold("steerLeft","left");
+bindHold("steerRight","right");
+bindHold("accelerate","accelerate");
+bindHold("brake","brake");
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")controls.left=true;
+  if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")controls.right=true;
+  if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")controls.accelerate=true;
+  if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")controls.brake=true;
+});
+document.addEventListener("keyup",e=>{
+  if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")controls.left=false;
+  if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")controls.right=false;
+  if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")controls.accelerate=false;
+  if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")controls.brake=false;
+});
+
+renderGarage();
+show("garageScreen");
 </script>
 </body>
 </html>
