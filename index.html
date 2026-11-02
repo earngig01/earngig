@@ -1,222 +1,540 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EarnGig | Play, Read, Earn & Shop</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #100b20;
-      color: white;
-    }
-    a { text-decoration: none; color: inherit; }
-    header {
-      display: flex; justify-content: space-between;
-      align-items: center; padding: 20px 6%;
-      background: #19112c; border-bottom: 1px solid #382650;
-      flex-wrap: wrap; gap: 15px;
-    }
-    .logo { font-size: 29px; font-weight: 900; }
-    .logo span { color: #cafa70; }
-    nav { display: flex; gap: 18px; flex-wrap: wrap; }
-    nav a { font-size: 14px; color: #ddd2ef; }
-    nav a:hover { color: #cafa70; }
-    .btn {
-      display: inline-block; padding: 12px 19px;
-      border-radius: 9px; font-weight: bold;
-    }
-    .green { background: #cafa70; color: #171126; }
-    .outline { border: 1px solid #8064a4; }
-    .hero {
-      padding: 85px 8%; min-height: 470px;
-      background: radial-gradient(circle at 80% 30%, #633b91, transparent 38%),
-                  linear-gradient(120deg, #291443, #130d24);
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 30px;
-    }
-    .hero-content { max-width: 650px; }
-    .tag { color: #cafa70; font-weight: bold; letter-spacing: 2px; }
-    h1 { font-size: clamp(45px, 7vw, 76px); margin: 18px 0; }
-    h1 span { color: #cafa70; }
-    .hero p { color: #d0c5df; line-height: 1.8; font-size: 17px; }
-    .hero-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
-    .hero-icon { font-size: 130px; }
-    .container { width: 88%; max-width: 1150px; margin: auto; }
-    section { padding: 55px 0; }
-    .section-title { font-size: 30px; margin-bottom: 25px; }
-    .cards {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 17px;
-    }
-    .card {
-      background: #211733; border: 1px solid #3c2b53;
-      border-radius: 15px; padding: 23px;
-      min-height: 185px;
-    }
-    .card .icon { font-size: 35px; }
-    .card h3 { margin: 15px 0 9px; }
-    .card p { color: #bdb0cf; font-size: 14px; line-height: 1.6; }
-    .card a { display: inline-block; color: #cafa70; margin-top: 15px; font-weight: bold; }
-    .billboard {
-      background: linear-gradient(100deg, #452365, #241638);
-      border: 1px solid #654483; border-radius: 16px;
-      padding: 30px; display: flex;
-      justify-content: space-between; align-items: center; gap: 20px;
-    }
-    .billboard p { color: #d0c5df; margin-top: 9px; }
-    .light-section {
-      background: #faf9fc; color: #211a31;
-      padding: 55px 6%;
-    }
-    .light-section .card {
-      background: white; border-color: #e5dcef;
-    }
-    .light-section .card p { color: #6e6579; }
-    footer {
-      background: #19112c; text-align: center;
-      padding: 35px 15px; color: #bdb0cf;
-      line-height: 2;
-    }
-    @media(max-width: 850px) {
-      .cards { grid-template-columns: repeat(2, 1fr); }
-      .hero-icon { font-size: 85px; }
-    }
-    @media(max-width: 600px) {
-      header { justify-content: center; }
-      nav { justify-content: center; }
-      .hero { text-align: center; flex-direction: column; padding: 60px 7%; }
-      .hero-actions { justify-content: center; }
-      .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .card { padding: 15px; }
-      .billboard { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig | Play. Read. Earn. Shop.</title>
+<style>
+:root {
+  --purple:#17052d;
+  --deep:#0c031b;
+  --lime:#caff19;
+  --gold:#ffc928;
+  --pink:#e52aff;
+  --white:#fff;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+html {scroll-behavior:smooth}
+body {
+  font-family:Arial,Helvetica,sans-serif;
+  color:white;
+  background:
+    radial-gradient(ellipse at 80% 15%,#510c88 0%,transparent 35%),
+    radial-gradient(ellipse at 5% 75%,#620c8c 0%,transparent 30%),
+    linear-gradient(135deg,#10031e,#21063d 55%,#10031e);
+  overflow-x:hidden;
+}
+a {color:inherit;text-decoration:none}
+button {font:inherit;cursor:pointer}
+header {
+  min-height:82px;
+  padding:15px 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:1px solid #a72cff55;
+  background:#150329e8;
+  position:relative;
+  z-index:10;
+}
+.logo {
+  font-size:34px;
+  font-weight:900;
+  letter-spacing:-2px;
+  white-space:nowrap;
+}
+.logo span {color:var(--lime)}
+.logo b {color:var(--gold)}
+nav {display:flex;align-items:center;gap:23px}
+nav a {
+  font-size:14px;
+  font-weight:bold;
+  color:#f5eaff;
+  transition:.2s;
+}
+nav a:hover {color:var(--lime)}
+.header-actions {display:flex;gap:10px;align-items:center}
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:14px 22px;
+  border-radius:13px;
+  font-weight:800;
+  transition:.25s;
+}
+.btn:hover {transform:translateY(-3px);filter:brightness(1.1)}
+.btn-lime {
+  background:var(--lime);
+  color:#160b21;
+  box-shadow:0 0 22px #caff1950;
+}
+.btn-outline {
+  border:2px solid #dc55ff;
+  color:white;
+  background:#23083d80;
+}
+.menu-toggle {
+  display:none;
+  background:none;
+  color:white;
+  border:0;
+  font-size:28px;
+}
+.hero {
+  max-width:1500px;
+  margin:auto;
+  padding:55px 4% 15px;
+  min-height:510px;
+  display:grid;
+  grid-template-columns: .9fr 1.1fr;
+  align-items:center;
+  gap:10px;
+  position:relative;
+}
+.hero-copy {position:relative;z-index:2}
+.welcome {
+  display:inline-block;
+  padding:11px 20px;
+  border-radius:30px;
+  background:linear-gradient(90deg,#7415a8,#470b78);
+  border:1px solid #d93cff70;
+  font-weight:800;
+  margin-bottom:18px;
+}
+.hero h1 {
+  font-size:clamp(48px,6.2vw,82px);
+  line-height:.98;
+  letter-spacing:-3px;
+  font-weight:900;
+  font-style:italic;
+  text-shadow:0 0 25px #ffffff25;
+}
+.hero h1 span {
+  color:var(--lime);
+  display:block;
+  text-shadow:0 0 25px #caff1960;
+}
+.hero-copy p {
+  color:#e9dff3;
+  font-size:18px;
+  line-height:1.5;
+  max-width:470px;
+  margin:25px 0;
+}
+.hero-buttons {display:flex;gap:14px;flex-wrap:wrap}
+.hero-art {
+  min-height:420px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  isolation:isolate;
+}
+.phone-glow {
+  position:absolute;
+  width:290px;height:350px;
+  border:3px solid #d42cff;
+  border-radius:55px;
+  background:linear-gradient(145deg,#27094d,#100520);
+  box-shadow:0 0 25px #d42cff,0 0 85px #a51cff80;
+  transform:rotate(-7deg);
+  z-index:-1;
+}
+.phone-screen {
+  width:90%;height:85%;
+  border-radius:38px;
+  border:2px solid #a84dff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  background:radial-gradient(circle,#50118c,#16052c);
+}
+.phone-screen .game-icon {font-size:75px;filter:drop-shadow(0 0 14px #e33bff)}
+.phone-screen strong {font-size:23px;color:var(--lime)}
+.gamers {
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:0;
+  position:relative;
+  z-index:2;
+}
+.gamer {
+  width:44%;
+  text-align:center;
+  position:relative;
+  animation:bob 3s ease-in-out infinite;
+}
+.gamer:nth-child(2) {animation-delay:1s}
+.gamer-face {
+  font-size:clamp(100px,13vw,175px);
+  filter:drop-shadow(0 0 18px #c42bff);
+  line-height:1.1;
+}
+.gamer-phone {
+  display:inline-block;
+  padding:12px 20px;
+  border:3px solid #d84aff;
+  border-radius:14px;
+  background:#16052b;
+  box-shadow:0 0 22px #d42cff;
+  font-size:27px;
+  margin-top:-15px;
+}
+.coin {
+  position:absolute;
+  color:var(--gold);
+  font-size:32px;
+  text-shadow:0 0 15px #ffb900;
+  animation:float 4s ease-in-out infinite;
+  z-index:3;
+}
+.c1 {top:8%;left:18%}
+.c2 {top:24%;right:10%;animation-delay:1s}
+.c3 {bottom:20%;left:9%;animation-delay:2s}
+.c4 {bottom:8%;right:17%;animation-delay:.5s}
+.c5 {top:48%;left:49%;animation-delay:1.5s}
+.money {
+  position:absolute;
+  font-size:35px;
+  animation:float 3s ease-in-out infinite;
+}
+.m1 {top:12%;right:29%}
+.m2 {bottom:10%;left:33%;animation-delay:1s}
+.reward-pile {
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:45px;
+  white-space:nowrap;
+  filter:drop-shadow(0 0 15px #ffb700);
+  z-index:4;
+}
+@keyframes bob {
+  0%,100% {transform:translateY(0)}
+  50% {transform:translateY(-13px)}
+}
+@keyframes float {
+  0%,100% {transform:translateY(0) rotate(-8deg)}
+  50% {transform:translateY(-22px) rotate(10deg)}
+}
+.spotlight {
+  max-width:1450px;
+  margin:15px auto 25px;
+  width:94%;
+  min-height:105px;
+  padding:18px 35px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  border:2px solid #c52aff;
+  border-radius:28px;
+  background:linear-gradient(100deg,#4b087f,#8111b0,#32104f);
+  box-shadow:0 0 30px #a61bff55,inset 0 0 25px #d52aff30;
+}
+.spotlight-title {
+  color:#ffe600;
+  font-size:25px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.spotlight-copy {flex:1;border-left:2px solid #ffffff70;padding-left:30px}
+.spotlight-copy strong {font-size:22px}
+.spotlight-copy p {margin-top:6px;color:#eadcf7}
+.section {
+  max-width:1500px;
+  margin:35px auto;
+  padding:0 4%;
+}
+.section-heading {
+  font-size:32px;
+  margin-bottom:22px;
+}
+.section-heading span {color:var(--lime)}
+.feature-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:17px;
+}
+.feature {
+  min-height:175px;
+  padding:22px 18px;
+  border-radius:24px;
+  border:1px solid #d63cff;
+  background:linear-gradient(140deg,#4a1268,#21103d 75%);
+  box-shadow:0 0 18px #bd22ff30;
+  transition:.25s;
+}
+.feature:hover {
+  transform:translateY(-7px);
+  box-shadow:0 0 28px #d22aff70;
+}
+.feature:nth-child(1) {border-color:#ff9a35}
+.feature:nth-child(2) {border-color:#20aaff}
+.feature:nth-child(3) {border-color:#e52aff}
+.feature:nth-child(4) {border-color:#37e77c}
+.feature-icon {font-size:42px;margin-bottom:12px}
+.feature h3 {font-size:21px;margin-bottom:9px}
+.feature p {font-size:14px;line-height:1.5;color:#e7ddef}
+.feature a {
+  display:inline-block;
+  color:#ffed00;
+  font-weight:800;
+  margin-top:16px;
+}
+.discover-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.discover-card {
+  padding:28px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#321052,#18072c);
+  border:1px solid #9b38cf;
+}
+.discover-card h3 {font-size:23px;margin-bottom:10px}
+.discover-card p {color:#d7c9e5;line-height:1.5;margin-bottom:18px}
+.bottom-cta {
+  margin:50px 3% 30px;
+  padding:32px 20px;
+  text-align:center;
+  border:2px solid #c02cff;
+  border-radius:25px;
+  background:linear-gradient(110deg,#5600a3,#b20bd0,#4a0789);
+  box-shadow:0 0 35px #b52cff50;
+}
+.bottom-cta h2 {font-size:30px;margin-bottom:10px}
+.bottom-cta p {color:#f0ddff;margin-bottom:18px}
+footer {
+  padding:35px 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+  border-top:1px solid #a72cff50;
+  color:#cbbbdc;
+}
+.footer-links {display:flex;gap:25px;flex-wrap:wrap;font-size:14px}
+footer a:hover {color:var(--lime)}
+@media(max-width:1050px) {
+  nav {gap:12px}
+  nav a {font-size:12px}
+  .feature-grid {grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px) {
+  header {padding:13px 5%}
+  .menu-toggle {display:block}
+  nav {
+    display:none;
+    position:absolute;
+    top:75px;left:0;right:0;
+    background:#19052f;
+    padding:22px;
+    flex-direction:column;
+    align-items:flex-start;
+    border-bottom:1px solid #a72cff;
+  }
+  nav.open {display:flex}
+  .header-actions .btn {padding:10px 13px;font-size:12px}
+  .hero {
+    grid-template-columns:1fr;
+    padding-top:40px;
+    text-align:center;
+  }
+  .hero-copy p {margin:20px auto}
+  .hero-buttons {justify-content:center}
+  .hero-art {min-height:360px;margin-top:20px}
+  .phone-glow {width:220px;height:280px}
+  .gamer-face {font-size:110px}
+  .spotlight {flex-wrap:wrap;padding:22px}
+  .spotlight-title {white-space:normal}
+  .spotlight-copy {border-left:0;padding-left:0;min-width:100%}
+  .discover-grid {grid-template-columns:1fr}
+  footer {justify-content:center;text-align:center}
+  .footer-links {justify-content:center}
+}
+@media(max-width:430px) {
+  .logo {font-size:27px}
+  .header-actions .btn-outline {display:none}
+  .hero h1 {font-size:49px}
+  .feature-grid {grid-template-columns:1fr}
+  .spotlight .btn {width:100%}
+}
+</style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="index.html">Earn<span>Gig</span></a>
-  <nav>
+  <a class="logo" href="index.html"><b>👑</b>Earn<span>Gig</span></a>
+
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+
+  <nav id="mainNav">
     <a href="index.html">Home</a>
-    <a href="#games">Games</a>
-    <a href="#novels">Novels</a>
-    <a href="pages/marketplace.html">Marketplace</a>
-    <a href="#earn">Earn More</a>
-    <a href="pages/advertise.html">Advertise</a>
+    <a href="pages/games.html">🎮 Games</a>
+    <a href="pages/novels.html">📖 Novels</a>
+    <a href="pages/marketplace.html">🛍 Marketplace</a>
+    <a href="pages/earn-more.html">Earn More</a>
+    <a href="pages/advertise.html">📢 Advertise</a>
     <a href="pages/wallet.html">Wallet</a>
     <a href="pages/my-shop.html">My Shop</a>
   </nav>
-  <div>
-    <a class="btn outline" href="pages/login.html">Log in</a>
-    <a class="btn green" href="pages/register.html">Join</a>
+
+  <div class="header-actions">
+    <a class="btn btn-outline" href="pages/login.html">Log in</a>
+    <a class="btn btn-lime" href="pages/register.html">Join</a>
   </div>
 </header>
 
 <main>
   <section class="hero">
-    <div class="hero-content">
-      <div class="tag">WELCOME TO EARNGIG</div>
-      <h1>Play. Read.<br><span>Earn. Shop.</span></h1>
-      <p>Your destination for exciting games, amazing stories,
-         rewards and everyday shopping. Discover more ways
-         to enjoy your time on one platform.</p>
-      <div class="hero-actions">
-        <a class="btn green" href="pages/register.html">Create Account</a>
-        <a class="btn outline" href="#explore">Explore EarnGig</a>
+    <div class="hero-copy">
+      <div class="welcome">👑 WELCOME TO EARNGIG</div>
+      <h1>Play. Read.<span>Earn. Shop.</span></h1>
+      <p>
+        Your destination for exciting games, amazing stories,
+        real rewards and everyday shopping. Discover more ways
+        to enjoy your time on one platform.
+      </p>
+      <div class="hero-buttons">
+        <a class="btn btn-lime" href="pages/register.html">Create Account →</a>
+        <a class="btn btn-outline" href="#discover">Explore EarnGig</a>
       </div>
     </div>
-    <div class="hero-icon">🎮</div>
+
+    <div class="hero-art">
+      <div class="phone-glow">
+        <div class="phone-screen">
+          <div class="game-icon">🎮</div>
+          <strong>EarnGig</strong>
+          <div style="font-size:35px">🏆</div>
+        </div>
+      </div>
+
+      <div class="gamers">
+        <div class="gamer">
+          <div class="gamer-face">👨🏾‍🦱</div>
+          <div class="gamer-phone">📱</div>
+        </div>
+        <div class="gamer">
+          <div class="gamer-face">👩🏾‍🦱</div>
+          <div class="gamer-phone">📱</div>
+        </div>
+      </div>
+
+      <div class="coin c1">🪙</div>
+      <div class="coin c2">🪙</div>
+      <div class="coin c3">✨</div>
+      <div class="coin c4">🪙</div>
+      <div class="coin c5">⭐</div>
+      <div class="money m1">💵</div>
+      <div class="money m2">💸</div>
+      <div class="reward-pile">🪙 💰 🪙</div>
+    </div>
   </section>
 
-  <div class="container">
-    <section>
-      <div class="billboard">
-        <div>
-          <div class="tag">EARNGIG SPOTLIGHT</div>
-          <h2>Put your brand in the spotlight</h2>
-          <p>Advertise to the growing EarnGig community.</p>
-        </div>
-        <a class="btn green" href="pages/advertise.html">Advertise Now</a>
-      </div>
-    </section>
+  <section class="spotlight">
+    <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
+    <div class="spotlight-copy">
+      <strong>Put your brand in the spotlight.</strong>
+      <p>Advertise to the growing EarnGig community.</p>
+    </div>
+    <a class="btn btn-lime" href="pages/advertise.html">Advertise Now →</a>
+  </section>
 
-    <section id="earn">
-      <h2 class="section-title">More ways to earn</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="icon">📺</div>
-          <h3>Watch Ads</h3>
-          <p>Watch sponsored videos and collect eligible reward coins.</p>
-          <a href="pages/earn-more.html">Start earning →</a>
-        </div>
-        <div class="card">
-          <div class="icon">🤝</div>
-          <h3>Refer Friends</h3>
-          <p>Invite friends and earn when their referrals qualify.</p>
-          <a href="pages/earn-more.html">Invite friends →</a>
-        </div>
-        <div class="card" id="novels">
-          <div class="icon">📚</div>
-          <h3>Read Novels</h3>
-          <p>Explore stories and earn from qualified reading activity.</p>
-          <a href="pages/novels.html">Read stories →</a>
-        </div>
-        <div class="card">
-          <div class="icon">🪙</div>
-          <h3>My Wallet</h3>
-          <p>Keep track of your rewards and transactions.</p>
-          <a href="pages/wallet.html">Open wallet →</a>
-        </div>
-      </div>
-    </section>
+  <section class="section">
+    <h2 class="section-heading">More ways to <span>earn</span> ━</h2>
+    <div class="feature-grid">
 
-    <section id="explore">
-      <h2 class="section-title">Explore EarnGig</h2>
-      <div class="cards">
-        <div class="card" id="games">
-          <div class="icon">🎯</div>
-          <h3>Games</h3>
-          <p>Puzzles, action and skill challenges.</p>
-          <a href="pages/games.html">Explore games →</a>
-        </div>
-        <div class="card">
-          <div class="icon">📖</div>
-          <h3>Novels</h3>
-          <p>Discover stories from talented writers.</p>
-          <a href="pages/novels.html">Explore novels →</a>
-        </div>
-        <div class="card">
-          <div class="icon">🛍️</div>
-          <h3>Marketplace</h3>
-          <p>Discover products and independent stores.</p>
-          <a href="pages/marketplace.html">Start shopping →</a>
-        </div>
-        <div class="card">
-          <div class="icon">🏪</div>
-          <h3>My Shop</h3>
-          <p>Create your own store on EarnGig.</p>
-          <a href="pages/my-shop.html">Create a store →</a>
-        </div>
-      </div>
-    </section>
-  </div>
+      <article class="feature">
+        <div class="feature-icon">🎬</div>
+        <h3>Watch Ads</h3>
+        <p>Watch sponsored videos and collect reward coins.</p>
+        <a href="pages/watch-ads.html">Start earning →</a>
+      </article>
 
-  <section class="light-section">
-    <h2 class="section-title">Your next chapter starts here.</h2>
+      <article class="feature">
+        <div class="feature-icon">👥</div>
+        <h3>Refer Friends</h3>
+        <p>Invite friends and earn when their referrals qualify.</p>
+        <a href="pages/referrals.html">Invite friends →</a>
+      </article>
+
+      <article class="feature">
+        <div class="feature-icon">📖</div>
+        <h3>Read Novels</h3>
+        <p>Explore stories and earn from qualified reading.</p>
+        <a href="pages/novels.html">Read stories →</a>
+      </article>
+
+      <article class="feature">
+        <div class="feature-icon">👛</div>
+        <h3>My Wallet</h3>
+        <p>Keep track of your rewards and transactions.</p>
+        <a href="pages/wallet.html">Open wallet →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="section" id="discover">
+    <h2 class="section-heading">Explore <span>EarnGig</span></h2>
+    <div class="discover-grid">
+      <article class="discover-card">
+        <h3>🎮 Play Games</h3>
+        <p>Discover exciting games, challenge yourself and enjoy the experience.</p>
+        <a class="btn btn-outline" href="pages/games.html">Explore Games →</a>
+      </article>
+
+      <article class="discover-card">
+        <h3>🛍 Shop Marketplace</h3>
+        <p>Discover products, browse stores and find something you love.</p>
+        <a class="btn btn-outline" href="pages/marketplace.html">Visit Marketplace →</a>
+      </article>
+
+      <article class="discover-card">
+        <h3>🏪 Open Your Shop</h3>
+        <p>Create your store and introduce your products to EarnGig customers.</p>
+        <a class="btn btn-outline" href="pages/my-shop.html">Create Your Store →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="bottom-cta">
+    <h2>Your next chapter starts here.</h2>
     <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
-    <br>
-    <a class="btn green" href="pages/register.html">Create your free account</a>
+    <a class="btn btn-lime" href="pages/register.html">Create your free account →</a>
   </section>
 </main>
 
 <footer>
-  <h2>Earn<span style="color:#cafa70">Gig</span></h2>
-  Play · Read · Earn · Shop<br>
-  © 2026 EarnGig. All rights reserved.
+  <a class="logo" href="index.html">👑Earn<span>Gig</span></a>
+  <div class="footer-links">
+    <a href="pages/about.html">About</a>
+    <a href="pages/terms.html">Terms</a>
+    <a href="pages/privacy.html">Privacy</a>
+    <a href="pages/help.html">Help</a>
+    <a href="pages/advertise.html">Advertise</a>
+    <a href="pages/contact.html">Contact</a>
+  </div>
+  <small>© 2026 EarnGig. All rights reserved.</small>
 </footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById("mainNav").classList.toggle("open");
+}
+</script>
 
 </body>
 </html>
