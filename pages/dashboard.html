@@ -1,0 +1,601 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#160329">
+<title>My Dashboard | EarnGig</title>
+
+<style>
+:root {
+  --purple:#21063b;
+  --purple2:#4b087f;
+  --lime:#caff19;
+  --gold:#ffc928;
+  --pink:#d92cff;
+  --white:#fff;
+  --muted:#bdb0ce;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f7f4fa;
+  color:#241735;
+}
+a {text-decoration:none;color:inherit}
+button {font:inherit;cursor:pointer}
+
+/* HEADER */
+header {
+  background:#19042e;
+  color:white;
+  min-height:75px;
+  padding:12px 4%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo {
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:-2px;
+  white-space:nowrap;
+}
+.logo span {color:var(--lime)}
+.logo b {color:var(--gold)}
+.header-right {
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.profile {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:14px;
+  font-weight:bold;
+}
+.avatar {
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#5d198c;
+  border:2px solid #caff19;
+  font-size:19px;
+}
+.logout {
+  background:transparent;
+  border:1px solid #d94aff;
+  color:white;
+  padding:10px 16px;
+  border-radius:9px;
+}
+
+/* LAYOUT */
+.layout {
+  display:grid;
+  grid-template-columns:235px 1fr;
+  min-height:calc(100vh - 75px);
+}
+.sidebar {
+  background:#21083b;
+  color:white;
+  padding:28px 16px;
+}
+.sidebar-label {
+  color:#a995bd;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin:20px 12px 12px;
+}
+.sidebar a {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 12px;
+  margin-bottom:5px;
+  border-radius:10px;
+  color:#e9dff2;
+  font-size:14px;
+  font-weight:bold;
+  transition:.2s;
+}
+.sidebar a:hover,
+.sidebar a.active {
+  background:#4b1472;
+  color:var(--lime);
+}
+.sidebar a span {font-size:19px}
+
+/* MAIN CONTENT */
+main {
+  min-width:0;
+  padding:30px;
+  max-width:1450px;
+}
+.welcome {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:26px;
+}
+.welcome h1 {
+  font-size:29px;
+  color:#28143b;
+  margin-bottom:7px;
+}
+.welcome p {color:#776a85;font-size:14px}
+.date-label {
+  background:#eee5f7;
+  color:#57227e;
+  border-radius:9px;
+  padding:11px 14px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+/* BALANCE CARD */
+.balance-card {
+  padding:27px;
+  border-radius:20px;
+  color:white;
+  background:
+    radial-gradient(circle at 90% 10%,#8e24c7,transparent 45%),
+    linear-gradient(120deg,#260644,#57108c);
+  box-shadow:0 10px 28px #46107530;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:25px;
+}
+.balance-card:after {
+  content:"🪙";
+  position:absolute;
+  right:35px;
+  top:15px;
+  font-size:100px;
+  opacity:.15;
+  transform:rotate(20deg);
+}
+.balance-label {
+  font-size:14px;
+  color:#e2d2f1;
+  margin-bottom:12px;
+}
+.balance-number {
+  font-size:clamp(34px,5vw,49px);
+  font-weight:900;
+  color:var(--lime);
+  margin-bottom:8px;
+}
+.balance-note {font-size:13px;color:#d7c6e6}
+.balance-actions {
+  display:flex;
+  gap:12px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+.balance-actions a {
+  display:inline-block;
+  padding:12px 19px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+}
+.withdraw-btn {
+  background:var(--lime);
+  color:#180b24;
+}
+.history-btn {
+  border:1px solid #e6c7ff;
+  color:white;
+}
+
+/* STATS */
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-bottom:30px;
+}
+.stat-card {
+  background:white;
+  padding:20px;
+  border:1px solid #eadff2;
+  border-radius:15px;
+  box-shadow:0 4px 15px #28143b08;
+}
+.stat-icon {
+  font-size:27px;
+  margin-bottom:13px;
+}
+.stat-card h3 {
+  font-size:25px;
+  color:#35134f;
+  margin-bottom:6px;
+}
+.stat-card p {
+  color:#81758b;
+  font-size:13px;
+}
+
+/* SECTION */
+.section-title {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+}
+.section-title h2 {
+  font-size:21px;
+  color:#29163c;
+}
+.section-title a {
+  font-size:13px;
+  font-weight:bold;
+  color:#7521a5;
+}
+
+/* EARNING ACTIVITIES */
+.activities {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-bottom:32px;
+}
+.activity {
+  background:white;
+  border:1px solid #eadff2;
+  border-radius:15px;
+  padding:19px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  transition:.2s;
+}
+.activity:hover {
+  transform:translateY(-3px);
+  box-shadow:0 7px 20px #2b104515;
+}
+.activity-icon {
+  width:53px;
+  height:53px;
+  min-width:53px;
+  border-radius:13px;
+  background:#f1e6fa;
+  display:grid;
+  place-items:center;
+  font-size:26px;
+}
+.activity h3 {
+  color:#32144b;
+  font-size:16px;
+  margin-bottom:5px;
+}
+.activity p {
+  color:#80748b;
+  font-size:12px;
+  line-height:1.5;
+}
+.activity-arrow {
+  margin-left:auto;
+  font-size:22px;
+  color:#8125ae;
+}
+
+/* QUICK LINKS */
+.quick-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:30px;
+}
+.quick-card {
+  background:white;
+  border:1px solid #eadff2;
+  border-radius:14px;
+  padding:19px;
+  text-align:center;
+}
+.quick-card div {font-size:29px;margin-bottom:10px}
+.quick-card h3 {font-size:15px;color:#35134f;margin-bottom:6px}
+.quick-card p {font-size:12px;color:#80748b;line-height:1.5}
+
+/* TRANSACTIONS */
+.transaction-box {
+  background:white;
+  border:1px solid #eadff2;
+  border-radius:15px;
+  padding:20px;
+  overflow-x:auto;
+}
+.transaction-box p {
+  color:#80748b;
+  font-size:14px;
+  padding:25px 5px;
+  text-align:center;
+}
+footer {
+  background:#19042e;
+  color:#cbbbdc;
+  text-align:center;
+  padding:20px;
+  font-size:12px;
+}
+
+/* MOBILE */
+@media(max-width:950px) {
+  .layout {grid-template-columns:190px 1fr}
+  main {padding:22px}
+  .stats-grid {grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:680px) {
+  header {padding:12px 4%}
+  .logo {font-size:25px}
+  .profile span:last-child {display:none}
+  .logout {padding:9px 11px;font-size:12px}
+  .layout {display:block}
+  .sidebar {
+    display:flex;
+    overflow-x:auto;
+    padding:10px;
+    gap:5px;
+    position:sticky;
+    top:68px;
+    z-index:5;
+  }
+  .sidebar-label {display:none}
+  .sidebar a {
+    flex-shrink:0;
+    margin:0;
+    padding:11px;
+    font-size:12px;
+  }
+  main {padding:20px 14px}
+  .welcome {align-items:flex-start}
+  .welcome h1 {font-size:24px}
+  .date-label {display:none}
+  .balance-card {padding:22px}
+  .stats-grid {grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat-card {padding:15px}
+  .stat-card h3 {font-size:21px}
+  .activities {grid-template-columns:1fr}
+  .quick-grid {grid-template-columns:repeat(2,1fr)}
+  .section-title h2 {font-size:19px}
+}
+@media(max-width:380px) {
+  .stats-grid {grid-template-columns:1fr 1fr}
+  .quick-grid {grid-template-columns:1fr 1fr}
+  .balance-number {font-size:32px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="../index.html" class="logo">👑 Earn<span>Gig</span></a>
+
+  <div class="header-right">
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <span>My Account</span>
+    </div>
+    <a href="login.html" class="logout">Log out</a>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-label">MY ACCOUNT</div>
+    <a href="dashboard.html" class="active"><span>🏠</span> Dashboard</a>
+    <a href="wallet.html"><span>👛</span> My Wallet</a>
+    <a href="transactions.html"><span>📊</span> Transactions</a>
+    <a href="profile.html"><span>👤</span> My Profile</a>
+
+    <div class="sidebar-label">EARN REWARDS</div>
+    <a href="games.html"><span>🎮</span> Play Games</a>
+    <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
+    <a href="referrals.html"><span>👥</span> Refer Friends</a>
+    <a href="novels.html"><span>📚</span> Read Novels</a>
+
+    <div class="sidebar-label">EXPLORE</div>
+    <a href="marketplace.html"><span>🛍</span> Marketplace</a>
+    <a href="my-shop.html"><span>🏪</span> My Shop</a>
+    <a href="advertise.html"><span>📢</span> Advertise</a>
+
+  </aside>
+
+  <!-- MAIN DASHBOARD -->
+  <main>
+
+    <div class="welcome">
+      <div>
+        <h1>Welcome back! 👋</h1>
+        <p>Here's what's happening with your EarnGig account.</p>
+      </div>
+      <div class="date-label" id="todayDate">My Dashboard</div>
+    </div>
+
+    <!-- WALLET BALANCE -->
+    <section class="balance-card">
+      <div class="balance-label">MY TOTAL COIN BALANCE</div>
+      <div class="balance-number" id="coinBalance">0 Coins</div>
+      <div class="balance-note">
+        Your displayed balance. Withdrawal eligibility is calculated separately.
+      </div>
+
+      <div class="balance-actions">
+        <a href="wallet.html" class="withdraw-btn">Open Wallet →</a>
+        <a href="transactions.html" class="history-btn">View Transactions</a>
+      </div>
+    </section>
+
+    <!-- ACCOUNT STATS -->
+    <section class="stats-grid">
+
+      <article class="stat-card">
+        <div class="stat-icon">🎮</div>
+        <h3>0</h3>
+        <p>Games Played</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">🎬</div>
+        <h3>0</h3>
+        <p>Ads Completed</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">👥</div>
+        <h3>0</h3>
+        <p>Qualified Referrals</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">📖</div>
+        <h3>0</h3>
+        <p>Qualified Reads</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">💰</div>
+        <h3>₦0.00</h3>
+        <p>Total Withdrawals</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <h3>New</h3>
+        <p>Account Status</p>
+      </article>
+
+    </section>
+
+    <!-- EARNING ACTIVITIES -->
+    <section>
+      <div class="section-title">
+        <h2>Start Earning</h2>
+        <a href="earn-more.html">See all →</a>
+      </div>
+
+      <div class="activities">
+
+        <a class="activity" href="games.html">
+          <div class="activity-icon">🎮</div>
+          <div>
+            <h3>Play Games</h3>
+            <p>Explore games and take on exciting challenges.</p>
+          </div>
+          <div class="activity-arrow">›</div>
+        </a>
+
+        <a class="activity" href="watch-ads.html">
+          <div class="activity-icon">🎬</div>
+          <div>
+            <h3>Watch Advertisements</h3>
+            <p>Complete eligible sponsored videos for rewards.</p>
+          </div>
+          <div class="activity-arrow">›</div>
+        </a>
+
+        <a class="activity" href="referrals.html">
+          <div class="activity-icon">👥</div>
+          <div>
+            <h3>Refer Friends</h3>
+            <p>Invite friends and track qualified referrals.</p>
+          </div>
+          <div class="activity-arrow">›</div>
+        </a>
+
+        <a class="activity" href="novels.html">
+          <div class="activity-icon">📚</div>
+          <div>
+            <h3>Read Novels</h3>
+            <p>Discover stories and earn eligible reading rewards.</p>
+          </div>
+          <div class="activity-arrow">›</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- QUICK ACCESS -->
+    <section>
+      <div class="section-title">
+        <h2>Quick Access</h2>
+      </div>
+
+      <div class="quick-grid">
+
+        <a class="quick-card" href="marketplace.html">
+          <div>🛍️</div>
+          <h3>Marketplace</h3>
+          <p>Discover products and stores.</p>
+        </a>
+
+        <a class="quick-card" href="my-shop.html">
+          <div>🏪</div>
+          <h3>My Shop</h3>
+          <p>Manage your seller store.</p>
+        </a>
+
+        <a class="quick-card" href="wallet.html">
+          <div>👛</div>
+          <h3>Wallet</h3>
+          <p>Review your coin balance.</p>
+        </a>
+
+        <a class="quick-card" href="profile.html">
+          <div>⚙️</div>
+          <h3>Account Settings</h3>
+          <p>Manage your account details.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- RECENT ACTIVITY -->
+    <section>
+      <div class="section-title">
+        <h2>Recent Transactions</h2>
+        <a href="transactions.html">View all →</a>
+      </div>
+
+      <div class="transaction-box">
+        <p>Your recent transactions will appear here when your account is connected.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  © 2026 EarnGig. All rights reserved.
+</footer>
+
+<script>
+const dateElement = document.getElementById("todayDate");
+
+dateElement.textContent = new Date().toLocaleDateString("en-NG", {
+  weekday:"short",
+  day:"numeric",
+  month:"short",
+  year:"numeric"
+});
+</script>
+
+</body>
+</html>
