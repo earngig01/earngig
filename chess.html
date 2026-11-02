@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chess | EarnGig</title>
 <style>
-:root{--green:#276749;--dark:#183d32;--cream:#f5f0df;--gold:#e5b94e;--ink:#263b32}
+:root{--green:#276749;--dark:#183d32;--ink:#263b32}
 *{box-sizing:border-box}
 body{margin:0;padding:12px;background:linear-gradient(145deg,#edf5e9,#f8f1df);font-family:Arial,sans-serif;color:var(--ink)}
 .topbar,.container{max-width:650px;margin:auto}
@@ -57,8 +57,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
  <section class="panel center" id="lobby">
   <div class="big">♞</div>
   <h2>Ready to play?</h2>
-  <p>When you start, EarnGig will look for another player who is waiting.</p>
-  <p>If nobody is available, your game against the computer starts instead.</p>
+  <p>EarnGig will look for another player when matchmaking is connected.</p>
+  <p>If nobody is available, you can play against the computer.</p>
   <button id="playButton">PLAY NOW</button>
   <p class="note">No entry fee. Once a game starts, your opponent will not change.</p>
  </section>
@@ -76,7 +76,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
    <button id="newGameButton">New game</button>
   </div>
   <div class="moves" id="history">Moves will appear here.</div>
-  <p class="note">Select one of your pieces, then select a highlighted square to move. White moves first.</p>
+  <p class="note">Select one of your pieces, then select a highlighted square. White moves first. The computer plays Black.</p>
  </section>
 </main>
 
@@ -92,23 +92,18 @@ const glyph={
 let chess=new Chess();
 let selected=null;
 let legalMoves=[];
-let mode="computer";
 let gameOver=false;
 let history=[];
 let aiTimer=null;
-let matchmakingTimer=null;
-let onlineGameId=null;
-let playerColor="w";
-let onlinePolling=null;
 let busy=false;
+let playerColor="w";
 
 function showStatus(message){$("status").textContent=message;}
 
 function render(){
  const board=$("board");
  board.innerHTML="";
- const files="abcdefgh";
- const ranks="87654321";
+ const files="abcdefgh",ranks="87654321";
 
  for(let r=0;r<8;r++){
   for(let c=0;c<8;c++){
@@ -116,7 +111,6 @@ function render(){
    const piece=chess.get(square);
    const cell=document.createElement("button");
    cell.className="square "+((r+c)%2===0?"light":"dark");
-   cell.dataset.square=square;
    cell.setAttribute("aria-label",square+(piece?" "+piece.color+" "+piece.type:""));
 
    if(selected===square)cell.classList.add("selected");
@@ -162,9 +156,7 @@ function updateStatus(){
 }
 
 function selectSquare(square){
- if(gameOver||busy)return;
- if(mode==="computer"&&chess.turn()!==playerColor)return;
- if(mode==="online"&&chess.turn()!==playerColor)return;
+ if(gameOver||busy||chess.turn()!==playerColor)return;
 
  const piece=chess.get(square);
 
@@ -176,7 +168,7 @@ function selectSquare(square){
   }
  }
 
- if(piece&&piece.color===chess.turn()){
+ if(piece&&piece.color===playerColor){
   selected=square;
   legalMoves=chess.moves({square,verbose:true});
  }else{
@@ -190,192 +182,118 @@ function makeMove(from,to){
  try{
   const move=chess.move({from,to,promotion:"q"});
   if(!move)return;
+
   history.push(move.san);
   selected=null;
   legalMoves=[];
   render();
   updateStatus();
 
-  if(mode==="online"&&!gameOver){
-   sendOnlineMove(move);
-  }else if(mode==="computer"&&!gameOver&&chess.turn()!==playerColor){
-   busy=true;
-   aiTimer=setTimeout(()=>{
-    computerMove();
-    busy=false;
-   },450);
+  if(!gameOver&&chess.turn()!==playerColor){
+   scheduleComputerMove();
   }
  }catch(error){
-  console.error(error);
+  console.error("Player move error:",error);
  }
 }
 
-function evaluateBoard(game){
- const values={p:100,n:320,b:330,r:500,q:900,k:20000};
- let total=0;
- const board=game.board();
- for(const row of board){
-  for(const p of row){
-   if(p)total+=(p.color==="w"?1:-1)*values[p.type];
+function scheduleComputerMove(){
+ clearTimeout(aiTimer);
+ busy=true;
+ showStatus("Computer is thinking...");
+
+ aiTimer=setTimeout(()=>{
+  try{
+   computerMove();
+  }catch(error){
+   console.error("Computer move error:",error);
+   showStatus("Computer encountered an error. Please restart the game.");
+  }finally{
+   busy=false;
   }
- }
- return total;
+ },500);
 }
 
+/* Computer selects only from moves supplied by the chess rules engine. */
 function computerMove(){
- if(gameOver||mode!=="computer"||chess.turn()===playerColor)return;
+ if(gameOver||chess.turn()===playerColor)return;
+
  const moves=chess.moves({verbose:true});
- if(!moves.length)return;
-
- let best=[];
- let bestScore=playerColor==="w"?Infinity:-Infinity;
-
- for(const move of moves){
-  chess.move(move);
-  let value=evaluateBoard(chess);
-  if(chess.isCheckmate())value=chess.turn()==="w"?-100000:100000;
-  chess.undo();
-
-  const adjusted=playerColor==="w"?value:-value;
-  if(adjusted>bestScore){
-   bestScore=adjusted;
-   best=[move];
-  }else if(adjusted===bestScore){
-   best.push(move);
-  }
+ if(!moves.length){
+  updateStatus();
+  return;
  }
 
- const chosen=best[Math.floor(Math.random()*best.length)];
- const played=chess.move({from:chosen.from,to:chosen.to,promotion:"q"});
- history.push(played.san);
+ const values={p:100,n:320,b:330,r:500,q:900,k:20000};
+
+ function scoreMove(move){
+  let score=0;
+
+  if(move.captured)score+=values[move.captured]||0;
+  if(move.promotion)score+=values[move.promotion]||0;
+
+  chess.move({
+   from:move.from,
+   to:move.to,
+   promotion:move.promotion||"q"
+  });
+
+  if(chess.isCheckmate())score+=100000;
+  else if(chess.isCheck())score+=35;
+
+  const replies=chess.moves({verbose:true});
+  if(replies.length){
+   const danger=replies.some(reply=>reply.captured&&reply.to===move.to);
+   if(danger&&!move.captured)score-=values[move.piece]*0.8;
+  }
+
+  chess.undo();
+  return score;
+ }
+
+ const scored=moves.map(move=>({move,score:scoreMove(move)}));
+ const bestScore=Math.max(...scored.map(x=>x.score));
+ const best=scored.filter(x=>x.score===bestScore);
+ const chosen=best[Math.floor(Math.random()*best.length)].move;
+
+ const played=chess.move({
+  from:chosen.from,
+  to:chosen.to,
+  promotion:chosen.promotion||"q"
+ });
+
+ if(played)history.push(played.san);
+
+ selected=null;
+ legalMoves=[];
  render();
  updateStatus();
 }
 
-async function startGame(){
+function startGame(){
  clearTimeout(aiTimer);
- clearInterval(matchmakingTimer);
- clearInterval(onlinePolling);
-
- $("lobby").classList.add("hidden");
- $("game").classList.remove("hidden");
- showStatus("Looking for another player...");
-
  chess=new Chess();
  history=[];
  selected=null;
  legalMoves=[];
  gameOver=false;
  busy=false;
- onlineGameId=null;
- mode="computer";
  playerColor="w";
 
- /*
-  BACKEND CONNECTION CONTRACT:
-  POST /api/chess/matchmaking
-  Expected matched response:
-  {status:"matched",gameId:"...",color:"w"|"b"}
-  Expected waiting response:
-  {status:"waiting"}
-  A real backend must atomically match waiting players.
- */
-
- try{
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),7000);
-
-  const response=await fetch("/api/chess/matchmaking",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({game:"chess"}),
-   signal:controller.signal
-  });
-
-  clearTimeout(timeout);
-
-  if(response.ok){
-   const result=await response.json();
-   if(result.status==="matched"&&result.gameId){
-    mode="online";
-    onlineGameId=result.gameId;
-    playerColor=result.color||"w";
-    $("opponent").textContent="Opponent: Another player";
-    render();
-    showStatus("Player found! Your match has started.");
-    beginOnlinePolling();
-    return;
-   }
-  }
- }catch(error){
-  // If matchmaking is not connected or no match is returned,
-  // start a computer game instead.
- }
-
- startComputerGame();
-}
-
-function startComputerGame(){
- mode="computer";
- playerColor="w";
+ $("lobby").classList.add("hidden");
+ $("game").classList.remove("hidden");
  $("opponent").textContent="Opponent: Computer";
- showStatus("No human opponent available. You are playing against the computer.");
+
  render();
  updateStatus();
 }
 
-async function sendOnlineMove(move){
- if(!onlineGameId)return;
- try{
-  await fetch(`/api/chess/games/${encodeURIComponent(onlineGameId)}/move`,{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    from:move.from,
-    to:move.to,
-    promotion:move.promotion||"q"
-   })
-  });
- }catch(error){
-  showStatus("Connection interrupted. Reconnecting...");
- }
-}
-
-function beginOnlinePolling(){
- clearInterval(onlinePolling);
- onlinePolling=setInterval(async()=>{
-  if(!onlineGameId||gameOver)return;
-  try{
-   const response=await fetch(`/api/chess/games/${encodeURIComponent(onlineGameId)}`);
-   if(!response.ok)return;
-   const data=await response.json();
-
-   if(data.moves&&Array.isArray(data.moves)){
-    const current=chess.history().length;
-    if(data.moves.length>current){
-     chess=new Chess();
-     history=[];
-     for(const m of data.moves){
-      const played=chess.move(m);
-      if(played)history.push(played.san);
-     }
-     render();
-     updateStatus();
-    }
-   }
-   if(data.status==="finished"){
-    gameOver=true;
-    showStatus(data.message||"This chess match has ended.");
-   }
-  }catch(error){}
- },1000);
-}
-
 function undo(){
- if(mode!=="computer"||gameOver||busy)return;
- if(chess.history().length===0)return;
+ if(gameOver||busy||chess.history().length===0)return;
+
  chess.undo();
- if(chess.turn()!==playerColor&&chess.history().length)chess.undo();
+ if(chess.turn()!==playerColor&&chess.history().length>0)chess.undo();
+
  history=chess.history();
  selected=null;
  legalMoves=[];
@@ -386,24 +304,20 @@ function undo(){
 
 function restart(){
  clearTimeout(aiTimer);
- clearInterval(onlinePolling);
  chess=new Chess();
  history=[];
  selected=null;
  legalMoves=[];
  gameOver=false;
  busy=false;
- onlineGameId=null;
- mode="computer";
  playerColor="w";
- $("opponent").textContent="Opponent: Computer";
  render();
  updateStatus();
 }
 
 function newGame(){
  clearTimeout(aiTimer);
- clearInterval(onlinePolling);
+ busy=false;
  $("game").classList.add("hidden");
  $("lobby").classList.remove("hidden");
 }
