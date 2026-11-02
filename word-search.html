@@ -3,333 +3,606 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#130923">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Word Search | EarnGig</title>
 <style>
-:root{--bg:#130923;--lime:#c8ff43;--gold:#ffc857;--muted:#bcaed0}
-*{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;background:radial-gradient(ellipse at top,#49216e,#130923 65%);color:white;font-family:Arial,sans-serif;padding-bottom:35px}
-header{display:flex;justify-content:space-between;align-items:center;padding:17px 5%;background:#130923dd;border-bottom:1px solid #ffffff18}
-.brand{font-size:23px;font-weight:900;text-decoration:none;color:white}
-.brand span{color:var(--gold)}
-.back{color:white;text-decoration:none;background:#ffffff12;border:1px solid #ffffff28;padding:10px 14px;border-radius:10px;font-size:12px}
-.container{width:min(680px,94%);margin:28px auto}
-.heading{text-align:center;margin-bottom:22px}
-.eyebrow{color:var(--lime);font-size:10px;letter-spacing:3px;font-weight:bold;margin-bottom:10px}
-h1{font-size:35px;margin-bottom:9px}
-.heading p{color:var(--muted);font-size:13px;line-height:1.6}
-.panel{background:linear-gradient(145deg,#2b1943,#1d1030);border:1px solid #ffffff20;border-radius:19px;padding:17px;box-shadow:0 18px 45px #0005}
-.start-screen{text-align:center;padding:35px 15px}
-.start-icon{font-size:65px;margin-bottom:17px}
-.start-screen h2{font-size:24px;margin-bottom:12px}
-.start-screen p{color:var(--muted);font-size:13px;line-height:1.8;max-width:420px;margin:0 auto 23px}
-.primary{display:inline-block;background:var(--lime);color:#182309;border:0;border-radius:11px;padding:15px 25px;font-weight:900;cursor:pointer}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
-.stat{background:#ffffff0b;border:1px solid #ffffff17;border-radius:13px;text-align:center;padding:13px 5px}
-.stat strong{display:block;color:var(--lime);font-size:21px}
-.stat small{color:var(--muted);font-size:10px}
-.instruction{text-align:center;color:#d4c5e8;font-size:12px;margin:2px 0 14px;line-height:1.5}
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;width:100%;max-width:510px;margin:auto;touch-action:manipulation}
-.cell{aspect-ratio:1;display:grid;place-items:center;border:1px solid #ffffff15;border-radius:5px;background:#382451;color:white;font-size:clamp(10px,3vw,17px);font-weight:800;cursor:pointer;user-select:none;padding:0}
-.cell.selected{background:#8750d8;border-color:#d5baff}
-.cell.found{background:var(--lime);color:#192407;border-color:#e1ff9b}
-.words-panel{margin-top:21px}
-.words-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.words-title h2{font-size:15px}
-.words-title span{color:var(--muted);font-size:11px}
-.words{display:flex;flex-wrap:wrap;gap:9px}
-.word{background:#ffffff0c;border:1px solid #ffffff20;border-radius:8px;padding:9px 11px;font-size:11px;font-weight:bold;color:#eee4ff}
-.word.done{color:var(--lime);border-color:#c8ff4370;text-decoration:line-through;background:#c8ff4310}
-.message{display:none;text-align:center;margin-top:17px;padding:18px;border-radius:12px;background:#c8ff4315;border:1px solid #c8ff4360;color:var(--lime);font-weight:bold;line-height:1.7}
-.controls{display:none;justify-content:center;margin-top:18px}
-.controls a{background:var(--lime);color:#182309;text-decoration:none;padding:13px 20px;border-radius:10px;font-weight:bold;font-size:13px}
-#gameArea{display:none}
-footer{text-align:center;color:#8f7da6;font-size:11px;margin-top:24px}
-@media(max-width:420px){.container{margin-top:22px}h1{font-size:31px}.panel{padding:10px}.grid{gap:3px}.cell{border-radius:3px}}
+:root {
+  --bg:#10091f;
+  --panel:#1d1233;
+  --panel2:#281944;
+  --purple:#8b5cf6;
+  --lime:#c8ff55;
+  --gold:#ffc857;
+  --white:#fff;
+  --muted:#b9aacd;
+  --danger:#ff647c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top,#38205c 0,#160d29 48%,#0c0716 100%);
+  color:var(--white);
+  font-family:Arial,sans-serif;
+  padding:18px;
+}
+button{font:inherit;cursor:pointer}
+.topbar{
+  max-width:1050px;margin:auto;display:flex;
+  justify-content:space-between;align-items:center;
+  gap:12px;padding:8px 0 20px;
+}
+.brand{font-size:23px;font-weight:900;color:white}
+.crown{color:var(--gold)}
+.back{
+  color:white;text-decoration:none;background:#ffffff14;
+  border:1px solid #ffffff25;padding:10px 15px;border-radius:12px;
+}
+.container{max-width:1050px;margin:auto}
+.heading{text-align:center;margin:8px 0 22px}
+.heading h1{font-size:clamp(27px,5vw,42px);margin:0 0 8px}
+.heading p{color:var(--muted);margin:0}
+.screen{
+  background:linear-gradient(145deg,#24163c,#180f2b);
+  border:1px solid #ffffff18;border-radius:22px;
+  padding:clamp(18px,4vw,30px);
+  box-shadow:0 18px 50px #0005;
+}
+.start-screen{text-align:center;max-width:600px;margin:35px auto}
+.game-icon{font-size:65px;margin:5px 0 15px}
+.start-screen h2{font-size:28px;margin:0 0 12px}
+.start-screen p{color:var(--muted);line-height:1.7}
+.rules{
+  background:#ffffff0b;border:1px solid #ffffff15;
+  border-radius:15px;padding:15px;text-align:left;
+  margin:22px 0;color:#e9dff7;line-height:1.8;
+}
+.primary{
+  background:linear-gradient(135deg,#c8ff55,#9ee52b);
+  color:#171025;border:0;border-radius:14px;
+  padding:15px 30px;font-weight:900;font-size:16px;
+  box-shadow:0 7px 22px #a8e83b30;
+}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.game-layout{
+  display:grid;grid-template-columns:minmax(0,1fr) 280px;
+  gap:20px;align-items:start;
+}
+.stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;margin-bottom:18px;
+}
+.stat{
+  background:#ffffff0b;border:1px solid #ffffff16;
+  padding:14px;border-radius:14px;text-align:center;
+}
+.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
+.stat strong{font-size:25px;font-weight:900}
+#timer{color:var(--lime);font-variant-numeric:tabular-nums}
+#timer.danger{color:var(--danger)}
+.progress-track{
+  height:8px;background:#ffffff18;border-radius:20px;
+  overflow:hidden;margin-bottom:18px;
+}
+#progress{height:100%;width:0;background:var(--lime);transition:width .2s}
+.grid-wrap{
+  width:100%;max-width:610px;margin:auto;
+  background:#120b20;padding:9px;border-radius:15px;
+  border:1px solid #ffffff18;
+}
+#grid{
+  display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:3px;user-select:none;touch-action:none;
+}
+.cell{
+  aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;background:#2b1c43;
+  border:1px solid #ffffff0a;border-radius:5px;
+  font-size:clamp(11px,2.7vw,20px);font-weight:800;
+  color:#f6efff;cursor:pointer;min-width:0;
+}
+.cell.selected{background:#8054c9;color:white;border-color:#c6a7ff}
+.cell.found{background:#a9e84c;color:#142009;border-color:#d5ff8d}
+.hint{text-align:center;color:var(--muted);font-size:12px;margin:12px 0 0}
+.word-panel h3{margin:2px 0 7px;font-size:19px}
+.word-panel p{color:var(--muted);font-size:13px;margin:0 0 17px}
+#wordList{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
+}
+.word{
+  background:#ffffff0b;border:1px solid #ffffff16;
+  border-radius:10px;padding:10px 7px;text-align:center;
+  font-size:12px;font-weight:800;letter-spacing:.5px;
+}
+.word.done{
+  color:var(--lime);text-decoration:line-through;
+  border-color:#a9e84c65;background:#a9e84c12;
+}
+.word.done:before{content:"✓ ";text-decoration:none}
+.side-note{
+  margin-top:18px;background:#ffffff0a;
+  border-radius:13px;padding:13px;color:var(--muted);
+  font-size:12px;line-height:1.6;
+}
+.result-screen{text-align:center;max-width:600px;margin:35px auto}
+.result-icon{font-size:65px}
+.result-screen h2{font-size:32px;margin:12px 0}
+.result-screen p{color:var(--muted);line-height:1.7}
+.result-score{
+  background:#ffffff0c;border:1px solid #ffffff18;
+  border-radius:15px;padding:18px;margin:20px 0;
+}
+.result-score strong{display:block;font-size:35px;color:var(--lime)}
+.hidden{display:none!important}
+@media(max-width:760px){
+  body{padding:12px}
+  .game-layout{grid-template-columns:1fr}
+  .word-panel{order:2}
+  .grid-wrap{padding:6px}
+  #grid{gap:2px}
+  .cell{border-radius:3px}
+  .word-panel{margin-top:3px}
+  #wordList{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
-<header>
-  <a href="index.html" class="brand"><span>♛</span> EarnGig</a>
-  <a href="games.html" class="back">← All Games</a>
+<header class="topbar">
+  <div class="brand"><span class="crown">♛</span> EarnGig</div>
+  <a class="back" href="games.html" id="backLink">← Games</a>
 </header>
 
 <main class="container">
-  <section class="heading">
-    <div class="eyebrow">EARNGIG ARCADE</div>
-    <h1>Word Search 🔎</h1>
-    <p>Find all the hidden words. Stay focused and complete your round!</p>
+  <div class="heading">
+    <h1>Word Search</h1>
+    <p>Find all the hidden words before the countdown ends!</p>
+  </div>
+
+  <section class="screen start-screen" id="startScreen">
+    <div class="game-icon">🔎</div>
+    <h2>Ready for the challenge?</h2>
+    <p>Find all 10 hidden words in the letter grid. Look carefully — words can go in different directions!</p>
+    <div class="rules">
+      <div>⏱️ <strong>Time limit:</strong> 3 minutes</div>
+      <div>🔤 <strong>Words to find:</strong> 10</div>
+      <div>↗️ <strong>Directions:</strong> Horizontal, vertical and diagonal</div>
+      <div>↔️ <strong>Word order:</strong> Forward and backward</div>
+      <div>🏆 <strong>Objective:</strong> Find all 10 before time runs out</div>
+    </div>
+    <button class="primary" id="startButton">START GAME</button>
   </section>
 
-  <section class="panel" id="startScreen">
-    <div class="start-screen">
-      <div class="start-icon">🔤</div>
-      <h2>Ready for the challenge?</h2>
-      <p>
-        Your puzzle will contain 8 randomly selected words from a large
-        word bank. Find every word to complete your round.
-        Each round is a single attempt. Reloading will end your attempt.
-      </p>
-      <button class="primary" id="startButton">START GAME →</button>
+  <section class="screen hidden" id="gameScreen">
+    <div class="game-layout">
+      <div>
+        <div class="stats">
+          <div class="stat">
+            <small>TIME LEFT</small>
+            <strong id="timer">03:00</strong>
+          </div>
+          <div class="stat">
+            <small>WORDS FOUND</small>
+            <strong id="score">0 / 10</strong>
+          </div>
+        </div>
+        <div class="progress-track"><div id="progress"></div></div>
+        <div class="grid-wrap">
+          <div id="grid" aria-label="Word search letter grid"></div>
+        </div>
+        <p class="hint">Select the first letter, then the last letter of a word. You can also drag across the letters.</p>
+      </div>
+      <aside class="word-panel">
+        <h3>Find these words</h3>
+        <p>Words you discover will be marked green.</p>
+        <div id="wordList"></div>
+        <div class="side-note">
+          Find all 10 words to complete the round. The game ends automatically when the timer reaches zero.
+        </div>
+      </aside>
     </div>
   </section>
 
-  <section id="gameArea">
-    <div class="stats">
-      <div class="stat"><strong id="foundCount">0/8</strong><small>Words found</small></div>
-      <div class="stat"><strong id="timer">00:00</strong><small>Time played</small></div>
-      <div class="stat"><strong id="remaining">8</strong><small>Remaining</small></div>
+  <section class="screen result-screen hidden" id="resultScreen">
+    <div class="result-icon" id="resultIcon">🏆</div>
+    <h2 id="resultTitle">Round complete!</h2>
+    <p id="resultMessage"></p>
+    <div class="result-score">
+      <strong id="finalScore">10 / 10</strong>
+      <span>Words found</span>
     </div>
-
-    <section class="panel">
-      <p class="instruction" id="instruction">Tap the first letter, then the last letter.</p>
-      <div class="grid" id="grid"></div>
-      <div class="words-panel">
-        <div class="words-title"><h2>Your words</h2><span>Find them all!</span></div>
-        <div class="words" id="words"></div>
-      </div>
-      <div class="message" id="message"></div>
-      <div class="controls" id="controls">
-        <a href="games.html" id="finishLink">RETURN TO GAMES</a>
-      </div>
-    </section>
+    <a class="back" href="games.html" id="finishLink">Return to Games</a>
   </section>
-
-  <footer>EarnGig Games · Play smart. Have fun.</footer>
 </main>
 
 <script>
-const SIZE=12;
-const WORD_COUNT=8;
-const SESSION_KEY="earngig_wordsearch_active";
+(() => {
+  "use strict";
 
-/* Expand this bank with new words as the game grows. */
-const WORD_BANK=[
-"APPLE","ORANGE","BANANA","MANGO","GRAPE","CHERRY","LEMON","PEACH","PEAR","PAPAYA","PINEAPPLE","COCONUT","AVOCADO","WATERMELON","STRAWBERRY","BLUEBERRY","GUAVA","PAWPAW","CASHEW","CUCUMBER",
-"PLANET","GALAXY","STAR","MOON","COMET","EARTH","OCEAN","RIVER","LAKE","MOUNTAIN","VALLEY","FOREST","GARDEN","FLOWER","NATURE","RAINBOW","SUNSHINE","THUNDER","BREEZE","CLOUD",
-"PUZZLE","GAMING","PLAYER","VICTORY","CHESS","CANDY","BUBBLE","ROCKET","CASTLE","DRAGON","KNIGHT","TROPHY","GOLD","SILVER","QUEST","SCORE","SURVIVAL","MEMORY","SEARCH","BLOCK",
-"MARKET","WALLET","COIN","MONEY","FRIEND","FAMILY","SCHOOL","ENERGY","BRIGHT","HAPPY","SMILE","DREAM","MUSIC","DANCE","CAREER","BUSINESS","TRADING","SAVINGS","PROFIT","REWARD",
-"TIGER","LION","ZEBRA","MONKEY","RABBIT","EAGLE","DOLPHIN","ELEPHANT","GIRAFFE","PANDA","LEOPARD","CHEETAH","TURTLE","PARROT","PEACOCK","SNAKE","HORSE","DONKEY","GOAT","SHEEP",
-"COOKIE","PIZZA","BURGER","BREAD","CHEESE","CARROT","TOMATO","POTATO","ONION","PEPPER","CHICKEN","FISH","RICE","BEANS","NOODLES","PANCAKE","WAFFLE","SANDWICH","SOUP","SALAD",
-"PURPLE","YELLOW","GREEN","ORANGE","BLACK","WHITE","BROWN","PINK","VIOLET","INDIGO","CRIMSON","SCARLET","GOLDEN","SILVER","BRONZE","TURQUOISE",
-"COMPUTER","KEYBOARD","MOBILE","TABLET","CAMERA","PRINTER","ROBOT","SOFTWARE","INTERNET","WEBSITE","BROWSER","NETWORK","DIGITAL","SCIENCE","PLAN","IDEA","DESIGN","FUTURE","INNOVATION","DISCOVERY",
-"FOOTBALL","BASKETBALL","TENNIS","CRICKET","RACING","CYCLING","SWIMMING","BOXING","GOLF","HOCKEY","VOLLEYBALL","RUNNING","JUMPING","FITNESS","MEDAL","CHAMPION",
-"COUNTRY","AFRICA","NIGERIA","LAGOS","ABUJA","LONDON","PARIS","TOKYO","CANADA","BRAZIL","KENYA","GHANA","EGYPT","DUBAI","EUROPE","ASIA","AMERICA","ISLAND","VILLAGE","CITY",
-"TEACHER","STUDENT","DOCTOR","NURSE","LAWYER","ENGINEER","ARTIST","WRITER","SINGER","DANCER","FARMER","DRIVER","PILOT","CHEF","POLICE","SOLDIER","MANAGER","DESIGNER","BUILDER","SCIENTIST",
-"WINDOW","DOOR","TABLE","CHAIR","PENCIL","PAPER","BOTTLE","MIRROR","CLOCK","LADDER","BASKET","BLANKET","PILLOW","CURTAIN","LANTERN","CANDLE","HAMMER","BUCKET","SPOON","PLATE"
-];
+  const ACTIVE_KEY = "earngig_wordsearch_active";
+  const SIZE = 12;
+  const TOTAL_WORDS = 10;
+  const ROUND_SECONDS = 180;
 
-const DIRECTIONS=[[0,1],[1,0],[0,-1],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
-let puzzle=[],selectedWords=[],selectedStart=null,foundWords=[],foundCells=[];
-let seconds=0,timerInterval=null,gameFinished=false;
-
-const gridElement=document.getElementById("grid");
-const wordsElement=document.getElementById("words");
-const instruction=document.getElementById("instruction");
-
-function shuffle(array){
- const a=[...array];
- for(let i=a.length-1;i>0;i--){
-  const j=Math.floor(Math.random()*(i+1));
-  [a[i],a[j]]=[a[j],a[i]];
- }
- return a;
-}
-
-function canPlace(grid,word,row,col,dr,dc){
- for(let i=0;i<word.length;i++){
-  const r=row+dr*i,c=col+dc*i;
-  if(r<0||r>=SIZE||c<0||c>=SIZE)return false;
-  if(grid[r][c]!==""&&grid[r][c]!==word[i])return false;
- }
- return true;
-}
-
-function placeAllWords(grid,words,index=0){
- if(index===words.length)return true;
- const word=words[index],positions=[];
- for(let r=0;r<SIZE;r++){
-  for(let c=0;c<SIZE;c++){
-   for(const [dr,dc] of DIRECTIONS){
-    if(canPlace(grid,word,r,c,dr,dc))positions.push({r,c,dr,dc});
-   }
+  // A refresh during an active round ends the attempt.
+  if (sessionStorage.getItem(ACTIVE_KEY) === "yes") {
+    sessionStorage.removeItem(ACTIVE_KEY);
+    window.location.replace("games.html");
+    return;
   }
- }
- for(const pos of shuffle(positions)){
-  const {r,c,dr,dc}=pos,changes=[];
-  for(let i=0;i<word.length;i++){
-   const rr=r+dr*i,cc=c+dc*i;
-   if(grid[rr][cc]===""){
-    grid[rr][cc]=word[i];
-    changes.push([rr,cc]);
-   }
+
+  const WORD_BANK = [
+    "EARNGIG","PUZZLE","GAMING","REWARD","COIN","MONEY",
+    "MARKET","WALLET","PLAYER","WINNER","CHALLENGE","FRIEND",
+    "SCORE","LEVEL","BONUS","PRIZE","GOLD","SILVER","DIAMOND",
+    "TREASURE","SUCCESS","VICTORY","HAPPY","BRIGHT","ENERGY",
+    "PLANET","GALAXY","ROCKET","COMET","STARS","MOON","SOLAR",
+    "OCEAN","RIVER","FOREST","GARDEN","FLOWER","NATURE","ISLAND",
+    "ORANGE","BANANA","MANGO","APPLE","GRAPES","LEMON","PAPAYA",
+    "TIGER","LION","ZEBRA","MONKEY","RABBIT","EAGLE","HORSE",
+    "SCHOOL","TEACHER","STUDENT","BOOK","PENCIL","PAPER","LEARN",
+    "CREATE","DESIGN","CODING","DIGITAL","ONLINE","WEBSITE",
+    "PHONE","LAPTOP","SCREEN","CAMERA","MUSIC","DANCE","MOVIE",
+    "TRAVEL","FLIGHT","TRAIN","BRIDGE","CASTLE","CITY","VILLAGE",
+    "FAMILY","PEOPLE","SMILE","LAUGHTER","KINDNESS","HONEST",
+    "COURAGE","FUTURE","DREAM","FOCUS","ACTION","EFFORT",
+    "POWER","STRONG","WISDOM","IDEA","THINK","SOLVE","SMART",
+    "HEALTH","FITNESS","RUNNING","SPORT","SOCCER","TENNIS",
+    "BASKET","GUITAR","PIANO","DRUM","PAINT","ARTIST","COLOUR",
+    "PURPLE","YELLOW","GREEN","ORCHID","PURPLE","VIOLET",
+    "AFRICA","NIGERIA","LAGOS","ABUJA","KANO","IBADAN",
+    "AFRICAN","SUNRISE","SUNSET","RAINBOW","THUNDER","BREEZE",
+    "WINTER","SUMMER","SPRING","AUTUMN","CLOUD","STORM",
+    "COOKIE","BREAD","CHEESE","CHICKEN","TOMATO","POTATO",
+    "COFFEE","WATER","JUICE","DINNER","BREAKFAST","KITCHEN",
+    "BUTTON","CIRCLE","SQUARE","TRIANGLE","PUZZLES","LETTERS",
+    "NUMBER","PATTERN","HIDDEN","SEARCH","FINDING","MYSTERY",
+    "JOURNEY","ADVENTURE","EXPLORE","DISCOVER","FREEDOM",
+    "BALANCE","GROWTH","TARGET","WINNING","GIGWORK","INCOME",
+    "SAVINGS","BUSINESS","VENDOR","SHOPPING","SELLER","BUYER",
+    "READER","WRITER","STORY","NOVEL","CHAPTER","READING",
+    "CONTENT","CREATOR","PUBLISH","AUTHOR","LIBRARY","POETRY"
+  ];
+
+  const DIRECTIONS = [
+    [0,1],[1,0],[0,-1],[-1,0],
+    [1,1],[1,-1],[-1,1],[-1,-1]
+  ];
+
+  const $ = id => document.getElementById(id);
+  const startScreen = $("startScreen");
+  const gameScreen = $("gameScreen");
+  const resultScreen = $("resultScreen");
+  const gridElement = $("grid");
+  const wordListElement = $("wordList");
+
+  let grid = [];
+  let words = [];
+  let placements = {};
+  let foundWords = new Set();
+  let selectedCells = [];
+  let firstCell = null;
+  let pointerDown = false;
+  let secondsLeft = ROUND_SECONDS;
+  let timerInterval = null;
+  let gameEnded = false;
+
+  function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
   }
-  if(placeAllWords(grid,words,index+1))return true;
-  changes.forEach(([rr,cc])=>grid[rr][cc]="");
- }
- return false;
-}
 
-function generatePuzzle(){
- for(let attempt=0;attempt<100;attempt++){
-  const chosen=shuffle(WORD_BANK).slice(0,WORD_COUNT);
-  const grid=Array.from({length:SIZE},()=>Array(SIZE).fill(""));
-  const placementOrder=[...chosen].sort((a,b)=>b.length-a.length);
-  if(!placeAllWords(grid,placementOrder))continue;
-
-  for(let r=0;r<SIZE;r++){
-   for(let c=0;c<SIZE;c++){
-    if(grid[r][c]==="")grid[r][c]=String.fromCharCode(65+Math.floor(Math.random()*26));
-   }
+  function emptyGrid() {
+    return Array.from({length: SIZE}, () => Array(SIZE).fill(""));
   }
-  return {grid,words:shuffle(chosen)};
- }
- throw new Error("Could not generate a puzzle. Please try again.");
-}
 
-function getCells(){return [...gridElement.children]}
-function cellIndex(r,c){return r*SIZE+c}
+  function canPlace(board, word, row, col, dr, dc) {
+    for (let i = 0; i < word.length; i++) {
+      const r = row + dr * i;
+      const c = col + dc * i;
+      if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) return false;
+      if (board[r][c] && board[r][c] !== word[i]) return false;
+    }
+    return true;
+  }
 
-function buildGrid(){
- gridElement.innerHTML="";
- puzzle.forEach((row,r)=>row.forEach((letter,c)=>{
-  const cell=document.createElement("button");
-  cell.type="button";
-  cell.className="cell";
-  cell.textContent=letter;
-  cell.setAttribute("aria-label",`Row ${r+1}, column ${c+1}, ${letter}`);
-  cell.addEventListener("click",()=>selectCell(r,c));
-  gridElement.appendChild(cell);
- }));
-}
+  function placeWord(board, word, row, col, dr, dc) {
+    const cells = [];
+    for (let i = 0; i < word.length; i++) {
+      const r = row + dr * i;
+      const c = col + dc * i;
+      board[r][c] = word[i];
+      cells.push({r,c});
+    }
+    return cells;
+  }
 
-function buildWordList(){
- wordsElement.innerHTML="";
- selectedWords.forEach(word=>{
-  const item=document.createElement("div");
-  item.className="word";
-  item.id="word-"+word;
-  item.textContent=word;
-  wordsElement.appendChild(item);
- });
-}
+  function generatePuzzle() {
+    const available = [...new Set(WORD_BANK)]
+      .filter(w => w.length >= 3 && w.length <= SIZE);
+    words = shuffle(available).slice(0, TOTAL_WORDS)
+      .sort((a,b) => b.length - a.length);
 
-function clearSelection(){
- selectedStart=null;
- getCells().forEach(cell=>cell.classList.remove("selected"));
- foundCells.forEach(i=>getCells()[i].classList.add("found"));
-}
+    // Try fresh grids until all ten words fit.
+    for (let attempt = 0; attempt < 80; attempt++) {
+      const board = emptyGrid();
+      const newPlacements = {};
+      let success = true;
 
-function selectCell(row,col){
- if(gameFinished)return;
- const cells=getCells(),index=cellIndex(row,col);
- if(selectedStart===null){
-  selectedStart={row,col};
-  cells[index].classList.add("selected");
-  instruction.textContent="Now tap the last letter of the word.";
-  return;
- }
- const start=selectedStart,dr=row-start.row,dc=col-start.col;
- if(dr===0&&dc===0){clearSelection();return}
- if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))){
-  clearSelection();
-  selectedStart={row,col};
-  cells[index].classList.add("selected");
-  instruction.textContent="Choose a straight line.";
-  return;
- }
- const steps=Math.max(Math.abs(dr),Math.abs(dc));
- const rs=Math.sign(dr),cs=Math.sign(dc);
- let letters="",indexes=[];
- for(let i=0;i<=steps;i++){
-  const rr=start.row+rs*i,cc=start.col+cs*i;
-  letters+=puzzle[rr][cc];
-  indexes.push(cellIndex(rr,cc));
- }
- const reverse=letters.split("").reverse().join("");
- const match=selectedWords.find(w=>!foundWords.includes(w)&&(w===letters||w===reverse));
- if(match){
-  foundWords.push(match);
-  indexes.forEach(i=>{
-   if(!foundCells.includes(i))foundCells.push(i);
-   cells[i].classList.add("found");
+      for (const word of words) {
+        const candidates = [];
+
+        for (let r = 0; r < SIZE; r++) {
+          for (let c = 0; c < SIZE; c++) {
+            for (const [dr,dc] of DIRECTIONS) {
+              if (canPlace(board, word, r, c, dr, dc)) {
+                candidates.push({r,c,dr,dc});
+              }
+            }
+          }
+        }
+
+        if (!candidates.length) {
+          success = false;
+          break;
+        }
+
+        const spot = candidates[Math.floor(Math.random() * candidates.length)];
+        newPlacements[word] = placeWord(
+          board, word, spot.r, spot.c, spot.dr, spot.dc
+        );
+      }
+
+      if (success) {
+        grid = board;
+        placements = newPlacements;
+        for (let r = 0; r < SIZE; r++) {
+          for (let c = 0; c < SIZE; c++) {
+            if (!grid[r][c]) {
+              grid[r][c] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random()*26)];
+            }
+          }
+        }
+        return;
+      }
+    }
+
+    throw new Error("Could not create a puzzle. Please try again.");
+  }
+
+  function renderGrid() {
+    gridElement.innerHTML = "";
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.textContent = grid[r][c];
+        cell.dataset.row = r;
+        cell.dataset.col = c;
+        cell.setAttribute("role","button");
+        cell.setAttribute("aria-label",grid[r][c]);
+        gridElement.appendChild(cell);
+      }
+    }
+  }
+
+  function renderWords() {
+    wordListElement.innerHTML = "";
+    words.forEach(word => {
+      const item = document.createElement("div");
+      item.className = "word";
+      item.textContent = word;
+      item.dataset.word = word;
+      wordListElement.appendChild(item);
+    });
+  }
+
+  function getCellElement(target) {
+    return target.closest(".cell");
+  }
+
+  function getLine(start, end) {
+    const dr = end.r - start.r;
+    const dc = end.c - start.c;
+    const steps = Math.max(Math.abs(dr), Math.abs(dc));
+
+    if (steps === 0) return [{r:start.r,c:start.c}];
+    if (!(dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc))) return [];
+
+    const stepR = Math.sign(dr);
+    const stepC = Math.sign(dc);
+    const cells = [];
+
+    for (let i = 0; i <= steps; i++) {
+      cells.push({r:start.r + stepR*i,c:start.c + stepC*i});
+    }
+    return cells;
+  }
+
+  function clearSelection() {
+    gridElement.querySelectorAll(".cell.selected").forEach(cell => {
+      cell.classList.remove("selected");
+    });
+    selectedCells = [];
+  }
+
+  function showSelection(cells) {
+    clearSelection();
+    selectedCells = cells;
+    cells.forEach(pos => {
+      const cell = gridElement.querySelector(
+        `[data-row="${pos.r}"][data-col="${pos.c}"]`
+      );
+      if (cell && !cell.classList.contains("found")) {
+        cell.classList.add("selected");
+      }
+    });
+  }
+
+  function checkSelection(cells) {
+    if (gameEnded || !cells.length) return;
+
+    const selected = cells.map(pos => grid[pos.r][pos.c]).join("");
+    const reversed = selected.split("").reverse().join("");
+
+    const matched = words.find(word =>
+      !foundWords.has(word) && (word === selected || word === reversed)
+    );
+
+    if (!matched) {
+      clearSelection();
+      return;
+    }
+
+    foundWords.add(matched);
+
+    cells.forEach(pos => {
+      const cell = gridElement.querySelector(
+        `[data-row="${pos.r}"][data-col="${pos.c}"]`
+      );
+      if (cell) {
+        cell.classList.remove("selected");
+        cell.classList.add("found");
+      }
+    });
+
+    const wordItem = wordListElement.querySelector(
+      `[data-word="${matched}"]`
+    );
+    if (wordItem) wordItem.classList.add("done");
+
+    $("score").textContent = `${foundWords.size} / ${TOTAL_WORDS}`;
+    $("progress").style.width = `${foundWords.size / TOTAL_WORDS * 100}%`;
+    selectedCells = [];
+
+    if (foundWords.size === TOTAL_WORDS) {
+      endGame(true);
+    }
+  }
+
+  function beginSelection(cell) {
+    if (gameEnded || !cell) return;
+    pointerDown = true;
+    firstCell = {
+      r:Number(cell.dataset.row),
+      c:Number(cell.dataset.col)
+    };
+    showSelection([firstCell]);
+  }
+
+  function updateSelection(cell) {
+    if (!pointerDown || !firstCell || !cell || gameEnded) return;
+    const end = {r:Number(cell.dataset.row),c:Number(cell.dataset.col)};
+    const line = getLine(firstCell,end);
+    if (line.length) showSelection(line);
+  }
+
+  function finishSelection() {
+    if (!pointerDown || gameEnded) return;
+    pointerDown = false;
+    checkSelection(selectedCells);
+    firstCell = null;
+  }
+
+  gridElement.addEventListener("pointerdown", event => {
+    const cell = getCellElement(event.target);
+    if (!cell) return;
+    event.preventDefault();
+    beginSelection(cell);
   });
-  document.getElementById("word-"+match).classList.add("done");
-  updateStats();
-  clearSelection();
-  instruction.textContent="Excellent! You found "+match+"!";
-  if(foundWords.length===WORD_COUNT)finishGame();
- }else{
-  instruction.textContent="Not a matching word. Try again!";
-  clearSelection();
- }
-}
 
-function updateStats(){
- document.getElementById("foundCount").textContent=foundWords.length+"/"+WORD_COUNT;
- document.getElementById("remaining").textContent=WORD_COUNT-foundWords.length;
-}
+  gridElement.addEventListener("pointerover", event => {
+    if (!pointerDown) return;
+    const cell = getCellElement(event.target);
+    if (cell) updateSelection(cell);
+  });
 
-function updateTimer(){
- seconds++;
- document.getElementById("timer").textContent=
-  String(Math.floor(seconds/60)).padStart(2,"0")+":"+
-  String(seconds%60).padStart(2,"0");
-}
+  gridElement.addEventListener("pointerup", finishSelection);
+  gridElement.addEventListener("pointercancel", finishSelection);
 
-function finishGame(){
- gameFinished=true;
- clearInterval(timerInterval);
- document.getElementById("message").style.display="block";
- document.getElementById("message").innerHTML=
-  "🎉 Puzzle completed!<br>Time: "+document.getElementById("timer").textContent+
-  "<br><small>Your game attempt is finished.</small>";
- document.getElementById("controls").style.display="flex";
- instruction.textContent="Well done! Return to the Games Lobby.";
-}
+  document.addEventListener("pointerup", () => {
+    if (pointerDown) finishSelection();
+  });
 
-function startGame(){
- const generated=generatePuzzle();
- puzzle=generated.grid;
- selectedWords=generated.words;
- foundWords=[];
- foundCells=[];
- selectedStart=null;
- seconds=0;
- gameFinished=false;
+  function updateTimer() {
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+    $("timer").textContent =
+      `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 
- document.getElementById("startScreen").style.display="none";
- document.getElementById("gameArea").style.display="block";
- document.getElementById("message").style.display="none";
- document.getElementById("controls").style.display="none";
- document.getElementById("timer").textContent="00:00";
- instruction.textContent="Tap the first letter, then the last letter.";
+    $("timer").classList.toggle("danger", secondsLeft <= 30);
 
- buildGrid();
- buildWordList();
- updateStats();
+    if (secondsLeft <= 0) {
+      endGame(false);
+      return;
+    }
+    secondsLeft--;
+  }
 
- sessionStorage.setItem(SESSION_KEY,"active");
- clearInterval(timerInterval);
- timerInterval=setInterval(updateTimer,1000);
-}
+  function endGame(won) {
+    if (gameEnded) return;
+    gameEnded = true;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    sessionStorage.removeItem(ACTIVE_KEY);
 
-/*
- If this game was already started in this tab,
- a reload must return the player to the Games Lobby.
-*/
-if(sessionStorage.getItem(SESSION_KEY)==="active"){
- sessionStorage.removeItem(SESSION_KEY);
- window.location.replace("games.html");
-}else{
- document.getElementById("startButton").addEventListener("click",startGame);
-}
+    gameScreen.classList.add("hidden");
+    resultScreen.classList.remove("hidden");
 
-/* Keep the attempt locked if the player leaves the page. */
-document.getElementById("finishLink").addEventListener("click",()=>{
- sessionStorage.removeItem(SESSION_KEY);
-});
+    $("resultIcon").textContent = won ? "🏆" : "⏰";
+    $("resultTitle").textContent = won ? "Amazing! You won!" : "Time is up!";
+    $("resultMessage").textContent = won
+      ? "You found all 10 hidden words before the countdown ended. Great job!"
+      : "The countdown has ended. Keep practising and try another round.";
+    $("finalScore").textContent = `${foundWords.size} / ${TOTAL_WORDS}`;
+  }
+
+  $("startButton").addEventListener("click", () => {
+    try {
+      generatePuzzle();
+      foundWords = new Set();
+      selectedCells = [];
+      firstCell = null;
+      pointerDown = false;
+      gameEnded = false;
+      secondsLeft = ROUND_SECONDS;
+
+      renderGrid();
+      renderWords();
+
+      $("score").textContent = `0 / ${TOTAL_WORDS}`;
+      $("progress").style.width = "0%";
+      $("timer").classList.remove("danger");
+      $("timer").textContent = "03:00";
+
+      startScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      gameScreen.classList.remove("hidden");
+
+      // Frontend-only refresh guard. A real attempt lock needs a backend.
+      sessionStorage.setItem(ACTIVE_KEY,"yes");
+
+      timerInterval = setInterval(updateTimer,1000);
+    } catch (error) {
+      alert("We couldn't create a puzzle. Please reload the page and try again.");
+      console.error(error);
+    }
+  });
+
+  $("backLink").addEventListener("click", () => {
+    if (!gameEnded && timerInterval) {
+      clearInterval(timerInterval);
+      sessionStorage.removeItem(ACTIVE_KEY);
+    }
+  });
+
+  $("finishLink").addEventListener("click", () => {
+    sessionStorage.removeItem(ACTIVE_KEY);
+  });
+})();
 </script>
 </body>
 </html>
