@@ -49,8 +49,18 @@ header {
   font-weight:900;
   letter-spacing:-2px;
   white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
 }
-.logo .crown {color:var(--gold)}
+.logo .crown {
+  font-size:1em;
+  color:var(--gold);
+  display:inline-block;
+  vertical-align:middle;
+  letter-spacing:0;
+  line-height:1;
+}
 .logo span {color:var(--lime)}
 nav {
   display:flex;
@@ -95,7 +105,7 @@ nav a:hover {color:var(--lime)}
   font-size:28px;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero {
   max-width:1500px;
   margin:auto;
@@ -137,7 +147,7 @@ nav a:hover {color:var(--lime)}
 }
 .hero-buttons {display:flex;gap:13px;flex-wrap:wrap}
 
-/* MONEY ILLUSTRATION */
+/* CASH AND COINS ILLUSTRATION */
 .hero-art {
   width:100%;
   max-width:760px;
@@ -198,7 +208,7 @@ nav a:hover {color:var(--lime)}
   to {opacity:1;transform:scale(1.2)}
 }
 
-/* ADVERTISING BANNER */
+/* SPOTLIGHT */
 .spotlight {
   max-width:1450px;
   width:94%;
@@ -434,7 +444,7 @@ footer a:hover {color:var(--lime)}
 <body>
 
 <header>
-  <a class="logo" href="index.html"><b class="crown">♛</b> Earn<span>Gig</span></a>
+  <a class="logo" href="index.html"><b class="crown">👑</b>Earn<span>Gig</span></a>
 
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
 
@@ -457,7 +467,6 @@ footer a:hover {color:var(--lime)}
 
 <main>
 
-<!-- HERO -->
 <section class="hero">
 
   <div class="hero-copy">
@@ -477,7 +486,6 @@ footer a:hover {color:var(--lime)}
     </div>
   </div>
 
-  <!-- CUSTOM CASH AND COINS ILLUSTRATION -->
   <div class="hero-art">
     <svg class="money-svg" viewBox="0 0 700 500"
       xmlns="http://www.w3.org/2000/svg"
@@ -495,7 +503,7 @@ footer a:hover {color:var(--lime)}
           <stop offset="75%" stop-color="#e99a00"/>
           <stop offset="100%" stop-color="#9d5200"/>
         </linearGradient>
-        <linearGradient id="purpleCash" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="cash" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#45dc79"/>
           <stop offset="100%" stop-color="#08743e"/>
         </linearGradient>
@@ -511,7 +519,6 @@ footer a:hover {color:var(--lime)}
         </filter>
       </defs>
 
-      <!-- Background glow -->
       <ellipse cx="350" cy="370" rx="260" ry="95"
         fill="#b000ff" opacity=".25" filter="url(#shadow)"/>
       <ellipse cx="350" cy="340" rx="280" ry="155"
@@ -520,7 +527,7 @@ footer a:hover {color:var(--lime)}
       <ellipse cx="350" cy="340" rx="230" ry="120"
         fill="none" stroke="#ed6aff" stroke-width="2" opacity=".7"/>
 
-      <!-- Flying naira note left -->
+      <!-- Flying banknote left -->
       <g class="cash-note">
         <g transform="rotate(-24 130 140)">
           <rect x="55" y="105" width="150" height="78" rx="9"
@@ -534,7 +541,7 @@ footer a:hover {color:var(--lime)}
         </g>
       </g>
 
-      <!-- Flying naira note right -->
+      <!-- Flying banknote right -->
       <g class="cash-note delay1">
         <g transform="rotate(22 570 120)">
           <rect x="500" y="80" width="145" height="75" rx="9"
@@ -548,13 +555,15 @@ footer a:hover {color:var(--lime)}
         </g>
       </g>
 
-      <!-- Small flying note -->
-      <g class="cash-note delay2" transform="rotate(-13 550 260)">
-        <rect x="510" y="238" width="85" height="45" rx="6"
-          fill="url(#bill)" stroke="#d3ffac" stroke-width="3"/>
-        <circle cx="552" cy="260" r="13" fill="#c2ff9b"/>
-        <text x="552" y="267" text-anchor="middle"
-          font-size="18" font-weight="900" fill="#08743e">₦</text>
+      <!-- Small flying banknote -->
+      <g class="cash-note delay2">
+        <g transform="rotate(-13 550 260)">
+          <rect x="510" y="238" width="85" height="45" rx="6"
+            fill="url(#bill)" stroke="#d3ffac" stroke-width="3"/>
+          <circle cx="552" cy="260" r="13" fill="#c2ff9b"/>
+          <text x="552" y="267" text-anchor="middle"
+            font-size="18" font-weight="900" fill="#08743e">₦</text>
+        </g>
       </g>
 
       <!-- Left coin stack -->
@@ -599,7 +608,7 @@ footer a:hover {color:var(--lime)}
           <rect x="205" y="245" width="290" height="145" rx="14"
             fill="#08713c" stroke="#8cff86" stroke-width="4"/>
           <rect x="216" y="256" width="268" height="123" rx="9"
-            fill="url(#purpleCash)" stroke="#d4ff9f" stroke-width="3"/>
+            fill="url(#cash)" stroke="#d4ff9f" stroke-width="3"/>
           <rect x="315" y="250" width="65" height="135"
             fill="#e7ffb4" opacity=".85"/>
           <rect x="330" y="250" width="35" height="135"
@@ -614,7 +623,7 @@ footer a:hover {color:var(--lime)}
           <rect x="230" y="185" width="240" height="85" rx="12"
             fill="#168b4b" stroke="#b4ff91" stroke-width="4"/>
           <rect x="243" y="196" width="214" height="63" rx="7"
-            fill="url(#purpleCash)" stroke="#e2ffbd" stroke-width="3"/>
+            fill="url(#cash)" stroke="#e2ffbd" stroke-width="3"/>
           <rect x="320" y="189" width="60" height="77"
             fill="#e6ffb8"/>
           <text x="350" y="241" text-anchor="middle"
@@ -622,7 +631,7 @@ footer a:hover {color:var(--lime)}
         </g>
       </g>
 
-      <!-- Large floating coin left -->
+      <!-- Large floating coin -->
       <g class="gold-coin" filter="url(#glow)">
         <circle cx="225" cy="105" r="35"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
@@ -632,7 +641,6 @@ footer a:hover {color:var(--lime)}
           font-size="31" font-weight="900" fill="#985200">₦</text>
       </g>
 
-      <!-- Floating coin right -->
       <g class="gold-coin delay1" filter="url(#glow)">
         <circle cx="480" cy="180" r="31"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
@@ -642,7 +650,6 @@ footer a:hover {color:var(--lime)}
           font-size="27" font-weight="900" fill="#985200">₦</text>
       </g>
 
-      <!-- Smaller floating coin -->
       <g class="gold-coin delay2">
         <circle cx="350" cy="105" r="24"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="3"/>
@@ -669,13 +676,12 @@ footer a:hover {color:var(--lime)}
         <circle cx="600" cy="390" r="4"/>
         <circle cx="100" cy="170" r="3"/>
       </g>
-
     </svg>
   </div>
 
 </section>
 
-<!-- EARNGIG SPOTLIGHT -->
+<!-- SPOTLIGHT -->
 <section class="spotlight">
   <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
   <div class="spotlight-copy">
@@ -690,7 +696,6 @@ footer a:hover {color:var(--lime)}
   <h2 class="section-heading">More ways to <span>earn</span> ━</h2>
 
   <div class="feature-grid">
-
     <article class="feature">
       <div class="feature-icon">🎬</div>
       <h3>Watch Ads</h3>
@@ -718,16 +723,14 @@ footer a:hover {color:var(--lime)}
       <p>Keep track of your rewards and transactions.</p>
       <a href="pages/wallet.html">Open wallet →</a>
     </article>
-
   </div>
 </section>
 
-<!-- EXPLORE EARNGIG -->
+<!-- DISCOVER -->
 <section class="section" id="discover">
   <h2 class="section-heading">Explore <span>EarnGig</span></h2>
 
   <div class="discover-grid">
-
     <article class="discover-card">
       <h3>🎮 Play Games</h3>
       <p>Discover exciting games, challenge yourself and enjoy the experience.</p>
@@ -745,7 +748,6 @@ footer a:hover {color:var(--lime)}
       <p>Create your store and introduce your products to EarnGig customers.</p>
       <a class="btn btn-outline" href="pages/my-shop.html">Create Your Store →</a>
     </article>
-
   </div>
 </section>
 
@@ -760,7 +762,7 @@ footer a:hover {color:var(--lime)}
 
 <!-- FOOTER -->
 <footer>
-  <a class="logo" href="index.html"><b class="crown">♛</b> Earn<span>Gig</span></a>
+  <a class="logo" href="index.html"><b class="crown">👑</b>Earn<span>Gig</span></a>
 
   <div class="footer-links">
     <a href="pages/about.html">About</a>
