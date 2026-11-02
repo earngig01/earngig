@@ -1,16 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#160329">
 <title>EarnGig | Play. Read. Earn. Shop.</title>
+
 <style>
 :root {
-  --purple:#17052d;
-  --deep:#0c031b;
+  --purple:#18042e;
+  --purple2:#36075d;
   --lime:#caff19;
   --gold:#ffc928;
-  --pink:#e52aff;
+  --pink:#dc28ff;
   --white:#fff;
 }
 * {box-sizing:border-box;margin:0;padding:0}
@@ -19,22 +22,23 @@ body {
   font-family:Arial,Helvetica,sans-serif;
   color:white;
   background:
-    radial-gradient(ellipse at 80% 15%,#510c88 0%,transparent 35%),
-    radial-gradient(ellipse at 5% 75%,#620c8c 0%,transparent 30%),
-    linear-gradient(135deg,#10031e,#21063d 55%,#10031e);
+    radial-gradient(ellipse at 80% 15%,#501080 0%,transparent 38%),
+    radial-gradient(ellipse at 0% 75%,#510d78 0%,transparent 35%),
+    linear-gradient(135deg,#10021e,#23063e 55%,#10021e);
   overflow-x:hidden;
 }
 a {color:inherit;text-decoration:none}
 button {font:inherit;cursor:pointer}
+
 header {
-  min-height:82px;
-  padding:15px 4%;
+  min-height:78px;
+  padding:13px 4%;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px;
+  gap:18px;
+  background:#160329ed;
   border-bottom:1px solid #a72cff55;
-  background:#150329e8;
   position:relative;
   z-index:10;
 }
@@ -44,28 +48,35 @@ header {
   letter-spacing:-2px;
   white-space:nowrap;
 }
+.logo .crown {color:var(--gold)}
 .logo span {color:var(--lime)}
-.logo b {color:var(--gold)}
-nav {display:flex;align-items:center;gap:23px}
+
+nav {
+  display:flex;
+  align-items:center;
+  gap:19px;
+}
 nav a {
-  font-size:14px;
+  font-size:13px;
   font-weight:bold;
   color:#f5eaff;
   transition:.2s;
 }
 nav a:hover {color:var(--lime)}
+
 .header-actions {display:flex;gap:10px;align-items:center}
 .btn {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:10px;
-  padding:14px 22px;
+  gap:9px;
+  padding:14px 21px;
   border-radius:13px;
   font-weight:800;
   transition:.25s;
+  text-align:center;
 }
-.btn:hover {transform:translateY(-3px);filter:brightness(1.1)}
+.btn:hover {transform:translateY(-3px);filter:brightness(1.12)}
 .btn-lime {
   background:var(--lime);
   color:#160b21;
@@ -79,19 +90,20 @@ nav a:hover {color:var(--lime)}
 .menu-toggle {
   display:none;
   background:none;
-  color:white;
   border:0;
+  color:white;
   font-size:28px;
 }
+
+/* HERO */
 .hero {
   max-width:1500px;
   margin:auto;
-  padding:55px 4% 15px;
-  min-height:510px;
+  padding:40px 4% 20px;
   display:grid;
-  grid-template-columns: .9fr 1.1fr;
+  grid-template-columns:.88fr 1.12fr;
   align-items:center;
-  gap:10px;
+  gap:15px;
   position:relative;
 }
 .hero-copy {position:relative;z-index:2}
@@ -102,11 +114,11 @@ nav a:hover {color:var(--lime)}
   background:linear-gradient(90deg,#7415a8,#470b78);
   border:1px solid #d93cff70;
   font-weight:800;
-  margin-bottom:18px;
+  margin-bottom:20px;
 }
 .hero h1 {
-  font-size:clamp(48px,6.2vw,82px);
-  line-height:.98;
+  font-size:clamp(48px,6vw,82px);
+  line-height:.99;
   letter-spacing:-3px;
   font-weight:900;
   font-style:italic;
@@ -118,125 +130,67 @@ nav a:hover {color:var(--lime)}
   text-shadow:0 0 25px #caff1960;
 }
 .hero-copy p {
-  color:#e9dff3;
+  color:#eee2f7;
   font-size:18px;
-  line-height:1.5;
-  max-width:470px;
-  margin:25px 0;
+  line-height:1.55;
+  max-width:480px;
+  margin:23px 0;
 }
-.hero-buttons {display:flex;gap:14px;flex-wrap:wrap}
+.hero-buttons {display:flex;gap:13px;flex-wrap:wrap}
+
+/* ORIGINAL VECTOR GAMER ILLUSTRATION */
 .hero-art {
-  min-height:420px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  isolation:isolate;
-}
-.phone-glow {
-  position:absolute;
-  width:290px;height:350px;
-  border:3px solid #d42cff;
-  border-radius:55px;
-  background:linear-gradient(145deg,#27094d,#100520);
-  box-shadow:0 0 25px #d42cff,0 0 85px #a51cff80;
-  transform:rotate(-7deg);
-  z-index:-1;
-}
-.phone-screen {
-  width:90%;height:85%;
-  border-radius:38px;
-  border:2px solid #a84dff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-  background:radial-gradient(circle,#50118c,#16052c);
-}
-.phone-screen .game-icon {font-size:75px;filter:drop-shadow(0 0 14px #e33bff)}
-.phone-screen strong {font-size:23px;color:var(--lime)}
-.gamers {
   width:100%;
+  position:relative;
   display:flex;
   justify-content:center;
-  align-items:flex-end;
-  gap:0;
+  align-items:center;
+  min-width:0;
+}
+.hero-art::before {
+  content:"";
+  position:absolute;
+  width:75%;
+  height:65%;
+  border-radius:50%;
+  background:#9d19ff;
+  filter:blur(90px);
+  opacity:.35;
+}
+.hero-svg {
   position:relative;
-  z-index:2;
+  display:block;
+  width:100%;
+  max-width:760px;
+  height:auto;
+  overflow:visible;
+  filter:drop-shadow(0 0 25px #b52cff55);
+  animation:heroFloat 4s ease-in-out infinite;
 }
-.gamer {
-  width:44%;
-  text-align:center;
-  position:relative;
-  animation:bob 3s ease-in-out infinite;
-}
-.gamer:nth-child(2) {animation-delay:1s}
-.gamer-face {
-  font-size:clamp(100px,13vw,175px);
-  filter:drop-shadow(0 0 18px #c42bff);
-  line-height:1.1;
-}
-.gamer-phone {
-  display:inline-block;
-  padding:12px 20px;
-  border:3px solid #d84aff;
-  border-radius:14px;
-  background:#16052b;
-  box-shadow:0 0 22px #d42cff;
-  font-size:27px;
-  margin-top:-15px;
-}
-.coin {
-  position:absolute;
-  color:var(--gold);
-  font-size:32px;
-  text-shadow:0 0 15px #ffb900;
-  animation:float 4s ease-in-out infinite;
-  z-index:3;
-}
-.c1 {top:8%;left:18%}
-.c2 {top:24%;right:10%;animation-delay:1s}
-.c3 {bottom:20%;left:9%;animation-delay:2s}
-.c4 {bottom:8%;right:17%;animation-delay:.5s}
-.c5 {top:48%;left:49%;animation-delay:1.5s}
-.money {
-  position:absolute;
-  font-size:35px;
-  animation:float 3s ease-in-out infinite;
-}
-.m1 {top:12%;right:29%}
-.m2 {bottom:10%;left:33%;animation-delay:1s}
-.reward-pile {
-  position:absolute;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:45px;
-  white-space:nowrap;
-  filter:drop-shadow(0 0 15px #ffb700);
-  z-index:4;
-}
-@keyframes bob {
+@keyframes heroFloat {
   0%,100% {transform:translateY(0)}
-  50% {transform:translateY(-13px)}
+  50% {transform:translateY(-9px)}
 }
-@keyframes float {
-  0%,100% {transform:translateY(0) rotate(-8deg)}
-  50% {transform:translateY(-22px) rotate(10deg)}
+.float-coin {animation:coinFloat 3s ease-in-out infinite}
+.float-coin:nth-of-type(2) {animation-delay:.6s}
+.float-coin:nth-of-type(3) {animation-delay:1.2s}
+@keyframes coinFloat {
+  0%,100% {transform:translateY(0)}
+  50% {transform:translateY(-12px)}
 }
+
+/* SPOTLIGHT */
 .spotlight {
   max-width:1450px;
-  margin:15px auto 25px;
   width:94%;
-  min-height:105px;
-  padding:18px 35px;
+  margin:15px auto 35px;
+  padding:20px 30px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:20px;
   border:2px solid #c52aff;
-  border-radius:28px;
+  border-radius:27px;
   background:linear-gradient(100deg,#4b087f,#8111b0,#32104f);
   box-shadow:0 0 30px #a61bff55,inset 0 0 25px #d52aff30;
 }
@@ -246,17 +200,23 @@ nav a:hover {color:var(--lime)}
   font-weight:900;
   white-space:nowrap;
 }
-.spotlight-copy {flex:1;border-left:2px solid #ffffff70;padding-left:30px}
+.spotlight-copy {
+  flex:1;
+  border-left:2px solid #ffffff70;
+  padding-left:27px;
+}
 .spotlight-copy strong {font-size:22px}
-.spotlight-copy p {margin-top:6px;color:#eadcf7}
+.spotlight-copy p {margin-top:7px;color:#eadcf7;line-height:1.4}
+
+/* FEATURE CARDS */
 .section {
   max-width:1500px;
-  margin:35px auto;
+  margin:38px auto;
   padding:0 4%;
 }
 .section-heading {
   font-size:32px;
-  margin-bottom:22px;
+  margin-bottom:23px;
 }
 .section-heading span {color:var(--lime)}
 .feature-grid {
@@ -265,9 +225,9 @@ nav a:hover {color:var(--lime)}
   gap:17px;
 }
 .feature {
-  min-height:175px;
-  padding:22px 18px;
-  border-radius:24px;
+  min-height:180px;
+  padding:22px 19px;
+  border-radius:23px;
   border:1px solid #d63cff;
   background:linear-gradient(140deg,#4a1268,#21103d 75%);
   box-shadow:0 0 18px #bd22ff30;
@@ -281,7 +241,7 @@ nav a:hover {color:var(--lime)}
 .feature:nth-child(2) {border-color:#20aaff}
 .feature:nth-child(3) {border-color:#e52aff}
 .feature:nth-child(4) {border-color:#37e77c}
-.feature-icon {font-size:42px;margin-bottom:12px}
+.feature-icon {font-size:39px;margin-bottom:12px}
 .feature h3 {font-size:21px;margin-bottom:9px}
 .feature p {font-size:14px;line-height:1.5;color:#e7ddef}
 .feature a {
@@ -290,6 +250,8 @@ nav a:hover {color:var(--lime)}
   font-weight:800;
   margin-top:16px;
 }
+
+/* DISCOVERY */
 .discover-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -300,12 +262,16 @@ nav a:hover {color:var(--lime)}
   border-radius:20px;
   background:linear-gradient(135deg,#321052,#18072c);
   border:1px solid #9b38cf;
+  transition:.25s;
 }
+.discover-card:hover {transform:translateY(-5px);border-color:var(--lime)}
 .discover-card h3 {font-size:23px;margin-bottom:10px}
 .discover-card p {color:#d7c9e5;line-height:1.5;margin-bottom:18px}
+
+/* BOTTOM */
 .bottom-cta {
   margin:50px 3% 30px;
-  padding:32px 20px;
+  padding:35px 20px;
   text-align:center;
   border:2px solid #c02cff;
   border-radius:25px;
@@ -313,7 +279,8 @@ nav a:hover {color:var(--lime)}
   box-shadow:0 0 35px #b52cff50;
 }
 .bottom-cta h2 {font-size:30px;margin-bottom:10px}
-.bottom-cta p {color:#f0ddff;margin-bottom:18px}
+.bottom-cta p {color:#f0ddff;margin-bottom:20px;line-height:1.5}
+
 footer {
   padding:35px 4%;
   display:flex;
@@ -324,58 +291,107 @@ footer {
   border-top:1px solid #a72cff50;
   color:#cbbbdc;
 }
-.footer-links {display:flex;gap:25px;flex-wrap:wrap;font-size:14px}
+.footer-links {display:flex;gap:23px;flex-wrap:wrap;font-size:14px}
 footer a:hover {color:var(--lime)}
+
+/* TABLET */
 @media(max-width:1050px) {
-  nav {gap:12px}
-  nav a {font-size:12px}
+  nav {gap:11px}
+  nav a {font-size:11px}
   .feature-grid {grid-template-columns:repeat(2,1fr)}
+  .hero {grid-template-columns:.9fr 1.1fr}
 }
+
+/* MOBILE */
 @media(max-width:760px) {
-  header {padding:13px 5%}
+  header {padding:13px 5%;min-height:68px}
+  .logo {font-size:29px}
   .menu-toggle {display:block}
   nav {
     display:none;
     position:absolute;
-    top:75px;left:0;right:0;
+    top:68px;
+    left:0;
+    right:0;
     background:#19052f;
-    padding:22px;
+    padding:23px 6%;
     flex-direction:column;
     align-items:flex-start;
+    gap:20px;
     border-bottom:1px solid #a72cff;
+    box-shadow:0 15px 25px #0006;
   }
   nav.open {display:flex}
+  nav a {font-size:15px}
   .header-actions .btn {padding:10px 13px;font-size:12px}
   .hero {
     grid-template-columns:1fr;
-    padding-top:40px;
+    padding:35px 5% 10px;
     text-align:center;
+    gap:0;
   }
-  .hero-copy p {margin:20px auto}
+  .welcome {font-size:13px}
+  .hero h1 {
+    font-size:clamp(48px,12vw,68px);
+    letter-spacing:-2px;
+  }
+  .hero-copy p {
+    font-size:16px;
+    margin:19px auto 22px;
+    max-width:500px;
+  }
   .hero-buttons {justify-content:center}
-  .hero-art {min-height:360px;margin-top:20px}
-  .phone-glow {width:220px;height:280px}
-  .gamer-face {font-size:110px}
-  .spotlight {flex-wrap:wrap;padding:22px}
-  .spotlight-title {white-space:normal}
-  .spotlight-copy {border-left:0;padding-left:0;min-width:100%}
+  .hero-art {
+    width:100%;
+    max-width:580px;
+    margin:18px auto 5px;
+  }
+  .hero-svg {width:100%}
+  .spotlight {
+    width:92%;
+    padding:22px;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:17px;
+    border-radius:24px;
+  }
+  .spotlight-title {
+    white-space:normal;
+    font-size:23px;
+  }
+  .spotlight-copy {
+    border-left:0;
+    border-top:1px solid #ffffff65;
+    padding:15px 0 0;
+    width:100%;
+  }
+  .spotlight-copy strong {font-size:20px}
+  .spotlight .btn {width:100%}
   .discover-grid {grid-template-columns:1fr}
   footer {justify-content:center;text-align:center}
   .footer-links {justify-content:center}
 }
+
+/* SMALL PHONES */
 @media(max-width:430px) {
-  .logo {font-size:27px}
+  .logo {font-size:26px}
   .header-actions .btn-outline {display:none}
-  .hero h1 {font-size:49px}
+  .hero {padding-top:28px}
+  .hero h1 {font-size:48px}
+  .hero-art {margin-top:12px}
   .feature-grid {grid-template-columns:1fr}
-  .spotlight .btn {width:100%}
+  .section-heading {font-size:27px}
+  .feature {min-height:160px}
+  .bottom-cta h2 {font-size:25px}
+  .footer-links {gap:16px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
-  <a class="logo" href="index.html"><b>👑</b>Earn<span>Gig</span></a>
+  <a class="logo" href="index.html"><b class="crown">♛</b> Earn<span>Gig</span></a>
 
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
 
@@ -397,128 +413,363 @@ footer a:hover {color:var(--lime)}
 </header>
 
 <main>
-  <section class="hero">
-    <div class="hero-copy">
-      <div class="welcome">👑 WELCOME TO EARNGIG</div>
-      <h1>Play. Read.<span>Earn. Shop.</span></h1>
-      <p>
-        Your destination for exciting games, amazing stories,
-        real rewards and everyday shopping. Discover more ways
-        to enjoy your time on one platform.
-      </p>
-      <div class="hero-buttons">
-        <a class="btn btn-lime" href="pages/register.html">Create Account →</a>
-        <a class="btn btn-outline" href="#discover">Explore EarnGig</a>
-      </div>
+
+<section class="hero">
+
+  <div class="hero-copy">
+    <div class="welcome">👑 WELCOME TO EARNGIG</div>
+
+    <h1>Play. Read.<span>Earn. Shop.</span></h1>
+
+    <p>
+      Your destination for exciting games, amazing stories,
+      real rewards and everyday shopping. Discover more ways
+      to enjoy your time on one platform.
+    </p>
+
+    <div class="hero-buttons">
+      <a class="btn btn-lime" href="pages/register.html">Create Account →</a>
+      <a class="btn btn-outline" href="#discover">Explore EarnGig</a>
     </div>
+  </div>
 
-    <div class="hero-art">
-      <div class="phone-glow">
-        <div class="phone-screen">
-          <div class="game-icon">🎮</div>
-          <strong>EarnGig</strong>
-          <div style="font-size:35px">🏆</div>
-        </div>
-      </div>
+  <!-- Original illustrated gaming scene -->
+  <div class="hero-art">
 
-      <div class="gamers">
-        <div class="gamer">
-          <div class="gamer-face">👨🏾‍🦱</div>
-          <div class="gamer-phone">📱</div>
-        </div>
-        <div class="gamer">
-          <div class="gamer-face">👩🏾‍🦱</div>
-          <div class="gamer-phone">📱</div>
-        </div>
-      </div>
+    <svg class="hero-svg" viewBox="0 0 760 540"
+         xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-label="A young man and woman playing mobile games with glowing coins and cash">
 
-      <div class="coin c1">🪙</div>
-      <div class="coin c2">🪙</div>
-      <div class="coin c3">✨</div>
-      <div class="coin c4">🪙</div>
-      <div class="coin c5">⭐</div>
-      <div class="money m1">💵</div>
-      <div class="money m2">💸</div>
-      <div class="reward-pile">🪙 💰 🪙</div>
-    </div>
-  </section>
+      <defs>
+        <linearGradient id="hoodie" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#a52bff"/>
+          <stop offset="1" stop-color="#35006c"/>
+        </linearGradient>
+        <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#f5c4ff"/>
+          <stop offset="1" stop-color="#9d42d9"/>
+        </linearGradient>
+        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#bd704b"/>
+          <stop offset="1" stop-color="#71351f"/>
+        </linearGradient>
+        <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff49a"/>
+          <stop offset=".45" stop-color="#ffc400"/>
+          <stop offset="1" stop-color="#b86a00"/>
+        </linearGradient>
+        <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#461080"/>
+          <stop offset="1" stop-color="#10051e"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="7" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="softshadow">
+          <feGaussianBlur stdDeviation="10"/>
+        </filter>
+      </defs>
 
-  <section class="spotlight">
-    <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
-    <div class="spotlight-copy">
-      <strong>Put your brand in the spotlight.</strong>
-      <p>Advertise to the growing EarnGig community.</p>
-    </div>
-    <a class="btn btn-lime" href="pages/advertise.html">Advertise Now →</a>
-  </section>
+      <!-- Purple energy halo -->
+      <ellipse cx="380" cy="350" rx="330" ry="175"
+        fill="#a000ff" opacity=".14" filter="url(#softshadow)"/>
+      <path d="M45 360 C10 160 200 30 380 75 S730 170 715 345"
+        fill="none" stroke="#db31ff" stroke-width="5"
+        opacity=".9" filter="url(#glow)"/>
+      <path d="M30 395 C130 500 290 505 410 455 S680 490 735 355"
+        fill="none" stroke="#a62aff" stroke-width="4"
+        filter="url(#glow)"/>
 
-  <section class="section">
-    <h2 class="section-heading">More ways to <span>earn</span> ━</h2>
-    <div class="feature-grid">
+      <!-- Floating money -->
+      <g transform="rotate(-19 380 85)">
+        <rect x="330" y="60" width="95" height="43" rx="7"
+          fill="#42c95e" stroke="#a4ff9b" stroke-width="3"/>
+        <rect x="340" y="67" width="75" height="29" rx="4"
+          fill="none" stroke="#b9ffab" stroke-width="2"/>
+        <circle cx="378" cy="81" r="12" fill="#a6f18b"/>
+        <path d="M378 70v22m-7-16h12" stroke="#248d3c" stroke-width="3"/>
+      </g>
+      <g transform="rotate(20 645 250)">
+        <rect x="620" y="230" width="70" height="35" rx="5"
+          fill="#40c85b" stroke="#c0ff8c" stroke-width="2"/>
+        <circle cx="655" cy="247" r="10" fill="#a7ed8c"/>
+      </g>
 
-      <article class="feature">
-        <div class="feature-icon">🎬</div>
-        <h3>Watch Ads</h3>
-        <p>Watch sponsored videos and collect reward coins.</p>
-        <a href="pages/watch-ads.html">Start earning →</a>
-      </article>
+      <!-- Floating gold coins -->
+      <g class="float-coin" filter="url(#glow)">
+        <circle cx="120" cy="155" r="35" fill="url(#gold)" stroke="#ffe98a" stroke-width="4"/>
+        <circle cx="120" cy="155" r="26" fill="none" stroke="#c47c00" stroke-width="3"/>
+        <text x="120" y="166" text-anchor="middle" font-size="30" font-weight="900" fill="#a15c00">₦</text>
+      </g>
+      <g class="float-coin" filter="url(#glow)">
+        <circle cx="650" cy="130" r="30" fill="url(#gold)" stroke="#ffe98a" stroke-width="4"/>
+        <circle cx="650" cy="130" r="22" fill="none" stroke="#c47c00" stroke-width="3"/>
+        <text x="650" y="140" text-anchor="middle" font-size="25" font-weight="900" fill="#a15c00">₦</text>
+      </g>
+      <g class="float-coin">
+        <circle cx="570" cy="350" r="25" fill="url(#gold)" stroke="#ffe98a" stroke-width="3"/>
+        <text x="570" y="359" text-anchor="middle" font-size="21" font-weight="900" fill="#a15c00">₦</text>
+      </g>
+      <g class="float-coin">
+        <circle cx="190" cy="380" r="25" fill="url(#gold)" stroke="#ffe98a" stroke-width="3"/>
+        <text x="190" y="389" text-anchor="middle" font-size="21" font-weight="900" fill="#a15c00">₦</text>
+      </g>
 
-      <article class="feature">
-        <div class="feature-icon">👥</div>
-        <h3>Refer Friends</h3>
-        <p>Invite friends and earn when their referrals qualify.</p>
-        <a href="pages/referrals.html">Invite friends →</a>
-      </article>
+      <!-- Man's body -->
+      <path d="M40 535 Q48 380 140 335 Q205 300 305 345
+        Q350 390 350 540Z" fill="url(#hoodie)" stroke="#a83bff" stroke-width="4"/>
 
-      <article class="feature">
-        <div class="feature-icon">📖</div>
-        <h3>Read Novels</h3>
-        <p>Explore stories and earn from qualified reading.</p>
-        <a href="pages/novels.html">Read stories →</a>
-      </article>
+      <!-- Man's neck -->
+      <path d="M170 260 L170 333 Q200 370 235 332 L230 250Z"
+        fill="url(#skin)"/>
 
-      <article class="feature">
-        <div class="feature-icon">👛</div>
-        <h3>My Wallet</h3>
-        <p>Keep track of your rewards and transactions.</p>
-        <a href="pages/wallet.html">Open wallet →</a>
-      </article>
+      <!-- Man's ears -->
+      <ellipse cx="103" cy="198" rx="20" ry="30" fill="#914a30"/>
+      <ellipse cx="267" cy="198" rx="20" ry="30" fill="#914a30"/>
 
-    </div>
-  </section>
+      <!-- Man's face -->
+      <path d="M108 143 Q108 80 184 80 Q270 84 266 170
+        L255 236 Q242 290 187 300 Q125 286 111 233Z"
+        fill="url(#skin)"/>
 
-  <section class="section" id="discover">
-    <h2 class="section-heading">Explore <span>EarnGig</span></h2>
-    <div class="discover-grid">
-      <article class="discover-card">
-        <h3>🎮 Play Games</h3>
-        <p>Discover exciting games, challenge yourself and enjoy the experience.</p>
-        <a class="btn btn-outline" href="pages/games.html">Explore Games →</a>
-      </article>
+      <!-- Man's hair -->
+      <path d="M105 171 Q65 115 112 74 Q125 35 177 49
+        Q218 21 255 61 Q292 80 270 145
+        Q253 120 230 116 Q197 139 165 117
+        Q138 150 105 171Z" fill="#17101c"/>
+      <g fill="#261624">
+        <circle cx="115" cy="90" r="22"/>
+        <circle cx="140" cy="64" r="24"/>
+        <circle cx="173" cy="59" r="25"/>
+        <circle cx="204" cy="63" r="24"/>
+        <circle cx="237" cy="82" r="25"/>
+        <circle cx="258" cy="111" r="22"/>
+        <circle cx="103" cy="124" r="18"/>
+      </g>
 
-      <article class="discover-card">
-        <h3>🛍 Shop Marketplace</h3>
-        <p>Discover products, browse stores and find something you love.</p>
-        <a class="btn btn-outline" href="pages/marketplace.html">Visit Marketplace →</a>
-      </article>
+      <!-- Man's eyes and eyebrows -->
+      <path d="M130 185 Q150 171 168 184" stroke="#2a1514" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M204 184 Q226 169 246 184" stroke="#2a1514" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <ellipse cx="151" cy="204" rx="11" ry="13" fill="#fff"/>
+      <ellipse cx="225" cy="204" rx="11" ry="13" fill="#fff"/>
+      <circle cx="154" cy="204" r="7" fill="#21100b"/>
+      <circle cx="228" cy="204" r="7" fill="#21100b"/>
+      <circle cx="156" cy="200" r="3" fill="#fff"/>
+      <circle cx="230" cy="200" r="3" fill="#fff"/>
+      <path d="M185 204 Q171 231 188 232" stroke="#71351f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M159 251 Q190 282 227 250" stroke="#421b1a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M164 251 Q190 271 222 250" fill="#fff"/>
 
-      <article class="discover-card">
-        <h3>🏪 Open Your Shop</h3>
-        <p>Create your store and introduce your products to EarnGig customers.</p>
-        <a class="btn btn-outline" href="pages/my-shop.html">Create Your Store →</a>
-      </article>
-    </div>
-  </section>
+      <!-- Woman's body -->
+      <path d="M420 540 Q420 385 480 347 Q555 305 655 355
+        Q720 405 740 540Z" fill="url(#shirt)" stroke="#df76ff" stroke-width="4"/>
 
-  <section class="bottom-cta">
-    <h2>Your next chapter starts here.</h2>
-    <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
-    <a class="btn btn-lime" href="pages/register.html">Create your free account →</a>
-  </section>
+      <!-- Woman's neck -->
+      <path d="M500 270 L500 337 Q550 374 589 332 L575 255Z"
+        fill="url(#skin)"/>
+
+      <!-- Woman's ears -->
+      <ellipse cx="466" cy="197" rx="18" ry="29" fill="#87452f"/>
+      <ellipse cx="622" cy="197" rx="18" ry="29" fill="#87452f"/>
+
+      <!-- Woman's face -->
+      <path d="M468 145 Q475 80 544 76 Q618 77 624 159
+        L613 236 Q596 290 547 298 Q487 285 473 235Z"
+        fill="url(#skin)"/>
+
+      <!-- Woman's braids and bun -->
+      <g fill="#211020">
+        <circle cx="530" cy="65" r="40"/>
+        <circle cx="563" cy="55" r="37"/>
+        <circle cx="589" cy="79" r="30"/>
+        <path d="M475 153 Q435 180 462 290 Q475 320 489 295
+          Q471 238 498 177Z"/>
+        <path d="M600 132 Q655 170 628 293 Q614 320 604 293
+          Q623 220 592 176Z"/>
+        <path d="M489 91 Q451 70 465 37 Q478 9 510 31
+          Q536 8 553 30 Q587 8 606 43 Q628 72 601 111
+          Q570 80 543 99 Q514 115 489 91Z"/>
+      </g>
+      <g stroke="#4c2348" stroke-width="8" fill="none" stroke-linecap="round">
+        <path d="M475 120 Q445 190 476 265"/>
+        <path d="M493 105 Q465 200 492 280"/>
+        <path d="M612 119 Q642 190 614 270"/>
+        <path d="M594 103 Q624 185 600 260"/>
+      </g>
+      <path d="M480 85 Q535 45 604 88" stroke="#ffc928" stroke-width="5" fill="none"/>
+
+      <!-- Woman's eyes and eyebrows -->
+      <path d="M489 184 Q508 168 527 182" stroke="#281515" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M560 182 Q581 166 601 182" stroke="#281515" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <ellipse cx="507" cy="203" rx="11" ry="13" fill="#fff"/>
+      <ellipse cx="582" cy="203" rx="11" ry="13" fill="#fff"/>
+      <circle cx="510" cy="204" r="7" fill="#21100b"/>
+      <circle cx="585" cy="204" r="7" fill="#21100b"/>
+      <circle cx="512" cy="200" r="3" fill="#fff"/>
+      <circle cx="587" cy="200" r="3" fill="#fff"/>
+      <path d="M546 204 Q535 230 549 233" stroke="#71351f" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M516 251 Q551 283 586 249" stroke="#421b1a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M521 251 Q551 273 581 250" fill="#fff"/>
+
+      <!-- Woman's gold earrings -->
+      <ellipse cx="466" cy="245" rx="12" ry="20" fill="none" stroke="#ffd44b" stroke-width="6"/>
+      <ellipse cx="622" cy="245" rx="12" ry="20" fill="none" stroke="#ffd44b" stroke-width="6"/>
+
+      <!-- Left phone -->
+      <g transform="rotate(-8 285 400)">
+        <rect x="200" y="353" width="175" height="92" rx="17"
+          fill="url(#phone)" stroke="#d44aff" stroke-width="5"/>
+        <rect x="215" y="365" width="145" height="66" rx="9"
+          fill="#21083d"/>
+        <path d="M270 390 l30 17 -30 17Z" fill="#caff19"/>
+        <circle cx="350" cy="375" r="4" fill="#d8aaff"/>
+      </g>
+
+      <!-- Right phone -->
+      <g transform="rotate(8 480 400)">
+        <rect x="390" y="353" width="175" height="92" rx="17"
+          fill="url(#phone)" stroke="#d44aff" stroke-width="5"/>
+        <rect x="405" y="365" width="145" height="66" rx="9"
+          fill="#21083d"/>
+        <path d="M460 390 l30 17 -30 17Z" fill="#caff19"/>
+        <circle cx="540" cy="375" r="4" fill="#d8aaff"/>
+      </g>
+
+      <!-- Hands holding phones -->
+      <path d="M180 350 Q175 327 196 325 L230 342 L253 371
+        Q263 385 247 396 Q230 403 217 385 L194 374Z"
+        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
+      <path d="M350 350 Q375 331 390 349 L385 377
+        Q370 399 350 384 L337 370Z"
+        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
+      <path d="M405 350 Q390 332 376 350 L380 378
+        Q396 398 416 381 L425 366Z"
+        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
+      <path d="M560 350 Q584 327 600 342 L625 367
+        Q635 388 616 397 Q596 398 583 379 L563 372Z"
+        fill="url(#skin)" stroke="#c27a55" stroke-width="2"/>
+
+      <!-- Reward pile -->
+      <g filter="url(#glow)">
+        <ellipse cx="380" cy="492" rx="150" ry="20" fill="#ffbb00" opacity=".22"/>
+        <ellipse cx="380" cy="470" rx="110" ry="24" fill="url(#gold)" stroke="#fff08a" stroke-width="3"/>
+        <ellipse cx="380" cy="455" rx="95" ry="19" fill="#ffcb22" stroke="#ffe889" stroke-width="3"/>
+        <ellipse cx="380" cy="440" rx="75" ry="16" fill="#ffdb43" stroke="#fff0a1" stroke-width="3"/>
+      </g>
+      <circle cx="380" cy="435" r="35" fill="url(#gold)" stroke="#fff2a3" stroke-width="4" filter="url(#glow)"/>
+      <text x="380" y="443" text-anchor="middle" font-size="24" font-weight="900" fill="#8e4b00">₦</text>
+
+      <!-- Sparkles -->
+      <g fill="#fff48b" filter="url(#glow)">
+        <path d="M75 270 L83 293 L106 301 L83 309 L75 332 L67 309 L44 301 L67 293Z"/>
+        <path d="M680 310 L686 328 L704 334 L686 340 L680 358 L674 340 L656 334 L674 328Z"/>
+        <path d="M375 160 L381 176 L397 182 L381 188 L375 204 L369 188 L353 182 L369 176Z"/>
+        <circle cx="320" cy="235" r="5"/>
+        <circle cx="650" cy="410" r="5"/>
+        <circle cx="110" cy="430" r="4"/>
+      </g>
+
+      <!-- Small game controller -->
+      <g transform="translate(330 100) rotate(-8)" filter="url(#glow)">
+        <path d="M0 25 Q5 0 28 7 L65 7 Q90 0 96 25
+          L104 53 Q107 76 86 75 L70 61 L31 61 L15 75
+          Q-7 77 -4 52Z" fill="#271047" stroke="#e33bff" stroke-width="4"/>
+        <path d="M25 25v23 M14 36h22" stroke="#caff19" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="72" cy="29" r="6" fill="#ffdb2f"/>
+        <circle cx="85" cy="42" r="6" fill="#45e6ff"/>
+      </g>
+    </svg>
+
+  </div>
+</section>
+
+<!-- ADVERTISING SPOTLIGHT -->
+<section class="spotlight">
+  <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
+  <div class="spotlight-copy">
+    <strong>Put your brand in the spotlight.</strong>
+    <p>Advertise to the growing EarnGig community.</p>
+  </div>
+  <a class="btn btn-lime" href="pages/advertise.html">Advertise Now →</a>
+</section>
+
+<!-- WAYS TO EARN -->
+<section class="section">
+  <h2 class="section-heading">More ways to <span>earn</span> ━</h2>
+
+  <div class="feature-grid">
+
+    <article class="feature">
+      <div class="feature-icon">🎬</div>
+      <h3>Watch Ads</h3>
+      <p>Watch sponsored videos and collect reward coins.</p>
+      <a href="pages/watch-ads.html">Start earning →</a>
+    </article>
+
+    <article class="feature">
+      <div class="feature-icon">👥</div>
+      <h3>Refer Friends</h3>
+      <p>Invite friends and earn when their referrals qualify.</p>
+      <a href="pages/referrals.html">Invite friends →</a>
+    </article>
+
+    <article class="feature">
+      <div class="feature-icon">📖</div>
+      <h3>Read Novels</h3>
+      <p>Explore stories and earn from qualified reading.</p>
+      <a href="pages/novels.html">Read stories →</a>
+    </article>
+
+    <article class="feature">
+      <div class="feature-icon">👛</div>
+      <h3>My Wallet</h3>
+      <p>Keep track of your rewards and transactions.</p>
+      <a href="pages/wallet.html">Open wallet →</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- DISCOVER -->
+<section class="section" id="discover">
+  <h2 class="section-heading">Explore <span>EarnGig</span></h2>
+
+  <div class="discover-grid">
+
+    <article class="discover-card">
+      <h3>🎮 Play Games</h3>
+      <p>Discover exciting games, challenge yourself and enjoy the experience.</p>
+      <a class="btn btn-outline" href="pages/games.html">Explore Games →</a>
+    </article>
+
+    <article class="discover-card">
+      <h3>🛍 Shop Marketplace</h3>
+      <p>Discover products, browse stores and find something you love.</p>
+      <a class="btn btn-outline" href="pages/marketplace.html">Visit Marketplace →</a>
+    </article>
+
+    <article class="discover-card">
+      <h3>🏪 Open Your Shop</h3>
+      <p>Create your store and introduce your products to EarnGig customers.</p>
+      <a class="btn btn-outline" href="pages/my-shop.html">Create Your Store →</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- JOIN EARNGIG -->
+<section class="bottom-cta">
+  <h2>Your next chapter starts here.</h2>
+  <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
+  <a class="btn btn-lime" href="pages/register.html">Create your free account →</a>
+</section>
+
 </main>
 
 <footer>
-  <a class="logo" href="index.html">👑Earn<span>Gig</span></a>
+  <a class="logo" href="index.html"><b class="crown">♛</b> Earn<span>Gig</span></a>
+
   <div class="footer-links">
     <a href="pages/about.html">About</a>
     <a href="pages/terms.html">Terms</a>
@@ -527,6 +778,7 @@ footer a:hover {color:var(--lime)}
     <a href="pages/advertise.html">Advertise</a>
     <a href="pages/contact.html">Contact</a>
   </div>
+
   <small>© 2026 EarnGig. All rights reserved.</small>
 </footer>
 
