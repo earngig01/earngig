@@ -5,52 +5,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>EarnGig Formula Racing</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#10151b;color:#fff;font-family:Arial,sans-serif}
-header{height:56px;padding:0 16px;background:#171e25;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #34404a}
-.brand{font-size:21px;font-weight:900}.brand span{color:#ffc83d}
+header{height:60px;padding:0 16px;background:#192129;border-bottom:1px solid #35424d;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:22px;font-weight:900}.brand span{color:#caff45}
 a{color:#caff45;text-decoration:none;font-weight:bold}
-main{width:min(1100px,97%);margin:15px auto}
-.panel{background:#1b252e;border:1px solid #35434d;border-radius:14px;padding:15px;margin-bottom:14px}
-.hidden{display:none!important}
-h1{text-align:center;font-size:28px}
-.muted{color:#aebbc4;line-height:1.5}
-button{border:0;border-radius:9px;padding:12px;font-weight:bold;cursor:pointer}
+main{width:min(1000px,96%);margin:18px auto}
+.panel{background:#1b252e;border:1px solid #394650;border-radius:15px;padding:16px;margin-bottom:15px}
+h1{text-align:center;font-size:27px}
+.muted{color:#b6c1c9;line-height:1.6}
+.tag{color:#caff45;font-size:11px;letter-spacing:1.5px;font-weight:bold}
+#showroom{height:300px;width:100%;border-radius:12px;overflow:hidden;background:#111820;position:relative}
+#showroom canvas{width:100%;height:100%;display:block}
+.status{padding:13px;background:#111820;border-radius:9px;margin:12px 0;font-size:13px}
+button{border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:bold;cursor:pointer}
 .primary{background:#caff45;color:#14200d}
 .secondary{background:#394650;color:white}
 .full{width:100%}
-.car-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.car-card{background:#10171e;border:1px solid #35434d;border-radius:12px;padding:10px;min-width:0}
-.car-card.selected{border:2px solid #caff45}
-.preview{height:135px;background:radial-gradient(ellipse,#3b4148,#10151b 72%);border-radius:8px;overflow:hidden;position:relative}
-.preview canvas{width:100%;height:100%;display:block}
-.car-card strong{display:block;margin:10px 0 5px;font-size:15px}
-.car-card small{color:#b5c0c8;line-height:1.7}
-.car-card button{width:100%;margin-top:10px}
-.tag{font-size:10px;color:#caff45;letter-spacing:1px}
-#raceCanvas{width:100%;height:min(65vh,620px);min-height:370px;display:block;border-radius:10px;background:#8bb7d3;touch-action:none}
-.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
-.hud div{background:#10171e;text-align:center;padding:9px 3px;border-radius:8px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.car{background:#111820;border:1px solid #394650;border-radius:10px;padding:13px}
+.car.active{border:2px solid #caff45}
+.car strong{display:block;margin-bottom:7px}
+.car small{color:#aebbc4;line-height:1.6}
+.car button{width:100%;margin-top:10px;padding:10px;font-size:12px}
+.hidden{display:none!important}
+#raceView{height:60vh;min-height:350px;width:100%;background:#111820;border-radius:12px;overflow:hidden}
+#raceView canvas{width:100%;height:100%;display:block}
+.hud{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
+.hud div{background:#111820;padding:10px;text-align:center;border-radius:8px}
 .hud small{display:block;color:#aebbc4;font-size:10px}
-.hud strong{display:block;margin-top:5px;font-size:16px}
+.hud strong{display:block;margin-top:5px}
 .controls{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px;margin-top:10px}
-.controls button{height:55px;touch-action:none;user-select:none}
+.controls button{height:55px;padding:5px;touch-action:none}
 .steer{background:#394650;color:white}
 .gas{background:#caff45;color:#14200d}
-.brake{width:100%;margin-top:8px;background:#b63e37;color:white}
-.wait{text-align:center;padding:30px}
-.spinner{width:42px;height:42px;border:5px solid #3b4a54;border-top-color:#caff45;border-radius:50%;margin:20px auto;animation:spin .8s linear infinite}
+.brake{width:100%;margin-top:8px;background:#b83f37;color:white}
+.note{font-size:12px;color:#aebbc4}
+.spinner{width:36px;height:36px;border:4px solid #45515a;border-top-color:#caff45;border-radius:50%;animation:spin .8s linear infinite;margin:15px auto}
 @keyframes spin{to{transform:rotate(360deg)}}
-.leader{display:flex;justify-content:space-between;padding:12px;background:#10171e;border-radius:8px;margin:7px 0}
-.reward{font-size:29px;color:#ffc83d;font-weight:900;text-align:center}
 @media(max-width:430px){
- .panel{padding:10px}
- .preview{height:110px}
- .car-grid{gap:8px}
- .car-card{padding:7px}
- .hud strong{font-size:13px}
- .controls button{font-size:12px;padding:5px}
+ #showroom{height:245px}
+ .panel{padding:12px}
+ .car{padding:9px}
+ .controls button{font-size:12px}
 }
 </style>
 </head>
@@ -62,519 +67,327 @@ button{border:0;border-radius:9px;padding:12px;font-weight:bold;cursor:pointer}
 
 <main>
 <section id="garage" class="panel">
+ <div class="tag">EARNGIG MOTORSPORT</div>
  <h1>FORMULA GARAGE</h1>
- <p class="muted">Choose your Formula racing car. More expensive cars have higher speed and acceleration. Driving skill still matters.</p>
- <p id="assetStatus" class="tag">LOADING REAL 3D VEHICLES...</p>
- <div class="car-grid" id="carGrid"></div>
- <p class="muted" style="font-size:12px">No separate acceleration or engine upgrades. Your selected vehicle determines its performance.</p>
- <button id="continueBtn" class="primary full" disabled onclick="startMatchmaking()">ENTER THE CIRCUIT →</button>
- <p class="muted" style="font-size:12px;text-align:center">Your entry fee is handled by the Games page. No second payment here.</p>
-</section>
+ <p class="muted">Explore the Formula racing collection. Select your vehicle class before entering the circuit.</p>
 
-<section id="waiting" class="panel hidden wait">
- <h2>Preparing the Grand Prix</h2>
- <div class="spinner"></div>
- <p id="waitingText" class="muted">Finding racers...</p>
- <button class="secondary full" onclick="backToGarage()">Back to garage</button>
-</section>
-
-<section id="racePanel" class="panel hidden">
- <div class="hud">
-  <div><small>POSITION</small><strong id="position">1/5</strong></div>
-  <div><small>SPEED</small><strong id="speed">0 km/h</strong></div>
-  <div><small>DISTANCE</small><strong id="distance">0 m</strong></div>
-  <div><small>TIME</small><strong id="time">00:00</strong></div>
+ <div id="showroom">
+  <div id="loading" style="text-align:center;padding-top:90px">
+   <div class="spinner"></div>
+   <div class="muted">Loading Formula 3D collection...</div>
+  </div>
  </div>
- <canvas id="raceCanvas"></canvas>
+
+ <div id="modelStatus" class="status">Connecting to the 3D vehicle library...</div>
+
+ <h3>Choose your vehicle class</h3>
+ <div class="grid" id="cars">
+  <div class="car active">
+   <strong>Starter Formula</strong>
+   <small>Top speed: 155 km/h<br>Price: Free</small>
+   <button class="primary" onclick="chooseCar(0)">SELECTED</button>
+  </div>
+  <div class="car">
+   <strong>Street Formula</strong>
+   <small>Top speed: 178 km/h<br>Price: 500 coins</small>
+   <button class="secondary" onclick="chooseCar(1)">SELECT</button>
+  </div>
+  <div class="car">
+   <strong>Sport Formula</strong>
+   <small>Top speed: 205 km/h<br>Price: 1,000 coins</small>
+   <button class="secondary" onclick="chooseCar(2)">SELECT</button>
+  </div>
+  <div class="car">
+   <strong>Super Formula</strong>
+   <small>Top speed: 232 km/h<br>Price: 2,000 coins</small>
+   <button class="secondary" onclick="chooseCar(3)">SELECT</button>
+  </div>
+  <div class="car">
+   <strong>Elite Formula</strong>
+   <small>Top speed: 260 km/h<br>Price: 3,000 coins</small>
+   <button class="secondary" onclick="chooseCar(4)">SELECT</button>
+  </div>
+ </div>
+
+ <p class="note">Vehicle purchase is not enabled yet. It will require the real EarnGig wallet. No invented balance or fake coin deduction is used.</p>
+ <button class="primary full" id="enterBtn" onclick="enterCircuit()" disabled>ENTER THE CIRCUIT →</button>
+ <p class="note" style="text-align:center">Your entry fee is handled by the Games page. No second payment here.</p>
+</section>
+
+<section id="race" class="panel hidden">
+ <div class="tag">FORMULA CIRCUIT</div>
+ <h2>Practice Drive</h2>
+ <div class="hud">
+  <div><small>SPEED</small><strong id="speed">0 km/h</strong></div>
+  <div><small>TIME</small><strong id="timer">00:00</strong></div>
+  <div><small>DISTANCE</small><strong id="distance">0 m</strong></div>
+ </div>
+ <div id="raceView"></div>
  <div class="controls">
   <button class="steer" id="left">◀ LEFT</button>
   <button class="steer" id="right">RIGHT ▶</button>
-  <button class="gas" id="gas">ACCELERATE</button>
+  <button class="gas" id="accelerate">ACCELERATE</button>
  </div>
  <button class="brake" id="brake">BRAKE</button>
- <p class="muted" style="font-size:12px;text-align:center">Steer around corners, avoid other cars and overtake your opponents.</p>
-</section>
-
-<section id="results" class="panel hidden">
- <div style="text-align:center;padding:20px 5px">
-  <div id="medal" style="font-size:60px">🏁</div>
-  <h2 id="resultTitle">Race finished</h2>
-  <p id="resultPosition" class="muted"></p>
-  <div id="reward" class="reward">0 coins</div>
-  <p id="resultText" class="muted"></p>
- </div>
- <h3>Race standings</h3>
- <div id="leaderboard"></div>
- <button class="primary full" onclick="backToGarage()">RETURN TO GARAGE</button>
+ <p class="note">This is a 3D scene preview. Multiplayer matchmaking, collision physics and prize verification require the EarnGig game server.</p>
+ <button class="secondary full" onclick="backToGarage()">BACK TO GARAGE</button>
 </section>
 </main>
-
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
-</script>
 
 <script type="module">
 import * as THREE from "three";
 import {GLTFLoader} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
+const MODEL_URL="https://cdn.3dassets.dev/assets/15255/v1/model.glb";
 const $=id=>document.getElementById(id);
 
-/*
- * CC0 Formula Race Cars and Grand Prix Circuit asset pack.
- * The pack provides nine real open-wheel cars and circuit assets.
- * Manifest is used to locate individual GLB car files.
- */
-const MANIFEST="https://3dassets.dev/api/v1/packs/grand-prix-circuit-and-open-wheel";
+let selected=0;
+let showroomRenderer,showroomScene,showroomCamera,showroomModel;
+let raceRenderer,raceScene,raceCamera,raceModel;
+let animation=0;
+let raceAnimation=0;
+let raceClock;
+let speed=0,distance=0,elapsed=0,steering=0;
+let controls={left:false,right:false,gas:false,brake:false};
+let raceActive=false;
 
 const prices=[0,500,1000,2000,3000];
-const levels=["Starter Formula","Street Formula","Sport Formula","Super Formula","Elite Formula"];
-const performance=[
- {speed:155,accel:48},
- {speed:178,accel:55},
- {speed:205,accel:64},
- {speed:232,accel:73},
- {speed:260,accel:82}
-];
+const speeds=[155,178,205,232,260];
 
-let selected=0;
-let owned=[0];
-let assets=[];
-let previewRenderers=[];
-let previewScenes=[];
-let previewCameras=[];
-let previewModels=[];
-let race=null;
-let scene,camera,renderer,clock,trackCurve,playerCar;
-let raf=0,running=false,finished=false;
-let keys={left:false,right:false,gas:false,brake:false};
-
-function show(id){
- ["garage","waiting","racePanel","results"].forEach(x=>$(x).classList.toggle("hidden",x!==id));
-}
-
-function collectModels(obj,out=[]){
- if(!obj)return out;
- if(Array.isArray(obj)){obj.forEach(x=>collectModels(x,out));return out;}
- if(typeof obj==="object"){
-  const name=String(obj.name||obj.title||obj.label||"");
-  const url=obj.cdnUrl||obj.cdn_url||obj.modelUrl||obj.model_url||obj.url||obj.downloadUrl;
-  if(typeof url==="string"&&url.toLowerCase().includes(".glb")){
-   out.push({name,url});
-  }
-  Object.values(obj).forEach(v=>collectModels(v,out));
- }
- return out;
-}
-
-function uniqueModels(list){
- const seen=new Set();
- return list.filter(x=>{
-  if(seen.has(x.url))return false;
-  seen.add(x.url);return true;
- });
-}
-
-async function loadAssetManifest(){
- try{
-  const response=await fetch(MANIFEST);
-  if(!response.ok)throw Error("Asset manifest unavailable");
-  const data=await response.json();
-  const all=uniqueModels(collectModels(data));
-  const formula=all.filter(x=>/formula|open.?wheel|racer|race.?car|1950|1960|1970|1980|1990|2000|2010|2020/i.test(x.name));
-  assets=formula.length>=5?formula.slice(0,9):all.slice(0,9);
-  if(assets.length<5)throw Error("Not enough vehicle models found");
-  await loadGaragePreviews();
-  $("assetStatus").textContent="REAL 3D FORMULA VEHICLES LOADED";
-  $("assetStatus").style.color="#caff45";
-  $("continueBtn").disabled=false;
- }catch(error){
-  $("assetStatus").textContent="3D MODEL LIBRARY COULD NOT LOAD. CHECK YOUR INTERNET CONNECTION AND RELOAD.";
-  $("assetStatus").style.color="#ff9b8f";
-  console.error(error);
- }
-}
-
-const loader=new GLTFLoader();
-
-function loadGLB(url){
+function loadModel(url){
  return new Promise((resolve,reject)=>{
+  const loader=new GLTFLoader();
   loader.load(url,gltf=>resolve(gltf.scene),undefined,reject);
  });
 }
 
-function fitModel(model,targetSize=5){
- const box=new THREE.Box3().setFromObject(model);
- const size=box.getSize(new THREE.Vector3());
- const max=Math.max(size.x,size.y,size.z);
- if(!max)return model;
- model.scale.multiplyScalar(targetSize/max);
- const newBox=new THREE.Box3().setFromObject(model);
- const center=newBox.getCenter(new THREE.Vector3());
- model.position.sub(center);
- model.position.y-=newBox.min.y;
- model.traverse(o=>{
-  if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}
- });
- return model;
+function fitObject(object,maxSize){
+ const bounds=new THREE.Box3().setFromObject(object);
+ const size=bounds.getSize(new THREE.Vector3());
+ const largest=Math.max(size.x,size.y,size.z);
+ if(largest>0)object.scale.multiplyScalar(maxSize/largest);
+ const newBounds=new THREE.Box3().setFromObject(object);
+ const center=newBounds.getCenter(new THREE.Vector3());
+ object.position.sub(center);
+ return object;
 }
 
-function disposePreview(){
- previewRenderers.forEach(r=>r.dispose());
- previewRenderers=[];
- previewScenes=[];
- previewCameras=[];
- previewModels=[];
+function showStatus(message,good=false){
+ $("modelStatus").textContent=message;
+ $("modelStatus").style.color=good?"#caff45":"#ffaaa0";
 }
 
-async function loadGaragePreviews(){
- disposePreview();
- const grid=$("carGrid");
- grid.innerHTML="";
- const loaderPromises=assets.slice(0,5).map(x=>loadGLB(x.url));
- const loaded=await Promise.all(loaderPromises);
- assets=assets.slice(0,5);
- previewModels=loaded.map(m=>fitModel(m.clone(),5));
+async function loadShowroom(){
+ try{
+  const model=await loadModel(MODEL_URL);
+  showroomModel=fitObject(model,35);
 
- for(let i=0;i<5;i++){
-  const card=document.createElement("div");
-  card.className="car-card"+(selected===i?" selected":"");
-  const preview=document.createElement("div");
-  preview.className="preview";
   const canvas=document.createElement("canvas");
-  preview.appendChild(canvas);
-  const name=document.createElement("strong");
-  name.textContent=levels[i];
-  const info=document.createElement("small");
-  info.innerHTML=`Top speed: ${performance[i].speed} km/h<br>Acceleration: ${performance[i].accel}/100`;
-  const btn=document.createElement("button");
-  btn.className=selected===i?"primary":"secondary";
-  btn.textContent=owned.includes(i)?"SELECT":"BUY "+prices[i].toLocaleString()+" COINS";
-  btn.onclick=()=>selectVehicle(i);
-  card.append(preview,name,info,btn);
-  grid.appendChild(card);
+  $("showroom").innerHTML="";
+  $("showroom").appendChild(canvas);
 
-  const s=new THREE.Scene();
-  s.background=new THREE.Color(0x171e25);
-  s.add(new THREE.HemisphereLight(0xffffff,0x414a55,2.2));
-  const light=new THREE.DirectionalLight(0xffffff,3);
-  light.position.set(-4,8,7);s.add(light);
-  const model=previewModels[i];
-  model.rotation.y=-.35;
-  s.add(model);
-  const c=new THREE.PerspectiveCamera(35,1,.1,100);
-  c.position.set(7,4,8);c.lookAt(0,1,0);
-  const r=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
-  r.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
-  r.setSize(300,135,false);
-  r.outputColorSpace=THREE.SRGBColorSpace;
-  r.toneMapping=THREE.ACESFilmicToneMapping;
-  previewScenes.push(s);previewCameras.push(c);previewRenderers.push(r);
+  showroomScene=new THREE.Scene();
+  showroomScene.background=new THREE.Color(0x111820);
+  showroomScene.add(new THREE.HemisphereLight(0xffffff,0x45515c,2.2));
+
+  const keyLight=new THREE.DirectionalLight(0xffffff,3);
+  keyLight.position.set(-20,30,20);
+  showroomScene.add(keyLight);
+
+  const fill=new THREE.DirectionalLight(0x9cbcff,1.5);
+  fill.position.set(20,10,-15);
+  showroomScene.add(fill);
+
+  showroomScene.add(showroomModel);
+
+  showroomCamera=new THREE.PerspectiveCamera(40,1,.1,1000);
+  showroomCamera.position.set(42,28,48);
+  showroomCamera.lookAt(0,0,0);
+
+  showroomRenderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  showroomRenderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  showroomRenderer.outputColorSpace=THREE.SRGBColorSpace;
+  showroomRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+  showroomRenderer.toneMappingExposure=1.1;
+
+  resizeShowroom();
+  animateShowroom();
+  $("enterBtn").disabled=false;
+  showStatus("REAL 3D FORMULA COLLECTION LOADED",true);
+ }catch(error){
+  console.error("3D model loading error:",error);
+  $("showroom").innerHTML='<div style="padding:75px 15px;text-align:center;color:#ffaaa0">The 3D collection could not be reached. Please check your connection and reload.</div>';
+  showStatus("3D MODEL FAILED TO LOAD. THE RACE BUTTON IS DISABLED.");
+  $("enterBtn").disabled=true;
  }
- animatePreviews();
 }
 
-let previewAnimation=0;
-function animatePreviews(){
- previewAnimation=requestAnimationFrame(animatePreviews);
- previewModels.forEach((m,i)=>{
-  m.rotation.y+=.003;
-  previewRenderers[i].render(previewScenes[i],previewCameras[i]);
- });
+function resizeShowroom(){
+ if(!showroomRenderer)return;
+ const el=$("showroom");
+ const w=el.clientWidth,h=el.clientHeight;
+ showroomRenderer.setSize(w,h,false);
+ showroomCamera.aspect=w/h;
+ showroomCamera.updateProjectionMatrix();
 }
 
-function selectVehicle(i){
- if(!owned.includes(i)){
-  alert("Vehicle purchases will be enabled when the EarnGig wallet is connected. No demo balance or fake coin deduction is used here.");
+function animateShowroom(){
+ animation=requestAnimationFrame(animateShowroom);
+ if(showroomModel)showroomModel.rotation.y+=.0015;
+ if(showroomRenderer)showroomRenderer.render(showroomScene,showroomCamera);
+}
+window.addEventListener("resize",resizeShowroom);
+
+window.chooseCar=function(i){
+ if(i!==0){
+  alert("Vehicle purchases and ownership checks will be connected to your real EarnGig wallet. No coins have been charged.");
   return;
  }
  selected=i;
- renderSelected();
-}
-
-function renderSelected(){
- document.querySelectorAll(".car-card").forEach((card,i)=>{
-  card.classList.toggle("selected",i===selected);
-  const b=card.querySelector("button");
-  b.textContent=owned.includes(i)?"SELECTED":"BUY "+prices[i].toLocaleString()+" COINS";
-  b.className=i===selected?"primary":"secondary";
+ document.querySelectorAll(".car").forEach((el,index)=>{
+  el.classList.toggle("active",index===i);
+  const button=el.querySelector("button");
+  button.textContent=index===i?"SELECTED":index===0?"SELECT":"WALLET CONNECTION REQUIRED";
+  button.className=index===i?"primary":"secondary";
  });
+};
+
+function createRacePreview(){
+ const host=$("raceView");
+ host.innerHTML="";
+ const canvas=document.createElement("canvas");
+ host.appendChild(canvas);
+
+ raceScene=new THREE.Scene();
+ raceScene.background=new THREE.Color(0x8ebbd8);
+ raceScene.fog=new THREE.Fog(0x8ebbd8,70,250);
+
+ raceScene.add(new THREE.HemisphereLight(0xffffff,0x51604a,2));
+
+ const sun=new THREE.DirectionalLight(0xfff0d8,3);
+ sun.position.set(-30,50,30);
+ raceScene.add(sun);
+
+ const ground=new THREE.Mesh(
+  new THREE.PlaneGeometry(500,500),
+  new THREE.MeshStandardMaterial({color:0x477b43})
+ );
+ ground.rotation.x=-Math.PI/2;
+ ground.position.y=-1;
+ raceScene.add(ground);
+
+ // Use the real assembled Formula circuit and car collection.
+ raceModel=showroomModel.clone(true);
+ raceModel.scale.setScalar(.8);
+ raceModel.position.set(0,0,-30);
+ raceScene.add(raceModel);
+
+ // A real 3D model is used in the scene, not an illustrated car.
+ raceCamera=new THREE.PerspectiveCamera(65,1,.1,1000);
+ raceCamera.position.set(0,5,15);
+ raceCamera.lookAt(0,0,-15);
+
+ raceRenderer=new THREE.WebGLRenderer({canvas,antialias:true});
+ raceRenderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+ raceRenderer.outputColorSpace=THREE.SRGBColorSpace;
+ raceRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+
+ resizeRace();
 }
 
-function startMatchmaking(){
- show("waiting");
- $("waitingText").textContent="Connecting to race matchmaking...";
- /*
-  Production: POST /api/car-racing/join
-  The backend fills a five-player group with available humans and bots.
-  No local balance or browser-generated coin deduction is permitted.
- */
- $("waitingText").textContent="Multiplayer matchmaking needs the EarnGig race server. This local preview can be tested after the server connection is added.";
+function resizeRace(){
+ if(!raceRenderer||!raceCamera)return;
+ const host=$("raceView");
+ const w=host.clientWidth,h=host.clientHeight;
+ raceRenderer.setSize(w,h,false);
+ raceCamera.aspect=w/h;
+ raceCamera.updateProjectionMatrix();
 }
+window.addEventListener("resize",resizeRace);
 
-/* ---------------- 3D RACE WORLD ---------------- */
+window.enterCircuit=function(){
+ if(!showroomModel)return;
+ $("garage").classList.add("hidden");
+ $("race").classList.remove("hidden");
 
-function makeTrack(){
- const pts=[
-  [-100,0,90],[-135,0,10],[-100,0,-80],[-35,0,-140],
-  [55,0,-155],[135,0,-105],[155,0,-25],[120,0,55],
-  [55,0,100],[-10,0,80],[-55,0,110]
- ].map(p=>new THREE.Vector3(...p));
- return new THREE.CatmullRomCurve3(pts,true,"catmullrom",.45);
-}
+ speed=0;distance=0;elapsed=0;steering=0;
+ raceActive=true;
 
-function addRoad(){
- const divisions=800,width=18;
- const vertices=[],indices=[];
- for(let i=0;i<=divisions;i++){
-  const t=i/divisions;
-  const p=trackCurve.getPointAt(t);
-  const tangent=trackCurve.getTangentAt(t);
-  const normal=new THREE.Vector3(-tangent.z,0,tangent.x).normalize();
-  for(const side of [-1,1]){
-   const q=p.clone().addScaledVector(normal,side*width/2);
-   vertices.push(q.x,.02,q.z);
-  }
-  if(i<divisions){
-   const a=i*2;indices.push(a,a+2,a+1,a+1,a+2,a+3);
-  }
+ createRacePreview();
+ raceClock=new THREE.Clock();
+ raceLoop();
+};
+
+function raceLoop(){
+ if(!raceActive)return;
+ raceAnimation=requestAnimationFrame(raceLoop);
+ const dt=Math.min(raceClock.getDelta(),.04);
+ elapsed+=dt;
+
+ if(controls.gas)speed+=35*dt;
+ else speed-=8*dt;
+ if(controls.brake)speed-=60*dt;
+ speed=Math.max(0,Math.min(speeds[selected],speed));
+
+ if(controls.left)steering=Math.max(-1,steering-2.2*dt);
+ if(controls.right)steering=Math.min(1,steering+2.2*dt);
+ if(!controls.left&&!controls.right)steering*=.96;
+
+ distance+=speed/3.6*dt;
+ if(raceModel){
+  raceModel.rotation.y+=steering*.007;
+  raceModel.position.x=steering*3;
  }
- const g=new THREE.BufferGeometry();
- g.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
- g.setIndex(indices);g.computeVertexNormals();
- const road=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x30343a,roughness:.94,side:THREE.DoubleSide}));
- road.receiveShadow=true;scene.add(road);
-
- // Kerbs and safety barriers.
- for(const side of [-1,1]){
-  for(let i=0;i<260;i++){
-   const t=i/260,p=trackCurve.getPointAt(t),tan=trackCurve.getTangentAt(t);
-   const normal=new THREE.Vector3(-tan.z,0,tan.x).normalize();
-   const q=p.clone().addScaledVector(normal,side*9.5);
-   const kerb=new THREE.Mesh(new THREE.BoxGeometry(1,.12,2.5),
-    new THREE.MeshStandardMaterial({color:i%2?0xffffff:0xd43d36}));
-   kerb.position.set(q.x,.1,q.z);
-   kerb.rotation.y=Math.atan2(tan.x,tan.z);
-   scene.add(kerb);
-
-   if(i%3===0){
-    const bq=p.clone().addScaledVector(normal,side*12);
-    const barrier=new THREE.Mesh(new THREE.BoxGeometry(2,1.1,2),
-     new THREE.MeshStandardMaterial({color:0xbfc5c9,metalness:.35}));
-    barrier.position.set(bq.x,.65,bq.z);
-    barrier.rotation.y=Math.atan2(tan.x,tan.z);
-    barrier.castShadow=true;scene.add(barrier);
-   }
-  }
+ if(raceCamera){
+  raceCamera.position.x+=(steering*3-raceCamera.position.x)*.08;
+  raceCamera.lookAt(steering*2,0,-15);
  }
+ raceRenderer.render(raceScene,raceCamera);
+
+ $("speed").textContent=Math.round(speed)+" km/h";
+ $("distance").textContent=Math.round(distance)+" m";
+ const secs=Math.floor(elapsed);
+ $("timer").textContent=String(Math.floor(secs/60)).padStart(2,"0")+":"+String(secs%60).padStart(2,"0");
 }
 
-function addEnvironment(){
- const ground=new THREE.Mesh(new THREE.PlaneGeometry(1200,1200),
-  new THREE.MeshStandardMaterial({color:0x477b43,roughness:1}));
- ground.rotation.x=-Math.PI/2;ground.position.y=-.2;ground.receiveShadow=true;scene.add(ground);
+window.backToGarage=function(){
+ raceActive=false;
+ cancelAnimationFrame(raceAnimation);
+ if(raceRenderer){raceRenderer.dispose();raceRenderer=null;}
+ raceScene=null;raceCamera=null;raceModel=null;
+ $("race").classList.add("hidden");
+ $("garage").classList.remove("hidden");
+};
 
- const tree=new THREE.MeshStandardMaterial({color:0x28633b});
- const trunk=new THREE.MeshStandardMaterial({color:0x684b31});
- for(let i=0;i<90;i++){
-  const t=i/90,p=trackCurve.getPointAt(t),tan=trackCurve.getTangentAt(t);
-  const normal=new THREE.Vector3(-tan.z,0,tan.x).normalize();
-  for(const sign of [-1,1]){
-   const q=p.clone().addScaledVector(normal,20+Math.random()*16);
-   const stem=new THREE.Mesh(new THREE.CylinderGeometry(.25,.4,2,7),trunk);
-   stem.position.set(q.x,1,q.z);scene.add(stem);
-   const crown=new THREE.Mesh(new THREE.ConeGeometry(2.2,5,8),tree);
-   crown.position.set(q.x,4,q.z);crown.castShadow=true;scene.add(crown);
-  }
- }
-}
-
-function initWorld(){
- const canvas=$("raceCanvas");
- renderer=new THREE.WebGLRenderer({canvas,antialias:true});
- renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));
- renderer.shadowMap.enabled=true;
- renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- renderer.outputColorSpace=THREE.SRGBColorSpace;
- renderer.toneMapping=THREE.ACESFilmicToneMapping;
- renderer.toneMappingExposure=1.12;
-
- scene=new THREE.Scene();
- scene.background=new THREE.Color(0x8db9d7);
- scene.fog=new THREE.Fog(0x8db9d7,150,600);
-
- camera=new THREE.PerspectiveCamera(65,1,.1,1000);
- scene.add(new THREE.HemisphereLight(0xe7f2ff,0x58644b,2));
- const sun=new THREE.DirectionalLight(0xfff3dc,3);
- sun.position.set(-70,110,60);
- sun.castShadow=true;
- sun.shadow.mapSize.set(2048,2048);
- scene.add(sun);
-
- trackCurve=makeTrack();
- addEnvironment();
- addRoad();
- resize();
-}
-
-function resize(){
- if(!renderer||!camera)return;
- const rect=$("raceCanvas").getBoundingClientRect();
- renderer.setSize(Math.max(1,rect.width),Math.max(1,rect.height),false);
- camera.aspect=rect.width/rect.height;
- camera.updateProjectionMatrix();
-}
-window.addEventListener("resize",resize);
-
-function placeOnTrack(mesh,progress,lateral=0){
- const p=trackCurve.getPointAt((progress%1+1)%1);
- const tangent=trackCurve.getTangentAt((progress%1+1)%1);
- const normal=new THREE.Vector3(-tangent.z,0,tangent.x).normalize();
- p.addScaledVector(normal,lateral);
- mesh.position.set(p.x,.03,p.z);
- mesh.rotation.y=Math.atan2(tangent.x,tangent.z);
- return {p,tangent};
-}
-
-async function beginRace(){
- show("racePanel");
- $("waitingText").textContent="Loading circuit...";
- initWorld();
-
- playerCar=previewModels[selected].clone(true);
- playerCar.position.set(0,0,0);
- scene.add(playerCar);
-
- const botColors=[0xe5483c,0x2686e8,0xff9d2e,0x19b78b];
- const botCars=[];
- for(let i=0;i<4;i++){
-  const model=previewModels[(i+1)%previewModels.length].clone(true);
-  scene.add(model);
-  botCars.push({mesh:model,progress:.01+i*.012,lateral:i%2?2.3:-2.3,speed:45+Math.random()*12,name:"Racer "+(i+1)});
- }
-
- race={distance:0,elapsed:0,speed:0,max:performance[selected].speed/3.6,accel:performance[selected].accel/100*8,lateral:0,progress:0,bots:botCars};
- running=true;finished=false;
- clock=new THREE.Clock();
- raf=requestAnimationFrame(frame);
-}
-
-function updateWorld(dt){
- const r=race;
- if(keys.gas)r.speed+=r.accel*dt;
- else r.speed-=1.3*dt;
- if(keys.brake)r.speed-=8*dt;
- r.speed=Math.max(0,Math.min(r.max,r.speed));
-
- if(keys.left)r.lateral-=5.2*dt;
- if(keys.right)r.lateral+=5.2*dt;
- r.lateral=Math.max(-7,Math.min(7,r.lateral));
-
- if(Math.abs(r.lateral)>5.7)r.speed=Math.max(0,r.speed-7*dt);
-
- const length=trackCurve.getLength();
- r.distance+=r.speed*dt;
- r.progress=(r.distance/length)%1;
-
- const p=placeOnTrack(playerCar,r.progress,r.lateral);
-
- // Camera follows the actual car from behind, looking down the road.
- const forward=p.tangent.clone();
- const desired=p.p.clone().addScaledVector(forward,-11).add(new THREE.Vector3(0,4.7,0));
- camera.position.lerp(desired,.13);
- const look=p.p.clone().addScaledVector(forward,18).add(new THREE.Vector3(0,1.5,0));
- camera.lookAt(look);
-
- r.bots.forEach(bot=>{
-  const bend=Math.abs(trackCurve.getTangentAt(bot.progress).x);
-  bot.speed+=(52-bot.speed)*dt*.35;
-  bot.progress=(bot.progress+bot.speed*dt/length)%1;
-  placeOnTrack(bot.mesh,bot.progress,bot.lateral);
- });
-
- if(r.distance>=length){
-  r.distance=length;
-  finishRace();
- }
-}
-
-function updateHUD(){
- const length=trackCurve.getLength();
- const playerProgress=race.distance/length;
- const place=1+race.bots.filter(b=>b.progress>playerProgress).length;
- $("position").textContent=place+"/5";
- $("speed").textContent=Math.round(race.speed*3.6)+" km/h";
- $("distance").textContent=Math.round(race.distance)+" m";
- const s=Math.floor(race.elapsed);
- $("time").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-}
-
-function frame(){
- if(!running)return;
- const dt=Math.min(clock.getDelta(),.035);
- race.elapsed+=dt;
- updateWorld(dt);
- renderer.render(scene,camera);
- updateHUD();
- if(running)raf=requestAnimationFrame(frame);
-}
-
-function finishRace(){
- if(finished)return;
- finished=true;running=false;cancelAnimationFrame(raf);
- const length=trackCurve.getLength();
- const playerProgress=race.distance/length;
- const rows=[{name:"YOU",progress:playerProgress,player:true},
-  ...race.bots.map(b=>({name:b.name,progress:b.progress}))].sort((a,b)=>b.progress-a.progress);
- const position=rows.findIndex(x=>x.player)+1;
- const prize=[500,300,200,0,0][position-1];
- $("medal").textContent=["🥇","🥈","🥉","🏁","🏁"][position-1];
- $("resultTitle").textContent=position===1?"GRAND PRIX WINNER!":position===2?"SECOND PLACE":position===3?"THIRD PLACE":"RACE FINISHED";
- $("resultPosition").textContent="You finished "+position+" out of 5 racers.";
- $("reward").textContent=prize+" coins";
- $("resultText").textContent="Prototype result only. Real prizes require server verification.";
- $("leaderboard").innerHTML="";
- rows.forEach((r,i)=>{
-  const row=document.createElement("div");row.className="leader";
-  const name=document.createElement("strong");name.textContent=(i+1)+". "+r.name;
-  const coins=document.createElement("span");coins.className="coin";coins.textContent=[500,300,200,0,0][i]+" coins";
-  row.append(name,coins);$("leaderboard").appendChild(row);
- });
- show("results");
-}
-
-function backToGarage(){
- running=false;cancelAnimationFrame(raf);
- if(renderer){renderer.dispose();renderer=null;}
- scene=null;camera=null;race=null;
- show("garage");
-}
-
-/* Touch and keyboard controls */
 function hold(id,key){
  const el=$(id);
  el.addEventListener("pointerdown",e=>{
-  e.preventDefault();keys[key]=true;el.setPointerCapture(e.pointerId);
+  e.preventDefault();controls[key]=true;
+  el.setPointerCapture(e.pointerId);
  });
- ["pointerup","pointercancel","lostpointercapture"].forEach(t=>
-  el.addEventListener(t,()=>keys[key]=false)
- );
+ ["pointerup","pointercancel","lostpointercapture"].forEach(type=>{
+  el.addEventListener(type,()=>controls[key]=false);
+ });
 }
-hold("left","left");hold("right","right");hold("gas","gas");hold("brake","brake");
+hold("left","left");
+hold("right","right");
+hold("accelerate","gas");
+hold("brake","brake");
 
 document.addEventListener("keydown",e=>{
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=true;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=true;
- if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.gas=true;
- if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.brake=true;
+ if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")controls.left=true;
+ if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")controls.right=true;
+ if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")controls.gas=true;
+ if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")controls.brake=true;
 });
 document.addEventListener("keyup",e=>{
- if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")keys.left=false;
- if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")keys.right=false;
- if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")keys.gas=false;
- if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")keys.brake=false;
+ if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")controls.left=false;
+ if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")controls.right=false;
+ if(e.key==="ArrowUp"||e.key.toLowerCase()==="w")controls.gas=false;
+ if(e.key==="ArrowDown"||e.key.toLowerCase()==="s")controls.brake=false;
 });
 
-loadAssetManifest();
+loadShowroom();
 </script>
 </body>
 </html>
