@@ -10,13 +10,9 @@
 :root {
   --bg:#10021e;
   --panel:#210638;
-  --panel2:#310b50;
-  --purple:#8d20d5;
-  --pink:#df38ff;
   --lime:#caff19;
   --gold:#ffd12d;
-  --white:#fff;
-  --muted:#c6b2d8;
+  --pink:#df38ff;
 }
 * {box-sizing:border-box;margin:0;padding:0}
 html {scroll-behavior:smooth}
@@ -31,7 +27,7 @@ body {
 a {text-decoration:none;color:inherit}
 button {font:inherit;cursor:pointer}
 
-/* TOP NAVIGATION */
+/* HEADER */
 .topbar {
   min-height:72px;
   padding:10px 3%;
@@ -40,11 +36,10 @@ button {font:inherit;cursor:pointer}
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:20px;
+  gap:17px;
   position:sticky;
   top:0;
   z-index:50;
-  box-shadow:0 5px 20px #0004;
 }
 .brand {
   font-size:27px;
@@ -58,10 +53,10 @@ button {font:inherit;cursor:pointer}
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:24px;
+  gap:19px;
 }
 .navlinks a {
-  font-size:13px;
+  font-size:12px;
   font-weight:700;
   color:#f2e7fa;
   padding:15px 0;
@@ -112,12 +107,82 @@ button {font:inherit;cursor:pointer}
   border-radius:50%;
 }
 .menu-button {
-  display:none;
-  background:none;
-  border:0;
+  width:39px;
+  height:39px;
+  border:1px solid #a33bd0;
+  background:#31094d;
   color:white;
-  font-size:26px;
+  border-radius:10px;
+  font-size:22px;
+  display:grid;
+  place-items:center;
 }
+.menu-button:hover {border-color:var(--lime);color:var(--lime)}
+
+/* SIDE MENU */
+.menu-overlay {
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:80;
+  display:none;
+}
+.menu-overlay.open {display:block}
+.side-menu {
+  position:fixed;
+  top:0;
+  right:-320px;
+  width:min(310px,85vw);
+  height:100%;
+  overflow-y:auto;
+  z-index:90;
+  background:#1b0430;
+  border-left:1px solid #a32be6;
+  padding:23px 18px;
+  transition:right .25s ease;
+  box-shadow:-10px 0 35px #0006;
+}
+.side-menu.open {right:0}
+.menu-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:20px;
+  border-bottom:1px solid #ffffff20;
+  margin-bottom:20px;
+}
+.close-menu {
+  background:#391052;
+  color:white;
+  border:0;
+  border-radius:8px;
+  width:36px;
+  height:36px;
+  font-size:22px;
+}
+.menu-label {
+  color:#a991bd;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin:20px 8px 10px;
+}
+.side-menu a {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 10px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:bold;
+  color:#eee2f6;
+}
+.side-menu a:hover,
+.side-menu a.current {
+  background:#4a126b;
+  color:var(--lime);
+}
+.side-menu a span {font-size:19px}
 
 /* PAGE */
 .container {
@@ -137,17 +202,12 @@ button {font:inherit;cursor:pointer}
 }
 .billboard-top {
   min-height:43px;
-  padding:10px 18px;
+  padding:11px 18px;
   background:linear-gradient(90deg,#31074e,#531080);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  font-size:13px;
-  font-weight:800;
+  font-size:14px;
+  font-weight:900;
+  color:white;
 }
-.billboard-top strong {color:#ffe56b}
-.billboard-top small {color:#e8d8f5}
 .ad-stage {
   position:relative;
   min-height:270px;
@@ -163,8 +223,6 @@ button {font:inherit;cursor:pointer}
   align-items:center;
   justify-content:space-between;
   gap:25px;
-  position:relative;
-  overflow:hidden;
 }
 .ad-slide.active {
   display:flex;
@@ -174,11 +232,7 @@ button {font:inherit;cursor:pointer}
   from {opacity:.2;transform:scale(1.015)}
   to {opacity:1;transform:scale(1)}
 }
-.ad-copy {
-  max-width:570px;
-  position:relative;
-  z-index:2;
-}
+.ad-copy {max-width:570px;position:relative;z-index:2}
 .ad-tag {
   display:inline-block;
   padding:7px 13px;
@@ -208,7 +262,6 @@ button {font:inherit;cursor:pointer}
   min-height:190px;
   display:grid;
   place-items:center;
-  position:relative;
 }
 .ad-orb {
   width:180px;
@@ -217,7 +270,7 @@ button {font:inherit;cursor:pointer}
   display:grid;
   place-items:center;
   font-size:95px;
-  background:radial-gradient(circle at 35% 30%,#fff,#e7a8ff 15%,#8e20d9 55%,#310052 100%);
+  background:radial-gradient(circle at 35% 30%,#fff,#e7a8ff 15%,#8e20d9 55%,#310052);
   border:4px solid #e7a1ff;
   box-shadow:0 0 35px #e04cff90,inset 0 0 25px #fff7;
   animation:orbFloat 4s ease-in-out infinite;
@@ -227,14 +280,10 @@ button {font:inherit;cursor:pointer}
   50% {transform:translateY(-12px) rotate(4deg)}
 }
 .ad-slide:nth-child(2) {
-  background:
-    radial-gradient(ellipse at 80% 50%,#d17b12 0%,transparent 40%),
-    linear-gradient(105deg,#26083d,#66310c 70%,#21052e);
+  background:radial-gradient(ellipse at 80% 50%,#d17b12 0%,transparent 40%),linear-gradient(105deg,#26083d,#66310c 70%,#21052e);
 }
 .ad-slide:nth-child(3) {
-  background:
-    radial-gradient(ellipse at 80% 50%,#008eaa 0%,transparent 42%),
-    linear-gradient(105deg,#16052f,#083c62 70%,#16052f);
+  background:radial-gradient(ellipse at 80% 50%,#008eaa 0%,transparent 42%),linear-gradient(105deg,#16052f,#083c62 70%,#16052f);
 }
 .ad-slide:nth-child(2) .ad-orb {
   background:radial-gradient(circle at 35% 30%,#fff,#ffe59c 15%,#ed9b1c 55%,#793400);
@@ -263,11 +312,7 @@ button {font:inherit;cursor:pointer}
   background:var(--lime);
   box-shadow:0 0 10px var(--lime);
 }
-.ad-count {
-  margin-left:auto;
-  color:#d9c7e8;
-  font-size:12px;
-}
+.ad-count {margin-left:auto;color:#d9c7e8;font-size:12px}
 .ad-arrow {
   position:absolute;
   z-index:5;
@@ -285,7 +330,7 @@ button {font:inherit;cursor:pointer}
 .ad-arrow.prev {left:15px}
 .ad-arrow.next {right:15px}
 
-/* QUICK LINKS */
+/* SHORTCUTS */
 .shortcut-grid {
   display:grid;
   grid-template-columns:repeat(6,1fr);
@@ -306,23 +351,11 @@ button {font:inherit;cursor:pointer}
   border-color:var(--lime);
   box-shadow:0 0 20px #ad2cff55;
 }
-.shortcut-icon {
-  display:block;
-  font-size:35px;
-  margin-bottom:9px;
-}
-.shortcut strong {
-  display:block;
-  font-size:14px;
-  margin-bottom:5px;
-}
-.shortcut small {
-  color:#c9b7d9;
-  font-size:11px;
-  line-height:1.3;
-}
+.shortcut-icon {display:block;font-size:35px;margin-bottom:9px}
+.shortcut strong {display:block;font-size:14px;margin-bottom:5px}
+.shortcut small {color:#c9b7d9;font-size:11px;line-height:1.3}
 
-/* SECTION HEADINGS */
+/* SECTIONS */
 .section {margin:30px 0}
 .section-heading {
   display:flex;
@@ -331,20 +364,12 @@ button {font:inherit;cursor:pointer}
   gap:15px;
   margin-bottom:16px;
 }
-.section-heading h2 {
-  font-size:23px;
-  letter-spacing:-.4px;
-}
+.section-heading h2 {font-size:23px;letter-spacing:-.4px}
 .section-heading h2 span {color:var(--lime)}
-.view-all {
-  color:#e5a6ff;
-  font-size:13px;
-  font-weight:800;
-  white-space:nowrap;
-}
+.view-all {color:#e5a6ff;font-size:13px;font-weight:800;white-space:nowrap}
 .view-all:hover {color:var(--lime)}
 
-/* GAME CARDS */
+/* GAMES */
 .game-grid {
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -357,28 +382,14 @@ button {font:inherit;cursor:pointer}
   background:#280842;
   transition:.25s;
 }
-.game-card:hover {
-  transform:translateY(-5px);
-  box-shadow:0 0 22px #b52aff65;
-}
+.game-card:hover {transform:translateY(-5px);box-shadow:0 0 22px #b52aff65}
 .game-art {
   min-height:125px;
   display:grid;
   place-items:center;
   font-size:67px;
-  position:relative;
-  overflow:hidden;
 }
-.game-art:before {
-  content:"";
-  position:absolute;
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:#ffffff20;
-  filter:blur(10px);
-}
-.game-art span {position:relative;filter:drop-shadow(0 8px 8px #0007)}
+.game-art span {filter:drop-shadow(0 8px 8px #0007)}
 .art-candy {background:linear-gradient(135deg,#ed328e,#6312b8)}
 .art-bubble {background:linear-gradient(135deg,#009be8,#162c9a)}
 .art-sudoku {background:linear-gradient(135deg,#ffb72b,#b54b13)}
@@ -396,7 +407,7 @@ button {font:inherit;cursor:pointer}
   font-weight:900;
 }
 
-/* NOVELS + WALLET */
+/* NOVELS AND WALLET */
 .content-columns {
   display:grid;
   grid-template-columns:1fr 280px;
@@ -416,10 +427,7 @@ button {font:inherit;cursor:pointer}
   border:1px solid #a34cce;
   transition:.2s;
 }
-.novel-card:hover {
-  transform:translateY(-4px);
-  border-color:var(--lime);
-}
+.novel-card:hover {transform:translateY(-4px);border-color:var(--lime)}
 .novel-cover {
   min-height:150px;
   padding:12px 7px;
@@ -441,11 +449,7 @@ button {font:inherit;cursor:pointer}
   left:50%;
   transform:translateX(-50%);
 }
-.novel-cover .cover-symbol {
-  font-size:38px;
-  position:relative;
-  margin-top:12px;
-}
+.novel-cover .cover-symbol {font-size:38px;position:relative;margin-top:12px}
 .novel-cover h3 {
   font-family:Georgia,serif;
   font-size:16px;
@@ -464,15 +468,8 @@ button {font:inherit;cursor:pointer}
 .cover-three {background:linear-gradient(150deg,#246c9e,#111e4b)}
 .cover-four {background:linear-gradient(150deg,#a17b29,#47234c)}
 .cover-five {background:linear-gradient(150deg,#9e398f,#301044)}
-.novel-meta {
-  padding:9px 7px;
-  text-align:center;
-}
-.novel-meta p {
-  color:#e8d7f2;
-  font-size:10px;
-  margin-bottom:7px;
-}
+.novel-meta {padding:9px 7px;text-align:center}
+.novel-meta p {color:#e8d7f2;font-size:10px;margin-bottom:7px}
 .novel-meta a {
   display:block;
   background:#a52ad6;
@@ -483,76 +480,33 @@ button {font:inherit;cursor:pointer}
   font-weight:800;
 }
 
-/* WALLET PANEL */
+/* WALLET */
 .wallet-panel {
   border:1px solid #bd53f0;
   border-radius:17px;
   padding:19px;
-  background:
-    radial-gradient(circle at 90% 15%,#7824b4,transparent 48%),
-    linear-gradient(145deg,#38105c,#1c0631);
+  background:radial-gradient(circle at 90% 15%,#7824b4,transparent 48%),linear-gradient(145deg,#38105c,#1c0631);
   box-shadow:0 0 20px #b42aff35;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
-.wallet-heading {
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:20px;
-}
-.wallet-heading span {color:#dfb1ff}
-.wallet-coin {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:14px;
-}
+.wallet-heading {font-size:18px;font-weight:900;margin-bottom:20px}
+.wallet-coin {display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .wallet-coin-icon {
-  width:60px;
-  height:60px;
-  display:grid;
-  place-items:center;
-  font-size:39px;
-  background:#ffffff16;
-  border-radius:50%;
+  width:60px;height:60px;display:grid;place-items:center;
+  font-size:39px;background:#ffffff16;border-radius:50%;
 }
-.wallet-label {
-  color:#ddc9eb;
-  font-size:12px;
-  margin-bottom:5px;
-}
-.wallet-amount {
-  color:var(--lime);
-  font-size:32px;
-  font-weight:900;
-}
-.wallet-naira {
-  font-size:14px;
-  color:#e5d4f0;
-  margin:8px 0 18px;
-}
+.wallet-label {color:#ddc9eb;font-size:12px;margin-bottom:5px}
+.wallet-amount {color:var(--lime);font-size:32px;font-weight:900}
+.wallet-naira {font-size:14px;color:#e5d4f0;margin:8px 0 18px}
 .wallet-button {
-  display:block;
-  text-align:center;
-  padding:12px;
-  border-radius:10px;
-  background:var(--lime);
-  color:#1b0b27;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:9px;
-  box-shadow:0 0 15px #caff1940;
+  display:block;text-align:center;padding:12px;border-radius:10px;
+  background:var(--lime);color:#1b0b27;font-size:13px;font-weight:900;margin-bottom:9px;
 }
 .wallet-history {
-  display:block;
-  text-align:center;
-  border:1px solid #d46aff;
-  color:white;
-  padding:11px;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:800;
+  display:block;text-align:center;border:1px solid #d46aff;color:white;
+  padding:11px;border-radius:10px;font-size:12px;font-weight:800;
 }
 
 /* HOW IT WORKS */
@@ -564,39 +518,16 @@ button {font:inherit;cursor:pointer}
   color:#29113e;
   box-shadow:0 0 22px #ad38e635;
 }
-.how-panel h2 {
-  color:white;
-  font-size:23px;
-  margin-bottom:20px;
-}
-.how-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-.how-step {
-  text-align:center;
-  padding:13px 9px;
-}
+.how-panel h2 {color:white;font-size:23px;margin-bottom:20px}
+.how-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.how-step {text-align:center;padding:13px 9px}
 .how-icon {
-  width:65px;
-  height:65px;
-  margin:0 auto 12px;
-  display:grid;
-  place-items:center;
-  background:#fff;
-  border-radius:50%;
-  font-size:32px;
-  box-shadow:0 5px 15px #270a4b25;
+  width:65px;height:65px;margin:0 auto 12px;
+  display:grid;place-items:center;background:#fff;border-radius:50%;
+  font-size:32px;box-shadow:0 5px 15px #270a4b25;
 }
-.how-step h3 {
-  font-size:16px;
-  margin-bottom:7px;
-}
-.how-step p {
-  font-size:12px;
-  line-height:1.5;
-}
+.how-step h3 {font-size:16px;margin-bottom:7px}
+.how-step p {font-size:12px;line-height:1.5}
 
 /* FOOTER */
 footer {
@@ -610,31 +541,26 @@ footer {
   flex-wrap:wrap;
   font-size:12px;
 }
-.footer-links {
-  display:flex;
-  flex-wrap:wrap;
-  gap:18px;
-}
+.footer-links {display:flex;flex-wrap:wrap;gap:18px}
 footer a:hover {color:var(--lime)}
 
 /* RESPONSIVE */
 @media(max-width:1100px) {
-  .navlinks {gap:13px}
+  .navlinks {gap:11px}
   .navlinks a {font-size:11px}
   .game-grid {grid-template-columns:repeat(5,1fr)}
   .novel-grid {grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:800px) {
   .topbar {padding:12px 4%}
-  .menu-button {display:block}
   .navlinks {
     display:none;
     position:absolute;
-    top:68px;
+    top:72px;
     left:0;
     right:0;
     background:#1b0430;
-    padding:18px 5%;
+    padding:15px 5%;
     flex-direction:column;
     align-items:flex-start;
     gap:4px;
@@ -655,22 +581,16 @@ footer a:hover {color:var(--lime)}
   .navright {gap:9px}
   .ad-stage,.ad-slide {min-height:260px}
   .ad-slide {
-    padding:25px 45px;
-    text-align:center;
-    flex-direction:column;
-    justify-content:center;
-    gap:8px;
+    padding:25px 45px;text-align:center;
+    flex-direction:column;justify-content:center;gap:8px;
   }
   .ad-copy h2 {font-size:29px}
   .ad-copy p {font-size:13px;margin-bottom:12px}
-  .ad-copy .btn {padding:10px 16px}
   .ad-visual {min-height:90px;width:100%;min-width:0}
   .ad-orb {width:90px;height:90px;font-size:48px}
   .ad-arrow {width:30px;height:30px;font-size:19px}
   .ad-arrow.prev {left:7px}
   .ad-arrow.next {right:7px}
-  .billboard-top {font-size:11px;padding:10px}
-  .billboard-top small {font-size:10px}
   .shortcut-grid {gap:8px}
   .shortcut {min-height:100px;padding:13px 5px}
   .shortcut-icon {font-size:29px}
@@ -691,14 +611,11 @@ footer a:hover {color:var(--lime)}
 
 <body>
 
-<!-- TOP NAVIGATION -->
 <header class="topbar">
 
   <a href="../index.html" class="brand">
-    🎮 <span>Play</span>Earn<span class="gig">Gig</span>
+    <span class="crown">👑</span> Earn<span class="gig">Gig</span>
   </a>
-
-  <button class="menu-button" onclick="toggleMenu()" aria-label="Open navigation">☰</button>
 
   <nav class="navlinks" id="navlinks">
     <a href="../index.html">Home</a>
@@ -707,6 +624,7 @@ footer a:hover {color:var(--lime)}
     <a href="marketplace.html">Marketplace</a>
     <a href="earn-more.html">Earn More</a>
     <a href="advertise.html">Advertise</a>
+    <a href="storefront.html">Storefront</a>
   </nav>
 
   <div class="navright">
@@ -715,313 +633,166 @@ footer a:hover {color:var(--lime)}
       ♧ <span class="notification-dot">0</span>
     </a>
     <a href="profile.html" class="user-avatar" aria-label="My profile">👤</a>
+    <button class="menu-button" onclick="openMenu()" aria-label="Open dashboard menu">☰</button>
   </div>
 
 </header>
 
+<!-- DASHBOARD MENU -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<aside class="side-menu" id="sideMenu">
+  <div class="menu-header">
+    <a href="../index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
+    <button class="close-menu" onclick="closeMenu()" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="menu-label">DASHBOARD</div>
+  <a class="current" href="dashboard.html"><span>🏠</span> Dashboard</a>
+  <a href="wallet.html"><span>👛</span> My Wallet</a>
+  <a href="transactions.html"><span>📊</span> Transactions</a>
+  <a href="profile.html"><span>👤</span> My Profile</a>
+
+  <div class="menu-label">EARN REWARDS</div>
+  <a href="games.html"><span>🎮</span> Play Games</a>
+  <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
+  <a href="referrals.html"><span>👥</span> Refer Friends</a>
+  <a href="novels.html"><span>📚</span> Read Novels</a>
+
+  <div class="menu-label">SHOPPING AND BUSINESS</div>
+  <a href="marketplace.html"><span>🛍️</span> Marketplace</a>
+  <a href="storefront.html"><span>🏪</span> Storefront</a>
+  <a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
+  <a href="advertise.html"><span>📣</span> Advertise</a>
+
+  <div class="menu-label">ACCOUNT</div>
+  <a href="profile.html"><span>⚙️</span> Account Settings</a>
+  <a href="login.html"><span>↪</span> Log Out</a>
+</aside>
+
 <main class="container">
 
-  <!-- ADVERTISING BILLBOARD -->
+  <!-- SPONSORED BILLBOARD -->
   <section class="billboard">
+    <div class="billboard-top">📣 Sponsored Billboard</div>
 
-    <div class="billboard-top">
-      <div>★ Homepage Billboard <strong>(Sponsored Ads)</strong></div>
-      <small>10 Slots • Weekly Rotation (7 Days)</small>
-    </div>
-
-    <div class="ad-stage" id="adStage">
+    <div class="ad-stage">
 
       <button class="ad-arrow prev" onclick="changeSlide(-1)" aria-label="Previous advert">‹</button>
 
-      <!-- DEMO SLIDE 1 -->
       <article class="ad-slide active">
         <div class="ad-copy">
           <div class="ad-tag">FEATURED ADVERT</div>
           <h2>Put Your Brand<br>In The <span>Spotlight.</span></h2>
-          <p>Reach the EarnGig community. Promote your business, products and services on our homepage.</p>
-          <a class="btn" style="background:var(--lime);color:#170329" href="advertise.html">Advertise Now →</a>
+          <p>Reach the EarnGig community. Promote your business, products and services on our platform.</p>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Advertise Now →</a>
         </div>
-        <div class="ad-visual">
-          <div class="ad-orb">📢</div>
-        </div>
+        <div class="ad-visual"><div class="ad-orb">📢</div></div>
       </article>
 
-      <!-- DEMO SLIDE 2 -->
       <article class="ad-slide">
         <div class="ad-copy">
           <div class="ad-tag">BUSINESS PROMOTION</div>
           <h2>Make Your Next<br>Big <span>Move.</span></h2>
           <p>Showcase your products and services to people discovering new opportunities every day.</p>
-          <a class="btn" style="background:var(--lime);color:#170329" href="advertise.html">Promote Your Business →</a>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Promote Your Business →</a>
         </div>
-        <div class="ad-visual">
-          <div class="ad-orb">🛍️</div>
-        </div>
+        <div class="ad-visual"><div class="ad-orb">🛍️</div></div>
       </article>
 
-      <!-- DEMO SLIDE 3 -->
       <article class="ad-slide">
         <div class="ad-copy">
           <div class="ad-tag">EARNGIG ADVERTISING</div>
           <h2>More Eyes.<br>More <span>Attention.</span></h2>
           <p>Book a billboard slot and give your campaign a prominent place on EarnGig.</p>
-          <a class="btn" style="background:var(--lime);color:#170329" href="advertise.html">Book a Billboard →</a>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Book a Billboard →</a>
         </div>
-        <div class="ad-visual">
-          <div class="ad-orb">🚀</div>
-        </div>
+        <div class="ad-visual"><div class="ad-orb">🚀</div></div>
       </article>
 
       <button class="ad-arrow next" onclick="changeSlide(1)" aria-label="Next advert">›</button>
-
     </div>
 
     <div class="ad-controls">
       <button class="ad-dot active" onclick="showSlide(0)" aria-label="Advert 1"></button>
       <button class="ad-dot" onclick="showSlide(1)" aria-label="Advert 2"></button>
       <button class="ad-dot" onclick="showSlide(2)" aria-label="Advert 3"></button>
-      <span class="ad-count" id="adCount">1 of 10 slots</span>
+      <span class="ad-count" id="adCount">1</span>
     </div>
-
   </section>
 
-  <!-- MAIN SHORTCUTS -->
+  <!-- SHORTCUTS -->
   <section class="shortcut-grid">
-
-    <a class="shortcut" href="games.html">
-      <span class="shortcut-icon">🎮</span>
-      <strong>Play Games</strong>
-      <small>Have fun and earn coins</small>
-    </a>
-
-    <a class="shortcut" href="novels.html">
-      <span class="shortcut-icon">📖</span>
-      <strong>Read Novels</strong>
-      <small>Enjoy great stories</small>
-    </a>
-
-    <a class="shortcut" href="marketplace.html">
-      <span class="shortcut-icon">🛒</span>
-      <strong>Marketplace</strong>
-      <small>Buy, sell and earn</small>
-    </a>
-
-    <a class="shortcut" href="earn-more.html">
-      <span class="shortcut-icon">🪙</span>
-      <strong>Earn More</strong>
-      <small>Watch ads, refer friends</small>
-    </a>
-
-    <a class="shortcut" href="advertise.html">
-      <span class="shortcut-icon">📣</span>
-      <strong>Advertise</strong>
-      <small>Promote your business</small>
-    </a>
-
-    <a class="shortcut" href="wallet.html">
-      <span class="shortcut-icon">👛</span>
-      <strong>My Wallet</strong>
-      <small>Check balance and history</small>
-    </a>
-
+    <a class="shortcut" href="games.html"><span class="shortcut-icon">🎮</span><strong>Play Games</strong><small>Have fun and earn coins</small></a>
+    <a class="shortcut" href="novels.html"><span class="shortcut-icon">📖</span><strong>Read Novels</strong><small>Enjoy great stories</small></a>
+    <a class="shortcut" href="marketplace.html"><span class="shortcut-icon">🛒</span><strong>Marketplace</strong><small>Buy, sell and earn</small></a>
+    <a class="shortcut" href="earn-more.html"><span class="shortcut-icon">🪙</span><strong>Earn More</strong><small>Watch ads, refer friends</small></a>
+    <a class="shortcut" href="advertise.html"><span class="shortcut-icon">📣</span><strong>Advertise</strong><small>Promote your business</small></a>
+    <a class="shortcut" href="wallet.html"><span class="shortcut-icon">👛</span><strong>My Wallet</strong><small>Check balance and history</small></a>
   </section>
 
-  <!-- POPULAR GAMES -->
+  <!-- GAMES -->
   <section class="section">
-
     <div class="section-heading">
       <h2>🎮 Popular <span>Games</span></h2>
       <a class="view-all" href="games.html">View All →</a>
     </div>
 
     <div class="game-grid">
-
-      <article class="game-card">
-        <div class="game-art art-candy"><span>🍬</span></div>
-        <div class="game-info">
-          <h3>Candy Match</h3>
-          <a class="play-button" href="games.html">Play & Earn</a>
-        </div>
-      </article>
-
-      <article class="game-card">
-        <div class="game-art art-bubble"><span>🫧</span></div>
-        <div class="game-info">
-          <h3>Bubble Shooter</h3>
-          <a class="play-button" href="games.html">Play & Earn</a>
-        </div>
-      </article>
-
-      <article class="game-card">
-        <div class="game-art art-sudoku"><span>🔢</span></div>
-        <div class="game-info">
-          <h3>Sudoku</h3>
-          <a class="play-button" href="games.html">Play & Earn</a>
-        </div>
-      </article>
-
-      <article class="game-card">
-        <div class="game-art art-word"><span>🔠</span></div>
-        <div class="game-info">
-          <h3>Word Hunt</h3>
-          <a class="play-button" href="games.html">Play & Earn</a>
-        </div>
-      </article>
-
-      <article class="game-card">
-        <div class="game-art art-puzzle"><span>🧩</span></div>
-        <div class="game-info">
-          <h3>Block Puzzle</h3>
-          <a class="play-button" href="games.html">Play & Earn</a>
-        </div>
-      </article>
-
+      <article class="game-card"><div class="game-art art-candy"><span>🍬</span></div><div class="game-info"><h3>Candy Match</h3><a class="play-button" href="games.html">Play & Earn</a></div></article>
+      <article class="game-card"><div class="game-art art-bubble"><span>🫧</span></div><div class="game-info"><h3>Bubble Shooter</h3><a class="play-button" href="games.html">Play & Earn</a></div></article>
+      <article class="game-card"><div class="game-art art-sudoku"><span>🔢</span></div><div class="game-info"><h3>Sudoku</h3><a class="play-button" href="games.html">Play & Earn</a></div></article>
+      <article class="game-card"><div class="game-art art-word"><span>🔠</span></div><div class="game-info"><h3>Word Hunt</h3><a class="play-button" href="games.html">Play & Earn</a></div></article>
+      <article class="game-card"><div class="game-art art-puzzle"><span>🧩</span></div><div class="game-info"><h3>Block Puzzle</h3><a class="play-button" href="games.html">Play & Earn</a></div></article>
     </div>
-
   </section>
 
   <!-- NOVELS AND WALLET -->
   <section class="section">
-
     <div class="content-columns">
-
-      <div class="novels-area">
-
+      <div>
         <div class="section-heading">
           <h2>📖 Featured <span>Novels</span></h2>
           <a class="view-all" href="novels.html">View All →</a>
         </div>
 
         <div class="novel-grid">
-
-          <article class="novel-card">
-            <div class="novel-cover cover-one">
-              <small>Romance</small>
-              <span class="cover-symbol">🌹</span>
-              <h3>The CEO's<br>Secret Wife</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-two">
-              <small>Drama</small>
-              <span class="cover-symbol">🥀</span>
-              <h3>Bound by<br>Revenge</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-three">
-              <small>Teen</small>
-              <span class="cover-symbol">🎓</span>
-              <h3>Campus<br>Crush</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-four">
-              <small>Royal</small>
-              <span class="cover-symbol">👑</span>
-              <h3>The Royal<br>Promise</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-five">
-              <small>Love</small>
-              <span class="cover-symbol">💜</span>
-              <h3>Love<br>Again</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
+          <article class="novel-card"><div class="novel-cover cover-one"><small>Romance</small><span class="cover-symbol">🌹</span><h3>The CEO's<br>Secret Wife</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
+          <article class="novel-card"><div class="novel-cover cover-two"><small>Drama</small><span class="cover-symbol">🥀</span><h3>Bound by<br>Revenge</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
+          <article class="novel-card"><div class="novel-cover cover-three"><small>Teen</small><span class="cover-symbol">🎓</span><h3>Campus<br>Crush</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
+          <article class="novel-card"><div class="novel-cover cover-four"><small>Royal</small><span class="cover-symbol">👑</span><h3>The Royal<br>Promise</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
+          <article class="novel-card"><div class="novel-cover cover-five"><small>Love</small><span class="cover-symbol">💜</span><h3>Love<br>Again</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
         </div>
-
       </div>
 
-      <!-- WALLET -->
       <aside class="wallet-panel">
-
         <div class="wallet-heading">👛 My Wallet</div>
-
         <div class="wallet-coin">
           <div class="wallet-coin-icon">🪙</div>
-          <div>
-            <div class="wallet-label">My Coins</div>
-            <div class="wallet-amount">0</div>
-          </div>
+          <div><div class="wallet-label">My Coins</div><div class="wallet-amount">0</div></div>
         </div>
-
         <div class="wallet-naira">Your available coin balance</div>
-
         <a href="wallet.html" class="wallet-button">Open Wallet</a>
         <a href="transactions.html" class="wallet-history">Transaction History</a>
-
       </aside>
-
     </div>
-
   </section>
 
   <!-- HOW IT WORKS -->
   <section class="section how-panel">
-
     <h2>✨ How EarnGig Works</h2>
-
     <div class="how-grid">
-
-      <article class="how-step">
-        <div class="how-icon">👤</div>
-        <h3>1. Sign Up</h3>
-        <p>Create your free account and join the EarnGig community.</p>
-      </article>
-
-      <article class="how-step">
-        <div class="how-icon">🎮</div>
-        <h3>2. Do Activities</h3>
-        <p>Play games, read novels, watch ads, refer friends and shop.</p>
-      </article>
-
-      <article class="how-step">
-        <div class="how-icon">🪙</div>
-        <h3>3. Earn Coins</h3>
-        <p>Receive eligible rewards for qualifying activities.</p>
-      </article>
-
-      <article class="how-step">
-        <div class="how-icon">🏦</div>
-        <h3>4. Withdraw</h3>
-        <p>Request withdrawals using eligible coins, subject to platform rules.</p>
-      </article>
-
+      <article class="how-step"><div class="how-icon">👤</div><h3>1. Sign Up</h3><p>Create your free account and join the EarnGig community.</p></article>
+      <article class="how-step"><div class="how-icon">🎮</div><h3>2. Do Activities</h3><p>Play games, read novels, watch ads, refer friends and shop.</p></article>
+      <article class="how-step"><div class="how-icon">🪙</div><h3>3. Earn Coins</h3><p>Receive eligible rewards for qualifying activities.</p></article>
+      <article class="how-step"><div class="how-icon">🏦</div><h3>4. Withdraw</h3><p>Request withdrawals using eligible coins, subject to platform rules.</p></article>
     </div>
-
   </section>
 
 </main>
 
 <footer>
-  <a href="../index.html" class="brand">👑 Earn<span class="gig">Gig</span></a>
-
+  <a href="../index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
   <div class="footer-links">
     <a href="../index.html">Home</a>
     <a href="about.html">About</a>
@@ -1030,14 +801,18 @@ footer a:hover {color:var(--lime)}
     <a href="help.html">Help</a>
     <a href="contact.html">Contact</a>
   </div>
-
   <span>© 2026 EarnGig. All rights reserved.</span>
 </footer>
 
 <script>
-/* MOBILE NAVIGATION */
-function toggleMenu() {
-  document.getElementById("navlinks").classList.toggle("open");
+/* SIDE MENU */
+function openMenu() {
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("menuOverlay").classList.add("open");
+}
+function closeMenu() {
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("menuOverlay").classList.remove("open");
 }
 
 /* BILLBOARD SLIDER */
@@ -1048,35 +823,21 @@ const adCount = document.getElementById("adCount");
 
 function showSlide(index) {
   currentSlide = (index + slides.length) % slides.length;
-
-  slides.forEach((slide,i) => {
-    slide.classList.toggle("active",i === currentSlide);
-  });
-
-  dots.forEach((dot,i) => {
-    dot.classList.toggle("active",i === currentSlide);
-  });
-
-  adCount.textContent = (currentSlide + 1) + " of 10 slots";
+  slides.forEach((slide,i) => slide.classList.toggle("active",i === currentSlide));
+  dots.forEach((dot,i) => dot.classList.toggle("active",i === currentSlide));
+  adCount.textContent = (currentSlide + 1);
 }
-
 function changeSlide(direction) {
   showSlide(currentSlide + direction);
 }
-
 let billboardTimer = setInterval(() => {
   showSlide(currentSlide + 1);
 },6000);
 
-/* Pause automatic rotation when the page is hidden */
 document.addEventListener("visibilitychange",() => {
-  if(document.hidden) {
-    clearInterval(billboardTimer);
-  } else {
-    clearInterval(billboardTimer);
-    billboardTimer = setInterval(() => {
-      showSlide(currentSlide + 1);
-    },6000);
+  clearInterval(billboardTimer);
+  if(!document.hidden) {
+    billboardTimer = setInterval(() => showSlide(currentSlide + 1),6000);
   }
 });
 </script>
