@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#130923">
+<title>Word Search | EarnGig</title>
+<style>
+:root {
+  --bg:#130923;
+  --panel:#24143a;
+  --purple:#9557ff;
+  --lime:#c8ff43;
+  --gold:#ffc857;
+  --muted:#bcaed0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#49216e,#130923 60%);
+  color:#fff;
+  font-family:Arial,sans-serif;
+  padding-bottom:35px;
+}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:17px 5%;background:#130923dd;
+  border-bottom:1px solid #ffffff18;
+}
+.brand{font-size:23px;font-weight:900;text-decoration:none;color:white}
+.brand span{color:var(--gold)}
+.back{
+  text-decoration:none;color:white;background:#ffffff12;
+  border:1px solid #ffffff28;padding:10px 14px;
+  border-radius:10px;font-size:12px;
+}
+.container{width:min(650px,93%);margin:30px auto}
+.heading{text-align:center;margin-bottom:23px}
+.eyebrow{
+  color:var(--lime);font-size:10px;letter-spacing:3px;
+  font-weight:bold;margin-bottom:10px;
+}
+h1{font-size:36px;margin-bottom:9px}
+.heading p{color:var(--muted);font-size:13px;line-height:1.6}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;margin-bottom:17px;
+}
+.stat{
+  background:#ffffff0b;border:1px solid #ffffff17;
+  border-radius:13px;text-align:center;padding:13px 5px;
+}
+.stat strong{display:block;color:var(--lime);font-size:21px}
+.stat small{color:var(--muted);font-size:10px}
+.game-panel{
+  background:linear-gradient(145deg,#2b1943,#1d1030);
+  border:1px solid #ffffff20;border-radius:19px;
+  padding:15px;box-shadow:0 18px 45px #0005;
+}
+.instruction{
+  text-align:center;color:#d4c5e8;font-size:12px;
+  margin:2px 0 14px;line-height:1.5;
+}
+.grid{
+  display:grid;grid-template-columns:repeat(10,minmax(0,1fr));
+  gap:4px;width:100%;max-width:480px;margin:auto;
+  touch-action:manipulation;
+}
+.cell{
+  aspect-ratio:1;
+  display:grid;place-items:center;
+  border:1px solid #ffffff15;border-radius:6px;
+  background:#382451;color:#fff;
+  font-size:clamp(12px,3.5vw,19px);
+  font-weight:800;cursor:pointer;
+  user-select:none;-webkit-user-select:none;
+  transition:background .15s;
+}
+.cell.selected{background:#8750d8;border-color:#d5baff}
+.cell.found{background:#c8ff43;color:#192407;border-color:#e1ff9b}
+.cell:focus-visible{outline:2px solid var(--lime)}
+.words-panel{margin-top:20px}
+.words-title{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:12px;
+}
+.words-title h2{font-size:15px}
+.words-title span{color:var(--muted);font-size:11px}
+.words{
+  display:flex;flex-wrap:wrap;gap:9px;
+}
+.word{
+  background:#ffffff0c;border:1px solid #ffffff20;
+  border-radius:8px;padding:9px 11px;
+  font-size:11px;font-weight:bold;color:#eee4ff;
+}
+.word.done{
+  color:var(--lime);border-color:#c8ff4370;
+  text-decoration:line-through;background:#c8ff4310;
+}
+.message{
+  display:none;text-align:center;margin-top:17px;
+  padding:17px;border-radius:12px;
+  background:#c8ff4315;border:1px solid #c8ff4360;
+  color:var(--lime);font-weight:bold;line-height:1.6;
+}
+.controls{
+  display:flex;gap:10px;margin-top:18px;
+}
+.controls button{
+  flex:1;padding:13px;border:0;border-radius:10px;
+  font-weight:bold;cursor:pointer;
+}
+.reset{background:var(--lime);color:#182309}
+.clear{background:#ffffff13;color:#fff;border:1px solid #ffffff25!important}
+footer{text-align:center;color:#8f7da6;font-size:11px;margin-top:24px}
+@media(max-width:420px){
+  .container{margin-top:22px}
+  h1{font-size:31px}
+  .game-panel{padding:10px}
+  .grid{gap:3px}
+  .cell{border-radius:4px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand"><span>♛</span> EarnGig</a>
+  <a href="games.html" class="back">← All Games</a>
+</header>
+
+<main class="container">
+  <section class="heading">
+    <div class="eyebrow">EARNGIG ARCADE</div>
+    <h1>Word Search 🔎</h1>
+    <p>Find all the hidden words. Choose a starting letter, then tap the ending letter.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><strong id="foundCount">0/8</strong><small>Words found</small></div>
+    <div class="stat"><strong id="timer">00:00</strong><small>Time played</small></div>
+    <div class="stat"><strong id="remaining">8</strong><small>Remaining</small></div>
+  </section>
+
+  <section class="game-panel">
+    <p class="instruction" id="instruction">
+      Tap the first letter of a word, then tap its last letter.
+    </p>
+
+    <div class="grid" id="grid" aria-label="Word search puzzle"></div>
+
+    <div class="words-panel">
+      <div class="words-title">
+        <h2>Find these words</h2>
+        <span>8 hidden words</span>
+      </div>
+      <div class="words" id="words"></div>
+    </div>
+
+    <div class="message" id="message">
+      🎉 Amazing! You found every word!<br>
+      <span id="finalTime"></span>
+    </div>
+
+    <div class="controls">
+      <button class="clear" id="clearButton">Clear Selection</button>
+      <button class="reset" id="restartButton">Restart Game ↻</button>
+    </div>
+  </section>
+
+  <footer>EarnGig Games · Play smart. Have fun.</footer>
+</main>
+
+<script>
+const puzzle = [
+  "WORDSEARCH",
+  "AELPMISQRT",
+  "CANDYBFGHI",
+  "KJLMNOPQRS",
+  "CHESSUVWXY",
+  "ZABCDEFRST",
+  "GAMINGHIJK",
+  "LMNOPQRSTU",
+  "BUBBLEVWXY",
+  "SURVIVALZZ"
+];
+
+const words = [
+  "WORD",
+  "SEARCH",
+  "CANDY",
+  "CHESS",
+  "GAME",
+  "BUBBLE",
+  "SURVIVAL",
+  "SIMPLE"
+];
+
+const gridElement = document.getElementById("grid");
+const wordsElement = document.getElementById("words");
+const instruction = document.getElementById("instruction");
+
+let selectedStart = null;
+let foundWords = [];
+let foundCells = [];
+let seconds = 0;
+let timerInterval = null;
+let gameFinished = false;
+
+function cellIndex(row,col){
+  return row*10+col;
+}
+
+function buildGrid(){
+  gridElement.innerHTML = "";
+
+  puzzle.forEach((row,r)=>{
+    [...row].forEach((letter,c)=>{
+      const cell = document.createElement("button");
+      cell.type = "button";
+      cell.className = "cell";
+      cell.textContent = letter;
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.setAttribute("aria-label",`Row ${r+1}, column ${c+1}, ${letter}`);
+      cell.addEventListener("click",()=>selectCell(r,c));
+      gridElement.appendChild(cell);
+    });
+  });
+}
+
+function buildWordList(){
+  wordsElement.innerHTML = "";
+
+  words.forEach(word=>{
+    const item = document.createElement("div");
+    item.className = "word";
+    item.id = "word-"+word;
+    item.textContent = word;
+    wordsElement.appendChild(item);
+  });
+}
+
+function getCells(){
+  return [...gridElement.children];
+}
+
+function selectCell(row,col){
+  if(gameFinished)return;
+
+  const cells = getCells();
+  const index = cellIndex(row,col);
+
+  if(selectedStart === null){
+    selectedStart = {row,col};
+    cells[index].classList.add("selected");
+    instruction.textContent = "Now tap the last letter of the word.";
+    return;
+  }
+
+  const start = selectedStart;
+  const dr = row-start.row;
+  const dc = col-start.col;
+
+  if(dr===0 && dc===0){
+    clearSelection();
+    return;
+  }
+
+  const straight =
+    dr===0 || dc===0 || Math.abs(dr)===Math.abs(dc);
+
+  if(!straight){
+    clearSelection();
+    selectedStart = {row,col};
+    cells[index].classList.add("selected");
+    instruction.textContent = "Choose a straight line: horizontal, vertical or diagonal.";
+    return;
+  }
+
+  const steps = Math.max(Math.abs(dr),Math.abs(dc));
+  const rowStep = Math.sign(dr);
+  const colStep = Math.sign(dc);
+
+  let letters = "";
+  let indexes = [];
+
+  for(let i=0;i<=steps;i++){
+    const rr = start.row + rowStep*i;
+    const cc = start.col + colStep*i;
+    if(rr<0||rr>=10||cc<0||cc>=10)break;
+    letters += puzzle[rr][cc];
+    indexes.push(cellIndex(rr,cc));
+  }
+
+  const reversed = letters.split("").reverse().join("");
+  const matched = words.find(word=>
+    !foundWords.includes(word) &&
+    (word===letters || word===reversed)
+  );
+
+  if(matched){
+    foundWords.push(matched);
+    indexes.forEach(i=>{
+      if(!foundCells.includes(i))foundCells.push(i);
+      cells[i].classList.add("found");
+    });
+
+    document.getElementById("word-"+matched).classList.add("done");
+    updateStats();
+    instruction.textContent = "Correct! Find the next word.";
+    clearSelection(false);
+
+    if(foundWords.length===words.length){
+      finishGame();
+    }
+  }else{
+    instruction.textContent = "Not a matching word. Try again!";
+    clearSelection();
+  }
+}
+
+function clearSelection(clearStart=true){
+  getCells().forEach(cell=>cell.classList.remove("selected"));
+
+  foundCells.forEach(index=>{
+    getCells()[index].classList.add("found");
+  });
+
+  if(clearStart)selectedStart=null;
+  else selectedStart=null;
+}
+
+function updateStats(){
+  document.getElementById("foundCount").textContent =
+    foundWords.length+"/"+words.length;
+
+  document.getElementById("remaining").textContent =
+    words.length-foundWords.length;
+}
+
+function updateTimer(){
+  seconds++;
+  const minutes=String(Math.floor(seconds/60)).padStart(2,"0");
+  const secs=String(seconds%60).padStart(2,"0");
+  document.getElementById("timer").textContent=minutes+":"+secs;
+}
+
+function finishGame(){
+  gameFinished=true;
+  clearInterval(timerInterval);
+  document.getElementById("message").style.display="block";
+  document.getElementById("finalTime").textContent=
+    "Completed in "+document.getElementById("timer").textContent;
+  instruction.textContent="Puzzle completed. Well done!";
+}
+
+function restartGame(){
+  selectedStart=null;
+  foundWords=[];
+  foundCells=[];
+  seconds=0;
+  gameFinished=false;
+
+  document.getElementById("timer").textContent="00:00";
+  document.getElementById("message").style.display="none";
+  instruction.textContent="Tap the first letter of a word, then tap its last letter.";
+
+  updateStats();
+  buildGrid();
+  buildWordList();
+
+  clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,1000);
+}
+
+document.getElementById("clearButton").addEventListener("click",()=>{
+  if(gameFinished)return;
+  clearSelection();
+  instruction.textContent="Selection cleared. Choose a starting letter.";
+});
+
+document.getElementById("restartButton").addEventListener("click",restartGame);
+
+restartGame();
+</script>
+
+</body>
+</html>
