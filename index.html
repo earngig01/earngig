@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarnGig | Play, Read, Earn & Shop</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #100b20;
+      color: white;
+    }
+    a { text-decoration: none; color: inherit; }
+    header {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 20px 6%;
+      background: #19112c; border-bottom: 1px solid #382650;
+      flex-wrap: wrap; gap: 15px;
+    }
+    .logo { font-size: 29px; font-weight: 900; }
+    .logo span { color: #cafa70; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; }
+    nav a { font-size: 14px; color: #ddd2ef; }
+    nav a:hover { color: #cafa70; }
+    .btn {
+      display: inline-block; padding: 12px 19px;
+      border-radius: 9px; font-weight: bold;
+    }
+    .green { background: #cafa70; color: #171126; }
+    .outline { border: 1px solid #8064a4; }
+    .hero {
+      padding: 85px 8%; min-height: 470px;
+      background: radial-gradient(circle at 80% 30%, #633b91, transparent 38%),
+                  linear-gradient(120deg, #291443, #130d24);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 30px;
+    }
+    .hero-content { max-width: 650px; }
+    .tag { color: #cafa70; font-weight: bold; letter-spacing: 2px; }
+    h1 { font-size: clamp(45px, 7vw, 76px); margin: 18px 0; }
+    h1 span { color: #cafa70; }
+    .hero p { color: #d0c5df; line-height: 1.8; font-size: 17px; }
+    .hero-actions { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .hero-icon { font-size: 130px; }
+    .container { width: 88%; max-width: 1150px; margin: auto; }
+    section { padding: 55px 0; }
+    .section-title { font-size: 30px; margin-bottom: 25px; }
+    .cards {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+    }
+    .card {
+      background: #211733; border: 1px solid #3c2b53;
+      border-radius: 15px; padding: 23px;
+      min-height: 185px;
+    }
+    .card .icon { font-size: 35px; }
+    .card h3 { margin: 15px 0 9px; }
+    .card p { color: #bdb0cf; font-size: 14px; line-height: 1.6; }
+    .card a { display: inline-block; color: #cafa70; margin-top: 15px; font-weight: bold; }
+    .billboard {
+      background: linear-gradient(100deg, #452365, #241638);
+      border: 1px solid #654483; border-radius: 16px;
+      padding: 30px; display: flex;
+      justify-content: space-between; align-items: center; gap: 20px;
+    }
+    .billboard p { color: #d0c5df; margin-top: 9px; }
+    .light-section {
+      background: #faf9fc; color: #211a31;
+      padding: 55px 6%;
+    }
+    .light-section .card {
+      background: white; border-color: #e5dcef;
+    }
+    .light-section .card p { color: #6e6579; }
+    footer {
+      background: #19112c; text-align: center;
+      padding: 35px 15px; color: #bdb0cf;
+      line-height: 2;
+    }
+    @media(max-width: 850px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .hero-icon { font-size: 85px; }
+    }
+    @media(max-width: 600px) {
+      header { justify-content: center; }
+      nav { justify-content: center; }
+      .hero { text-align: center; flex-direction: column; padding: 60px 7%; }
+      .hero-actions { justify-content: center; }
+      .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .card { padding: 15px; }
+      .billboard { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">Earn<span>Gig</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#games">Games</a>
+    <a href="#novels">Novels</a>
+    <a href="pages/marketplace.html">Marketplace</a>
+    <a href="#earn">Earn More</a>
+    <a href="pages/advertise.html">Advertise</a>
+    <a href="pages/wallet.html">Wallet</a>
+    <a href="pages/my-shop.html">My Shop</a>
+  </nav>
+  <div>
+    <a class="btn outline" href="pages/login.html">Log in</a>
+    <a class="btn green" href="pages/register.html">Join</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="tag">WELCOME TO EARNGIG</div>
+      <h1>Play. Read.<br><span>Earn. Shop.</span></h1>
+      <p>Your destination for exciting games, amazing stories,
+         rewards and everyday shopping. Discover more ways
+         to enjoy your time on one platform.</p>
+      <div class="hero-actions">
+        <a class="btn green" href="pages/register.html">Create Account</a>
+        <a class="btn outline" href="#explore">Explore EarnGig</a>
+      </div>
+    </div>
+    <div class="hero-icon">🎮</div>
+  </section>
+
+  <div class="container">
+    <section>
+      <div class="billboard">
+        <div>
+          <div class="tag">EARNGIG SPOTLIGHT</div>
+          <h2>Put your brand in the spotlight</h2>
+          <p>Advertise to the growing EarnGig community.</p>
+        </div>
+        <a class="btn green" href="pages/advertise.html">Advertise Now</a>
+      </div>
+    </section>
+
+    <section id="earn">
+      <h2 class="section-title">More ways to earn</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">📺</div>
+          <h3>Watch Ads</h3>
+          <p>Watch sponsored videos and collect eligible reward coins.</p>
+          <a href="pages/earn-more.html">Start earning →</a>
+        </div>
+        <div class="card">
+          <div class="icon">🤝</div>
+          <h3>Refer Friends</h3>
+          <p>Invite friends and earn when their referrals qualify.</p>
+          <a href="pages/earn-more.html">Invite friends →</a>
+        </div>
+        <div class="card" id="novels">
+          <div class="icon">📚</div>
+          <h3>Read Novels</h3>
+          <p>Explore stories and earn from qualified reading activity.</p>
+          <a href="pages/novels.html">Read stories →</a>
+        </div>
+        <div class="card">
+          <div class="icon">🪙</div>
+          <h3>My Wallet</h3>
+          <p>Keep track of your rewards and transactions.</p>
+          <a href="pages/wallet.html">Open wallet →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="explore">
+      <h2 class="section-title">Explore EarnGig</h2>
+      <div class="cards">
+        <div class="card" id="games">
+          <div class="icon">🎯</div>
+          <h3>Games</h3>
+          <p>Puzzles, action and skill challenges.</p>
+          <a href="pages/games.html">Explore games →</a>
+        </div>
+        <div class="card">
+          <div class="icon">📖</div>
+          <h3>Novels</h3>
+          <p>Discover stories from talented writers.</p>
+          <a href="pages/novels.html">Explore novels →</a>
+        </div>
+        <div class="card">
+          <div class="icon">🛍️</div>
+          <h3>Marketplace</h3>
+          <p>Discover products and independent stores.</p>
+          <a href="pages/marketplace.html">Start shopping →</a>
+        </div>
+        <div class="card">
+          <div class="icon">🏪</div>
+          <h3>My Shop</h3>
+          <p>Create your own store on EarnGig.</p>
+          <a href="pages/my-shop.html">Create a store →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="light-section">
+    <h2 class="section-title">Your next chapter starts here.</h2>
+    <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
+    <br>
+    <a class="btn green" href="pages/register.html">Create your free account</a>
+  </section>
+</main>
+
+<footer>
+  <h2>Earn<span style="color:#cafa70">Gig</span></h2>
+  Play · Read · Earn · Shop<br>
+  © 2026 EarnGig. All rights reserved.
+</footer>
+
+</body>
+</html>
