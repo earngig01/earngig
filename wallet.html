@@ -11,13 +11,13 @@
 :root {
   --bg:#10021e;
   --panel:#25083d;
-  --panel2:#351052;
   --lime:#caff19;
   --gold:#ffd12d;
   --pink:#df38ff;
   --muted:#c8b6d8;
 }
 * {box-sizing:border-box;margin:0;padding:0}
+html {scroll-behavior:smooth}
 body {
   background:
     radial-gradient(ellipse at 50% 0%,#3b075d 0%,transparent 45%),
@@ -112,7 +112,7 @@ header {
 .page-heading p {color:var(--muted);font-size:14px;line-height:1.5}
 .back-link {color:var(--lime);font-size:13px;font-weight:bold}
 
-/* BALANCE */
+/* TOTAL BALANCE */
 .balance-card {
   padding:30px;
   border-radius:22px;
@@ -121,14 +121,19 @@ header {
     linear-gradient(120deg,#260644,#57108c);
   border:1px solid #b84aff;
   box-shadow:0 0 30px #a51cff35;
-  margin-bottom:20px;
-  position:relative;overflow:hidden;
+  margin-bottom:22px;
+  position:relative;
+  overflow:hidden;
 }
 .balance-card:after {
-  content:"🪙";position:absolute;
-  right:30px;top:20px;font-size:100px;opacity:.15;
+  content:"🪙";
+  position:absolute;
+  right:30px;top:20px;
+  font-size:100px;opacity:.15;
 }
-.balance-label {font-size:14px;color:#e2d2f1;margin-bottom:12px}
+.balance-label {
+  font-size:14px;color:#e2d2f1;margin-bottom:12px;
+}
 .balance-number {
   font-size:clamp(37px,7vw,55px);
   font-weight:900;color:var(--lime);margin-bottom:8px;
@@ -145,74 +150,138 @@ header {
 .btn-lime {background:var(--lime);color:#190b24}
 .btn-outline {background:transparent;border:1px solid #e2aaff;color:white}
 
-/* BALANCE BREAKDOWN */
-.breakdown {
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:14px;margin-bottom:30px;
+/* AVAILABLE TO WITHDRAW */
+.available-card {
+  padding:24px;
+  border-radius:18px;
+  background:linear-gradient(140deg,#24103c,#351052);
+  border:1px solid #9b4bc5;
+  margin-bottom:27px;
 }
-.breakdown-card {
-  padding:20px;background:#26083f;
-  border:1px solid #7d3aa5;border-radius:15px;
+.available-title {
+  color:#e6d4f3;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:17px;
 }
-.breakdown-card .icon {font-size:27px;margin-bottom:12px}
-.breakdown-card h3 {font-size:24px;margin-bottom:6px}
-.breakdown-card p {font-size:12px;color:var(--muted);line-height:1.5}
-.breakdown-card.available {border-color:#9bdc25}
-.breakdown-card.pending {border-color:#e3a02a}
-.breakdown-card.purchased {border-color:#b34cff}
-
-/* SECTIONS */
-.section {margin:30px 0}
-.section-title {
-  font-size:21px;font-weight:900;margin-bottom:15px;
+.available-main {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
 }
-.panel {
-  padding:22px;background:#25083d;
-  border:1px solid #7937a0;border-radius:17px;
+.available-coins {
+  font-size:clamp(27px,5vw,37px);
+  color:var(--lime);
+  font-weight:900;
 }
-.panel-description {
-  color:var(--muted);font-size:13px;
-  line-height:1.6;margin-bottom:18px;
+.available-naira {
+  font-size:clamp(22px,4vw,30px);
+  font-weight:900;
+  color:white;
+}
+.available-caption {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+}
+.conversion-note {
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid #ffffff20;
+  color:#d9c4e9;
+  font-size:12px;
+  line-height:1.6;
 }
 
 /* WITHDRAWAL FORM */
+.section {margin:28px 0}
+.section-title {font-size:21px;font-weight:900;margin-bottom:15px}
+.panel {
+  padding:24px;
+  background:#25083d;
+  border:1px solid #7937a0;
+  border-radius:17px;
+}
+.panel-description {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
 .form-grid {
-  display:grid;grid-template-columns:1fr 1fr;gap:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
 }
 .field {display:flex;flex-direction:column;gap:8px}
 .field.full {grid-column:1/-1}
 .field label {font-size:13px;font-weight:bold;color:#f1e4fa}
 .field input,.field select {
-  width:100%;padding:14px;
-  border-radius:9px;border:1px solid #77419b;
-  background:#170429;color:white;outline:none;
+  width:100%;
+  padding:14px;
+  border-radius:9px;
+  border:1px solid #77419b;
+  background:#170429;
+  color:white;
+  outline:none;
 }
 .field input:focus,.field select:focus {border-color:var(--lime)}
 .field input::placeholder {color:#907da1}
-.form-actions {margin-top:18px}
+.field select option {background:#25083d;color:white}
+.amount-preview {
+  grid-column:1/-1;
+  background:#351052;
+  border:1px solid #8f49b3;
+  padding:16px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.amount-preview span {font-size:13px;color:#d9c4e9}
+.amount-preview strong {font-size:20px;color:var(--lime)}
 .notice {
-  padding:13px 15px;border-radius:10px;
-  background:#4a3215;border:1px solid #a57b31;
-  color:#ffe4a5;font-size:12px;line-height:1.6;
-  margin-top:15px;
+  padding:13px 15px;
+  border-radius:10px;
+  background:#4a3215;
+  border:1px solid #a57b31;
+  color:#ffe4a5;
+  font-size:12px;
+  line-height:1.6;
+  margin-top:18px;
+}
+.form-actions {margin-top:18px}
+.form-message {
+  display:none;
+  margin-top:14px;
+  padding:12px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.5;
+}
+.form-message.show {display:block}
+.form-message.error {
+  background:#511d30;color:#ffb2c2;
+}
+.form-message.info {
+  background:#173f28;color:#a6ffc0;
 }
 
-/* TRANSACTION HISTORY */
+/* HISTORY */
 .table-wrap {overflow-x:auto}
 table {width:100%;border-collapse:collapse;min-width:520px}
 th,td {
-  padding:14px 12px;text-align:left;
-  border-bottom:1px solid #ffffff18;font-size:13px;
+  padding:14px 12px;
+  text-align:left;
+  border-bottom:1px solid #ffffff18;
+  font-size:13px;
 }
 th {color:#c6a6dd;font-size:11px;text-transform:uppercase}
 td {color:#f3eafa}
-.status {
-  display:inline-block;padding:6px 9px;
-  border-radius:20px;font-size:11px;font-weight:bold;
-}
-.status.pending {background:#5a3b12;color:#ffdc85}
-.status.success {background:#173f28;color:#8dffad}
-.status.failed {background:#511d30;color:#ff9cb3}
 .empty {
   padding:28px 10px;text-align:center;
   color:var(--muted);font-size:13px;
@@ -221,8 +290,10 @@ td {color:#f3eafa}
 /* FOOTER */
 footer {
   border-top:1px solid #8b35b855;
-  padding:24px 4%;text-align:center;
-  color:#bda9ce;font-size:12px;
+  padding:24px 4%;
+  text-align:center;
+  color:#bda9ce;
+  font-size:12px;
 }
 
 @media(max-width:650px) {
@@ -230,17 +301,12 @@ footer {
   .brand {font-size:24px}
   .container {margin-top:22px}
   .page-heading h1 {font-size:25px}
-  .breakdown {grid-template-columns:1fr 1fr;gap:10px}
-  .breakdown-card {padding:15px}
-  .breakdown-card h3 {font-size:20px}
   .balance-card {padding:22px}
-  .form-grid {grid-template-columns:1fr}
-  .field.full {grid-column:auto}
+  .available-card {padding:19px}
   .panel {padding:17px}
-}
-@media(max-width:380px) {
-  .breakdown {grid-template-columns:1fr}
-  .balance-number {font-size:36px}
+  .form-grid {grid-template-columns:1fr}
+  .field.full,.amount-preview {grid-column:auto}
+  .available-main {align-items:flex-start;flex-direction:column}
 }
 </style>
 </head>
@@ -261,7 +327,9 @@ footer {
 
 <aside class="side-menu" id="sideMenu">
   <div class="menu-head">
-    <a href="../index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
+    <a href="../index.html" class="brand">
+      <span class="crown">👑</span> Earn<span class="gig">Gig</span>
+    </a>
     <button class="close-menu" onclick="closeMenu()">×</button>
   </div>
 
@@ -294,12 +362,12 @@ footer {
     <a href="dashboard.html" class="back-link">← Dashboard</a>
   </div>
 
-  <!-- MAIN BALANCE -->
+  <!-- TOTAL COIN BALANCE -->
   <section class="balance-card">
     <div class="balance-label">TOTAL COIN BALANCE</div>
     <div class="balance-number" id="totalBalance">0 Coins</div>
     <div class="balance-subtitle">
-      Your total displayed balance across your EarnGig account.
+      Your total displayed coin balance across EarnGig.
     </div>
     <div class="balance-actions">
       <a href="#withdraw" class="btn btn-lime">Withdraw Funds →</a>
@@ -307,63 +375,81 @@ footer {
     </div>
   </section>
 
-  <!-- BALANCE BREAKDOWN -->
-  <section class="breakdown">
+  <!-- AVAILABLE BALANCE -->
+  <section class="available-card">
+    <div class="available-title">💰 AVAILABLE TO WITHDRAW</div>
 
-    <article class="breakdown-card available">
-      <div class="icon">✅</div>
-      <h3>0 Coins</h3>
-      <p>Eligible balance. Subject to withdrawal rules and verification.</p>
-    </article>
+    <div class="available-main">
+      <div>
+        <div class="available-coins" id="eligibleCoins">0 Coins</div>
+        <div class="available-caption">Eligible coins</div>
+      </div>
 
-    <article class="breakdown-card pending">
-      <div class="icon">⏳</div>
-      <h3>0 Coins</h3>
-      <p>Rewards awaiting qualification or verification.</p>
-    </article>
+      <div>
+        <div class="available-naira" id="eligibleNaira">₦0.00</div>
+        <div class="available-caption">Equivalent withdrawal value</div>
+      </div>
+    </div>
 
-    <article class="breakdown-card purchased">
-      <div class="icon">🪙</div>
-      <h3>0 Coins</h3>
-      <p>Coins acquired through permitted purchases or transfers.</p>
-    </article>
-
+    <div class="conversion-note">
+      Your available withdrawal value is calculated using eligible coins only.
+      Pending or unqualified rewards are not included.
+      <br>
+      <strong>Conversion rate: 1,000 eligible coins = ₦100.</strong>
+    </div>
   </section>
 
-  <!-- WITHDRAWAL -->
+  <!-- WITHDRAWAL FORM -->
   <section class="section" id="withdraw">
     <h2 class="section-title">🏦 Request a Withdrawal</h2>
 
     <div class="panel">
       <p class="panel-description">
-        Enter your withdrawal amount and Nigerian bank details.
-        Actual withdrawal availability will depend on eligible coins,
-        account verification and EarnGig withdrawal rules.
+        Enter the amount you want to withdraw in naira and provide your
+        Nigerian bank account details.
       </p>
 
       <form id="withdrawForm">
         <div class="form-grid">
 
-          <div class="field">
-            <label for="amount">Withdrawal Amount (₦)</label>
-            <input id="amount" type="number" min="1" placeholder="Enter amount">
+          <div class="field full">
+            <label for="amount">How much do you want to withdraw? (₦)</label>
+            <input
+              id="amount"
+              type="number"
+              min="1"
+              step="0.01"
+              placeholder="Enter withdrawal amount"
+              required
+            >
+          </div>
+
+          <div class="amount-preview">
+            <span>Coins required for this withdrawal</span>
+            <strong id="coinsRequired">0 Coins</strong>
           </div>
 
           <div class="field">
             <label for="bank">Bank Name</label>
-            <select id="bank">
+            <select id="bank" required>
               <option value="">Select your bank</option>
               <option>Access Bank</option>
+              <option>Citibank Nigeria</option>
+              <option>Ecobank</option>
               <option>Fidelity Bank</option>
               <option>First Bank</option>
+              <option>First City Monument Bank</option>
               <option>GTBank</option>
+              <option>Keystone Bank</option>
               <option>Moniepoint</option>
               <option>OPay</option>
               <option>Palmpay</option>
+              <option>Polaris Bank</option>
               <option>Stanbic IBTC</option>
               <option>Sterling Bank</option>
               <option>UBA</option>
               <option>Union Bank</option>
+              <option>Unity Bank</option>
               <option>Wema Bank</option>
               <option>Zenith Bank</option>
               <option>Other</option>
@@ -372,38 +458,46 @@ footer {
 
           <div class="field">
             <label for="accountName">Account Name</label>
-            <input id="accountName" type="text" placeholder="Name on bank account">
-          </div>
-
-          <div class="field">
-            <label for="accountNumber">Account Number</label>
-            <input id="accountNumber" type="text" inputmode="numeric"
-              maxlength="10" placeholder="10-digit account number">
+            <input
+              id="accountName"
+              type="text"
+              placeholder="Name on bank account"
+              required
+            >
           </div>
 
           <div class="field full">
-            <label for="note">Additional Information (Optional)</label>
-            <input id="note" type="text" placeholder="Any additional information">
+            <label for="accountNumber">Account Number</label>
+            <input
+              id="accountNumber"
+              type="text"
+              inputmode="numeric"
+              maxlength="10"
+              placeholder="Enter your 10-digit account number"
+              required
+            >
           </div>
 
         </div>
 
         <div class="notice">
-          Withdrawal requests are not processed by this demonstration form.
-          Your bank details should only be submitted through the secure,
-          connected EarnGig platform once backend processing is available.
+          Withdrawal requests are subject to eligible balance, account
+          verification and EarnGig withdrawal rules. This demonstration
+          page does not yet process real bank transfers.
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn btn-lime">Continue</button>
+          <button type="submit" class="btn btn-lime">Withdraw Funds →</button>
         </div>
+
+        <div class="form-message" id="formMessage"></div>
       </form>
     </div>
   </section>
 
-  <!-- TRANSACTION HISTORY -->
+  <!-- RECENT TRANSACTIONS -->
   <section class="section" id="transactions">
-    <div class="section-title">📊 Recent Transactions</div>
+    <h2 class="section-title">📊 Recent Transactions</h2>
 
     <div class="panel">
       <div class="table-wrap">
@@ -430,8 +524,7 @@ footer {
 
   <!-- WITHDRAWAL HISTORY -->
   <section class="section">
-    <div class="section-title">📋 Withdrawal History</div>
-
+    <h2 class="section-title">📋 Withdrawal History</h2>
     <div class="panel">
       <div class="empty">
         You have not made any withdrawal requests yet.
@@ -441,40 +534,101 @@ footer {
 
 </main>
 
-<footer>
-  © 2026 EarnGig. All rights reserved.
-</footer>
+<footer>© 2026 EarnGig. All rights reserved.</footer>
 
 <script>
+/*
+  DEMONSTRATION BALANCES ONLY.
+  These values will be supplied by the secure wallet backend later.
+*/
+const walletData = {
+  totalCoins: 0,
+  eligibleCoins: 0
+};
+
+const COINS_PER_NAIRA = 10;
+
+function formatNaira(amount) {
+  return "₦" + Number(amount).toLocaleString("en-NG", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function updateWalletDisplay() {
+  const total = walletData.totalCoins;
+  const eligible = walletData.eligibleCoins;
+  const nairaValue = eligible / COINS_PER_NAIRA;
+
+  document.getElementById("totalBalance").textContent =
+    total.toLocaleString("en-NG") + " Coins";
+
+  document.getElementById("eligibleCoins").textContent =
+    eligible.toLocaleString("en-NG") + " Coins";
+
+  document.getElementById("eligibleNaira").textContent =
+    formatNaira(nairaValue);
+}
+
+function updateWithdrawalPreview() {
+  const amount = Number(document.getElementById("amount").value || 0);
+  const requiredCoins = Math.ceil(amount * COINS_PER_NAIRA);
+
+  document.getElementById("coinsRequired").textContent =
+    requiredCoins.toLocaleString("en-NG") + " Coins";
+}
+
+document.getElementById("amount").addEventListener(
+  "input",
+  updateWithdrawalPreview
+);
+
 function openMenu() {
   document.getElementById("sideMenu").classList.add("open");
   document.getElementById("overlay").classList.add("open");
 }
+
 function closeMenu() {
   document.getElementById("sideMenu").classList.remove("open");
   document.getElementById("overlay").classList.remove("open");
 }
 
-/* Frontend demonstration only: no real withdrawal is submitted. */
 document.getElementById("withdrawForm").addEventListener("submit",function(event) {
   event.preventDefault();
 
-  const amount = document.getElementById("amount").value;
+  const amount = Number(document.getElementById("amount").value);
   const bank = document.getElementById("bank").value;
-  const name = document.getElementById("accountName").value.trim();
-  const account = document.getElementById("accountNumber").value.trim();
+  const accountName = document.getElementById("accountName").value.trim();
+  const accountNumber = document.getElementById("accountNumber").value.trim();
+  const message = document.getElementById("formMessage");
 
-  if(!amount || Number(amount) <= 0) {
-    alert("Please enter a valid withdrawal amount.");
+  message.className = "form-message show error";
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    message.textContent = "Please enter a valid withdrawal amount.";
     return;
   }
-  if(!bank || !name || !/^\d{10}$/.test(account)) {
-    alert("Please complete your bank details correctly.");
+
+  const coinsNeeded = Math.ceil(amount * COINS_PER_NAIRA);
+
+  if (coinsNeeded > walletData.eligibleCoins) {
+    message.textContent =
+      "Your eligible balance is not enough for this withdrawal.";
     return;
   }
 
-  alert("Your details passed the basic form check. Withdrawal submission will be available when EarnGig's secure wallet backend is connected.");
+  if (!bank || !accountName || !/^\d{10}$/.test(accountNumber)) {
+    message.textContent =
+      "Please complete your bank details correctly.";
+    return;
+  }
+
+  message.className = "form-message show info";
+  message.textContent =
+    "Your details passed the basic form checks. Actual withdrawal submission will become available when the secure EarnGig wallet backend is connected.";
 });
+
+updateWalletDisplay();
 </script>
 
 </body>
