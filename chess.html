@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chess | EarnGig</title>
+<style>
+:root{--green:#276749;--dark:#183d32;--cream:#f5f0df;--gold:#e5b94e;--ink:#263b32}
+*{box-sizing:border-box}
+body{margin:0;padding:12px;background:linear-gradient(145deg,#edf5e9,#f8f1df);font-family:Arial,sans-serif;color:var(--ink)}
+.topbar,.container{max-width:650px;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 18px}
+.brand{font-size:22px;font-weight:900;color:var(--dark)}
+.brand span{color:#d6a52c}
+.back{padding:10px 14px;background:#fff;border:1px solid #dce5d7;border-radius:12px;text-decoration:none;color:var(--dark)}
+h1{text-align:center;font-size:36px;margin:8px 0;color:var(--dark)}
+.subtitle{text-align:center;color:#718176;margin:0 0 20px}
+.panel{background:#fff;border:1px solid #e0e8da;border-radius:22px;padding:18px;box-shadow:0 10px 30px #315b3514}
+.center{text-align:center}
+.big{font-size:60px;margin:12px}
+h2{color:var(--dark)}
+button{border:0;border-radius:12px;padding:13px 18px;background:var(--green);color:#fff;font-weight:800;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+.secondary{background:#edf3e9;color:var(--dark);border:1px solid #d8e4d2}
+.hidden{display:none!important}
+.status{padding:12px;background:#f1f6ec;border:1px solid #dce8d4;border-radius:12px;text-align:center;font-weight:700;margin-bottom:12px;line-height:1.5}
+.board-wrap{max-width:510px;margin:auto;padding:7px;background:#75533b;border-radius:12px;box-shadow:0 8px 22px #0002}
+#board{display:grid;grid-template-columns:repeat(8,1fr);width:100%;aspect-ratio:1}
+.square{border:0;border-radius:0;padding:0;position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;color:#111}
+.light{background:#f0d9b5}
+.dark{background:#9b704e}
+.square.selected{box-shadow:inset 0 0 0 4px #f5d34e}
+.square.target:after{content:"";position:absolute;width:25%;height:25%;border-radius:50%;background:#27674999}
+.square.capture:after{content:"";position:absolute;inset:4px;border:4px solid #276749aa;border-radius:50%}
+.piece{font-family:"Segoe UI Symbol","DejaVu Sans",serif;font-size:clamp(25px,8vw,53px);line-height:1;pointer-events:none}
+.white-piece{color:#fffdf2;text-shadow:1px 2px 2px #222,-1px -1px 1px #222}
+.black-piece{color:#171717;text-shadow:0 1px 1px #fff}
+.coords{position:absolute;font-size:9px;font-weight:bold;bottom:2px;right:3px;opacity:.65}
+.info{display:flex;justify-content:space-between;gap:8px;margin:12px 0;flex-wrap:wrap;font-size:13px;color:#637467}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.moves{margin-top:15px;padding:12px;background:#f7f8f3;border-radius:12px;max-height:110px;overflow:auto;font-size:13px;line-height:1.8}
+.note{font-size:12px;color:#7c897e;line-height:1.6;text-align:center;margin-top:14px}
+@media(max-width:420px){body{padding:8px}.panel{padding:12px}.piece{font-size:clamp(23px,8vw,38px)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="brand"><span>♛</span> EarnGig</div>
+ <a class="back" href="games.html">← Games</a>
+</header>
+
+<main class="container">
+ <h1>♟ Chess</h1>
+ <p class="subtitle">Challenge another player or play against the computer.</p>
+
+ <section class="panel center" id="lobby">
+  <div class="big">♞</div>
+  <h2>Ready to play?</h2>
+  <p>When you start, EarnGig will look for another player who is waiting.</p>
+  <p>If nobody is available, your game against the computer starts instead.</p>
+  <button id="playButton">PLAY NOW</button>
+  <p class="note">No entry fee. Once a game starts, your opponent will not change.</p>
+ </section>
+
+ <section class="panel hidden" id="game">
+  <div class="status" id="status">Loading game...</div>
+  <div class="board-wrap"><div id="board"></div></div>
+  <div class="info">
+   <span id="opponent">Opponent: Computer</span>
+   <span id="turn">White to move</span>
+  </div>
+  <div class="controls">
+   <button class="secondary" id="undoButton">Undo</button>
+   <button class="secondary" id="restartButton">Restart game</button>
+   <button id="newGameButton">New game</button>
+  </div>
+  <div class="moves" id="history">Moves will appear here.</div>
+  <p class="note">Select one of your pieces, then select a highlighted square to move. White moves first.</p>
+ </section>
+</main>
+
+<script type="module">
+import {Chess} from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/dist/esm/chess.js";
+
+const $=id=>document.getElementById(id);
+const glyph={
+ w:{k:"♔",q:"♕",r:"♖",b:"♗",n:"♘",p:"♙"},
+ b:{k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"}
+};
+
+let chess=new Chess();
+let selected=null;
+let legalMoves=[];
+let mode="computer";
+let gameOver=false;
+let history=[];
+let aiTimer=null;
+let matchmakingTimer=null;
+let onlineGameId=null;
+let playerColor="w";
+let onlinePolling=null;
+let busy=false;
+
+function showStatus(message){$("status").textContent=message;}
+
+function render(){
+ const board=$("board");
+ board.innerHTML="";
+ const files="abcdefgh";
+ const ranks="87654321";
+
+ for(let r=0;r<8;r++){
+  for(let c=0;c<8;c++){
+   const square=files[c]+ranks[r];
+   const piece=chess.get(square);
+   const cell=document.createElement("button");
+   cell.className="square "+((r+c)%2===0?"light":"dark");
+   cell.dataset.square=square;
+   cell.setAttribute("aria-label",square+(piece?" "+piece.color+" "+piece.type:""));
+
+   if(selected===square)cell.classList.add("selected");
+
+   const target=legalMoves.find(m=>m.to===square);
+   if(target)cell.classList.add(piece?"capture":"target");
+
+   if(piece){
+    const span=document.createElement("span");
+    span.className="piece "+(piece.color==="w"?"white-piece":"black-piece");
+    span.textContent=glyph[piece.color][piece.type];
+    cell.appendChild(span);
+   }
+
+   if(c===0||r===7){
+    const coord=document.createElement("span");
+    coord.className="coords";
+    coord.textContent=c===0?ranks[r]:files[c];
+    cell.appendChild(coord);
+   }
+
+   cell.addEventListener("click",()=>selectSquare(square));
+   board.appendChild(cell);
+  }
+ }
+
+ $("turn").textContent=chess.turn()==="w"?"White to move":"Black to move";
+ $("history").textContent=history.length?history.join("   "):"Moves will appear here.";
+}
+
+function updateStatus(){
+ if(chess.isCheckmate()){
+  showStatus("Checkmate! "+(chess.turn()==="w"?"Black":"White")+" wins.");
+  gameOver=true;
+ }else if(chess.isDraw()){
+  showStatus("Game drawn.");
+  gameOver=true;
+ }else if(chess.isCheck()){
+  showStatus((chess.turn()==="w"?"White":"Black")+" is in check!");
+ }else{
+  showStatus((chess.turn()==="w"?"White":"Black")+" to move.");
+ }
+}
+
+function selectSquare(square){
+ if(gameOver||busy)return;
+ if(mode==="computer"&&chess.turn()!==playerColor)return;
+ if(mode==="online"&&chess.turn()!==playerColor)return;
+
+ const piece=chess.get(square);
+
+ if(selected){
+  const move=legalMoves.find(m=>m.to===square);
+  if(move){
+   makeMove(selected,square);
+   return;
+  }
+ }
+
+ if(piece&&piece.color===chess.turn()){
+  selected=square;
+  legalMoves=chess.moves({square,verbose:true});
+ }else{
+  selected=null;
+  legalMoves=[];
+ }
+ render();
+}
+
+function makeMove(from,to){
+ try{
+  const move=chess.move({from,to,promotion:"q"});
+  if(!move)return;
+  history.push(move.san);
+  selected=null;
+  legalMoves=[];
+  render();
+  updateStatus();
+
+  if(mode==="online"&&!gameOver){
+   sendOnlineMove(move);
+  }else if(mode==="computer"&&!gameOver&&chess.turn()!==playerColor){
+   busy=true;
+   aiTimer=setTimeout(()=>{
+    computerMove();
+    busy=false;
+   },450);
+  }
+ }catch(error){
+  console.error(error);
+ }
+}
+
+function evaluateBoard(game){
+ const values={p:100,n:320,b:330,r:500,q:900,k:20000};
+ let total=0;
+ const board=game.board();
+ for(const row of board){
+  for(const p of row){
+   if(p)total+=(p.color==="w"?1:-1)*values[p.type];
+  }
+ }
+ return total;
+}
+
+function computerMove(){
+ if(gameOver||mode!=="computer"||chess.turn()===playerColor)return;
+ const moves=chess.moves({verbose:true});
+ if(!moves.length)return;
+
+ let best=[];
+ let bestScore=playerColor==="w"?Infinity:-Infinity;
+
+ for(const move of moves){
+  chess.move(move);
+  let value=evaluateBoard(chess);
+  if(chess.isCheckmate())value=chess.turn()==="w"?-100000:100000;
+  chess.undo();
+
+  const adjusted=playerColor==="w"?value:-value;
+  if(adjusted>bestScore){
+   bestScore=adjusted;
+   best=[move];
+  }else if(adjusted===bestScore){
+   best.push(move);
+  }
+ }
+
+ const chosen=best[Math.floor(Math.random()*best.length)];
+ const played=chess.move({from:chosen.from,to:chosen.to,promotion:"q"});
+ history.push(played.san);
+ render();
+ updateStatus();
+}
+
+async function startGame(){
+ clearTimeout(aiTimer);
+ clearInterval(matchmakingTimer);
+ clearInterval(onlinePolling);
+
+ $("lobby").classList.add("hidden");
+ $("game").classList.remove("hidden");
+ showStatus("Looking for another player...");
+
+ chess=new Chess();
+ history=[];
+ selected=null;
+ legalMoves=[];
+ gameOver=false;
+ busy=false;
+ onlineGameId=null;
+ mode="computer";
+ playerColor="w";
+
+ /*
+  BACKEND CONNECTION CONTRACT:
+  POST /api/chess/matchmaking
+  Expected matched response:
+  {status:"matched",gameId:"...",color:"w"|"b"}
+  Expected waiting response:
+  {status:"waiting"}
+  A real backend must atomically match waiting players.
+ */
+
+ try{
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),7000);
+
+  const response=await fetch("/api/chess/matchmaking",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({game:"chess"}),
+   signal:controller.signal
+  });
+
+  clearTimeout(timeout);
+
+  if(response.ok){
+   const result=await response.json();
+   if(result.status==="matched"&&result.gameId){
+    mode="online";
+    onlineGameId=result.gameId;
+    playerColor=result.color||"w";
+    $("opponent").textContent="Opponent: Another player";
+    render();
+    showStatus("Player found! Your match has started.");
+    beginOnlinePolling();
+    return;
+   }
+  }
+ }catch(error){
+  // If matchmaking is not connected or no match is returned,
+  // start a computer game instead.
+ }
+
+ startComputerGame();
+}
+
+function startComputerGame(){
+ mode="computer";
+ playerColor="w";
+ $("opponent").textContent="Opponent: Computer";
+ showStatus("No human opponent available. You are playing against the computer.");
+ render();
+ updateStatus();
+}
+
+async function sendOnlineMove(move){
+ if(!onlineGameId)return;
+ try{
+  await fetch(`/api/chess/games/${encodeURIComponent(onlineGameId)}/move`,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    from:move.from,
+    to:move.to,
+    promotion:move.promotion||"q"
+   })
+  });
+ }catch(error){
+  showStatus("Connection interrupted. Reconnecting...");
+ }
+}
+
+function beginOnlinePolling(){
+ clearInterval(onlinePolling);
+ onlinePolling=setInterval(async()=>{
+  if(!onlineGameId||gameOver)return;
+  try{
+   const response=await fetch(`/api/chess/games/${encodeURIComponent(onlineGameId)}`);
+   if(!response.ok)return;
+   const data=await response.json();
+
+   if(data.moves&&Array.isArray(data.moves)){
+    const current=chess.history().length;
+    if(data.moves.length>current){
+     chess=new Chess();
+     history=[];
+     for(const m of data.moves){
+      const played=chess.move(m);
+      if(played)history.push(played.san);
+     }
+     render();
+     updateStatus();
+    }
+   }
+   if(data.status==="finished"){
+    gameOver=true;
+    showStatus(data.message||"This chess match has ended.");
+   }
+  }catch(error){}
+ },1000);
+}
+
+function undo(){
+ if(mode!=="computer"||gameOver||busy)return;
+ if(chess.history().length===0)return;
+ chess.undo();
+ if(chess.turn()!==playerColor&&chess.history().length)chess.undo();
+ history=chess.history();
+ selected=null;
+ legalMoves=[];
+ gameOver=false;
+ render();
+ updateStatus();
+}
+
+function restart(){
+ clearTimeout(aiTimer);
+ clearInterval(onlinePolling);
+ chess=new Chess();
+ history=[];
+ selected=null;
+ legalMoves=[];
+ gameOver=false;
+ busy=false;
+ onlineGameId=null;
+ mode="computer";
+ playerColor="w";
+ $("opponent").textContent="Opponent: Computer";
+ render();
+ updateStatus();
+}
+
+function newGame(){
+ clearTimeout(aiTimer);
+ clearInterval(onlinePolling);
+ $("game").classList.add("hidden");
+ $("lobby").classList.remove("hidden");
+}
+
+$("playButton").addEventListener("click",startGame);
+$("undoButton").addEventListener("click",undo);
+$("restartButton").addEventListener("click",restart);
+$("newGameButton").addEventListener("click",newGame);
+
+render();
+</script>
+</body>
+</html>
