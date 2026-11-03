@@ -23,13 +23,13 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
 .pill{padding:9px 12px;border-radius:30px;background:#ffffff0c;border:1px solid #ffffff1a;color:#e9e1c8;font-size:11px;font-weight:800;letter-spacing:.5px}
 .pill.gold{color:var(--gold2);border-color:#f6d47766;background:#f6d47712}
 .players{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-.player{position:relative;overflow:hidden;padding:13px 10px;border-radius:17px;background:linear-gradient(145deg,#202d4b,#121c35);border:1px solid #ffffff1b;transition:.2s}
+.player{padding:13px 10px;border-radius:17px;background:linear-gradient(145deg,#202d4b,#121c35);border:1px solid #ffffff1b;transition:.2s}
 .player.active{border:1px solid var(--gold);box-shadow:0 0 22px #f6d4771c,inset 0 0 20px #f6d4770b}
 .avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:20px;background:linear-gradient(145deg,#f6d477,#9c702a);box-shadow:0 3px 12px #0005}
-.computer .avatar,.opponent .avatar{background:linear-gradient(145deg,#91caff,#325b9d)}
+.opponent .avatar{background:linear-gradient(145deg,#91caff,#325b9d)}
 .player-name{font-size:12px;font-weight:900;color:#e9edfa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-score{font-size:29px;font-weight:900;margin-top:5px;color:var(--gold2)}
-.computer .player-score,.opponent .player-score{color:#91d9ff}
+.opponent .player-score{color:#91d9ff}
 .player-label{font-size:9px;color:#9caac7;margin-top:6px;font-weight:900;letter-spacing:1px;min-height:11px}
 .status{min-height:43px;display:flex;align-items:center;justify-content:center;padding:10px;border-radius:12px;margin-bottom:14px;background:linear-gradient(90deg,#f6d47710,#ffffff09,#f6d47710);border:1px solid #f6d47724;color:#f7e8bd;font-size:13px;font-weight:bold}
 .board-wrap{padding:10px;border-radius:23px;background:linear-gradient(145deg,#263553,#101b34);border:1px solid #d5b45b55;box-shadow:0 18px 45px #0006,inset 0 1px 0 #ffffff18}
@@ -55,7 +55,7 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
 .info strong{display:block;color:#f7df9f;font-size:20px;margin-top:5px}
 .hint{color:#9eabc7;font-size:11px;line-height:1.6;margin-top:14px}
 .back-button{margin-top:17px;padding:11px 19px;border-radius:11px;border:1px solid #ffffff30;background:transparent;color:#fff;font-weight:bold;cursor:pointer}
-#matchScreen,#result{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:#070c1bee}
+.overlay{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:#070c1bee}
 #result{display:none;z-index:12}
 .dialog{width:min(390px,100%);padding:28px 23px;text-align:center;border-radius:25px;background:linear-gradient(145deg,#293957,#111b33);border:1px solid #e3c57588;box-shadow:0 25px 80px #0009}
 .dialog h2{font-size:28px;margin:0 0 12px;color:var(--gold2)}
@@ -65,7 +65,6 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
 .dialog button.secondary{background:transparent;border:1px solid #ffffff40;color:#fff}
 .searching{width:65px;height:65px;margin:20px auto;border:4px solid #ffffff20;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.match-meta{font-size:11px!important;color:#9cabc8!important}
 .final-score{font-size:30px;font-weight:900;color:#fff;margin:19px 0}
 .refund{font-size:12px;min-height:20px;color:#d8e99a;margin:12px 0}
 @media(max-width:360px){.board{gap:6px}.board-wrap{padding:7px}.players{gap:7px}.player{padding:10px 5px}}
@@ -99,16 +98,10 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
  </div>
 
  <div class="status" id="status">Finding an opponent...</div>
-
- <div class="board-wrap">
-  <div class="board" id="board"></div>
- </div>
+ <div class="board-wrap"><div class="board" id="board"></div></div>
 
  <div class="progress-area">
-  <div class="progress-label">
-   <span>PAIRS DISCOVERED</span>
-   <span id="pairCount">0 / 8</span>
-  </div>
+  <div class="progress-label"><span>PAIRS DISCOVERED</span><span id="pairCount">0 / 8</span></div>
   <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
  </div>
 
@@ -121,18 +114,18 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
  <button class="back-button" onclick="leaveGame()">← Back to Games</button>
 </main>
 
-<div id="matchScreen">
+<div class="overlay" id="matchScreen">
  <div class="dialog">
   <div class="big">♛</div>
   <h2>MEMORY SHOWDOWN</h2>
   <p id="matchMessage">Looking for another player to challenge...</p>
   <div class="searching" id="spinner"></div>
-  <p class="match-meta" id="matchMeta">Searching for 10 seconds</p>
+  <p id="matchMeta">Searching for 10 seconds</p>
   <button id="cancelButton" class="secondary" onclick="leaveGame()">CANCEL</button>
  </div>
 </div>
 
-<div id="result">
+<div class="overlay" id="result">
  <div class="dialog">
   <div class="big" id="resultIcon">🏆</div>
   <h2 id="resultTitle">YOU WON!</h2>
@@ -148,49 +141,6 @@ h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradien
 (()=>{
 'use strict';
 
-/*
- BACKEND API CONTRACT
-
- POST /api/games/memory-showdown/matchmake
- Body: {game:"memory-showdown"}
- Response:
- {
-   matchId:"...",
-   playerId:"...",
-   opponentType:"human" | "computer",
-   opponentName:"...",
-   state:{
-     round:1,
-     humanRoundWins:0,
-     opponentRoundWins:0,
-     cards:[{id:0,symbol:"💎",matched:false,open:false},...],
-     humanPairs:0,
-     opponentPairs:0,
-     matchedCount:0,
-     turnPlayerId:"...",
-     status:"playing"
-   }
- }
-
- The server must wait up to 10 seconds for a human opponent.
- If none is found, it must create a computer match and return opponentType:"computer".
-
- GET /api/games/memory-showdown/state?matchId=...
- Returns the authoritative current match state.
-
- POST /api/games/memory-showdown/move
- Body: {matchId,cardId}
- The server validates the player turn, reveals cards, resolves matches,
- updates scores and returns the latest state.
-
- POST /api/games/memory-showdown/complete
- The server verifies the complete match and processes any permitted
- winner reward or full tie refund exactly once.
-
- For a human match, the server must own the deck, turns, scores,
- card reveal timing, match result and disconnect handling.
-*/
-
 const API={
  matchmake:'/api/games/memory-showdown/matchmake',
  state:'/api/games/memory-showdown/state',
@@ -201,50 +151,24 @@ const API={
 
 const $=id=>document.getElementById(id);
 const boardElement=$('board');
-
-let mode=null;
-let matchId=null;
-let playerId=null;
-let opponentName='Opponent';
-let localCards=[];
-let localMemory={};
-let localTurn='human';
-let localFirst=null;
-let localSecond=null;
-let localLocked=false;
-let localHumanPairs=0;
-let localOpponentPairs=0;
-let localMatched=0;
-let localRound=1;
-let localHumanWins=0;
-let localOpponentWins=0;
-let localRoundHistory=[];
-let localFinished=false;
-let localMoveLog=[];
-let resultSent=false;
-let pollHandle=null;
-let pollBusy=false;
-let matchState=null;
-let matchEnded=false;
-let resultTimer=null;
-let computerTimer=null;
-let searchTimer=null;
-let searchStarted=0;
-let matchRequestStarted=false;
-let isLeaving=false;
-
 const symbols=['💎','👑','🦁','🚀','🎯','💰','⚡','🌟'];
 
+let mode='computer';
+let matchId=null,playerId=null,opponentName='EarnGig Computer';
+let cards=[],memory={};
+let round=1,humanWins=0,opponentWins=0;
+let humanPairs=0,opponentPairs=0,matchedCount=0;
+let turn='human',firstCard=null,secondCard=null;
+let locked=false,finished=false,resultSent=false;
+let roundHistory=[],moveLog=[];
+let matchState=null;
+let polling=null,computerTimer=null;
+let searchController=null,searchTimer=null;
+let leaving=false,matchRequestStarted=false;
+
 function makeId(){
- if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
- return 'memory-'+Date.now()+'-'+Math.random().toString(36).slice(2);
-}
-
-function setStatus(message){$('status').textContent=message}
-
-function showSearch(message,meta){
- $('matchMessage').textContent=message;
- $('matchMeta').textContent=meta||'';
+ return window.crypto?.randomUUID?.()||
+ 'memory-'+Date.now()+'-'+Math.random().toString(36).slice(2);
 }
 
 function shuffle(array){
@@ -256,378 +180,393 @@ function shuffle(array){
  return a;
 }
 
-function createLocalDeck(){
- const deck=shuffle([...symbols,...symbols]);
- localCards=deck.map((symbol,index)=>({
-  id:index,symbol,matched:false,open:false
+function setStatus(text){$('status').textContent=text}
+
+function updateScore(){
+ $('roundLabel').textContent='ROUND '+round+' OF 3';
+ $('humanScore').textContent=humanWins;
+ $('computerScore').textContent=opponentWins;
+ $('humanPairs').textContent=humanPairs;
+ $('computerPairs').textContent=opponentPairs;
+ $('pairCount').textContent=matchedCount+' / 8';
+ $('progressFill').style.width=(matchedCount/8*100)+'%';
+ $('humanPanel').classList.toggle('active',turn==='human');
+ $('opponentPanel').classList.toggle('active',turn==='computer');
+ $('humanLabel').textContent=turn==='human'?'YOUR TURN':'WAITING';
+ $('opponentLabel').textContent=turn==='computer'?'OPPONENT TURN':'WAITING';
+}
+
+function render(){
+ boardElement.innerHTML='';
+ cards.forEach(card=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='card';
+  if(card.open)button.classList.add('flipped');
+  if(card.matched)button.classList.add('matched');
+  button.disabled=card.matched||card.open||locked||finished||turn!=='human';
+
+  const inner=document.createElement('div');
+  inner.className='card-inner';
+  const back=document.createElement('div');
+  back.className='face back';
+  const pattern=document.createElement('span');
+  pattern.className='pattern';
+  pattern.textContent='✦';
+  back.appendChild(pattern);
+
+  const front=document.createElement('div');
+  front.className='face front';
+  front.textContent=card.symbol;
+  inner.append(back,front);
+  button.appendChild(inner);
+  button.addEventListener('click',()=>pick(card.id));
+  boardElement.appendChild(button);
+ });
+ updateScore();
+}
+
+function createDeck(){
+ cards=shuffle([...symbols,...symbols]).map((symbol,id)=>({
+  id,symbol,open:false,matched:false
  }));
 }
 
-function updateHeader(){
- $('roundLabel').textContent='ROUND '+localRound+' OF 3';
- $('humanScore').textContent=localHumanWins;
- $('computerScore').textContent=localOpponentWins;
- $('humanPairs').textContent=localHumanPairs;
- $('computerPairs').textContent=localOpponentPairs;
- $('pairCount').textContent=localMatched+' / 8';
- $('progressFill').style.width=(localMatched/8*100)+'%';
- $('humanPanel').classList.toggle('active',mode==='computer'&&localTurn==='human');
- $('opponentPanel').classList.toggle('active',mode==='computer'&&localTurn==='computer');
-}
-
-function makeCardElement(card,canClick){
- const button=document.createElement('button');
- button.type='button';
- button.className='card';
- if(card.open)button.classList.add('flipped');
- if(card.matched)button.classList.add('matched');
- button.disabled=!canClick||card.matched||card.open;
-
- const inner=document.createElement('div');
- inner.className='card-inner';
- const back=document.createElement('div');
- back.className='face back';
-
- const pattern=document.createElement('span');
- pattern.className='pattern';
- pattern.textContent='✦';
- back.appendChild(pattern);
-
- const front=document.createElement('div');
- front.className='face front';
- front.textContent=card.symbol;
-
- inner.append(back,front);
- button.appendChild(inner);
- return button;
-}
-
-function renderLocal(){
- boardElement.innerHTML='';
- localCards.forEach(card=>{
-  const button=makeCardElement(card,mode==='computer'&&localTurn==='human'&&!localLocked&&!localFinished);
-  button.addEventListener('click',()=>localPick(card.id));
-  boardElement.appendChild(button);
- });
- updateHeader();
-}
-
-function renderHuman(){
- if(!matchState||!Array.isArray(matchState.cards))return;
-
- boardElement.innerHTML='';
- const isMyTurn=matchState.turnPlayerId===playerId&&matchState.status==='playing';
-
- matchState.cards.forEach(card=>{
-  const button=makeCardElement(card,mode==='human'&&isMyTurn&&!matchEnded);
-  button.addEventListener('click',()=>humanOnlinePick(card.id));
-  boardElement.appendChild(button);
- });
-
- const myPairs=Number(matchState.humanPairs??matchState.playerPairs??0);
- const otherPairs=Number(matchState.opponentPairs??matchState.computerPairs??0);
- const matched=Number(matchState.matchedCount??matchState.cards.filter(c=>c.matched).length);
-
- $('roundLabel').textContent='ROUND '+(matchState.round||1)+' OF 3';
- $('humanScore').textContent=matchState.humanRoundWins??matchState.playerRoundWins??0;
- $('computerScore').textContent=matchState.opponentRoundWins??0;
- $('humanPairs').textContent=myPairs;
- $('computerPairs').textContent=otherPairs;
- $('pairCount').textContent=matched+' / 8';
- $('progressFill').style.width=(matched/8*100)+'%';
-
- $('humanPanel').classList.toggle('active',isMyTurn);
- $('opponentPanel').classList.toggle('active',!isMyTurn&&matchState.status==='playing');
- $('humanLabel').textContent=isMyTurn?'YOUR TURN':'WAITING';
- $('opponentLabel').textContent=isMyTurn?'WAITING':'OPPONENT TURN';
-
- if(matchState.status==='playing'){
-  setStatus(isMyTurn?'Your turn! Find two matching cards.':opponentName+' is playing...');
- }
+function startRound(){
+ humanPairs=0;
+ opponentPairs=0;
+ matchedCount=0;
+ firstCard=null;
+ secondCard=null;
+ locked=false;
+ turn='human';
+ memory={};
+ createDeck();
+ render();
+ setStatus('Your turn! Find two matching cards.');
 }
 
 function setOpponent(type,name){
  mode=type;
- opponentName=name|| (type==='computer'?'EarnGig Computer':'Opponent');
+ opponentName=name||(type==='human'?'Opponent':'EarnGig Computer');
  $('opponentName').textContent=opponentName;
- $('opponentAvatar').textContent=type==='computer'?'🤖':'👤';
- $('opponentLabel').textContent=type==='computer'?'COMPUTER':'HUMAN PLAYER';
- $('modeLabel').textContent=type==='computer'?'VS COMPUTER':'LIVE MULTIPLAYER';
+ $('opponentAvatar').textContent=type==='human'?'👤':'🤖';
+ $('opponentLabel').textContent=type==='human'?'HUMAN PLAYER':'COMPUTER';
+ $('modeLabel').textContent=type==='human'?'LIVE MULTIPLAYER':'VS COMPUTER';
 }
 
-async function requestMatch(){
- if(matchRequestStarted)return;
- matchRequestStarted=true;
- searchStarted=Date.now();
- showSearch('Looking for another player to challenge...','If no player is available, you will play against the computer.');
- searchTimer=setInterval(()=>{
-  const remaining=Math.max(0,10-Math.floor((Date.now()-searchStarted)/1000));
-  $('matchMeta').textContent=remaining>0?'Searching for a player · '+remaining+' seconds remaining':'Finding your opponent...';
- },250);
-
- try{
-  const response=await fetch(API.matchmake,{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   credentials:'same-origin',
-   body:JSON.stringify({game:'memory-showdown',waitSeconds:10})
-  });
-
-  if(!response.ok)throw new Error('Matchmaking service unavailable.');
-
-  const data=await response.json();
-
-  if(!data.matchId||!data.playerId||!['human','computer'].includes(data.opponentType)){
-   throw new Error('The matchmaking server returned an incomplete match.');
-  }
-
-  matchId=data.matchId;
-  playerId=data.playerId;
-  setOpponent(data.opponentType,data.opponentName);
-
-  clearInterval(searchTimer);
-  $('matchScreen').style.display='none';
-
-  if(data.opponentType==='human'){
-   if(!data.state)throw new Error('The multiplayer match has no initial game state.');
-   matchState=data.state;
-   mode='human';
-   matchEnded=false;
-   renderHuman();
-   startPolling();
-  }else{
-   mode='computer';
-   startComputerGame(data.state||null);
-  }
-
- }catch(error){
-  clearInterval(searchTimer);
-  showSearch('Could not find a match.',error.message+' Please try again later.');
-  $('spinner').style.display='none';
-  $('cancelButton').textContent='RETURN TO GAMES';
-  $('cancelButton').onclick=()=>location.href='games.html';
- }
-}
-
-function startComputerGame(serverState){
- // The server has explicitly assigned a computer opponent.
- // The local game remains playable, but results are submitted
- // to the server for independent verification.
- localRound=1;
- localHumanWins=0;
- localOpponentWins=0;
- localRoundHistory=[];
- localFinished=false;
+function startComputerGame(){
+ setOpponent('computer','EarnGig Computer');
  $('matchScreen').style.display='none';
-
- if(serverState&&Array.isArray(serverState.cards)){
-  localRound=serverState.round||1;
-  localHumanWins=serverState.humanRoundWins||0;
-  localOpponentWins=serverState.opponentRoundWins||0;
-  loadLocalRound(serverState);
- }else{
-  startLocalRound();
- }
+ $('spinner').style.display='none';
+ round=1;
+ humanWins=0;
+ opponentWins=0;
+ roundHistory=[];
+ finished=false;
+ resultSent=false;
+ startRound();
 }
 
-function loadLocalRound(s){
- localCards=s.cards.map(c=>({...c}));
- localHumanPairs=s.humanPairs||0;
- localOpponentPairs=s.opponentPairs||0;
- localMatched=s.matchedCount||0;
- localTurn=s.turnPlayerId===playerId?'human':'computer';
- localFirst=null;
- localSecond=null;
- localLocked=false;
- localMemory={};
- renderLocal();
- if(localTurn==='computer')setTimeout(localComputerTurn,600);
+function remember(index){
+ const card=cards[index];
+ if(!memory[card.symbol])memory[card.symbol]=[];
+ if(!memory[card.symbol].includes(index))memory[card.symbol].push(index);
 }
 
-function startLocalRound(){
- localHumanPairs=0;
- localOpponentPairs=0;
- localMatched=0;
- localTurn='human';
- localFirst=null;
- localSecond=null;
- localLocked=false;
- localMemory={};
- createLocalDeck();
- renderLocal();
- setStatus('Your turn! Find two matching cards.');
-}
-
-function rememberLocal(index){
- const card=localCards[index];
- if(!localMemory[card.symbol])localMemory[card.symbol]=[];
- if(!localMemory[card.symbol].includes(index))localMemory[card.symbol].push(index);
-}
-
-function localPick(index){
- if(mode!=='computer'||localFinished||localLocked||localTurn!=='human')return;
- const card=localCards[index];
+function pick(index){
+ if(finished||locked||turn!=='human')return;
+ const card=cards[index];
  if(!card||card.matched||card.open)return;
 
  card.open=true;
- rememberLocal(index);
+ remember(index);
 
- if(localFirst===null){
-  localFirst=index;
+ if(firstCard===null){
+  firstCard=index;
   setStatus('Good! Now find its matching card.');
-  renderLocal();
+  render();
   return;
  }
 
- localSecond=index;
- localLocked=true;
- renderLocal();
- setTimeout(resolveLocalPair,650);
+ secondCard=index;
+ locked=true;
+ render();
+ setTimeout(resolvePair,650);
 }
 
 function chooseComputerCard(excluded){
- const available=localCards.filter(c=>!c.matched&&!c.open&&!excluded.includes(c.id));
+ const available=cards.filter(c=>!c.matched&&!c.open&&!excluded.includes(c.id));
  if(!available.length)return null;
 
- for(const symbol of Object.keys(localMemory)){
-  const known=localMemory[symbol].filter(id=>
-   !localCards[id].matched&&!localCards[id].open&&!excluded.includes(id)
+ for(const symbol of Object.keys(memory)){
+  const known=memory[symbol].filter(id=>
+   !cards[id].matched&&!cards[id].open&&!excluded.includes(id)
   );
   if(known.length>=2)return known[0];
  }
 
- for(const symbol of Object.keys(localMemory)){
-  const known=localMemory[symbol].filter(id=>
-   !localCards[id].matched&&!localCards[id].open&&!excluded.includes(id)
+ for(const symbol of Object.keys(memory)){
+  const known=memory[symbol].filter(id=>
+   !cards[id].matched&&!cards[id].open&&!excluded.includes(id)
   );
   if(known.length===1){
-   const other=available.find(c=>c.symbol===symbol&&c.id!==known[0]);
-   if(other)return other.id;
+   const partner=available.find(c=>c.symbol===symbol&&c.id!==known[0]);
+   if(partner)return partner.id;
   }
  }
 
  const unknown=available.filter(c=>
-  !localMemory[c.symbol]||!localMemory[c.symbol].includes(c.id)
+  !memory[c.symbol]||!memory[c.symbol].includes(c.id)
  );
  const pool=unknown.length?unknown:available;
  return pool[Math.floor(Math.random()*pool.length)].id;
 }
 
-function localComputerTurn(){
- if(mode!=='computer'||localFinished||localTurn!=='computer'||localLocked)return;
+function computerTurn(){
+ if(finished||turn!=='computer'||locked)return;
 
  const first=chooseComputerCard([]);
  if(first===null)return;
 
- localCards[first].open=true;
- rememberLocal(first);
- localFirst=first;
- renderLocal();
- setStatus(opponentName+' is remembering the cards...');
+ cards[first].open=true;
+ remember(first);
+ firstCard=first;
+ render();
+ setStatus(opponentName+' is studying the cards...');
 
  computerTimer=setTimeout(()=>{
-  if(localFinished||localTurn!=='computer')return;
+  if(finished||turn!=='computer')return;
   const second=chooseComputerCard([first]);
   if(second===null)return;
 
-  localCards[second].open=true;
-  rememberLocal(second);
-  localSecond=second;
-  localLocked=true;
-  renderLocal();
-  setTimeout(resolveLocalPair,750);
+  cards[second].open=true;
+  remember(second);
+  secondCard=second;
+  locked=true;
+  render();
+  setTimeout(resolvePair,750);
  },700);
 }
 
-function resolveLocalPair(){
- if(localFirst===null||localSecond===null)return;
+function resolvePair(){
+ if(firstCard===null||secondCard===null)return;
 
- const a=localCards[localFirst];
- const b=localCards[localSecond];
+ const a=cards[firstCard],b=cards[secondCard];
 
  if(a.symbol===b.symbol){
   a.matched=true;
   b.matched=true;
-  localMatched++;
+  matchedCount++;
 
-  if(localTurn==='human'){
-   localHumanPairs++;
+  if(turn==='human'){
+   humanPairs++;
    setStatus('Beautiful match! You found a pair. Play again!');
   }else{
-   localOpponentPairs++;
+   opponentPairs++;
    setStatus(opponentName+' found a matching pair.');
   }
 
-  localFirst=null;
-  localSecond=null;
-  localLocked=false;
-  renderLocal();
+  firstCard=null;
+  secondCard=null;
+  locked=false;
+  render();
 
-  if(localMatched===8){finishLocalRound();return}
-  if(localTurn==='computer')setTimeout(localComputerTurn,800);
+  if(matchedCount===8){finishRound();return}
+  if(turn==='computer')computerTimer=setTimeout(computerTurn,800);
  }else{
-  setStatus(localTurn==='human'?'No match! Opponent’s turn.':'No match! Your turn.');
+  setStatus(turn==='human'?'No match! Opponent’s turn.':'No match! Your turn.');
 
   setTimeout(()=>{
    a.open=false;
    b.open=false;
-   localFirst=null;
-   localSecond=null;
-   localLocked=false;
-   localTurn=localTurn==='human'?'computer':'human';
-   renderLocal();
+   firstCard=null;
+   secondCard=null;
+   locked=false;
+   turn=turn==='human'?'computer':'human';
+   render();
 
-   if(localTurn==='computer')setTimeout(localComputerTurn,650);
+   if(turn==='computer')computerTimer=setTimeout(computerTurn,650);
    else setStatus('Your turn! Find two matching cards.');
   },850);
  }
 }
 
-function finishLocalRound(){
- localLocked=true;
+function finishRound(){
+ locked=true;
  let winner='draw';
 
- if(localHumanPairs>localOpponentPairs){
-  localHumanWins++;
+ if(humanPairs>opponentPairs){
+  humanWins++;
   winner='human';
   setStatus('You won this round!');
- }else if(localOpponentPairs>localHumanPairs){
-  localOpponentWins++;
+ }else if(opponentPairs>humanPairs){
+  opponentWins++;
   winner='opponent';
   setStatus(opponentName+' won this round.');
  }else{
   setStatus('This round ended in a draw.');
  }
 
- localRoundHistory.push({
-  round:localRound,
-  humanPairs:localHumanPairs,
-  opponentPairs:localOpponentPairs,
-  winner
- });
+ roundHistory.push({round,humanPairs,opponentPairs,winner});
+ render();
 
- renderLocal();
-
- if(localHumanWins>=2||localOpponentWins>=2||localRound>=3){
-  setTimeout(()=>finishMatch(localHumanWins>localOpponentWins?'win':localOpponentWins>localHumanWins?'loss':'draw'),1200);
+ if(humanWins>=2||opponentWins>=2||round>=3){
+  setTimeout(()=>{
+   finishMatch(humanWins>opponentWins?'win':opponentWins>humanWins?'loss':'draw');
+  },1200);
   return;
  }
 
  setTimeout(()=>{
-  localRound++;
-  startLocalRound();
+  round++;
+  startRound();
  },1600);
 }
 
+function showComputerFallback(reason){
+ // This is the important fallback: never leave the user
+ // stuck on the matchmaking screen when no server is available.
+ if(leaving||finished)return;
+ if(searchTimer)clearInterval(searchTimer);
+ if(searchController)searchController.abort();
+
+ $('matchScreen').style.display='none';
+ $('spinner').style.display='none';
+ startComputerGame();
+ setStatus(reason||'No human opponent available. You are playing against the computer.');
+}
+
+async function findOpponent(){
+ if(matchRequestStarted)return;
+ matchRequestStarted=true;
+
+ $('matchScreen').style.display='flex';
+ $('spinner').style.display='block';
+ $('matchMessage').textContent='Looking for another player to challenge...';
+ $('matchMeta').textContent='If no player is found in 10 seconds, you will play against the computer.';
+
+ // Local 10-second fallback timer.
+ searchTimer=setTimeout(()=>{
+  showComputerFallback('No player available. You are now playing against the computer.');
+ },10000);
+
+ // Try the real matchmaking service. It may pair two players.
+ searchController=new AbortController();
+ const timeout=setTimeout(()=>{
+  searchController?.abort();
+ },9500);
+
+ try{
+  const response=await fetch(API.matchmake,{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   credentials:'same-origin',
+   signal:searchController.signal,
+   body:JSON.stringify({game:'memory-showdown',waitSeconds:10})
+  });
+
+  if(!response.ok)throw new Error('Matchmaking service unavailable.');
+  const data=await response.json();
+
+  if(leaving||mode==='computer')return;
+
+  if(!data.matchId||!data.playerId||
+     !['human','computer'].includes(data.opponentType)){
+   throw new Error('Invalid matchmaking response.');
+  }
+
+  clearTimeout(searchTimer);
+  clearTimeout(timeout);
+  matchId=data.matchId;
+  playerId=data.playerId;
+
+  if(data.opponentType==='human'){
+   if(!data.state)throw new Error('Missing multiplayer game state.');
+   setOpponent('human',data.opponentName||'Opponent');
+   matchState=data.state;
+   $('matchScreen').style.display='none';
+   loadHumanMatch();
+  }else{
+   if(data.state){
+    // Server has assigned the computer. Use local gameplay
+    // when no server-driven computer state is supplied.
+   }
+   showComputerFallback('No human opponent was found. Computer match started.');
+  }
+ }catch(error){
+  clearTimeout(timeout);
+  if(leaving||mode==='computer')return;
+  showComputerFallback('No human opponent available. Computer match started.');
+ }
+}
+
+function loadHumanMatch(){
+ if(!matchState||!Array.isArray(matchState.cards))return;
+
+ mode='human';
+ finished=false;
+ $('matchScreen').style.display='none';
+
+ $('humanScore').textContent=matchState.humanRoundWins||0;
+ $('computerScore').textContent=matchState.opponentRoundWins||0;
+ $('humanPairs').textContent=matchState.humanPairs||0;
+ $('computerPairs').textContent=matchState.opponentPairs||0;
+
+ renderHumanMatch();
+ startPolling();
+}
+
+function renderHumanMatch(){
+ if(!matchState)return;
+
+ boardElement.innerHTML='';
+ const myTurn=matchState.turnPlayerId===playerId;
+
+ matchState.cards.forEach(card=>{
+  const button=document.createElement('button');
+  button.type='button';
+  button.className='card';
+  if(card.open)button.classList.add('flipped');
+  if(card.matched)button.classList.add('matched');
+  button.disabled=!myTurn||card.open||card.matched||finished;
+
+  const inner=document.createElement('div');
+  inner.className='card-inner';
+  const back=document.createElement('div');
+  back.className='face back';
+  back.innerHTML='<span class="pattern">✦</span>';
+  const front=document.createElement('div');
+  front.className='face front';
+  front.textContent=card.symbol;
+  inner.append(back,front);
+  button.appendChild(inner);
+  button.addEventListener('click',()=>humanOnlinePick(card.id));
+  boardElement.appendChild(button);
+ });
+
+ const total=matchState.cards.filter(c=>c.matched).length;
+ $('roundLabel').textContent='ROUND '+(matchState.round||1)+' OF 3';
+ $('humanScore').textContent=matchState.humanRoundWins||0;
+ $('computerScore').textContent=matchState.opponentRoundWins||0;
+ $('humanPairs').textContent=matchState.humanPairs||0;
+ $('computerPairs').textContent=matchState.opponentPairs||0;
+ $('pairCount').textContent=total/2+' / 8';
+ $('progressFill').style.width=(total/16*100)+'%';
+ $('humanPanel').classList.toggle('active',myTurn);
+ $('opponentPanel').classList.toggle('active',!myTurn);
+ $('humanLabel').textContent=myTurn?'YOUR TURN':'WAITING';
+ $('opponentLabel').textContent=myTurn?'WAITING':'OPPONENT TURN';
+ setStatus(myTurn?'Your turn! Find two matching cards.':opponentName+' is playing...');
+}
+
 async function humanOnlinePick(cardId){
- if(mode!=='human'||matchEnded||!matchState)return;
- if(matchState.turnPlayerId!==playerId)return;
+ if(mode!=='human'||finished||!matchState||matchState.turnPlayerId!==playerId)return;
 
  const card=matchState.cards.find(c=>c.id===cardId);
- if(!card||card.matched||card.open)return;
+ if(!card||card.open||card.matched)return;
 
- const buttons=[...boardElement.querySelectorAll('button')];
- buttons.forEach(b=>b.disabled=true);
+ [...boardElement.querySelectorAll('button')].forEach(b=>b.disabled=true);
  setStatus('Sending your move...');
 
  try{
@@ -637,83 +576,69 @@ async function humanOnlinePick(cardId){
    credentials:'same-origin',
    body:JSON.stringify({matchId,cardId})
   });
-
-  if(!response.ok)throw new Error('Your move could not be accepted.');
+  if(!response.ok)throw new Error('Move rejected.');
   const data=await response.json();
-
   if(data.state){
    matchState=data.state;
-   renderHuman();
-   if(matchState.status==='finished')handleServerFinish();
+   renderHumanMatch();
+   if(matchState.status==='finished')handleHumanMatchEnd();
   }else{
    await refreshHumanState();
   }
  }catch(error){
-  setStatus(error.message);
+  setStatus('Reconnecting to your opponent...');
   await refreshHumanState();
  }
 }
 
 async function refreshHumanState(){
- if(mode!=='human'||!matchId||matchEnded)return;
-
+ if(mode!=='human'||finished||!matchId)return;
  try{
   const response=await fetch(API.state+'?matchId='+encodeURIComponent(matchId),{
-   credentials:'same-origin',
-   cache:'no-store'
+   credentials:'same-origin',cache:'no-store'
   });
-  if(!response.ok)throw new Error('Unable to update match.');
+  if(!response.ok)throw new Error();
   const data=await response.json();
   matchState=data.state||data;
-  renderHuman();
-
-  if(matchState.status==='finished')handleServerFinish();
- }catch(error){
+  renderHumanMatch();
+  if(matchState.status==='finished')handleHumanMatchEnd();
+ }catch(e){
   setStatus('Reconnecting to your opponent...');
  }
 }
 
 function startPolling(){
- if(pollHandle)clearInterval(pollHandle);
+ if(polling)clearInterval(polling);
  refreshHumanState();
- pollHandle=setInterval(()=>{
-  if(!pollBusy&&mode==='human'&&!matchEnded){
-   pollBusy=true;
-   refreshHumanState().finally(()=>pollBusy=false);
-  }
- },850);
+ polling=setInterval(refreshHumanState,1000);
 }
 
-function handleServerFinish(){
- if(matchEnded)return;
- matchEnded=true;
- if(pollHandle)clearInterval(pollHandle);
-
+function handleHumanMatchEnd(){
+ if(finished)return;
+ finished=true;
+ if(polling)clearInterval(polling);
  const outcome=matchState.outcome||
   (Number(matchState.humanRoundWins)>Number(matchState.opponentRoundWins)?'win':
    Number(matchState.humanRoundWins)<Number(matchState.opponentRoundWins)?'loss':'draw');
-
  finishMatch(outcome,true);
 }
 
-async function finishMatch(outcome,serverAlreadyFinished=false){
+async function finishMatch(outcome,humanMatch=false){
  if(resultSent)return;
  resultSent=true;
- localFinished=true;
- matchEnded=true;
-
- if(pollHandle)clearInterval(pollHandle);
+ finished=true;
+ locked=true;
+ if(polling)clearInterval(polling);
  if(computerTimer)clearTimeout(computerTimer);
 
- let title,icon,message,score;
-
+ let title,icon,message;
  if(outcome==='win'){
   title='YOU ARE THE CHAMPION!';
   icon='🏆';
   message='Outstanding memory! You won the showdown.';
  }else if(outcome==='loss'){
   title='MATCH LOST';
-  icon='🤝';
+  icon='🤖';
   message='Your opponent won this showdown. Better luck next time.';
  }else{
   title='MATCH DRAW';
@@ -721,25 +646,29 @@ async function finishMatch(outcome,serverAlreadyFinished=false){
   message='The match ended level. Your full entry fee is eligible for a refund.';
  }
 
- if(mode==='human'&&matchState){
-  score=(matchState.humanRoundWins??0)+' - '+(matchState.opponentRoundWins??0);
- }else{
-  score=localHumanWins+' - '+localOpponentWins;
- }
-
  $('resultIcon').textContent=icon;
  $('resultTitle').textContent=title;
  $('resultMessage').textContent=message;
- $('finalScore').textContent=score;
+
+ const h=humanMatch?(matchState.humanRoundWins||0):humanWins;
+ const o=humanMatch?(matchState.opponentRoundWins||0):opponentWins;
+ $('finalScore').textContent=h+' - '+o;
  $('result').style.display='flex';
 
- await submitResult(outcome,serverAlreadyFinished);
- resultTimer=setTimeout(()=>location.href='games.html',8000);
+ await submitResult(outcome,humanMatch);
+ setTimeout(()=>location.href='games.html',8000);
 }
 
-async function submitResult(outcome,serverAlreadyFinished){
+async function submitResult(outcome,humanMatch){
  const status=$('refundStatus');
  status.textContent=outcome==='draw'?'Checking your entry-fee refund...':'Submitting match result...';
+
+ if(!matchId){
+  status.textContent=outcome==='draw'
+   ?'Refund cannot be confirmed until the match backend is connected.'
+   :'Match result is not connected to the rewards server.';
+  return;
+ }
 
  try{
   const response=await fetch(API.complete,{
@@ -747,18 +676,14 @@ async function submitResult(outcome,serverAlreadyFinished){
    headers:{'Content-Type':'application/json'},
    credentials:'same-origin',
    body:JSON.stringify({
-    matchId,
-    game:'memory-showdown',
-    outcome,
-    serverAlreadyFinished,
-    humanRoundWins:mode==='human'?matchState?.humanRoundWins:localHumanWins,
-    opponentRoundWins:mode==='human'?matchState?.opponentRoundWins:localOpponentWins,
-    rounds:mode==='computer'?localRoundHistory:undefined,
+    matchId,game:'memory-showdown',outcome,
+    humanRoundWins:humanMatch?matchState.humanRoundWins:humanWins,
+    opponentRoundWins:humanMatch?matchState.opponentRoundWins:opponentWins,
+    rounds:humanMatch?undefined:roundHistory,
     refundRequested:outcome==='draw'
    })
   });
-
-  if(!response.ok)throw new Error('Result could not be verified.');
+  if(!response.ok)throw new Error();
   const data=await response.json();
 
   if(outcome==='draw'){
@@ -772,21 +697,20 @@ async function submitResult(outcome,serverAlreadyFinished){
   }else{
    status.textContent=data.message||'Match result submitted.';
   }
- }catch(error){
+ }catch(e){
   status.textContent=outcome==='draw'
-   ?'Refund could not be confirmed. Please check your wallet or contact support.'
+   ?'Refund could not be confirmed. Please check your wallet.'
    :'Match result could not be verified.';
  }
 }
 
 async function leaveGame(){
- if(isLeaving)return;
- isLeaving=true;
-
- if(searchTimer)clearInterval(searchTimer);
- if(pollHandle)clearInterval(pollHandle);
+ if(leaving)return;
+ leaving=true;
+ if(searchTimer)clearTimeout(searchTimer);
+ if(searchController)searchController.abort();
+ if(polling)clearInterval(polling);
  if(computerTimer)clearTimeout(computerTimer);
- if(resultTimer)clearTimeout(resultTimer);
 
  if(matchId){
   try{
@@ -799,12 +723,13 @@ async function leaveGame(){
    });
   }catch(e){}
  }
-
  location.href='games.html';
 }
 
-// Start matchmaking as soon as the game opens.
-requestMatch();
+// Always start matchmaking. The local fallback timer ensures
+// a computer game starts even when the matchmaking API is absent.
+findOpponent();
+
 })();
 </script>
 </body>
