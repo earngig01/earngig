@@ -2,192 +2,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account | EarnGig</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #100b20;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px 15px;
-    }
-    .container { width: 100%; max-width: 480px; }
-    .logo {
-      text-align: center;
-      font-size: 30px;
-      font-weight: 800;
-      margin-bottom: 22px;
-    }
-    .logo span { color: #cafa70; }
-    .card {
-      background: #1c1530;
-      border: 1px solid #40315c;
-      border-radius: 18px;
-      padding: 30px 25px;
-    }
-    h1 { font-size: 25px; margin-bottom: 8px; }
-    .subtitle { color: #bcb3ce; margin-bottom: 25px; font-size: 14px; }
-    .field { margin-bottom: 16px; }
-    label {
-      display: block;
-      margin-bottom: 7px;
-      font-size: 13px;
-      color: #e5def1;
-    }
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 9px;
-      border: 1px solid #51416d;
-      background: #120d21;
-      color: white;
-      outline: none;
-      font-size: 15px;
-    }
-    input:focus { border-color: #cafa70; }
-    input::placeholder { color: #817792; }
-    .terms {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      color: #c8bfd7;
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 18px 0;
-    }
-    .terms input { width: auto; margin-top: 3px; }
-    .terms a, .login a { color: #cafa70; text-decoration: none; }
-    button {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 9px;
-      background: #cafa70;
-      color: #171323;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover { background: #b8ed55; }
-    .login {
-      text-align: center;
-      margin-top: 22px;
-      color: #bcb3ce;
-      font-size: 14px;
-    }
-    .message {
-      display: none;
-      padding: 12px;
-      margin-bottom: 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .error { display: block; background: #51242c; color: #ffd5d9; }
-    @media (max-width: 420px) {
-      .card { padding: 25px 18px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account | EarnGig</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#100b20;
+color:#fff;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:25px 15px
+}
+.container{width:100%;max-width:480px}
+.logo{text-align:center;font-size:30px;font-weight:800;margin-bottom:22px}
+.logo span{color:#cafa70}
+.card{background:#1c1530;border:1px solid #40315c;border-radius:18px;padding:30px 25px}
+h1{font-size:25px;margin-bottom:8px}
+.subtitle{color:#bcb3ce;margin-bottom:25px;font-size:14px}
+.field{margin-bottom:16px}
+label{display:block;margin-bottom:7px;font-size:13px;color:#e5def1}
+input{
+width:100%;padding:14px;border-radius:9px;border:1px solid #51416d;
+background:#120d21;color:white;outline:none;font-size:15px
+}
+input:focus{border-color:#cafa70}
+input::placeholder{color:#817792}
+.terms{
+display:flex;align-items:flex-start;gap:9px;color:#c8bfd7;
+font-size:13px;line-height:1.5;margin:18px 0
+}
+.terms input{width:auto;margin-top:3px}
+.terms a,.login a{color:#cafa70;text-decoration:none}
+button{
+width:100%;padding:15px;border:none;border-radius:9px;
+background:#cafa70;color:#171323;font-size:16px;font-weight:bold;cursor:pointer
+}
+button:hover{background:#b8ed55}
+.login{text-align:center;margin-top:22px;color:#bcb3ce;font-size:14px}
+.message{
+display:none;padding:12px;margin-bottom:16px;border-radius:8px;
+font-size:13px;line-height:1.5
+}
+.error{display:block;background:#51242c;color:#ffd5d9}
+.success{display:block;background:#173c2b;color:#caffd9}
+.referral-notice{
+display:none;background:#292044;border:1px solid #584477;
+border-radius:9px;padding:12px;margin-bottom:16px;
+color:#cafa70;font-size:13px;line-height:1.5
+}
+@media(max-width:420px){.card{padding:25px 18px}}
+</style>
 </head>
 <body>
-  <main class="container">
-    <div class="logo">Earn<span>Gig</span></div>
 
-    <section class="card">
-      <h1>Create your account</h1>
-      <p class="subtitle">Join EarnGig and start exploring ways to earn.</p>
+<main class="container">
+<div class="logo">♛ Earn<span>Gig</span></div>
 
-      <div id="message" class="message"></div>
+<section class="card">
+<h1>Create your account</h1>
+<p class="subtitle">Join EarnGig and start exploring ways to earn.</p>
 
-      <form id="registerForm">
-        <div class="field">
-          <label for="firstName">First name</label>
-          <input id="firstName" name="firstName" type="text"
-            placeholder="Enter your first name" required>
-        </div>
+<div id="message" class="message"></div>
+<div id="referralNotice" class="referral-notice"></div>
 
-        <div class="field">
-          <label for="lastName">Last name</label>
-          <input id="lastName" name="lastName" type="text"
-            placeholder="Enter your last name" required>
-        </div>
+<form id="registerForm">
 
-        <div class="field">
-          <label for="username">Username</label>
-          <input id="username" name="username" type="text"
-            placeholder="Choose a username" minlength="3" required>
-        </div>
+<div class="field">
+<label for="firstName">First name</label>
+<input id="firstName" name="firstName" type="text" placeholder="Enter your first name" required>
+</div>
 
-        <div class="field">
-          <label for="email">Email address</label>
-          <input id="email" name="email" type="email"
-            placeholder="you@example.com" required>
-        </div>
+<div class="field">
+<label for="lastName">Last name</label>
+<input id="lastName" name="lastName" type="text" placeholder="Enter your last name" required>
+</div>
 
-        <div class="field">
-          <label for="phone">Phone number</label>
-          <input id="phone" name="phone" type="tel"
-            placeholder="e.g. 08012345678" required>
-        </div>
+<div class="field">
+<label for="username">Username</label>
+<input id="username" name="username" type="text" placeholder="Choose a username" minlength="3" required>
+</div>
 
-        <div class="field">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password"
-            placeholder="At least 8 characters" minlength="8" required>
-        </div>
+<div class="field">
+<label for="email">Email address</label>
+<input id="email" name="email" type="email" placeholder="you@example.com" required>
+</div>
 
-        <div class="field">
-          <label for="confirmPassword">Confirm password</label>
-          <input id="confirmPassword" name="confirmPassword"
-            type="password" placeholder="Enter password again" required>
-        </div>
+<div class="field">
+<label for="phone">Phone number</label>
+<input id="phone" name="phone" type="tel" placeholder="e.g. 08012345678" required>
+</div>
 
-        <div class="field">
-          <label for="referral">Referral code (optional)</label>
-          <input id="referral" name="referral" type="text"
-            placeholder="Enter referral code">
-        </div>
+<div class="field">
+<label for="password">Password</label>
+<input id="password" name="password" type="password" placeholder="At least 8 characters" minlength="8" required>
+</div>
 
-        <label class="terms">
-          <input type="checkbox" id="agree" required>
-          <span>I agree to the EarnGig <a href="terms.html">Terms and Conditions</a> and Privacy Policy.</span>
-        </label>
+<div class="field">
+<label for="confirmPassword">Confirm password</label>
+<input id="confirmPassword" name="confirmPassword" type="password" placeholder="Enter password again" required>
+</div>
 
-        <button type="submit">Create Account</button>
-      </form>
+<div class="field">
+<label for="referral">Referral code (optional)</label>
+<input id="referral" name="referral" type="text" placeholder="Enter referral code">
+</div>
 
-      <p class="login">
-        Already have an account? <a href="login.html">Log in</a>
-      </p>
-    </section>
-  </main>
+<label class="terms">
+<input type="checkbox" id="agree" required>
+<span>I agree to the EarnGig <a href="terms.html">Terms and Conditions</a> and Privacy Policy.</span>
+</label>
 
-  <script>
-    document.getElementById("registerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+<button type="submit">Create Account</button>
+</form>
 
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-      const message = document.getElementById("message");
+<p class="login">Already have an account? <a href="login.html">Log in</a></p>
+</section>
+</main>
 
-      message.className = "message";
+<script>
+const referralInput=document.getElementById("referral");
+const referralNotice=document.getElementById("referralNotice");
+const message=document.getElementById("message");
 
-      if (password !== confirmPassword) {
-        message.textContent = "Your passwords do not match.";
-        message.classList.add("error");
-        return;
-      }
+/* Read referral code from the URL */
+const urlParams=new URLSearchParams(window.location.search);
+const referralFromURL=(urlParams.get("ref")||"").trim().toUpperCase();
 
-      message.textContent =
-        "Your form is valid. Account creation will be activated when the EarnGig backend is connected.";
-      message.className = "message error";
-    });
-  </script>
+if(referralFromURL){
+referralInput.value=referralFromURL;
+referralInput.readOnly=true;
+referralNotice.textContent=
+"You were invited to EarnGig! Referral code "+referralFromURL+" has been applied.";
+referralNotice.style.display="block";
+}
+
+/* Preserve referral code while the visitor completes registration */
+if(referralFromURL){
+sessionStorage.setItem("earngig_pending_referral",referralFromURL);
+}
+
+document.getElementById("registerForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+const password=document.getElementById("password").value;
+const confirmPassword=document.getElementById("confirmPassword").value;
+
+message.className="message";
+message.textContent="";
+
+if(password!==confirmPassword){
+message.textContent="Your passwords do not match.";
+message.classList.add("error");
+return;
+}
+
+if(password.length<8){
+message.textContent="Your password must contain at least 8 characters.";
+message.classList.add("error");
+return;
+}
+
+const referralCode=referralInput.value.trim().toUpperCase();
+const ownCode=localStorage.getItem("earngig_referral_code");
+
+if(referralCode && ownCode && referralCode===ownCode){
+message.textContent="You cannot use your own referral code.";
+message.classList.add("error");
+return;
+}
+
+/*
+This is a temporary frontend capture.
+It does not create an account or verify a referral.
+*/
+const pendingRegistration={
+firstName:document.getElementById("firstName").value.trim(),
+lastName:document.getElementById("lastName").value.trim(),
+username:document.getElementById("username").value.trim(),
+email:document.getElementById("email").value.trim().toLowerCase(),
+phone:document.getElementById("phone").value.trim(),
+referralCode:referralCode||null,
+submittedAt:new Date().toISOString()
+};
+
+/* Save pending referral attribution locally */
+if(referralCode){
+sessionStorage.setItem("earngig_pending_referral",referralCode);
+}else{
+sessionStorage.removeItem("earngig_pending_referral");
+}
+
+/* Do not save passwords in localStorage or sessionStorage */
+sessionStorage.setItem(
+"earngig_pending_registration",
+JSON.stringify(pendingRegistration)
+);
+
+message.textContent=
+"Your registration details are ready. Account creation and referral verification will activate when the EarnGig backend is connected.";
+
+message.classList.add("success");
+});
+</script>
 </body>
 </html>
