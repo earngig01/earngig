@@ -49,6 +49,27 @@ nav a:hover,nav a.active{color:#7138b8}
 .info-box span{font-size:11px;color:#81788b;display:block;margin-bottom:7px}
 .info-box strong{font-size:14px;color:#302044;overflow-wrap:anywhere}
 .notice{display:none;margin-top:15px;padding:12px;border-radius:8px;background:#f0eafa;color:#7138b8;font-size:13px}
+
+/* REFERRAL SECTION */
+.referral-card{margin-top:20px}
+.referral-intro{font-size:13px;color:#81788b;line-height:1.6;margin-top:-10px;margin-bottom:18px}
+.referral-box{background:#f8f4ff;border:1px dashed #c7afe8;border-radius:12px;padding:20px;text-align:center}
+.referral-label{font-size:12px;color:#81788b}
+.referral-code{font-size:28px;font-weight:900;letter-spacing:3px;color:#7138b8;margin:12px 0}
+.referral-link{background:#fff;border:1px solid #e5dcec;padding:12px;border-radius:8px;margin:12px 0;font-size:12px;color:#554b60;overflow-wrap:anywhere;line-height:1.5}
+.referral-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.referral-btn{background:#7138b8;color:#fff;border:0;padding:11px 15px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer}
+.referral-btn.secondary{background:#eee5fa;color:#7138b8}
+.referral-btn:hover{opacity:.88}
+.referral-message{font-size:12px;color:#26834d;min-height:18px;margin-top:12px}
+.referral-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.referral-stat{background:#faf8fc;border:1px solid #eee8f5;border-radius:10px;padding:14px;text-align:center}
+.referral-stat strong{display:block;color:#7138b8;font-size:22px;margin-bottom:5px}
+.referral-stat span{font-size:11px;color:#81788b}
+.referral-footnote{font-size:11px;color:#93899c;line-height:1.5;margin-top:15px}
+.view-referrals{display:block;text-align:center;margin-top:18px;color:#7138b8;font-size:13px;font-weight:bold;text-decoration:none}
+.view-referrals:hover{text-decoration:underline}
+
 footer{text-align:center;color:#93899c;font-size:12px;padding:35px 15px}
 @media(max-width:750px){
 .profile-layout{grid-template-columns:1fr}
@@ -59,6 +80,8 @@ nav a{font-size:12px}
 .form-grid,.account-info{grid-template-columns:1fr}
 .field.full{grid-column:auto}
 .container{margin-top:25px}
+.referral-stats{grid-template-columns:1fr}
+.referral-code{font-size:24px}
 }
 </style>
 </head>
@@ -98,6 +121,7 @@ Change Photo
 <a href="dashboard.html">← Back to Dashboard</a>
 <a href="wallet.html">My Wallet</a>
 <a href="notifications.html">Notifications</a>
+<a href="referrals.html">My Referrals</a>
 <a href="help.html">Help & Support</a>
 </div>
 </div>
@@ -157,6 +181,54 @@ Change Photo
 </form>
 </div>
 
+<!-- REFERRAL SECTION -->
+<div class="card referral-card">
+<h2 class="section-title">👥 Refer & Earn</h2>
+<p class="referral-intro">
+Invite friends to EarnGig using your personal referral code. Share your link and let your friends join.
+</p>
+
+<div class="referral-box">
+<p class="referral-label">YOUR PERSONAL REFERRAL CODE</p>
+<div class="referral-code" id="profileReferralCode">LOADING</div>
+
+<div class="referral-actions">
+<button type="button" class="referral-btn secondary" onclick="copyReferralCode()">Copy Code</button>
+</div>
+
+<p class="referral-label" style="margin-top:20px">YOUR PERSONAL REFERRAL LINK</p>
+<div class="referral-link" id="profileReferralLink">Loading...</div>
+
+<div class="referral-actions">
+<button type="button" class="referral-btn" onclick="copyReferralLink()">Copy Referral Link</button>
+<button type="button" class="referral-btn secondary" onclick="shareReferralWhatsApp()">Share on WhatsApp</button>
+</div>
+
+<div class="referral-message" id="referralMessage"></div>
+</div>
+
+<div class="referral-stats">
+<div class="referral-stat">
+<strong id="profileTotalReferrals">0</strong>
+<span>Total Referrals</span>
+</div>
+<div class="referral-stat">
+<strong id="profileSuccessfulReferrals">0</strong>
+<span>Successful Signups</span>
+</div>
+<div class="referral-stat">
+<strong id="profileReferralRewards">₦0</strong>
+<span>Rewards Earned</span>
+</div>
+</div>
+
+<p class="referral-footnote">
+Your referral statistics will update when referral tracking is connected to EarnGig's shared database. A copied link alone does not confirm a successful referral.
+</p>
+
+<a href="referrals.html" class="view-referrals">View Full Referral Dashboard →</a>
+</div>
+
 <div class="card account-card">
 <h2 class="section-title">Account Information</h2>
 <div class="account-info">
@@ -212,6 +284,7 @@ fields.forEach(id=>{
 localStorage.setItem("earngig_"+id,document.getElementById(id).value.trim());
 });
 updateProfileDisplay();
+initializeReferral();
 const notice=document.getElementById("successMessage");
 notice.style.display="block";
 setTimeout(()=>notice.style.display="none",3500);
@@ -241,7 +314,114 @@ alert("This image could not be saved. Please choose a smaller image.");
 reader.readAsDataURL(file);
 });
 
+/* REFERRAL FUNCTIONS */
+
+function getReferralIdentity(){
+return (
+localStorage.getItem("earngig_username") ||
+localStorage.getItem("earngig_email") ||
+""
+).trim().toLowerCase();
+}
+
+function generateReferralCode(identity){
+let hash=0;
+for(let i=0;i<identity.length;i++){
+hash=((hash<<5)-hash+identity.charCodeAt(i))|0;
+}
+return "EG"+Math.abs(hash).toString(36).toUpperCase().padStart(6,"0").slice(-6);
+}
+
+function initializeReferral(){
+const identity=getReferralIdentity();
+const codeElement=document.getElementById("profileReferralCode");
+const linkElement=document.getElementById("profileReferralLink");
+
+if(!identity){
+codeElement.textContent="PROFILE NEEDED";
+linkElement.textContent="Save your username or email in Personal Information to generate your referral code.";
+document.getElementById("profileTotalReferrals").textContent="0";
+document.getElementById("profileSuccessfulReferrals").textContent="0";
+document.getElementById("profileReferralRewards").textContent="₦0";
+return;
+}
+
+const code=generateReferralCode(identity);
+const referralURL=new URL("register.html",window.location.href);
+referralURL.searchParams.set("ref",code);
+
+localStorage.setItem("earngig_referral_code",code);
+
+codeElement.textContent=code;
+linkElement.textContent=referralURL.href;
+
+try{
+const referrals=JSON.parse(localStorage.getItem("earngig_referrals")||"[]");
+document.getElementById("profileTotalReferrals").textContent=referrals.length;
+document.getElementById("profileSuccessfulReferrals").textContent=
+referrals.filter(item=>item.status==="successful").length;
+
+const rewards=referrals.reduce((sum,item)=>sum+Number(item.reward||0),0);
+document.getElementById("profileReferralRewards").textContent=
+"₦"+rewards.toLocaleString();
+}catch(error){
+document.getElementById("profileTotalReferrals").textContent="0";
+document.getElementById("profileSuccessfulReferrals").textContent="0";
+document.getElementById("profileReferralRewards").textContent="₦0";
+}
+}
+
+function showReferralMessage(message){
+document.getElementById("referralMessage").textContent=message;
+}
+
+function copyReferralCode(){
+const code=document.getElementById("profileReferralCode").textContent;
+if(code==="PROFILE NEEDED")return showReferralMessage("Please save your profile details first.");
+copyText(code,"Referral code copied!");
+}
+
+function copyReferralLink(){
+const link=document.getElementById("profileReferralLink").textContent;
+if(!link.startsWith("http"))return showReferralMessage("Please save your profile details first.");
+copyText(link,"Referral link copied!");
+}
+
+function copyText(value,successMessage){
+if(navigator.clipboard && window.isSecureContext){
+navigator.clipboard.writeText(value)
+.then(()=>showReferralMessage(successMessage))
+.catch(()=>fallbackCopy(value,successMessage));
+}else{
+fallbackCopy(value,successMessage);
+}
+}
+
+function fallbackCopy(value,successMessage){
+const input=document.createElement("textarea");
+input.value=value;
+input.style.position="fixed";
+input.style.opacity="0";
+document.body.appendChild(input);
+input.select();
+try{
+document.execCommand("copy");
+showReferralMessage(successMessage);
+}catch(error){
+showReferralMessage("Copy failed. Please copy the text manually.");
+}
+input.remove();
+}
+
+function shareReferralWhatsApp(){
+const link=document.getElementById("profileReferralLink").textContent;
+if(!link.startsWith("http"))return showReferralMessage("Please save your profile details first.");
+const message="Join me on EarnGig! Register using my personal referral link: "+link;
+window.open("https://wa.me/?text="+encodeURIComponent(message),"_blank");
+}
+
 loadProfile();
+initializeReferral();
 </script>
 </body>
 </html>
