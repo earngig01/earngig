@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Transaction History | EarnGig</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:#302044;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+
+header{
+background:#fff;border-bottom:1px solid #eee5f7;
+padding:15px 5%;display:flex;align-items:center;
+justify-content:space-between;gap:15px;flex-wrap:wrap;
+position:sticky;top:0;z-index:20;
+}
+.logo{font-size:25px;font-weight:900;color:#302044}
+.logo span{color:#7138b8}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{font-size:13px;color:#554b60;font-weight:600}
+nav a:hover,nav a.active{color:#7138b8}
+
+.container{max-width:1150px;margin:35px auto;padding:0 18px 50px}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+.heading h1{font-size:29px;margin-bottom:7px}
+.heading p{font-size:13px;color:#81788b;line-height:1.5}
+.back-link{color:#7138b8;font-weight:bold;font-size:13px}
+
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:25px}
+.summary-card{background:#fff;border:1px solid #e9e1f1;border-radius:13px;padding:20px;box-shadow:0 4px 15px #30204408}
+.summary-card span{display:block;color:#81788b;font-size:12px;margin-bottom:10px}
+.summary-card strong{font-size:25px;color:#302044}
+.summary-card.credit strong{color:#198754}
+.summary-card.debit strong{color:#c34a58}
+
+.panel{background:#fff;border:1px solid #e9e1f1;border-radius:15px;padding:22px;box-shadow:0 5px 20px #30204408}
+.panel h2{font-size:19px;margin-bottom:18px}
+
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.filters input,.filters select{
+width:100%;padding:12px;border:1px solid #e5dcec;border-radius:9px;
+background:#fff;color:#302044;outline:none;font-size:13px;
+}
+.filters input:focus,.filters select:focus{border-color:#7138b8}
+
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tab{padding:9px 15px;border:1px solid #e5dcec;border-radius:20px;background:#fff;color:#554b60;font-size:12px;font-weight:bold;cursor:pointer}
+.tab.active{background:#7138b8;color:#fff;border-color:#7138b8}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{text-align:left;padding:14px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#81788b;background:#faf8fc;border-bottom:1px solid #eee8f5}
+td{padding:15px 12px;font-size:13px;border-bottom:1px solid #f0ebf5;color:#554b60}
+tbody tr:hover{background:#fcfaff}
+.transaction-title{font-weight:bold;color:#302044;margin-bottom:5px}
+.transaction-detail{font-size:11px;color:#93899c}
+.amount-credit{font-weight:bold;color:#198754}
+.amount-debit{font-weight:bold;color:#c34a58}
+.status{display:inline-block;padding:6px 9px;border-radius:20px;font-size:10px;font-weight:bold}
+.status.successful{background:#e7f7ee;color:#198754}
+.status.pending{background:#fff4dc;color:#986b13}
+.status.failed{background:#fdebed;color:#c34a58}
+
+.empty{text-align:center;padding:45px 15px;color:#93899c;font-size:13px;line-height:1.7}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap}
+.pagination span{font-size:12px;color:#81788b}
+.page-buttons{display:flex;gap:8px}
+.page-buttons button{padding:9px 13px;border:1px solid #e5dcec;border-radius:7px;background:#fff;color:#7138b8;font-size:12px;font-weight:bold}
+.page-buttons button:disabled{opacity:.4;cursor:not-allowed}
+
+.info-note{margin-top:18px;padding:14px;border-radius:9px;background:#f7f2ff;border:1px solid #e8ddfa;color:#69577e;font-size:12px;line-height:1.6}
+
+footer{text-align:center;padding:25px;color:#93899c;font-size:12px;border-top:1px solid #eee8f5}
+
+@media(max-width:700px){
+header{padding:14px 18px}
+nav{gap:11px}
+nav a{font-size:11px}
+.container{margin-top:25px}
+.heading h1{font-size:25px}
+.summary-grid{grid-template-columns:1fr}
+.filters{grid-template-columns:1fr}
+.panel{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a class="logo" href="index.html">♛ Earn<span>Gig</span></a>
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="wallet.html">Wallet</a>
+<a href="profile.html">Profile</a>
+<a href="referrals.html">Referrals</a>
+<a href="notifications.html">Notifications</a>
+</nav>
+</header>
+
+<main class="container">
+
+<div class="heading">
+<div>
+<h1>📊 Transaction History</h1>
+<p>Track every coin credited to or debited from your EarnGig wallet.</p>
+</div>
+<a href="wallet.html" class="back-link">← Back to Wallet</a>
+</div>
+
+<section class="summary-grid">
+<div class="summary-card">
+<span>Total Transactions</span>
+<strong id="totalTransactions">0</strong>
+</div>
+<div class="summary-card credit">
+<span>Total Successful Credits</span>
+<strong id="totalCredits">+0</strong>
+</div>
+<div class="summary-card debit">
+<span>Total Successful Debits</span>
+<strong id="totalDebits">−0</strong>
+</div>
+</section>
+
+<section class="panel">
+<h2>All Transactions</h2>
+
+<div class="filters">
+<input type="search" id="searchInput" placeholder="Search description, ID or source...">
+
+<select id="statusFilter">
+<option value="all">All statuses</option>
+<option value="successful">Successful</option>
+<option value="pending">Pending</option>
+<option value="failed">Failed</option>
+</select>
+
+<select id="sortFilter">
+<option value="newest">Newest first</option>
+<option value="oldest">Oldest first</option>
+</select>
+</div>
+
+<div class="tabs">
+<button class="tab active" data-type="all">All</button>
+<button class="tab" data-type="credit">Credits</button>
+<button class="tab" data-type="debit">Debits</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Transaction</th>
+<th>Transaction ID</th>
+<th>Date & Time</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Balance After</th>
+</tr>
+</thead>
+<tbody id="transactionRows"></tbody>
+</table>
+</div>
+
+<div class="empty" id="emptyState" style="display:none">
+📭 No transactions found.<br>
+Your wallet activity will appear here.
+</div>
+
+<div class="pagination">
+<span id="pageInfo">Showing 0 transactions</span>
+<div class="page-buttons">
+<button id="previousPage" disabled>Previous</button>
+<button id="nextPage" disabled>Next</button>
+</div>
+</div>
+
+<div class="info-note">
+This page is designed as the central record of all EarnGig coin activity, including earnings, rewards, withdrawals, purchases, transfers and fees. Transactions will appear here when the platform's shared wallet backend is connected.
+</div>
+
+</section>
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+const STORAGE_KEY="earngig_transactions";
+const PAGE_SIZE=10;
+
+let transactions=[];
+let activeType="all";
+let currentPage=1;
+
+function loadTransactions(){
+try{
+const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+transactions=Array.isArray(saved)?saved:[];
+}catch(error){
+transactions=[];
+}
+}
+
+function saveTransactions(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(transactions));
+}
+
+function formatCoins(value){
+return Number(value||0).toLocaleString("en-NG");
+}
+
+function formatDate(value){
+const date=new Date(value);
+if(isNaN(date.getTime()))return "Date unavailable";
+return date.toLocaleString("en-NG",{
+day:"2-digit",month:"short",year:"numeric",
+hour:"2-digit",minute:"2-digit"
+});
+}
+
+function updateSummary(){
+const successful=transactions.filter(t=>t.status==="successful");
+
+const credits=successful
+.filter(t=>t.type==="credit")
+.reduce((sum,t)=>sum+Number(t.amount||0),0);
+
+const debits=successful
+.filter(t=>t.type==="debit")
+.reduce((sum,t)=>sum+Number(t.amount||0),0);
+
+document.getElementById("totalTransactions").textContent=
+transactions.length.toLocaleString("en-NG");
+
+document.getElementById("totalCredits").textContent=
+"+"+formatCoins(credits);
+
+document.getElementById("totalDebits").textContent=
+"−"+formatCoins(debits);
+}
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+})[char]);
+}
+
+function getFilteredTransactions(){
+const search=document.getElementById("searchInput").value.toLowerCase().trim();
+const status=document.getElementById("statusFilter").value;
+const sort=document.getElementById("sortFilter").value;
+
+let result=transactions.filter(t=>{
+const matchesType=activeType==="all"||t.type===activeType;
+const matchesStatus=status==="all"||t.status===status;
+
+const searchable=[
+t.id,t.description,t.source,t.destination,t.category
+].join(" ").toLowerCase();
+
+return matchesType&&matchesStatus&&searchable.includes(search);
+});
+
+result.sort((a,b)=>{
+const first=new Date(a.date||0).getTime();
+const second=new Date(b.date||0).getTime();
+return sort==="newest"?second-first:first-second;
+});
+
+return result;
+}
+
+function renderTransactions(){
+const rows=document.getElementById("transactionRows");
+const empty=document.getElementById("emptyState");
+
+const filtered=getFilteredTransactions();
+const totalPages=Math.max(1,Math.ceil(filtered.length/PAGE_SIZE));
+
+if(currentPage>totalPages)currentPage=totalPages;
+
+const start=(currentPage-1)*PAGE_SIZE;
+const visible=filtered.slice(start,start+PAGE_SIZE);
+
+rows.innerHTML="";
+
+visible.forEach(t=>{
+const isCredit=t.type==="credit";
+const sign=isCredit?"+":"−";
+const amountClass=isCredit?"amount-credit":"amount-debit";
+
+const row=document.createElement("tr");
+row.innerHTML=`
+<td>
+<div class="transaction-title">${escapeHTML(t.description||"Wallet transaction")}</div>
+<div class="transaction-detail">${escapeHTML(t.category||t.type||"Other")}</div>
+</td>
+<td>${escapeHTML(t.id||"—")}</td>
+<td>${formatDate(t.date)}</td>
+<td>${isCredit?"Credit":"Debit"}</td>
+<td class="${amountClass}">${sign}${formatCoins(t.amount)} coins</td>
+<td><span class="status ${escapeHTML(t.status)}">${escapeHTML(t.status||"Pending")}</span></td>
+<td>${t.balanceAfter==null?"—":formatCoins(t.balanceAfter)+" coins"}</td>
+`;
+rows.appendChild(row);
+});
+
+empty.style.display=visible.length?"none":"block";
+document.getElementById("pageInfo").textContent=
+filtered.length?
+"Showing "+(start+1)+"–"+Math.min(start+PAGE_SIZE,filtered.length)+" of "+filtered.length+" transactions":
+"Showing 0 transactions";
+
+document.getElementById("previousPage").disabled=currentPage<=1;
+document.getElementById("nextPage").disabled=currentPage>=totalPages;
+}
+
+document.querySelectorAll(".tab").forEach(button=>{
+button.addEventListener("click",()=>{
+document.querySelectorAll(".tab").forEach(tab=>tab.classList.remove("active"));
+button.classList.add("active");
+activeType=button.dataset.type;
+currentPage=1;
+renderTransactions();
+});
+});
+
+document.getElementById("searchInput").addEventListener("input",()=>{
+currentPage=1;
+renderTransactions();
+});
+
+document.getElementById("statusFilter").addEventListener("change",()=>{
+currentPage=1;
+renderTransactions();
+});
+
+document.getElementById("sortFilter").addEventListener("change",()=>{
+currentPage=1;
+renderTransactions();
+});
+
+document.getElementById("previousPage").addEventListener("click",()=>{
+if(currentPage>1){
+currentPage--;
+renderTransactions();
+}
+});
+
+document.getElementById("nextPage").addEventListener("click",()=>{
+currentPage++;
+renderTransactions();
+});
+
+function refreshTransactions(){
+loadTransactions();
+updateSummary();
+renderTransactions();
+}
+
+window.addEventListener("storage",event=>{
+if(event.key===STORAGE_KEY)refreshTransactions();
+});
+
+refreshTransactions();
+</script>
+
+</body>
+</html>
