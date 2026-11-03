@@ -22,13 +22,12 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 .cell{min-width:0;min-height:0;border-radius:5px;background:linear-gradient(145deg,#35263e,#211729);border:1px solid #49384f;box-shadow:inset 0 2px 4px #0005;pointer-events:none}
 .cell.filled{border:2px solid #ffe2a0;box-shadow:inset 0 2px 3px #ffffff80,inset 0 -3px 4px #0004,0 1px 2px #000}
 .cell.preview-valid{outline:2px solid #baff9b;outline-offset:-2px;filter:brightness(1.4)}
-.cell.preview-invalid{outline:2px solid #ff7777;outline-offset:-2px;filter:brightness(.8)}
+.cell.preview-invalid{outline:2px solid #ff7777;outline-offset:-2px}
 .tray-frame{margin-top:17px;padding:13px 10px 12px;min-height:155px;border-radius:18px;background:linear-gradient(180deg,#483451,#25182f);border:3px solid #765b79;box-shadow:0 6px 0 #100b17}
 .tray-heading{display:flex;justify-content:space-between;gap:8px;margin:0 3px 13px;color:#f9d978;font-weight:900;font-size:12px;letter-spacing:1px}
 .tray-heading span:last-child{color:#d7c8e2;font-size:10px;letter-spacing:0;font-weight:normal}
 .tray{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-height:82px}
 .piece-slot{min-width:0;min-height:82px;display:flex;justify-content:center;align-items:center;border:1px solid #765e7d;border-radius:10px;background:linear-gradient(145deg,#382744,#21172d);cursor:grab;touch-action:none;user-select:none}
-.piece-slot:active{cursor:grabbing}
 .piece{display:grid;gap:3px;pointer-events:none}
 .piece-block{width:clamp(13px,4vw,20px);aspect-ratio:1;border:2px solid #ffe2a2;border-radius:4px;box-shadow:inset 0 2px 3px #ffffff9c,inset 0 -3px 3px #0005,0 2px 2px #0007}
 .controls{display:flex;justify-content:center;margin-top:13px}
@@ -57,9 +56,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     <div class="stat"><small>TIME LEFT</small><strong id="timer">03:00</strong></div>
   </div>
 
-  <div class="board-frame">
-    <div class="board" id="board"></div>
-  </div>
+  <div class="board-frame"><div class="board" id="board"></div></div>
 
   <div class="tray-frame">
     <div class="tray-heading">
@@ -75,15 +72,14 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
   </div>
 
   <p class="instructions">
-    Touch and move any block freely. Release your finger or mouse to place it.
-    You can also pick up and reposition blocks already on the board.
+    Touch and move blocks freely. Release to place them. You can pick up and reposition blocks already on the board.
   </p>
 </div>
 
 <div class="overlay" id="startScreen">
   <div class="modal">
     <h1>💎 BLOCK PUZZLE</h1>
-    <p>Move the jewel shapes onto the board. Use every piece to fill the entire square before the 3-minute timer runs out!</p>
+    <p>Arrange all the different jewel shapes to fill the entire square. Complete the puzzle before the 3-minute timer runs out!</p>
     <button class="start-btn" id="startBtn">START GAME</button>
   </div>
 </div>
@@ -92,8 +88,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
   <div class="modal">
     <h1 id="resultTitle">PUZZLE COMPLETE!</h1>
     <p id="resultMessage"></p>
-    <button class="start-btn" id="againBtn">PLAY AGAIN</button>
-    <button class="control-btn" id="gamesBtn" style="width:100%;margin-top:10px">BACK TO GAMES</button>
+    <p id="rewardStatus"></p>
   </div>
 </div>
 
@@ -126,6 +121,8 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
   let timerInterval=null,running=false,finished=false;
   let drag=null,dragElement=null;
   let best=Number(localStorage.getItem("egBlockBest")||0);
+  let startedAt=0;
+
   bestEl.textContent=best;
 
   function shuffle(arr){
@@ -137,30 +134,78 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     return a;
   }
 
-  // This set of pieces always has a valid 8x8 solution.
-  function makePieces(){
-    const list=[];let id=0;
+  // Generate connected tetromino shapes by growing random regions.
+  // Each successful partition covers all 64 cells exactly once.
+  function generateTiling(){
+    for(let attempt=0;attempt<500;attempt++){
+      const occupied=Array.from({length:8},()=>Array(8).fill(false));
+      const result=[];
+      let success=true;
+
+      for(let group=0;group<16;group++){
+        let seed=null;
+        for(let r=0;r<8&&!seed;r++){
+          for(let c=0;c<8;c++){
+            if(!occupied[r][c]){seed=[r,c];break;}
+          }
+        }
+        if(!seed){success=false;break;}
+
+        const shape=[seed];
+        const local=new Set([seed.join(",")]);
+        const frontier=[];
+
+        const addNeighbours=()=>{
+          frontier.length=0;
+          for(const [r,c] of shape){
+            for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){
+              const nr=r+dr,nc=c+dc,key=nr+","+nc;
+              if(nr>=0&&nr<8&&nc>=0&&nc<8&&!occupied[nr][nc]&&!local.has(key)&&!frontier.some(p=>p[0]===nr&&p[1]===nc)){
+                frontier.push([nr,nc]);
+              }
+            }
+          }
+        };
+
+        while(shape.length<4){
+          addNeighbours();
+          if(!frontier.length){success=false;break;}
+          const next=frontier[Math.floor(Math.random()*frontier.length)];
+          shape.push(next);
+          local.add(next.join(","));
+        }
+
+        if(!success)break;
+        shape.forEach(([r,c])=>occupied[r][c]=true);
+
+        const minR=Math.min(...shape.map(p=>p[0]));
+        const minC=Math.min(...shape.map(p=>p[1]));
+        const normalized=shape.map(([r,c])=>[r-minR,c-minC]);
+        result.push(normalized);
+      }
+
+      if(success&&occupied.every(row=>row.every(Boolean))){
+        return result;
+      }
+    }
+
+    // Guaranteed valid fallback tiling.
+    const fallback=[];
     for(let r=0;r<8;r+=2){
-      for(let c=0;c<4;c+=2){
-        list.push({
-          id:id++,
-          shape:[[0,0],[0,1],[1,0],[1,1]],
-          colour:colours[id%8],
-          used:false
-        });
+      for(let c=0;c<8;c+=2){
+        fallback.push([[0,0],[0,1],[1,0],[1,1]]);
       }
     }
-    for(let c=4;c<8;c++){
-      for(let r=0;r<8;r+=4){
-        list.push({
-          id:id++,
-          shape:[[0,0],[1,0],[2,0],[3,0]],
-          colour:colours[id%8],
-          used:false
-        });
-      }
-    }
-    return shuffle(list);
+    return fallback;
+  }
+
+  function makePieces(){
+    return shuffle(generateTiling().map((shape,id)=>({
+      id,
+      shape,
+      colour:colours[Math.floor(Math.random()*colours.length)],
+      used:false
+    })));
   }
 
   function shapeElement(piece){
@@ -236,9 +281,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
   function cellAt(x,y){
     const m=boardMetrics();
-    if(x<m.rect.left+m.pad||x>m.rect.right-m.pad||
-       y<m.rect.top+m.pad||y>m.rect.bottom-m.pad)return null;
-
+    if(x<m.rect.left+m.pad||x>m.rect.right-m.pad||y<m.rect.top+m.pad||y>m.rect.bottom-m.pad)return null;
     const c=Math.floor((x-m.rect.left-m.pad)/m.step);
     const r=Math.floor((y-m.rect.top-m.pad)/m.step);
     if(r<0||r>=8||c<0||c>=8)return null;
@@ -258,13 +301,12 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     el.className="drag-shape";
     el.style.setProperty("--drag-cell",m.cell+"px");
     el.style.gap=m.gap+"px";
-
     const rows=Math.max(...piece.shape.map(p=>p[0]))+1;
     const cols=Math.max(...piece.shape.map(p=>p[1]))+1;
     el.style.gridTemplateColumns=`repeat(${cols},${m.cell}px)`;
     el.style.gridTemplateRows=`repeat(${rows},${m.cell}px)`;
-
     const occupied=new Set(piece.shape.map(([r,c])=>`${r},${c}`));
+
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
         const block=document.createElement("div");
@@ -283,16 +325,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     if(!running||finished||drag)return;
     e.preventDefault();
 
-    drag={
-      piece,
-      source,
-      offsetR,
-      offsetC,
-      originalCells,
-      pointerId:e.pointerId,
-      lastX:e.clientX,
-      lastY:e.clientY
-    };
+    drag={piece,source,offsetR,offsetC,originalCells,pointerId:e.pointerId};
 
     if(source==="board"){
       originalCells.forEach(([r,c])=>board[r][c]=null);
@@ -301,50 +334,38 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
     dragElement=createDragElement(piece);
     moveDrag(e.clientX,e.clientY);
+    updatePreview(e.clientX,e.clientY);
     hint.textContent="Move freely and release to place";
     renderTray();
-    updatePreview(e.clientX,e.clientY);
   }
 
   function moveDrag(x,y){
     if(!dragElement||!drag)return;
-    drag.lastX=x;
-    drag.lastY=y;
-
     const m=boardMetrics();
-    const left=x-(drag.offsetC*m.step+m.cell/2);
-    const top=y-(drag.offsetR*m.step+m.cell/2);
-
-    dragElement.style.left=left+"px";
-    dragElement.style.top=top+"px";
+    dragElement.style.left=(x-(drag.offsetC*m.step+m.cell/2))+"px";
+    dragElement.style.top=(y-(drag.offsetR*m.step+m.cell/2))+"px";
   }
 
   function updatePreview(x,y){
     if(!drag)return;
     renderBoard();
-
     const target=cellAt(x,y);
     if(!target)return;
-
     const row=target.r-drag.offsetR;
     const col=target.c-drag.offsetC;
     const valid=canPlace(drag.piece,row,col);
 
-    const cells=boardEl.children;
     drag.piece.shape.forEach(([dr,dc])=>{
       const r=row+dr,c=col+dc;
       if(r<0||r>=8||c<0||c>=8)return;
-      cells[r*8+c].classList.add(valid?"preview-valid":"preview-invalid");
+      boardEl.children[r*8+c].classList.add(valid?"preview-valid":"preview-invalid");
     });
   }
 
   function restoreOriginal(){
     if(!drag||drag.source!=="board")return;
     drag.originalCells.forEach(([r,c])=>{
-      board[r][c]={
-        pieceId:drag.piece.id,
-        colour:drag.piece.colour
-      };
+      board[r][c]={pieceId:drag.piece.id,colour:drag.piece.colour};
     });
   }
 
@@ -357,17 +378,11 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     const col=target?target.c-current.offsetC:-1;
 
     drag=null;
-    if(dragElement){
-      dragElement.remove();
-      dragElement=null;
-    }
+    if(dragElement){dragElement.remove();dragElement=null;}
 
     if(target&&canPlace(current.piece,row,col)){
       current.piece.shape.forEach(([dr,dc])=>{
-        board[row+dr][col+dc]={
-          pieceId:current.piece.id,
-          colour:current.piece.colour
-        };
+        board[row+dr][col+dc]={pieceId:current.piece.id,colour:current.piece.colour};
       });
 
       if(current.source==="tray"){
@@ -376,22 +391,17 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
         scoreEl.textContent=score;
       }
 
-      hint.textContent="Block placed! You can move it again anytime.";
+      hint.textContent="Block placed! You can move it again.";
       renderBoard();
       renderTray();
 
-      if(board.every(line=>line.every(cell=>cell!==null))){
-        endGame(true);
-      }else if(pieces.every(p=>p.used)){
-        endGame(false);
-      }
+      if(board.every(line=>line.every(cell=>cell!==null)))endGame(true);
+      else if(pieces.every(p=>p.used))endGame(false);
     }else{
       restoreOriginal();
       renderBoard();
       renderTray();
-      hint.textContent=target?
-        "That position is blocked. Your block has returned to its previous position.":
-        "Place the block inside the board.";
+      hint.textContent="Invalid position. Your block returned to its previous position.";
     }
   }
 
@@ -402,7 +412,6 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     updatePreview(e.clientX,e.clientY);
   }
 
-  // Start moving immediately when a tray piece is touched.
   trayEl.addEventListener("pointerdown",e=>{
     const slot=e.target.closest(".piece-slot");
     if(!slot||!slot.dataset.pieceId)return;
@@ -411,16 +420,9 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
     const rows=Math.max(...piece.shape.map(p=>p[0]))+1;
     const cols=Math.max(...piece.shape.map(p=>p[1]))+1;
-    startDrag(
-      piece,"tray",
-      Math.floor(rows/2),
-      Math.floor(cols/2),
-      [],
-      e
-    );
+    startDrag(piece,"tray",Math.floor(rows/2),Math.floor(cols/2),[],e);
   });
 
-  // A placed piece can be picked up from any of its squares.
   boardEl.addEventListener("pointerdown",e=>{
     if(!running||finished||drag)return;
     const cell=e.target.closest(".cell");
@@ -443,14 +445,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
     const minR=Math.min(...occupied.map(p=>p[0]));
     const minC=Math.min(...occupied.map(p=>p[1]));
-
-    startDrag(
-      piece,"board",
-      r-minR,
-      c-minC,
-      occupied,
-      e
-    );
+    startDrag(piece,"board",r-minR,c-minC,occupied,e);
   });
 
   document.addEventListener("pointermove",handlePointerMove,{passive:false});
@@ -473,7 +468,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     },1000);
   }
 
-  function endGame(won){
+  async function endGame(won){
     if(finished)return;
     finished=true;
     running=false;
@@ -481,18 +476,56 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     drag=null;
     if(dragElement){dragElement.remove();dragElement=null;}
 
-    document.getElementById("resultTitle").textContent=
-      won?"💎 SQUARE COMPLETE!":"TIME'S UP!";
-    document.getElementById("resultMessage").textContent=won?
-      `Amazing! You filled the entire board. Your score: ${score}.`:
-      `You scored ${score}. The board wasn't completely filled. Try again!`;
+    const title=document.getElementById("resultTitle");
+    const message=document.getElementById("resultMessage");
+    const rewardStatus=document.getElementById("rewardStatus");
+
+    title.textContent=won?"💎 SQUARE COMPLETE!":"TIME'S UP!";
+    message.textContent=won?
+      `You filled the entire board! Your score: ${score}.`:
+      `Your score: ${score}. The board wasn't completely filled.`;
 
     if(won&&score>best){
       best=score;
       localStorage.setItem("egBlockBest",String(best));
       bestEl.textContent=best;
     }
+
     document.getElementById("resultScreen").classList.remove("hidden");
+
+    if(won){
+      rewardStatus.textContent="Verifying your result...";
+      try{
+        const response=await fetch("/api/games/block-puzzle/complete",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          credentials:"include",
+          body:JSON.stringify({
+            game:"block-puzzle",
+            score,
+            elapsedSeconds:Math.floor((Date.now()-startedAt)/1000),
+            completed:true
+          })
+        });
+
+        if(!response.ok)throw new Error("Reward verification unavailable");
+        const result=await response.json();
+
+        if(result.rewardGranted===true){
+          rewardStatus.textContent=result.message||"Your reward has been credited!";
+        }else{
+          rewardStatus.textContent="Your result was submitted, but reward credit is awaiting verification.";
+        }
+      }catch(error){
+        rewardStatus.textContent="Reward verification is not available yet. Your result has not been credited.";
+      }
+    }else{
+      rewardStatus.textContent="Returning to Games...";
+    }
+
+    setTimeout(()=>{
+      window.location.href="games.html";
+    },2500);
   }
 
   function resetGame(){
@@ -521,16 +554,14 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     document.getElementById("resultScreen").classList.add("hidden");
     running=true;
     finished=false;
+    startedAt=Date.now();
     startTimer();
   }
 
   document.getElementById("startBtn").addEventListener("click",startGame);
-  document.getElementById("againBtn").addEventListener("click",()=>{
-    resetGame();
-    startGame();
-  });
   document.getElementById("resetBtn").addEventListener("click",resetGame);
-  document.getElementById("gamesBtn").addEventListener("click",()=>{
+
+  document.getElementById("gamesBtn")?.addEventListener("click",()=>{
     window.location.href="games.html";
   });
 
