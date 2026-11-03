@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Read Novel - EarnGig</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#29243a;
+}
+
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer;border:0}
+
+.header{
+  background:#fff;
+  border-bottom:1px solid #eee8f5;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.nav{
+  max-width:1050px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#5424b8;
+  font-size:24px;
+  font-weight:900;
+}
+
+.crown{width:27px;height:25px}
+
+.back-link{
+  color:#642bd1;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.container{
+  max-width:850px;
+  margin:25px auto;
+  padding:0 18px;
+}
+
+.novel-header{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:17px;
+  border:1px solid #eee7f5;
+  border-radius:14px;
+  background:#fff;
+}
+
+.cover{
+  width:78px;
+  height:105px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#eee;
+}
+
+.novel-details{flex:1;min-width:0}
+
+.novel-details h1{
+  font-size:20px;
+  margin-bottom:7px;
+}
+
+.novel-details p{
+  font-size:12px;
+  color:#85808e;
+  line-height:1.6;
+}
+
+.reward{
+  display:inline-block;
+  margin-top:9px;
+  padding:7px 10px;
+  background:#fff7e4;
+  color:#936700;
+  border-radius:7px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.progress-section{
+  margin:18px 0;
+  padding:15px;
+  border:1px solid #eee7f5;
+  border-radius:12px;
+}
+
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.progress-top strong{color:#642bd1}
+
+.progress-track{
+  height:8px;
+  background:#eeeaf4;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:#642bd1;
+  transition:width .3s;
+}
+
+.reader-layout{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:17px;
+  align-items:start;
+}
+
+.chapter-menu{
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:14px;
+  position:sticky;
+  top:85px;
+}
+
+.chapter-menu h3{
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.chapter-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.chapter-item{
+  background:#f7f4fb;
+  color:#625a70;
+  padding:10px;
+  text-align:left;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.chapter-item.active{
+  background:#642bd1;
+  color:#fff;
+}
+
+.chapter-item.completed{
+  background:#edfaf2;
+  color:#24764b;
+}
+
+.reader{
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:24px;
+  min-width:0;
+}
+
+.chapter-heading{
+  border-bottom:1px solid #eee8f5;
+  padding-bottom:15px;
+  margin-bottom:20px;
+}
+
+.chapter-heading small{
+  color:#8c819e;
+  font-size:11px;
+}
+
+.chapter-heading h2{
+  font-size:21px;
+  margin-top:7px;
+  color:#382064;
+}
+
+.story{
+  font-family:Georgia,serif;
+  font-size:16px;
+  line-height:2;
+  color:#393440;
+}
+
+.story p{margin-bottom:20px}
+
+.chapter-bottom{
+  border-top:1px solid #eee8f5;
+  margin-top:25px;
+  padding-top:18px;
+}
+
+.reading-status{
+  background:#faf8ff;
+  padding:12px;
+  border-radius:9px;
+  font-size:12px;
+  color:#716982;
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.chapter-actions{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.action-btn{
+  padding:11px 16px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.previous-btn{
+  background:#f0edf5;
+  color:#5e566c;
+}
+
+.next-btn{
+  background:#642bd1;
+  color:#fff;
+}
+
+.action-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.quiz-section{
+  display:none;
+  margin-top:20px;
+  padding:23px;
+  border:1px solid #e8def7;
+  border-radius:14px;
+  background:#faf8ff;
+}
+
+.quiz-section h2{
+  font-size:21px;
+  color:#5424b8;
+  margin-bottom:8px;
+}
+
+.quiz-section>p{
+  font-size:13px;
+  color:#756d83;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+.question{
+  background:#fff;
+  border:1px solid #eee7f5;
+  padding:17px;
+  border-radius:10px;
+  margin-bottom:14px;
+}
+
+.question h3{
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:13px;
+}
+
+.answer{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:13px;
+  padding:9px 0;
+  cursor:pointer;
+  color:#5d566b;
+}
+
+.answer input{accent-color:#642bd1}
+
+.submit-quiz{
+  width:100%;
+  padding:13px;
+  border-radius:9px;
+  background:#642bd1;
+  color:#fff;
+  font-weight:bold;
+}
+
+.quiz-message{
+  margin-top:13px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.reward-unlocked{
+  display:none;
+  margin-top:20px;
+  padding:25px;
+  text-align:center;
+  background:#f0fff6;
+  border:1px solid #ccebd9;
+  border-radius:14px;
+}
+
+.reward-unlocked .trophy{font-size:42px}
+
+.reward-unlocked h2{
+  color:#187345;
+  margin:10px 0;
+}
+
+.reward-unlocked strong{
+  display:block;
+  font-size:30px;
+  color:#a27500;
+  margin:12px 0;
+}
+
+.reward-unlocked p{
+  font-size:13px;
+  color:#587363;
+  line-height:1.6;
+}
+
+.back-novels{
+  display:inline-block;
+  margin-top:17px;
+  padding:11px 17px;
+  background:#642bd1;
+  color:#fff;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+footer{
+  text-align:center;
+  padding:30px 15px;
+  font-size:12px;
+  color:#999;
+}
+
+@media(max-width:650px){
+  .reader-layout{grid-template-columns:1fr}
+  .chapter-menu{position:static}
+  .chapter-list{
+    flex-direction:row;
+    overflow-x:auto;
+  }
+  .chapter-item{white-space:nowrap}
+  .reader{padding:18px}
+  .story{font-size:15px}
+  .novel-details h1{font-size:17px}
+}
+
+@media(max-width:380px){
+  .novel-header{align-items:flex-start}
+  .cover{width:65px;height:90px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <svg class="crown" viewBox="0 0 32 29" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8L9 14L15.8 3L23 14L29 8L26 24H6L3 8Z"
+              fill="#E5B52E" stroke="#BD8914"
+              stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M6 26H26" stroke="#BD8914"
+              stroke-width="2" stroke-linecap="round"/>
+        <circle cx="3" cy="7" r="2" fill="#F6D978"/>
+        <circle cx="16" cy="3" r="2" fill="#F6D978"/>
+        <circle cx="29" cy="7" r="2" fill="#F6D978"/>
+        <path d="M10 18H22" stroke="#FFF0B5"
+              stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      EarnGig
+    </a>
+
+    <a href="novels.html" class="back-link">← Back to Novels</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="novel-header">
+    <img
+      class="cover"
+      src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop"
+      alt="Novel cover"
+    >
+
+    <div class="novel-details">
+      <h1 id="novelTitle">The Billionaire's Secret</h1>
+      <p>EarnGig Original • Romance • 3 Chapters</p>
+      <div class="reward">🪙 5,000 Coins Reward</div>
+    </div>
+  </section>
+
+  <section class="progress-section">
+    <div class="progress-top">
+      <span>Your reading progress</span>
+      <strong id="progressText">0% completed</strong>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </section>
+
+  <section class="reader-layout">
+
+    <aside class="chapter-menu">
+      <h3>Chapters</h3>
+      <div class="chapter-list" id="chapterList">
+        <button class="chapter-item active" onclick="openChapter(0)">Chapter 1</button>
+        <button class="chapter-item" onclick="openChapter(1)">Chapter 2</button>
+        <button class="chapter-item" onclick="openChapter(2)">Chapter 3</button>
+      </div>
+    </aside>
+
+    <article class="reader">
+
+      <div class="chapter-heading">
+        <small id="chapterNumber">CHAPTER 1</small>
+        <h2 id="chapterTitle">An Unexpected Meeting</h2>
+      </div>
+
+      <div class="story" id="storyContent"></div>
+
+      <div class="chapter-bottom">
+        <div class="reading-status" id="readingStatus">
+          Read this chapter to the end. Your reading time and progress are tracked.
+        </div>
+
+        <div class="chapter-actions">
+          <button class="action-btn previous-btn"
+                  id="previousBtn"
+                  onclick="previousChapter()"
+                  disabled>
+            ← Previous
+          </button>
+
+          <button class="action-btn next-btn"
+                  id="nextBtn"
+                  onclick="completeChapter()">
+            Complete Chapter →
+          </button>
+        </div>
+      </div>
+
+    </article>
+
+  </section>
+
+  <section class="quiz-section" id="quizSection">
+    <h2>📖 Novel Completion Quiz</h2>
+    <p>
+      Congratulations on finishing the novel! Answer these two questions
+      about the story to confirm your understanding and unlock your reward.
+    </p>
+
+    <form id="quizForm">
+
+      <div class="question">
+        <h3>1. What was the main reason Ada attended the business meeting?</h3>
+
+        <label class="answer">
+          <input type="radio" name="q1" value="a">
+          To apply for a new job
+        </label>
+
+        <label class="answer">
+          <input type="radio" name="q1" value="b">
+          To deliver an important document
+        </label>
+
+        <label class="answer">
+          <input type="radio" name="q1" value="c">
+          To meet her old school friend
+        </label>
+      </div>
+
+      <div class="question">
+        <h3>2. What did Daniel discover about the mysterious letter?</h3>
+
+        <label class="answer">
+          <input type="radio" name="q2" value="a">
+          It contained a secret about his family
+        </label>
+
+        <label class="answer">
+          <input type="radio" name="q2" value="b">
+          It was an invitation to a wedding
+        </label>
+
+        <label class="answer">
+          <input type="radio" name="q2" value="c">
+          It was an ordinary shopping list
+        </label>
+      </div>
+
+      <button class="submit-quiz" type="submit">
+        Submit Answers
+      </button>
+
+      <div class="quiz-message" id="quizMessage"></div>
+
+    </form>
+  </section>
+
+  <section class="reward-unlocked" id="rewardUnlocked">
+    <div class="trophy">🏆</div>
+    <h2>Novel Completed!</h2>
+    <p>You passed the reading quiz. Your reward is now unlocked.</p>
+    <strong>+5,000 Coins</strong>
+    <p>This is a frontend reward preview. Actual wallet crediting will be connected later.</p>
+    <a href="novels.html" class="back-novels">Explore More Novels</a>
+  </section>
+
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+/*
+  FRONTEND DEMO ONLY
+
+  The sample story, questions and reward are placeholders.
+  Reading records and rewards are stored in this browser.
+*/
+
+const NOVEL = {
+  id: "billionaires-secret-demo",
+  title: "The Billionaire's Secret",
+  reward: 5000,
+  chapters: [
+    {
+      title: "An Unexpected Meeting",
+      minimumSeconds: 30,
+      paragraphs: [
+        "Ada had never imagined that a simple business meeting would change her life. She had spent the morning preparing documents for her manager, carefully checking every page before leaving home.",
+        "When she arrived at the office building, the receptionist directed her to the executive floor. She held her folder tightly as she stepped into the elevator, unaware that the meeting waiting for her would reveal a secret she had never expected.",
+        "Inside the conference room, a man stood beside the window. His name was Daniel, and he was known throughout the city for his success in business. He turned as Ada entered and offered her a polite greeting.",
+        "Ada placed the documents on the table. Daniel looked through them quietly, then stopped at a letter tucked between the pages. His expression changed immediately. He recognized the handwriting, and for the first time that morning, he looked genuinely worried."
+      ]
+    },
+    {
+      title: "The Mysterious Letter",
+      minimumSeconds: 30,
+      paragraphs: [
+        "Daniel carefully removed the letter from the folder. It was old, but the handwriting was familiar. He had seen it many years earlier in a collection of family documents that his father had kept locked away.",
+        "Ada noticed the change in his expression and asked whether something was wrong. Daniel hesitated before explaining that the letter might contain information about his family that had been hidden for years.",
+        "He read the first few lines again. The message suggested that an important family decision had been made without telling him. Daniel had spent years believing he understood the history of his family, but the letter challenged everything.",
+        "Ada listened as Daniel explained what he knew. She had only come to deliver documents, yet she was now part of a discovery that could change the direction of his life."
+      ]
+    },
+    {
+      title: "A Secret Revealed",
+      minimumSeconds: 30,
+      paragraphs: [
+        "The following morning, Daniel invited Ada back to the office. He had spent the night examining the letter and comparing it with the records his father had left behind.",
+        "The truth was difficult to accept. The letter revealed a family secret that had influenced several important decisions. Daniel realized that the people he trusted had not told him the whole story.",
+        "Rather than hide the discovery, he decided to investigate further. Ada agreed to help organize the documents and find out where the missing information might be kept.",
+        "By the end of the day, they had a clearer understanding of the mystery. Daniel thanked Ada for bringing the letter to his attention. What began as an ordinary delivery had become the beginning of an unexpected friendship and a much bigger journey."
+      ]
+    }
+  ]
+};
+
+const STORAGE_KEY = "earngig_novel_progress_" + NOVEL.id;
+const CLAIM_KEY = "earngig_novel_claimed_" + NOVEL.id;
+
+let currentChapter = 0;
+let completedChapters = [];
+let chapterSeconds = {};
+let lastActivity = Date.now();
+let activeSeconds = 0;
+let isPageActive = true;
+let isClaimed = false;
+
+const storyContent = document.getElementById("storyContent");
+const readingStatus = document.getElementById("readingStatus");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadProgress(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+    completedChapters = Array.isArray(saved.completed)
+      ? saved.completed
+      : [];
+
+    chapterSeconds = saved.seconds || {};
+
+    currentChapter = Math.min(
+      Math.max(0,Number(saved.current || 0)),
+      NOVEL.chapters.length - 1
+    );
+
+    isClaimed = localStorage.getItem(CLAIM_KEY) === "true";
+
+  }catch(error){
+    completedChapters = [];
+    chapterSeconds = {};
+    currentChapter = 0;
+    isClaimed = false;
+  }
+
+  if(isClaimed){
+    showReward();
+    return;
+  }
+
+  openChapter(currentChapter);
+  updateProgress();
+}
+
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({
+    completed:completedChapters,
+    seconds:chapterSeconds,
+    current:currentChapter
+  }));
+}
+
+function openChapter(index){
+  if(index < 0 || index >= NOVEL.chapters.length) return;
+
+  // Do not allow jumping ahead.
+  if(index > 0 && !completedChapters.includes(index - 1)){
+    alert("Please complete the previous chapter first.");
+    return;
+  }
+
+  currentChapter = index;
+  activeSeconds = 0;
+  lastActivity = Date.now();
+
+  const chapter = NOVEL.chapters[index];
+
+  document.getElementById("chapterNumber").textContent =
+    "CHAPTER " + (index + 1);
+
+  document.getElementById("chapterTitle").textContent =
+    chapter.title;
+
+  storyContent.innerHTML = "";
+
+  chapter.paragraphs.forEach(paragraph=>{
+    const p = document.createElement("p");
+    p.textContent = paragraph;
+    storyContent.appendChild(p);
+  });
+
+  document.getElementById("previousBtn").disabled = index === 0;
+
+  updateChapterMenu();
+  updateProgress();
+  updateChapterStatus();
+
+  nextBtn.disabled = completedChapters.includes(index);
+  nextBtn.textContent = completedChapters.includes(index)
+    ? "Chapter Completed ✓"
+    : "Complete Chapter →";
+
+  saveProgress();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function updateChapterMenu(){
+  document.querySelectorAll(".chapter-item").forEach((button,index)=>{
+    button.classList.toggle("active",index === currentChapter);
+    button.classList.toggle(
+      "completed",
+      completedChapters.includes(index)
+    );
+
+    button.textContent =
+      "Chapter " + (index + 1) +
+      (completedChapters.includes(index) ? " ✓" : "");
+  });
+}
+
+function updateProgress(){
+  const percentage = Math.round(
+    completedChapters.length / NOVEL.chapters.length * 100
+  );
+
+  document.getElementById("progressText").textContent =
+    percentage + "% completed";
+
+  document.getElementById("progressFill").style.width =
+    percentage + "%";
+}
+
+function updateChapterStatus(){
+  const chapter = NOVEL.chapters[currentChapter];
+  const elapsed = Number(chapterSeconds[currentChapter] || 0) + activeSeconds;
+  const remaining = Math.max(0,chapter.minimumSeconds - elapsed);
+
+  if(completedChapters.includes(currentChapter)){
+    readingStatus.textContent = "✓ You have completed this chapter.";
+    return;
+  }
+
+  if(remaining > 0){
+    readingStatus.textContent =
+      "Active reading time: " + Math.floor(elapsed) +
+      " of " + chapter.minimumSeconds +
+      " seconds. Keep reading and reach the end of the chapter.";
+  }else{
+    readingStatus.textContent =
+      "Minimum reading time reached. Scroll to the end of the chapter to complete it.";
+  }
+}
+
+function recordActivity(){
+  lastActivity = Date.now();
+}
+
+document.addEventListener("mousemove",recordActivity);
+document.addEventListener("keydown",recordActivity);
+document.addEventListener("touchstart",recordActivity);
+document.addEventListener("scroll",recordActivity);
+
+document.addEventListener("visibilitychange",()=>{
+  isPageActive = !document.hidden;
+});
+
+window.addEventListener("focus",()=>{
+  isPageActive = true;
+  recordActivity();
+});
+
+window.addEventListener("blur",()=>{
+  isPageActive = false;
+});
+
+setInterval(()=>{
+  if(isClaimed) return;
+
+  const active =
+    isPageActive &&
+    !document.hidden &&
+    Date.now() - lastActivity < 60000;
+
+  if(active && !completedChapters.includes(currentChapter)){
+    activeSeconds++;
+    chapterSeconds[currentChapter] =
+      Number(chapterSeconds[currentChapter] || 0);
+
+    saveProgress();
+    updateChapterStatus();
+  }
+},1000);
+
+function completeChapter(){
+  if(completedChapters.includes(currentChapter)) return;
+
+  const chapter = NOVEL.chapters[currentChapter];
+
+  const totalTime =
+    Number(chapterSeconds[currentChapter] || 0) + activeSeconds;
+
+  if(totalTime < chapter.minimumSeconds){
+    alert(
+      "Please spend more active reading time on this chapter before completing it."
+    );
+    return;
+  }
+
+  const nearBottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 100;
+
+  if(!nearBottom){
+    alert("Please read through to the end of this chapter first.");
+    return;
+  }
+
+  completedChapters.push(currentChapter);
+
+  saveProgress();
+  updateProgress();
+  updateChapterMenu();
+
+  nextBtn.disabled = true;
+  nextBtn.textContent = "Chapter Completed ✓";
+
+  readingStatus.textContent = "✓ Chapter completed! Your progress has been saved.";
+
+  if(completedChapters.length === NOVEL.chapters.length){
+    setTimeout(showQuiz,500);
+  }else{
+    setTimeout(()=>{
+      const next = currentChapter + 1;
+
+      if(next < NOVEL.chapters.length){
+        openChapter(next);
+      }
+    },700);
+  }
+}
+
+function previousChapter(){
+  if(currentChapter > 0){
+    openChapter(currentChapter - 1);
+  }
+}
+
+function showQuiz(){
+  document.getElementById("quizSection").style.display = "block";
+  document.getElementById("quizSection").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+document.getElementById("quizForm").addEventListener("submit",function(event){
+  event.preventDefault();
+
+  const answer1 = document.querySelector('input[name="q1"]:checked');
+  const answer2 = document.querySelector('input[name="q2"]:checked');
+
+  const message = document.getElementById("quizMessage");
+
+  if(!answer1 || !answer2){
+    message.style.color = "#b45a00";
+    message.textContent = "Please answer both questions.";
+    return;
+  }
+
+  let score = 0;
+
+  if(answer1.value === "b") score++;
+  if(answer2.value === "a") score++;
+
+  if(score === 2){
+    localStorage.setItem(CLAIM_KEY,"true");
+
+    message.style.color = "#187345";
+    message.textContent = "Both answers are correct! Your reward is unlocked.";
+
+    setTimeout(showReward,700);
+  }else{
+    message.style.color = "#bd3d3d";
+    message.textContent =
+      "You answered " + score + " out of 2 correctly. Please review the story and try again.";
+  }
+});
+
+function showReward(){
+  document.querySelector(".reader-layout").style.display = "none";
+  document.querySelector(".progress-section").style.display = "none";
+  document.getElementById("quizSection").style.display = "none";
+
+  document.getElementById("rewardUnlocked").style.display = "block";
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+loadProgress();
+</script>
+
+</body>
+</html>
