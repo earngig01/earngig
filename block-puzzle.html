@@ -7,9 +7,9 @@
 <title>EarnGig - Block Puzzle</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient(ellipse at 50% 5%,#493052,#21152d 48%,#100d19);color:white;font-family:Arial,sans-serif;display:flex;justify-content:center}
+body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient(ellipse at 50% 5%,#493052,#21152d 48%,#100d19);color:#fff;font-family:Arial,sans-serif;display:flex;justify-content:center;touch-action:pan-y}
 .game{width:min(100%,510px)}
-.brand{text-align:center;font-size:19px;font-weight:900;letter-spacing:1px;margin:4px 0 13px}
+.brand{text-align:center;font-size:19px;font-weight:900;margin:4px 0 13px}
 .brand span{color:#ffd45c}
 .top-panel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:10px;border:3px solid #654b65;border-radius:16px;background:linear-gradient(180deg,#49334f,#24182e);box-shadow:0 5px 0 #130d1c}
 .stat{text-align:center;border-radius:8px;padding:7px 3px;background:linear-gradient(180deg,#174d3b,#103327);border:2px solid #9a783c}
@@ -18,31 +18,31 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 .stat small{display:block;color:#f8d97b;font-size:10px;font-weight:bold;letter-spacing:1px;margin-bottom:3px}
 .stat strong{display:block;color:#ffe47a;font-size:clamp(19px,5vw,27px);font-variant-numeric:tabular-nums}
 .board-frame{margin-top:17px;padding:9px;border-radius:18px;background:linear-gradient(145deg,#73536e,#302139 45%,#70516c);border:3px solid #99778e;box-shadow:0 7px 0 #100b17}
-.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;width:100%;aspect-ratio:1;padding:4px;border-radius:10px;background:#17111f;border:2px solid #49354f;touch-action:manipulation}
-.cell{min-width:0;min-height:0;border-radius:5px;background:linear-gradient(145deg,#35263e,#211729);border:1px solid #49384f;box-shadow:inset 0 2px 4px #0005}
+.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;width:100%;aspect-ratio:1;padding:4px;border-radius:10px;background:#17111f;border:2px solid #49354f;position:relative;touch-action:none}
+.cell{min-width:0;min-height:0;border-radius:5px;background:linear-gradient(145deg,#35263e,#211729);border:1px solid #49384f;box-shadow:inset 0 2px 4px #0005;pointer-events:none}
 .cell.filled{border:2px solid #ffe2a0;box-shadow:inset 0 2px 3px #ffffff80,inset 0 -3px 4px #0004,0 1px 2px #000}
-.cell.preview-valid{outline:2px solid #baff9b;outline-offset:-2px;filter:brightness(1.45)}
-.cell.preview-invalid{outline:2px solid #ff7777;outline-offset:-2px}
+.cell.preview-valid{outline:2px solid #baff9b;outline-offset:-2px;filter:brightness(1.4)}
+.cell.preview-invalid{outline:2px solid #ff7777;outline-offset:-2px;filter:brightness(.8)}
 .tray-frame{margin-top:17px;padding:13px 10px 12px;min-height:155px;border-radius:18px;background:linear-gradient(180deg,#483451,#25182f);border:3px solid #765b79;box-shadow:0 6px 0 #100b17}
 .tray-heading{display:flex;justify-content:space-between;gap:8px;margin:0 3px 13px;color:#f9d978;font-weight:900;font-size:12px;letter-spacing:1px}
 .tray-heading span:last-child{color:#d7c8e2;font-size:10px;letter-spacing:0;font-weight:normal}
 .tray{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-height:82px}
-.piece-slot{min-width:0;min-height:82px;display:flex;justify-content:center;align-items:center;border:1px solid #765e7d;border-radius:10px;background:linear-gradient(145deg,#382744,#21172d);cursor:pointer;user-select:none;touch-action:manipulation}
-.piece-slot.selected{border:2px solid #ffe17a;background:linear-gradient(145deg,#57405c,#34213f);box-shadow:0 0 14px #ffd45c77}
-.piece-slot.used{opacity:.13;pointer-events:none}
+.piece-slot{min-width:0;min-height:82px;display:flex;justify-content:center;align-items:center;border:1px solid #765e7d;border-radius:10px;background:linear-gradient(145deg,#382744,#21172d);cursor:grab;touch-action:none;user-select:none}
+.piece-slot:active{cursor:grabbing}
 .piece{display:grid;gap:3px;pointer-events:none}
 .piece-block{width:clamp(13px,4vw,20px);aspect-ratio:1;border:2px solid #ffe2a2;border-radius:4px;box-shadow:inset 0 2px 3px #ffffff9c,inset 0 -3px 3px #0005,0 2px 2px #0007}
 .controls{display:flex;justify-content:center;margin-top:13px}
 .control-btn{border:1px solid #a78bad;background:linear-gradient(180deg,#644879,#392749);color:white;font-weight:bold;padding:12px 19px;border-radius:10px;font-size:13px;cursor:pointer;box-shadow:0 3px 0 #160e20}
 .instructions{text-align:center;color:#d6c6df;font-size:12px;line-height:1.5;margin:14px 8px 0}
-.overlay{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:#100b19ef}
+.overlay{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;background:#100b19ef}
 .modal{width:min(100%,370px);padding:26px 20px;text-align:center;border-radius:20px;border:2px solid #a17c91;background:linear-gradient(145deg,#49304f,#21152e);box-shadow:0 12px 40px #0009}
 .modal h1{color:#ffdc72;font-size:27px;margin:0 0 10px}
 .modal p{color:#eee0f1;line-height:1.55;font-size:14px}
 .start-btn{width:100%;margin-top:12px;padding:15px;border:0;border-radius:12px;background:linear-gradient(180deg,#ffe68a,#e9a936);color:#3a2410;font-size:16px;font-weight:900;cursor:pointer}
 .hidden{display:none!important}
-.floating-piece{position:fixed;z-index:30;pointer-events:none;opacity:.96;filter:drop-shadow(0 5px 8px #000a);transform:translate(-50%,-50%) scale(1.15)}
-.floating-piece .piece-block{width:clamp(19px,5vw,27px)}
+.drag-layer{position:fixed;inset:0;z-index:40;pointer-events:none}
+.drag-shape{position:absolute;display:grid;gap:3px;pointer-events:none;filter:drop-shadow(0 6px 8px #000b);opacity:.98}
+.drag-shape .piece-block{width:var(--drag-cell);height:var(--drag-cell);aspect-ratio:auto;border-radius:5px}
 #dropHint{text-align:center;color:#ffe17a;font-size:11px;min-height:15px;margin:8px 0 0}
 @media(max-width:360px){body{padding:9px 7px}.board-frame{padding:6px}.board{gap:2px;padding:3px}.tray-frame{padding:10px 7px}}
 </style>
@@ -50,28 +50,40 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 <body>
 <div class="game">
   <div class="brand">👑 <span>EarnGig</span> BLOCK PUZZLE</div>
+
   <div class="top-panel">
     <div class="stat"><small>BEST</small><strong id="best">0</strong></div>
     <div class="stat"><small>SCORE</small><strong id="score">0</strong></div>
     <div class="stat"><small>TIME LEFT</small><strong id="timer">03:00</strong></div>
   </div>
 
-  <div class="board-frame"><div class="board" id="board"></div></div>
-
-  <div class="tray-frame">
-    <div class="tray-heading"><span>◆ YOUR BLOCKS</span><span id="remaining">16 pieces remaining</span></div>
-    <div class="tray" id="tray"></div>
-    <div id="dropHint">Tap a block to pick it up</div>
+  <div class="board-frame">
+    <div class="board" id="board"></div>
   </div>
 
-  <div class="controls"><button class="control-btn" id="resetBtn">↻ RESET GAME</button></div>
-  <p class="instructions">Tap a shape below to pick it up. Move your finger or mouse to the board, then tap the position where you want to place it.</p>
+  <div class="tray-frame">
+    <div class="tray-heading">
+      <span>◆ YOUR BLOCKS</span>
+      <span id="remaining">16 pieces remaining</span>
+    </div>
+    <div class="tray" id="tray"></div>
+    <div id="dropHint">Touch a block and move it onto the board</div>
+  </div>
+
+  <div class="controls">
+    <button class="control-btn" id="resetBtn">↻ RESET GAME</button>
+  </div>
+
+  <p class="instructions">
+    Touch and move any block freely. Release your finger or mouse to place it.
+    You can also pick up and reposition blocks already on the board.
+  </p>
 </div>
 
 <div class="overlay" id="startScreen">
   <div class="modal">
     <h1>💎 BLOCK PUZZLE</h1>
-    <p>Pick up the jewel shapes and place them on the board. Use every piece to fill the entire square before the 3-minute timer runs out!</p>
+    <p>Move the jewel shapes onto the board. Use every piece to fill the entire square before the 3-minute timer runs out!</p>
     <button class="start-btn" id="startBtn">START GAME</button>
   </div>
 </div>
@@ -84,6 +96,8 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     <button class="control-btn" id="gamesBtn" style="width:100%;margin-top:10px">BACK TO GAMES</button>
   </div>
 </div>
+
+<div class="drag-layer" id="dragLayer"></div>
 
 <script>
 (()=>{
@@ -101,6 +115,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
   const boardEl=document.getElementById("board");
   const trayEl=document.getElementById("tray");
+  const dragLayer=document.getElementById("dragLayer");
   const timerEl=document.getElementById("timer");
   const scoreEl=document.getElementById("score");
   const bestEl=document.getElementById("best");
@@ -109,7 +124,7 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
 
   let board=[],pieces=[],score=0,seconds=GAME_SECONDS;
   let timerInterval=null,running=false,finished=false;
-  let selected=null,floating=null;
+  let drag=null,dragElement=null;
   let best=Number(localStorage.getItem("egBlockBest")||0);
   bestEl.textContent=best;
 
@@ -122,40 +137,52 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     return a;
   }
 
+  // This set of pieces always has a valid 8x8 solution.
   function makePieces(){
     const list=[];let id=0;
     for(let r=0;r<8;r+=2){
       for(let c=0;c<4;c+=2){
-        list.push({id:id++,shape:[[0,0],[0,1],[1,0],[1,1]],colour:colours[id%8],used:false});
+        list.push({
+          id:id++,
+          shape:[[0,0],[0,1],[1,0],[1,1]],
+          colour:colours[id%8],
+          used:false
+        });
       }
     }
     for(let c=4;c<8;c++){
       for(let r=0;r<8;r+=4){
-        list.push({id:id++,shape:[[0,0],[1,0],[2,0],[3,0]],colour:colours[id%8],used:false});
+        list.push({
+          id:id++,
+          shape:[[0,0],[1,0],[2,0],[3,0]],
+          colour:colours[id%8],
+          used:false
+        });
       }
     }
     return shuffle(list);
   }
 
-  function shapeElement(piece,ghostMode=false){
+  function shapeElement(piece){
     const el=document.createElement("div");
-    el.className="piece"+(ghostMode?" floating-piece":"");
+    el.className="piece";
     const rows=Math.max(...piece.shape.map(p=>p[0]))+1;
     const cols=Math.max(...piece.shape.map(p=>p[1]))+1;
     el.style.gridTemplateColumns=`repeat(${cols},auto)`;
     el.style.gridTemplateRows=`repeat(${rows},auto)`;
-    const positions=new Set(piece.shape.map(([r,c])=>`${r},${c}`));
+    const occupied=new Set(piece.shape.map(([r,c])=>`${r},${c}`));
+
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
-        const b=document.createElement("div");
-        if(positions.has(`${r},${c}`)){
-          b.className="piece-block";
-          b.style.background=piece.colour;
+        const block=document.createElement("div");
+        if(occupied.has(`${r},${c}`)){
+          block.className="piece-block";
+          block.style.background=piece.colour;
         }else{
-          b.style.width="clamp(13px,4vw,20px)";
-          b.style.aspectRatio="1";
+          block.style.width="clamp(13px,4vw,20px)";
+          block.style.aspectRatio="1";
         }
-        el.appendChild(b);
+        el.appendChild(block);
       }
     }
     return el;
@@ -167,9 +194,10 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
       for(let c=0;c<8;c++){
         const cell=document.createElement("div");
         cell.className="cell";
-        if(board[r][c]){
+        const value=board[r][c];
+        if(value){
           cell.classList.add("filled");
-          cell.style.background=board[r][c].colour;
+          cell.style.background=value.colour;
         }
         boardEl.appendChild(cell);
       }
@@ -184,9 +212,8 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     available.slice(0,3).forEach(piece=>{
       const slot=document.createElement("div");
       slot.className="piece-slot";
-      if(selected&&selected.id===piece.id)slot.classList.add("selected");
+      slot.dataset.pieceId=piece.id;
       slot.appendChild(shapeElement(piece));
-      slot.addEventListener("click",()=>pickPiece(piece));
       trayEl.appendChild(slot);
     });
 
@@ -198,61 +225,22 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     }
   }
 
-  function pickPiece(piece){
-    if(!running||finished||piece.used)return;
-
-    if(selected&&selected.id===piece.id){
-      cancelSelection();
-      return;
-    }
-
-    selected=piece;
-    removeFloating();
-
-    floating=shapeElement(piece,true);
-    document.body.appendChild(floating);
-
-    const trayRect=trayEl.getBoundingClientRect();
-    moveFloating(trayRect.left+trayRect.width/2,trayRect.top-10);
-
-    hint.textContent="Move the piece to the board, then tap to place it";
-    renderTray();
-    renderBoard();
-  }
-
-  function moveFloating(x,y){
-    if(!floating)return;
-    floating.style.left=x+"px";
-    floating.style.top=y+"px";
-  }
-
-  function removeFloating(){
-    if(floating){
-      floating.remove();
-      floating=null;
-    }
-  }
-
-  function cancelSelection(){
-    selected=null;
-    removeFloating();
-    hint.textContent="Tap a block to pick it up";
-    renderTray();
-    renderBoard();
-  }
-
-  function getBoardCell(x,y){
+  function boardMetrics(){
     const rect=boardEl.getBoundingClientRect();
-    if(x<rect.left||x>rect.right||y<rect.top||y>rect.bottom)return null;
     const style=getComputedStyle(boardEl);
     const gap=parseFloat(style.gap)||0;
     const pad=parseFloat(style.paddingLeft)||0;
-    const innerX=x-rect.left-pad;
-    const innerY=y-rect.top-pad;
-    const cellW=(rect.width-2*pad-7*gap)/8;
-    const cellH=(rect.height-2*pad-7*gap)/8;
-    const c=Math.floor(innerX/(cellW+gap));
-    const r=Math.floor(innerY/(cellH+gap));
+    const cell=(rect.width-2*pad-7*gap)/8;
+    return {rect,gap,pad,cell,step:cell+gap};
+  }
+
+  function cellAt(x,y){
+    const m=boardMetrics();
+    if(x<m.rect.left+m.pad||x>m.rect.right-m.pad||
+       y<m.rect.top+m.pad||y>m.rect.bottom-m.pad)return null;
+
+    const c=Math.floor((x-m.rect.left-m.pad)/m.step);
+    const r=Math.floor((y-m.rect.top-m.pad)/m.step);
     if(r<0||r>=8||c<0||c>=8)return null;
     return {r,c};
   }
@@ -264,46 +252,210 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     });
   }
 
-  function previewPosition(position){
+  function createDragElement(piece){
+    const m=boardMetrics();
+    const el=document.createElement("div");
+    el.className="drag-shape";
+    el.style.setProperty("--drag-cell",m.cell+"px");
+    el.style.gap=m.gap+"px";
+
+    const rows=Math.max(...piece.shape.map(p=>p[0]))+1;
+    const cols=Math.max(...piece.shape.map(p=>p[1]))+1;
+    el.style.gridTemplateColumns=`repeat(${cols},${m.cell}px)`;
+    el.style.gridTemplateRows=`repeat(${rows},${m.cell}px)`;
+
+    const occupied=new Set(piece.shape.map(([r,c])=>`${r},${c}`));
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const block=document.createElement("div");
+        if(occupied.has(`${r},${c}`)){
+          block.className="piece-block";
+          block.style.background=piece.colour;
+        }
+        el.appendChild(block);
+      }
+    }
+    dragLayer.appendChild(el);
+    return el;
+  }
+
+  function startDrag(piece,source,offsetR,offsetC,originalCells,e){
+    if(!running||finished||drag)return;
+    e.preventDefault();
+
+    drag={
+      piece,
+      source,
+      offsetR,
+      offsetC,
+      originalCells,
+      pointerId:e.pointerId,
+      lastX:e.clientX,
+      lastY:e.clientY
+    };
+
+    if(source==="board"){
+      originalCells.forEach(([r,c])=>board[r][c]=null);
+      renderBoard();
+    }
+
+    dragElement=createDragElement(piece);
+    moveDrag(e.clientX,e.clientY);
+    hint.textContent="Move freely and release to place";
+    renderTray();
+    updatePreview(e.clientX,e.clientY);
+  }
+
+  function moveDrag(x,y){
+    if(!dragElement||!drag)return;
+    drag.lastX=x;
+    drag.lastY=y;
+
+    const m=boardMetrics();
+    const left=x-(drag.offsetC*m.step+m.cell/2);
+    const top=y-(drag.offsetR*m.step+m.cell/2);
+
+    dragElement.style.left=left+"px";
+    dragElement.style.top=top+"px";
+  }
+
+  function updatePreview(x,y){
+    if(!drag)return;
     renderBoard();
-    if(!selected||!position)return;
-    const valid=canPlace(selected,position.r,position.c);
+
+    const target=cellAt(x,y);
+    if(!target)return;
+
+    const row=target.r-drag.offsetR;
+    const col=target.c-drag.offsetC;
+    const valid=canPlace(drag.piece,row,col);
+
     const cells=boardEl.children;
-    selected.shape.forEach(([dr,dc])=>{
-      const r=position.r+dr,c=position.c+dc;
+    drag.piece.shape.forEach(([dr,dc])=>{
+      const r=row+dr,c=col+dc;
       if(r<0||r>=8||c<0||c>=8)return;
       cells[r*8+c].classList.add(valid?"preview-valid":"preview-invalid");
     });
   }
 
-  function placeSelected(position){
-    if(!selected||!position)return;
-    if(!canPlace(selected,position.r,position.c)){
-      hint.textContent="That position is occupied. Try another spot.";
-      return;
-    }
-
-    const piece=selected;
-    piece.shape.forEach(([dr,dc])=>{
-      board[position.r+dr][position.c+dc]={
-        pieceId:piece.id,
-        colour:piece.colour
+  function restoreOriginal(){
+    if(!drag||drag.source!=="board")return;
+    drag.originalCells.forEach(([r,c])=>{
+      board[r][c]={
+        pieceId:drag.piece.id,
+        colour:drag.piece.colour
       };
     });
-
-    piece.used=true;
-    selected=null;
-    removeFloating();
-    score+=piece.shape.length*10;
-    scoreEl.textContent=score;
-    hint.textContent="Piece placed! Pick the next shape.";
-
-    renderBoard();
-    renderTray();
-
-    if(board.every(row=>row.every(cell=>cell!==null)))endGame(true);
-    else if(pieces.every(p=>p.used))endGame(false);
   }
+
+  function finishDrag(e){
+    if(!drag||e.pointerId!==drag.pointerId)return;
+
+    const current=drag;
+    const target=cellAt(e.clientX,e.clientY);
+    const row=target?target.r-current.offsetR:-1;
+    const col=target?target.c-current.offsetC:-1;
+
+    drag=null;
+    if(dragElement){
+      dragElement.remove();
+      dragElement=null;
+    }
+
+    if(target&&canPlace(current.piece,row,col)){
+      current.piece.shape.forEach(([dr,dc])=>{
+        board[row+dr][col+dc]={
+          pieceId:current.piece.id,
+          colour:current.piece.colour
+        };
+      });
+
+      if(current.source==="tray"){
+        current.piece.used=true;
+        score+=current.piece.shape.length*10;
+        scoreEl.textContent=score;
+      }
+
+      hint.textContent="Block placed! You can move it again anytime.";
+      renderBoard();
+      renderTray();
+
+      if(board.every(line=>line.every(cell=>cell!==null))){
+        endGame(true);
+      }else if(pieces.every(p=>p.used)){
+        endGame(false);
+      }
+    }else{
+      restoreOriginal();
+      renderBoard();
+      renderTray();
+      hint.textContent=target?
+        "That position is blocked. Your block has returned to its previous position.":
+        "Place the block inside the board.";
+    }
+  }
+
+  function handlePointerMove(e){
+    if(!drag||e.pointerId!==drag.pointerId)return;
+    e.preventDefault();
+    moveDrag(e.clientX,e.clientY);
+    updatePreview(e.clientX,e.clientY);
+  }
+
+  // Start moving immediately when a tray piece is touched.
+  trayEl.addEventListener("pointerdown",e=>{
+    const slot=e.target.closest(".piece-slot");
+    if(!slot||!slot.dataset.pieceId)return;
+    const piece=pieces.find(p=>p.id===Number(slot.dataset.pieceId));
+    if(!piece)return;
+
+    const rows=Math.max(...piece.shape.map(p=>p[0]))+1;
+    const cols=Math.max(...piece.shape.map(p=>p[1]))+1;
+    startDrag(
+      piece,"tray",
+      Math.floor(rows/2),
+      Math.floor(cols/2),
+      [],
+      e
+    );
+  });
+
+  // A placed piece can be picked up from any of its squares.
+  boardEl.addEventListener("pointerdown",e=>{
+    if(!running||finished||drag)return;
+    const cell=e.target.closest(".cell");
+    if(!cell)return;
+
+    const index=[...boardEl.children].indexOf(cell);
+    const r=Math.floor(index/8),c=index%8;
+    const value=board[r][c];
+    if(!value)return;
+
+    const piece=pieces.find(p=>p.id===value.pieceId);
+    if(!piece)return;
+
+    const occupied=[];
+    board.forEach((line,row)=>{
+      line.forEach((v,col)=>{
+        if(v&&v.pieceId===piece.id)occupied.push([row,col]);
+      });
+    });
+
+    const minR=Math.min(...occupied.map(p=>p[0]));
+    const minC=Math.min(...occupied.map(p=>p[1]));
+
+    startDrag(
+      piece,"board",
+      r-minR,
+      c-minC,
+      occupied,
+      e
+    );
+  });
+
+  document.addEventListener("pointermove",handlePointerMove,{passive:false});
+  document.addEventListener("pointerup",finishDrag);
+  document.addEventListener("pointercancel",finishDrag);
 
   function updateTimer(){
     const m=Math.floor(seconds/60),s=seconds%60;
@@ -326,10 +478,11 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     finished=true;
     running=false;
     clearInterval(timerInterval);
-    selected=null;
-    removeFloating();
+    drag=null;
+    if(dragElement){dragElement.remove();dragElement=null;}
 
-    document.getElementById("resultTitle").textContent=won?"💎 SQUARE COMPLETE!":"TIME'S UP!";
+    document.getElementById("resultTitle").textContent=
+      won?"💎 SQUARE COMPLETE!":"TIME'S UP!";
     document.getElementById("resultMessage").textContent=won?
       `Amazing! You filled the entire board. Your score: ${score}.`:
       `You scored ${score}. The board wasn't completely filled. Try again!`;
@@ -346,17 +499,19 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     clearInterval(timerInterval);
     board=Array.from({length:8},()=>Array(8).fill(null));
     pieces=makePieces();
-    selected=null;
     score=0;
     seconds=GAME_SECONDS;
     running=false;
     finished=false;
-    removeFloating();
+    drag=null;
+    if(dragElement){dragElement.remove();dragElement=null;}
+
     scoreEl.textContent="0";
     updateTimer();
     renderBoard();
     renderTray();
-    hint.textContent="Tap a block to pick it up";
+    hint.textContent="Touch a block and move it onto the board";
+
     document.getElementById("resultScreen").classList.add("hidden");
     document.getElementById("startScreen").classList.remove("hidden");
   }
@@ -368,24 +523,6 @@ body{margin:0;min-height:100vh;padding:14px 10px 25px;background:radial-gradient
     finished=false;
     startTimer();
   }
-
-  // A selected piece follows the pointer or finger.
-  document.addEventListener("pointermove",e=>{
-    if(!selected||!running)return;
-    moveFloating(e.clientX,e.clientY);
-    previewPosition(getBoardCell(e.clientX,e.clientY));
-  });
-
-  // Tap the board to drop the selected piece.
-  boardEl.addEventListener("click",e=>{
-    if(!running||!selected)return;
-    const cell=e.target.closest(".cell");
-    if(!cell)return;
-    const index=[...boardEl.children].indexOf(cell);
-    const row=Math.floor(index/8);
-    const col=index%8;
-    placeSelected({r:row,c:col});
-  });
 
   document.getElementById("startBtn").addEventListener("click",startGame);
   document.getElementById("againBtn").addEventListener("click",()=>{
