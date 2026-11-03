@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>EarnGig - Survival Game</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101817;font-family:Arial,sans-serif;touch-action:none}
+#game{width:100%;height:100%;display:block}
+#hud{position:absolute;top:0;left:0;width:100%;padding:14px 15px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#101817eF,#10181700);color:white;pointer-events:none;z-index:2}
+.stat{background:#172923eF;border:1px solid #6b9970;border-radius:12px;padding:9px 14px;box-shadow:0 3px 12px #0005}
+.stat small{display:block;font-size:10px;color:#b6c9b6;letter-spacing:1px}
+.stat strong{display:block;font-size:21px;margin-top:3px}
+#assassins{color:#ffcf75}
+#timer{color:#fff}
+#alarm{position:absolute;top:82px;left:50%;transform:translateX(-50%);color:#ff665c;font-weight:900;font-size:13px;letter-spacing:2px;display:none;text-shadow:0 2px 5px #000;z-index:3}
+#controls{position:absolute;bottom:24px;left:0;width:100%;display:flex;justify-content:space-between;align-items:end;padding:0 24px;z-index:3}
+#stick{width:120px;height:120px;border-radius:50%;background:#172923a8;border:2px solid #b7cbb455;position:relative;touch-action:none}
+#nub{width:48px;height:48px;border-radius:50%;background:#d4e0c8;border:3px solid #597b5c;position:absolute;left:34px;top:34px;box-shadow:0 3px 9px #0008}
+#attack{width:86px;height:86px;border-radius:50%;background:linear-gradient(#f1b65a,#a95b26);border:4px solid #ffe0a1;color:white;font-size:30px;font-weight:bold;box-shadow:0 5px 15px #0009;touch-action:none}
+#attack small{display:block;font-size:10px}
+#screen{position:absolute;inset:0;background:#101817eF;display:flex;align-items:center;justify-content:center;color:white;z-index:5;text-align:center;padding:25px}
+.panel{width:min(410px,100%);background:#1b3027;border:2px solid #78976a;border-radius:20px;padding:27px 22px;box-shadow:0 12px 50px #0009}
+.panel h1{font-size:30px;color:#e9bc64;margin:0 0 10px}
+.panel p{color:#d0d9cb;line-height:1.6;font-size:14px}
+.panel button{border:0;border-radius:12px;background:#e6ae50;color:#251b0c;font-weight:900;font-size:17px;padding:15px 35px;margin-top:12px}
+#screen.hidden{display:none}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+ <div class="stat"><small>ASSASSINS LEFT</small><strong id="assassins">16 / 16</strong></div>
+ <div class="stat"><small>TIME LEFT</small><strong id="timer">02:00</strong></div>
+</div>
+<div id="alarm">! YOU HAVE BEEN SPOTTED !</div>
+
+<div id="controls">
+ <div id="stick"><div id="nub"></div></div>
+ <button id="attack">🔪<small>TAKEDOWN</small></button>
+</div>
+
+<div id="screen">
+ <div class="panel">
+  <h1 id="heading">SURVIVAL</h1>
+  <p id="message">Stay out of the assassins' vision cones. Approach them from behind and eliminate them silently with your knife. Eliminate every assassin before time runs out.</p>
+  <p><b>13–20 assassins · 2 minutes · Stealth mode</b></p>
+  <button id="start">START GAME</button>
+ </div>
+</div>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const screen=document.getElementById("screen");
+const stick=document.getElementById("stick");
+const nub=document.getElementById("nub");
+const attack=document.getElementById("attack");
+const alarmUI=document.getElementById("alarm");
+const hudA=document.getElementById("assassins");
+const hudT=document.getElementById("timer");
+
+let W,H,dpr,world,player,enemies,blocks,particles;
+let running=false,seconds=120,last=0,alarm=0;
+let moveX=0,moveY=0,stickPointer=false;
+let camera={x:0,y:0};
+let count=16;
+
+function resize(){
+ dpr=Math.min(devicePixelRatio||1,2);
+ W=innerWidth;H=innerHeight;
+ canvas.width=W*dpr;canvas.height=H*dpr;
+ canvas.style.width=W+"px";canvas.style.height=H+"px";
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener("resize",resize);resize();
+
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+function angleDiff(a,b){return Math.atan2(Math.sin(a-b),Math.cos(a-b));}
+
+function makeMap(){
+ world={w:1900,h:1900};
+ blocks=[];
+ // A new arrangement of square cover, containers and barriers every round.
+ for(let y=100;y<1800;y+=rand(190,270)){
+  for(let x=100;x<1800;x+=rand(190,270)){
+   if(Math.random()<.67){
+    let s=rand(85,145);
+    blocks.push({x:x+rand(-35,35),y:y+rand(-35,35),w:s,h:s,
+     type:Math.random()<.5?"crate":"wall",
+     color:["#24543a","#326345","#1c4936","#285b4d"][Math.floor(Math.random()*4)]});
+   }
+  }
+ }
+ // Keep a clear starting area.
+ blocks=blocks.filter(b=>Math.hypot(b.x-950,b.y-950)>190);
+}
+
+function blocked(x,y,r=15){
+ return blocks.some(b=>x+r>b.x&&x-r<b.x+b.w&&y+r>b.y&&y-r<b.y+b.h);
+}
+function lineBlocked(x1,y1,x2,y2){
+ let steps=18;
+ for(let i=1;i<steps;i++){
+  let t=i/steps;
+  let x=x1+(x2-x1)*t,y=y1+(y2-y1)*t;
+  if(blocks.some(b=>x>b.x&&x<b.x+b.w&&y>b.y&&y<b.y+b.h))return true;
+ }
+ return false;
+}
+function clearSpot(x,y,r=20){
+ return !blocked(x,y,r);
+}
+
+function startGame(){
+ makeMap();
+ count=Math.floor(rand(13,21));
+ seconds=120;alarm=0;particles=[];
+ player={x:950,y:950,a:0,speed:190,alive:true};
+ enemies=[];
+ let attempts=0;
+ while(enemies.length<count&&attempts<3000){
+  attempts++;
+  let a=rand(0,Math.PI*2),d=rand(300,760);
+  let x=clamp(player.x+Math.cos(a)*d,70,1830);
+  let y=clamp(player.y+Math.sin(a)*d,70,1830);
+  if(!clearSpot(x,y,22))continue;
+  if(enemies.some(e=>Math.hypot(e.x-x,e.y-y)<110))continue;
+  enemies.push({x,y,a:rand(0,6.28),state:"patrol",speed:rand(35,55),
+   patrol:rand(0,6.28),turn:rand(1,3),alive:true,alert:0,lastX:0,lastY:0});
+ }
+ hudA.textContent=count+" / "+count;
+ running=true;screen.classList.add("hidden");alarmUI.style.display="none";
+ last=performance.now();
+ requestAnimationFrame(loop);
+}
+
+function finish(win,title,message){
+ running=false;
+ document.getElementById("heading").textContent=title;
+ document.getElementById("message").textContent=message;
+ document.getElementById("start").textContent="PLAY AGAIN";
+ screen.classList.remove("hidden");
+}
+
+function moveEntity(obj,dx,dy,r=15){
+ if(!blocked(obj.x+dx,obj.y,r))obj.x+=dx;
+ if(!blocked(obj.x,obj.y+dy,r))obj.y+=dy;
+ obj.x=clamp(obj.x,25,1875);obj.y=clamp(obj.y,25,1875);
+}
+
+function sees(e){
+ let d=dist(e,player);
+ if(d>300)return false;
+ let a=Math.atan2(player.y-e.y,player.x-e.x);
+ if(Math.abs(angleDiff(a,e.a))>.47)return false;
+ return !lineBlocked(e.x,e.y,player.x,player.y);
+}
+
+function update(dt){
+ if(!running)return;
+ seconds-=dt;
+ if(seconds<=0){seconds=0;hudT.textContent="00:00";finish(false,"TIME UP","You ran out of time. The assassins survived. Try again.");return;}
+ hudT.textContent="02:"+String(Math.ceil(seconds)).padStart(2,"0");
+ // Player movement
+ let len=Math.hypot(moveX,moveY);
+ if(len>.08){
+  let dx=moveX/Math.max(1,len),dy=moveY/Math.max(1,len);
+  player.a=Math.atan2(dy,dx);
+  moveEntity(player,dx*player.speed*dt,dy*player.speed*dt,14);
+ }
+ // Assassins patrol, spot player, and investigate alarms.
+ for(let e of enemies){
+  if(!e.alive)continue;
+  if(sees(e)){
+   e.state="hunt";e.alert=8;e.lastX=player.x;e.lastY=player.y;
+   alarm=Math.max(alarm,3);
+  }
+  if(alarm>0&&e.state!=="hunt"){
+   e.state="investigate";e.alert=5;
+   e.lastX=player.x;e.lastY=player.y;
+  }
+  if(e.state==="patrol"){
+   e.turn-=dt;
+   if(e.turn<=0){e.a+=rand(-1.5,1.5);e.turn=rand(1,3);}
+   e.a+=Math.sin(performance.now()/1300+e.x)*dt*.25;
+  }else{
+   let target={x:e.lastX,y:e.lastY};
+   let a=Math.atan2(target.y-e.y,target.x-e.x);
+   e.a=a;
+   let speed=e.state==="hunt"?e.speed*1.65:e.speed*1.2;
+   moveEntity(e,Math.cos(a)*speed*dt,Math.sin(a)*speed*dt,16);
+   e.alert-=dt;
+   if(e.alert<=0){
+    if(e.state==="hunt"&&dist(e,player)<32){
+     finish(false,"YOU WERE CAUGHT","An assassin caught you. Stay out of their vision and use cover.");
+     return;
+    }
+    e.state="patrol";
+   }
+  }
+  // Close contact is dangerous.
+  if(e.state==="hunt"&&dist(e,player)<25){
+   finish(false,"YOU WERE CAUGHT","An assassin caught you. You must stay hidden.");
+   return;
+  }
+ }
+ alarm=Math.max(0,alarm-dt);
+ alarmUI.style.display=alarm>0?"block":"none";
+ hudA.textContent=enemies.filter(e=>e.alive).length+" / "+count;
+ if(enemies.every(e=>!e.alive))finish(true,"YOU WIN!","You eliminated every assassin without being caught.");
+ camera.x+=(player.x-camera.x)*Math.min(1,dt*7);
+ camera.y+=(player.y-camera.y)*Math.min(1,dt*7);
+}
+
+function drawFloor(){
+ ctx.fillStyle="#829783";ctx.fillRect(0,0,world.w,world.h);
+ // subtle military floor texture
+ for(let y=0;y<world.h;y+=48){
+  for(let x=0;x<world.w;x+=48){
+   ctx.fillStyle=((x/48+y/48)%2<1)?"#ffffff08":"#182c1d08";
+   ctx.fillRect(x,y,48,48);
+  }
+ }
+ for(let i=0;i<250;i++){
+  let x=(i*173)%world.w,y=(i*291)%world.h;
+  ctx.fillStyle="#344b3c22";ctx.beginPath();ctx.arc(x,y,(i%4)+2,0,Math.PI*2);ctx.fill();
+ }
+}
+
+function drawBlock(b){
+ ctx.save();
+ ctx.fillStyle="#14261c66";ctx.fillRect(b.x+8,b.y+12,b.w,b.h);
+ ctx.fillStyle=b.type==="wall"?"#285239":b.color;
+ ctx.fillRect(b.x,b.y,b.w,b.h);
+ ctx.strokeStyle="#132f20";ctx.lineWidth=8;ctx.strokeRect(b.x+3,b.y+3,b.w-6,b.h-6);
+ ctx.strokeStyle="#74a579";ctx.lineWidth=3;ctx.strokeRect(b.x+9,b.y+9,b.w-18,b.h-18);
+ if(b.type==="crate"){
+  ctx.strokeStyle="#8ab59b66";ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(b.x+12,b.y+12);ctx.lineTo(b.x+b.w-12,b.y+b.h-12);
+  ctx.moveTo(b.x+b.w-12,b.y+12);ctx.lineTo(b.x+12,b.y+b.h-12);ctx.stroke();
+ }
+ ctx.restore();
+}
+
+function drawVision(e){
+ // Directional flashlight / gun vision cone. Walls interrupt the beam.
+ ctx.save();
+ ctx.beginPath();
+ ctx.moveTo(e.x,e.y);
+ let steps=36;
+ for(let i=0;i<=steps;i++){
+  let a=e.a-.47+(i/steps)*.94;
+  let max=300;
+  for(let d=12;d<300;d+=12){
+   let x=e.x+Math.cos(a)*d,y=e.y+Math.sin(a)*d;
+   if(blocks.some(b=>x>b.x&&x<b.x+b.w&&y>b.y&&y<b.y+b.h)){max=d;break;}
+  }
+  ctx.lineTo(e.x+Math.cos(a)*max,e.y+Math.sin(a)*max);
+ }
+ ctx.closePath();
+ let g=ctx.createRadialGradient(e.x,e.y,8,e.x,e.y,300);
+ g.addColorStop(0,"#fff6bd55");g.addColorStop(1,"#fff4a300");
+ ctx.fillStyle=g;ctx.fill();
+ ctx.strokeStyle="#fff4b52b";ctx.lineWidth=1;ctx.stroke();
+ ctx.restore();
+}
+
+function drawPerson(x,y,a,kind){
+ ctx.save();ctx.translate(x,y);ctx.rotate(a);
+ // Ground shadow
+ ctx.fillStyle="#14201666";ctx.beginPath();ctx.ellipse(2,9,23,15,0,0,Math.PI*2);ctx.fill();
+ // legs and boots
+ ctx.fillStyle=kind==="player"?"#292e3b":"#342c24";
+ ctx.fillRect(-12,-12,12,25);ctx.fillRect(1,-12,12,25);
+ ctx.fillStyle="#171a1a";ctx.fillRect(-14,8,14,7);ctx.fillRect(1,8,14,7);
+ // torso and sleeves
+ ctx.fillStyle=kind==="player"?"#262d40":"#e0e1d7";
+ ctx.beginPath();ctx.ellipse(0,-1,16,19,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=kind==="player"?"#9c2938":"#d96826";
+ ctx.fillRect(-15,-9,30,12);
+ // backpack / shoulder detail
+ ctx.fillStyle=kind==="player"?"#171e30":"#f1f0e6";
+ ctx.fillRect(-13,-9,7,14);
+ // head
+ ctx.fillStyle="#b87954";ctx.beginPath();ctx.arc(0,-18,11,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=kind==="player"?"#20232d":"#403126";
+ ctx.beginPath();ctx.arc(0,-21,11,Math.PI,Math.PI*2);ctx.fill();
+ // weapon: player knife, assassins rifle
+ if(kind==="player"){
+  ctx.strokeStyle="#d9dce0";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(17,-3);ctx.lineTo(32,-3);ctx.stroke();
+  ctx.fillStyle="#79502b";ctx.fillRect(13,-6,7,6);
+ }else{
+  ctx.fillStyle="#262923";ctx.fillRect(12,-5,25,7);
+  ctx.fillStyle="#b4a36c";ctx.fillRect(32,-3,12,3);
+  ctx.fillStyle="#383b33";ctx.fillRect(17,2,5,8);
+ }
+ ctx.restore();
+}
+
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ if(!world)return;
+ // Zoomed follow camera: the battlefield scrolls around the player.
+ let zoom=Math.min(W/390,H/650)*1.25;
+ zoom=clamp(zoom,0.8,1.25);
+ ctx.save();
+ ctx.translate(W/2,H/2);
+ ctx.scale(zoom,zoom);
+ ctx.translate(-camera.x,-camera.y);
+ drawFloor();
+ for(let b of blocks)drawBlock(b);
+ for(let e of enemies)if(e.alive)drawVision(e);
+ for(let e of enemies)if(e.alive)drawPerson(e.x,e.y,e.a,"enemy");
+ if(player)drawPerson(player.x,player.y,player.a,"player");
+ ctx.restore();
+}
+
+function loop(t){
+ if(!running)return;
+ let dt=Math.min((t-last)/1000,.04);last=t;
+ update(dt);draw();
+ if(running)requestAnimationFrame(loop);
+}
+
+// Touch joystick
+function joystick(e){
+ const r=stick.getBoundingClientRect();
+ const cx=r.left+r.width/2,cy=r.top+r.height/2;
+ let dx=e.clientX-cx,dy=e.clientY-cy;
+ let l=Math.hypot(dx,dy),max=42;
+ if(l>max){dx=dx/l*max;dy=dy/l*max;}
+ nub.style.left=(34+dx)+"px";nub.style.top=(34+dy)+"px";
+ moveX=dx/max;moveY=dy/max;
+}
+stick.addEventListener("pointerdown",e=>{stickPointer=true;stick.setPointerCapture(e.pointerId);joystick(e);});
+stick.addEventListener("pointermove",e=>{if(stickPointer)joystick(e);});
+function stopStick(){stickPointer=false;moveX=moveY=0;nub.style.left="34px";nub.style.top="34px";}
+stick.addEventListener("pointerup",stopStick);
+stick.addEventListener("pointercancel",stopStick);
+
+// Keyboard controls for desktop
+const keys={};
+addEventListener("keydown",e=>{keys[e.key.toLowerCase()]=true;if(e.key===" ")doAttack();});
+addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
+function keyboard(){
+ if(keys.w||keys.arrowup)moveY=-1;
+ else if(keys.s||keys.arrowdown)moveY=1;
+ else if(!stickPointer)moveY=0;
+ if(keys.a||keys.arrowleft)moveX=-1;
+ else if(keys.d||keys.arrowright)moveX=1;
+ else if(!stickPointer)moveX=0;
+}
+
+function doAttack(){
+ if(!running||!player)return;
+ // Silent knife takedown requires close range and approach from behind.
+ let target=null,best=Infinity;
+ for(let e of enemies){
+  if(!e.alive)continue;
+  let d=dist(e,player);
+  let fromEnemy=Math.atan2(player.y-e.y,player.x-e.x);
+  let behind=Math.abs(angleDiff(fromEnemy,e.a))>2.25;
+  if(d<55&&behind&&!sees(e)&&d<best){target=e;best=d;}
+ }
+ if(target){
+  target.alive=false;
+  for(let i=0;i<9;i++)particles.push({x:target.x,y:target.y,vx:rand(-35,35),vy:rand(-35,35),life:.4});
+ }else{
+  // A failed attack does not eliminate an enemy.
+ }
+}
+attack.addEventListener("pointerdown",e=>{e.preventDefault();doAttack();});
+document.getElementById("start").addEventListener("click",startGame);
+
+function frame(){
+ if(running){keyboard();draw();}
+ requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>
