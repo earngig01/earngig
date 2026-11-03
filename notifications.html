@@ -5,71 +5,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Notifications | EarnGig</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#10091e;color:#fff;min-height:100vh}
-header{padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;background:#190e2c;border-bottom:1px solid #382454}
-.logo{font-size:25px;font-weight:900;color:#fff;text-decoration:none}
-.logo span{color:#f4c542}
+body{font-family:Arial,sans-serif;background:#fff;color:#292333;min-height:100vh}
+header{padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;background:#fff;border-bottom:1px solid #eee8f5;box-shadow:0 2px 12px rgba(40,20,60,.04)}
+.logo{font-size:25px;font-weight:900;color:#302044;text-decoration:none}
+.logo span{color:#e5ad22}
 nav{display:flex;gap:18px;flex-wrap:wrap}
-nav a{color:#d8cce9;text-decoration:none;font-size:14px}
-nav a:hover,nav a.active{color:#c5ff4a}
+nav a{color:#554b60;text-decoration:none;font-size:14px}
+nav a:hover{color:#7138b8}
 .container{max-width:1050px;margin:35px auto;padding:0 18px}
 .heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}
-.heading h1{font-size:29px}
-.heading p{color:#b9aacb;margin-top:7px;font-size:14px}
+.heading h1{font-size:29px;color:#302044}
+.heading p{color:#81788b;margin-top:7px;font-size:14px}
 button{cursor:pointer;border:0;font-weight:700}
-.mark-all{background:#c5ff4a;color:#171020;padding:11px 16px;border-radius:9px}
+.mark-all{background:#7138b8;color:#fff;padding:11px 16px;border-radius:9px}
+.mark-all:hover{background:#592a96}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:25px}
-.stat{background:#201333;border:1px solid #382454;border-radius:13px;padding:18px}
-.stat strong{display:block;font-size:25px;color:#c5ff4a;margin-bottom:5px}
-.stat span{font-size:13px;color:#c2b4d2}
+.stat{background:#fff;border:1px solid #e9e1f1;border-radius:13px;padding:18px;box-shadow:0 3px 12px #28143c08}
+.stat strong{display:block;font-size:25px;color:#7138b8;margin-bottom:5px}
+.stat span{font-size:13px;color:#81788b}
 .filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px}
-.filter{background:#241638;color:#d7c9e7;border:1px solid #493261;padding:9px 15px;border-radius:30px}
-.filter.active{background:#c5ff4a;color:#171020;border-color:#c5ff4a}
+.filter{background:#fff;color:#554b60;border:1px solid #e5dcec;padding:9px 15px;border-radius:30px}
+.filter.active{background:#7138b8;color:#fff;border-color:#7138b8}
 .notification-list{display:grid;gap:12px}
-.notification{display:flex;gap:14px;align-items:flex-start;background:#201333;border:1px solid #382454;border-radius:13px;padding:18px;cursor:pointer;transition:.2s}
-.notification:hover{border-color:#c5ff4a;transform:translateY(-2px);background:#291a40}
-.notification.unread{border-left:4px solid #c5ff4a}
-.notification-icon{width:43px;height:43px;flex-shrink:0;border-radius:12px;background:#35224d;display:grid;place-items:center;font-size:21px}
+.notification{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid #e9e1f1;border-radius:13px;padding:18px;cursor:pointer;transition:.2s;box-shadow:0 3px 12px #28143c08}
+.notification:hover{border-color:#a77bd2;transform:translateY(-2px);box-shadow:0 5px 18px #7138b814}
+.notification.unread{border-left:4px solid #7138b8;background:#fcfaff}
+.notification-icon{width:43px;height:43px;flex-shrink:0;border-radius:12px;background:#f0eafa;display:grid;place-items:center;font-size:21px}
 .notification-content{flex:1;min-width:0}
-.notification-content h3{font-size:15px;margin:2px 0 7px}
-.notification-content p{font-size:13px;line-height:1.5;color:#c2b4d2}
-.notification-content time{display:block;color:#9483a8;font-size:11px;margin-top:9px}
+.notification-content h3{font-size:15px;margin:2px 0 7px;color:#302044}
+.notification-content p{font-size:13px;line-height:1.5;color:#81788b}
+.notification-content time{display:block;color:#a49aaa;font-size:11px;margin-top:9px}
 .notification-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.read-btn{background:transparent;color:#c5ff4a;font-size:12px;padding:7px}
-.unread-dot{width:9px;height:9px;background:#c5ff4a;border-radius:50%;flex-shrink:0;margin-top:7px}
-.empty{text-align:center;padding:55px 15px;background:#201333;border:1px solid #382454;border-radius:13px;color:#c2b4d2}
+.read-btn{background:transparent;color:#7138b8;font-size:12px;padding:7px}
+.read-btn:hover{text-decoration:underline}
+.unread-dot{width:9px;height:9px;background:#7138b8;border-radius:50%;flex-shrink:0;margin-top:7px}
+.empty{text-align:center;padding:55px 15px;background:#faf8fc;border:1px solid #eee8f5;border-radius:13px;color:#81788b}
 .empty div{font-size:35px;margin-bottom:12px}
-.empty h3{color:#fff;margin-bottom:7px}
-footer{text-align:center;color:#88789c;font-size:12px;padding:35px 15px}
+.empty h3{color:#302044;margin-bottom:7px}
+footer{text-align:center;color:#93899c;font-size:12px;padding:35px 15px}
 
-/* Full notification pop-up */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}
+/* POP-UP */
+.modal-overlay{position:fixed;inset:0;background:rgba(30,15,45,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}
 .modal-overlay.show{display:flex}
-.modal{width:100%;max-width:520px;background:#211433;border:1px solid #61427d;border-radius:18px;padding:25px;position:relative;box-shadow:0 20px 70px rgba(0,0,0,.5);animation:pop .2s ease}
+.modal{width:100%;max-width:520px;background:#fff;border:1px solid #e5dcec;border-radius:18px;padding:25px;position:relative;box-shadow:0 20px 70px rgba(30,15,45,.2);animation:pop .2s ease}
 @keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
-.modal-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border-radius:50%;background:#38244d;color:#fff;font-size:21px}
-.modal-icon{width:55px;height:55px;border-radius:15px;background:#38244d;display:grid;place-items:center;font-size:27px;margin-bottom:18px}
-.modal h2{font-size:21px;padding-right:35px;margin-bottom:10px}
-.modal-date{font-size:12px;color:#a997bd;margin-bottom:20px}
-.modal-message{font-size:15px;line-height:1.8;color:#e1d7ec;white-space:pre-wrap;overflow-wrap:anywhere}
+.modal-close{position:absolute;right:16px;top:14px;width:34px;height:34px;border-radius:50%;background:#f0eafa;color:#7138b8;font-size:21px}
+.modal-icon{width:55px;height:55px;border-radius:15px;background:#f0eafa;display:grid;place-items:center;font-size:27px;margin-bottom:18px}
+.modal h2{font-size:21px;padding-right:35px;margin-bottom:10px;color:#302044}
+.modal-date{font-size:12px;color:#a49aaa;margin-bottom:20px}
+.modal-message{font-size:15px;line-height:1.8;color:#554b60;white-space:pre-wrap;overflow-wrap:anywhere}
 .modal-footer{display:flex;justify-content:flex-end;margin-top:25px}
-.modal-done{background:#c5ff4a;color:#171020;padding:11px 20px;border-radius:9px}
+.modal-done{background:#7138b8;color:#fff;padding:11px 20px;border-radius:9px}
+.modal-done:hover{background:#592a96}
+
 @media(max-width:650px){
- header{padding:15px 4%}
- nav{gap:12px}
- nav a{font-size:12px}
- .container{margin-top:25px}
- .stats{gap:8px}
- .stat{padding:13px}
- .stat strong{font-size:21px}
- .notification{padding:14px}
- .notification-icon{width:37px;height:37px;font-size:18px}
- .notification-actions{flex-direction:column}
+header{padding:15px 4%}
+nav{gap:12px}
+nav a{font-size:12px}
+.container{margin-top:25px}
+.stats{gap:8px}
+.stat{padding:13px}
+.stat strong{font-size:21px}
+.notification{padding:14px}
+.notification-icon{width:37px;height:37px;font-size:18px}
+.notification-actions{flex-direction:column}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -79,10 +85,12 @@ footer{text-align:center;color:#88789c;font-size:12px;padding:35px 15px}
 <a href="games.html">Games</a>
 <a href="novels.html">Novels</a>
 <a href="marketplace.html">Marketplace</a>
+<a href="profile.html">Profile</a>
 </nav>
 </header>
 
 <main class="container">
+
 <div class="heading">
 <div>
 <h1>Notifications 🔔</h1>
@@ -92,68 +100,129 @@ footer{text-align:center;color:#88789c;font-size:12px;padding:35px 15px}
 </div>
 
 <section class="stats">
-<div class="stat"><strong id="totalCount">5</strong><span>Total Notifications</span></div>
-<div class="stat"><strong id="unreadCount">4</strong><span>Unread</span></div>
-<div class="stat"><strong id="readCount">1</strong><span>Read</span></div>
+<div class="stat">
+<strong id="totalCount">0</strong>
+<span>Total Notifications</span>
+</div>
+<div class="stat">
+<strong id="unreadCount">0</strong>
+<span>Unread</span>
+</div>
+<div class="stat">
+<strong id="readCount">0</strong>
+<span>Read</span>
+</div>
 </section>
 
 <div class="filters">
-<button class="filter active" data-filter="all" onclick="setFilter('all',this)">All</button>
-<button class="filter" data-filter="unread" onclick="setFilter('unread',this)">Unread</button>
-<button class="filter" data-filter="rewards" onclick="setFilter('rewards',this)">Rewards</button>
-<button class="filter" data-filter="account" onclick="setFilter('account',this)">Account</button>
-<button class="filter" data-filter="updates" onclick="setFilter('updates',this)">Updates</button>
+<button class="filter active" onclick="setFilter('all',this)">All</button>
+<button class="filter" onclick="setFilter('unread',this)">Unread</button>
+<button class="filter" onclick="setFilter('rewards',this)">Rewards</button>
+<button class="filter" onclick="setFilter('account',this)">Account</button>
+<button class="filter" onclick="setFilter('updates',this)">Updates</button>
 </div>
 
 <section class="notification-list" id="notificationList"></section>
+
 </main>
 
 <footer>© 2026 EarnGig. All rights reserved.</footer>
 
-<!-- Notification pop-up -->
+<!-- FULL MESSAGE POP-UP -->
 <div class="modal-overlay" id="messageModal" onclick="closeOnBackdrop(event)">
 <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
 <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+
 <div class="modal-icon" id="modalIcon">🔔</div>
 <h2 id="modalTitle">Notification title</h2>
 <div class="modal-date" id="modalDate"></div>
 <div class="modal-message" id="modalMessage"></div>
+
 <div class="modal-footer">
 <button class="modal-done" onclick="closeModal()">Close</button>
 </div>
+
 </div>
 </div>
 
 <script>
-const notifications = [
+/* SHARED NOTIFICATION STORAGE */
+const STORAGE_KEY="earngig_notifications";
+
+const DEFAULT_NOTIFICATIONS=[
 {
-id:1,icon:"🎉",title:"Welcome to EarnGig!",
+id:1,
+icon:"🎉",
+title:"Welcome to EarnGig!",
 message:"Welcome to EarnGig! We are excited to have you here. Explore games, read novels, discover earning opportunities and enjoy everything our platform has to offer. Thank you for joining our community!",
-date:"Just now",category:"updates",read:false
+date:"Just now",
+category:"updates",
+read:false
 },
 {
-id:2,icon:"👤",title:"Complete Your Profile",
+id:2,
+icon:"👤",
+title:"Complete Your Profile",
 message:"Your profile is not yet complete. Add your profile information to help personalise your EarnGig experience. A complete profile also makes it easier for other users to recognise you.",
-date:"Today",category:"account",read:false
+date:"Today",
+category:"account",
+read:false
 },
 {
-id:3,icon:"🎮",title:"New Games Available",
+id:3,
+icon:"🎮",
+title:"New Games Available",
 message:"There are games waiting for you on EarnGig! Visit the Games section to explore the available games and enjoy your experience.",
-date:"Yesterday",category:"updates",read:false
+date:"Yesterday",
+category:"updates",
+read:false
 },
 {
-id:4,icon:"📚",title:"Discover New Novels",
+id:4,
+icon:"📚",
+title:"Discover New Novels",
 message:"New reading experiences are waiting for you. Visit the Novels section to discover stories and continue your reading journey on EarnGig.",
-date:"2 days ago",category:"updates",read:false
+date:"2 days ago",
+category:"updates",
+read:false
 },
 {
-id:5,icon:"🔐",title:"Account Security Reminder",
+id:5,
+icon:"🔐",
+title:"Account Security Reminder",
 message:"Keep your EarnGig account safe. Never share your password or verification codes with anyone. If you notice unusual activity on your account, contact the EarnGig support team.",
-date:"3 days ago",category:"account",read:true
+date:"3 days ago",
+category:"account",
+read:true
 }
 ];
 
+let notifications=[];
 let currentFilter="all";
+
+function loadNotifications(){
+try{
+const saved=localStorage.getItem(STORAGE_KEY);
+
+if(saved===null){
+notifications=DEFAULT_NOTIFICATIONS.map(n=>({...n}));
+saveNotifications();
+}else{
+const parsed=JSON.parse(saved);
+notifications=Array.isArray(parsed)?parsed:DEFAULT_NOTIFICATIONS.map(n=>({...n}));
+}
+}catch(error){
+notifications=DEFAULT_NOTIFICATIONS.map(n=>({...n}));
+}
+}
+
+function saveNotifications(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(notifications));
+
+/* Notify other open EarnGig pages */
+window.dispatchEvent(new CustomEvent("earngigNotificationsUpdated"));
+}
 
 function updateCounts(){
 document.getElementById("totalCount").textContent=notifications.length;
@@ -161,56 +230,79 @@ document.getElementById("unreadCount").textContent=notifications.filter(n=>!n.re
 document.getElementById("readCount").textContent=notifications.filter(n=>n.read).length;
 }
 
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+})[char]);
+}
+
 function renderNotifications(){
 const list=document.getElementById("notificationList");
-let filtered=notifications.filter(n=>{
+
+const filtered=notifications.filter(n=>{
 if(currentFilter==="all")return true;
 if(currentFilter==="unread")return !n.read;
 return n.category===currentFilter;
 });
 
 if(filtered.length===0){
-list.innerHTML='<div class="empty"><div>📭</div><h3>No notifications found</h3><p>There are no notifications in this category.</p></div>';
+list.innerHTML=`
+<div class="empty">
+<div>📭</div>
+<h3>No notifications found</h3>
+<p>There are no notifications in this category.</p>
+</div>`;
 updateCounts();
 return;
 }
 
 list.innerHTML=filtered.map(n=>`
-<article class="notification ${n.read?"":"unread"}" onclick="openNotification(${n.id})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNotification(${n.id})}">
-<div class="notification-icon">${n.icon}</div>
+<article class="notification ${n.read?"":"unread"}"
+onclick="openNotification(${Number(n.id)})"
+role="button"
+tabindex="0"
+onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNotification(${Number(n.id)})}">
+
+<div class="notification-icon">${escapeHTML(n.icon||"🔔")}</div>
+
 <div class="notification-content">
 <h3>${escapeHTML(n.title)}</h3>
 <p>${escapeHTML(n.message.length>115?n.message.slice(0,115)+"…":n.message)}</p>
-<time>${escapeHTML(n.date)}</time>
+<time>${escapeHTML(n.date||"")}</time>
 </div>
+
 <div class="notification-actions">
 ${n.read?"":'<span class="unread-dot" title="Unread"></span>'}
-<button class="read-btn" onclick="toggleRead(event,${n.id})">${n.read?"Mark unread":"Mark read"}</button>
+<button class="read-btn" onclick="toggleRead(event,${Number(n.id)})">
+${n.read?"Mark unread":"Mark read"}
+</button>
 </div>
+
 </article>
 `).join("");
 
 updateCounts();
 }
 
-function escapeHTML(value){
-return String(value).replace(/[&<>"']/g,char=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-})[char]);
-}
-
 function openNotification(id){
-const n=notifications.find(item=>item.id===id);
+const n=notifications.find(item=>String(item.id)===String(id));
 if(!n)return;
 
 n.read=true;
-document.getElementById("modalIcon").textContent=n.icon;
+saveNotifications();
+
+document.getElementById("modalIcon").textContent=n.icon||"🔔";
 document.getElementById("modalTitle").textContent=n.title;
-document.getElementById("modalDate").textContent=n.date;
+document.getElementById("modalDate").textContent=n.date||"";
 document.getElementById("modalMessage").textContent=n.message;
 
 document.getElementById("messageModal").classList.add("show");
 document.body.style.overflow="hidden";
+
 renderNotifications();
 }
 
@@ -225,14 +317,18 @@ if(event.target.id==="messageModal")closeModal();
 
 function toggleRead(event,id){
 event.stopPropagation();
-const n=notifications.find(item=>item.id===id);
+
+const n=notifications.find(item=>String(item.id)===String(id));
 if(!n)return;
+
 n.read=!n.read;
+saveNotifications();
 renderNotifications();
 }
 
 function markAllRead(){
 notifications.forEach(n=>n.read=true);
+saveNotifications();
 renderNotifications();
 }
 
@@ -243,11 +339,26 @@ button.classList.add("active");
 renderNotifications();
 }
 
+/* SYNC WHEN OTHER EARNGIG PAGES CHANGE NOTIFICATIONS */
+window.addEventListener("storage",event=>{
+if(event.key===STORAGE_KEY){
+loadNotifications();
+renderNotifications();
+}
+});
+
+window.addEventListener("earngigNotificationsUpdated",()=>{
+updateCounts();
+});
+
 document.addEventListener("keydown",event=>{
 if(event.key==="Escape")closeModal();
 });
 
+/* START */
+loadNotifications();
 renderNotifications();
 </script>
+
 </body>
 </html>
