@@ -38,10 +38,10 @@ button{border:0;border-radius:10px;padding:13px;font-size:14px;font-weight:bold;
 .hud strong{display:block;margin-top:4px;font-size:15px}
 #raceArea{position:relative;width:100%;overflow:hidden;border-radius:11px;background:#9bc8e7}
 #game{width:100%;height:min(65vh,650px);min-height:390px;display:block;touch-action:none}
-#mapBox{position:absolute;right:9px;top:9px;width:112px;height:140px;background:#101820eF;border:1px solid #8996a0;border-radius:9px;padding:5px;z-index:3}
+#mapBox{position:absolute;right:9px;top:9px;width:108px;height:135px;background:#101820ed;border:1px solid #8996a0;border-radius:9px;padding:5px;z-index:3}
 #mapTitle{text-align:center;font-size:9px;color:#caff45;font-weight:bold;margin-bottom:3px}
-#map{width:100%;height:115px;display:block}
-#mapLegend{font-size:8px;color:#d7dfe5;text-align:center;margin-top:1px}
+#map{width:100%;height:110px;display:block}
+#mapLegend{font-size:8px;color:#d7dfe5;text-align:center}
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;align-items:center}
 .steerPanel{background:#111820;border-radius:12px;padding:9px;display:flex;align-items:center;justify-content:center;min-height:116px}
 #steeringWheel{width:100px;height:100px;border:9px solid #aab3ba;border-radius:50%;position:relative;touch-action:none;user-select:none;background:radial-gradient(circle,#343d45 0 18%,#111820 20% 100%);box-shadow:inset 0 0 0 3px #252d34,0 3px 8px #0008}
@@ -54,11 +54,13 @@ button{border:0;border-radius:10px;padding:13px;font-size:14px;font-weight:bold;
 .brake{background:#b83e36;color:white}
 .note{font-size:12px;color:#aebbc4;line-height:1.5}
 .leader{display:flex;justify-content:space-between;padding:11px;background:#111820;border-radius:8px;margin:6px 0}
+.result-place{text-align:center;color:#caff45;font-size:34px;font-weight:900}
+.reward-status{background:#111820;padding:13px;border-radius:9px;margin:12px 0;line-height:1.5}
 @media(max-width:430px){
  main{width:97%}.panel{padding:10px}
  #game{height:59vh;min-height:350px}
- #mapBox{width:96px;height:125px}
- #map{height:100px}
+ #mapBox{width:96px;height:120px}
+ #map{height:95px}
  .hud strong{font-size:13px}.hud small{font-size:9px}
  #steeringWheel{width:88px;height:88px}
  .steerPanel{min-height:105px}
@@ -118,18 +120,22 @@ button{border:0;border-radius:10px;padding:13px;font-size:14px;font-weight:bold;
    <button class="brake" id="brake">BRAKE</button>
   </div>
  </div>
- <p class="note" style="text-align:center">Drag the steering wheel left or right. Hold accelerate or reverse to drive.</p>
+ <p class="note" style="text-align:center">Drag the steering wheel. Hold accelerate or reverse to drive.</p>
 </section>
 
 <section id="results" class="panel hidden">
  <div class="tag">GRAND PRIX FINISHED</div>
  <h1 id="resultTitle">RACE COMPLETE</h1>
- <div id="resultPosition" style="font-size:32px;font-weight:900;color:#caff45;text-align:center"></div>
+ <div class="result-place" id="resultPosition"></div>
  <p id="resultDescription" class="muted"></p>
+ <div class="reward-status" id="rewardStatus">
+  Race result is awaiting verification.
+ </div>
  <h3>Final leaderboard</h3>
  <div id="leaderboard"></div>
- <p class="note">Prototype results only. Real multiplayer rankings and prizes require server verification.</p>
- <button class="primary full" onclick="returnGarage()">RETURN TO GARAGE</button>
+ <p class="note">Your result must be verified by the EarnGig game server before any prize is credited.</p>
+ <button class="primary full" onclick="goToGames()">RETURN TO GAMES</button>
+ <p class="note" style="text-align:center">Returning to Games automatically in <span id="returnCountdown">10</span> seconds.</p>
 </section>
 </main>
 
@@ -138,15 +144,19 @@ import * as THREE from "three";
 
 const RACE_SECONDS=120;
 const CAR_SPEEDS=[155,178,205,232,260];
+const GAME_URL="games.html";
 const $=id=>document.getElementById(id);
 
 let selectedCar=0,scene,camera,renderer,clock,trackCurve,trackLength;
 let player,opponents=[];
 let active=false,raf=0,elapsed=0,remaining=120,distance=0,speed=0;
 let lateral=0,steering=0,cameraShake=0,collisionCooldown=0;
-let garageRenderer,garageScene,garageCamera,garageCar,audioContext=null;
+let garageRenderer,garageScene,garageCamera,garageCar;
+let audioContext=null,returnTimer=null,countdownTimer=null;
+let returnSeconds=10;
 const controls={gas:false,reverse:false,brake:false};
 
+/* MATERIALS AND CAR */
 function mat(color,metalness=.1,roughness=.45){
  return new THREE.MeshStandardMaterial({color,metalness,roughness});
 }
@@ -154,8 +164,6 @@ function box(parent,w,h,d,x,y,z,m){
  const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);
  o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;
 }
-
-/* Formula car */
 function makeCar(color){
  const car=new THREE.Group();
  const paint=mat(color,.65,.25),carbon=mat(0x171b20,.55,.35);
@@ -178,7 +186,6 @@ function makeCar(color){
  cockpit.scale.set(.78,.6,1.2);cockpit.position.set(0,1.03,.15);car.add(cockpit);
  const helmet=new THREE.Mesh(new THREE.SphereGeometry(.23,16,12),mat(0xffcf42));
  helmet.position.set(0,1.34,.15);car.add(helmet);
-
  const halo=new THREE.Mesh(new THREE.TorusGeometry(.43,.045,8,28,Math.PI),metal);
  halo.rotation.x=Math.PI/2;halo.position.set(0,1.4,.1);car.add(halo);
 
@@ -197,7 +204,7 @@ function makeCar(color){
  return car;
 }
 
-/* Garage */
+/* GARAGE */
 function setupGarage(){
  const canvas=document.createElement("canvas");$("garageView").appendChild(canvas);
  garageScene=new THREE.Scene();garageScene.background=new THREE.Color(0x111820);
@@ -235,7 +242,7 @@ window.selectCar=function(i){
  });
 };
 
-/* Long circuit */
+/* TRACK */
 function buildTrack(){
  const points=[
  [0,0,0],[0,0,-180],[35,0,-330],[150,0,-420],
@@ -270,67 +277,64 @@ function makeRoad(){
  const road=new THREE.Mesh(g,new THREE.MeshStandardMaterial({color:0x292d33,side:THREE.DoubleSide,roughness:.95}));
  road.receiveShadow=true;scene.add(road);
 
+ // Kerbs and continuous barriers outside the road.
  for(const side of [-1,1]){
   for(let i=0;i<n;i+=7){
    const {p,tangent}=pointAt(i/n,side*11.5);
-   const k=new THREE.Mesh(new THREE.BoxGeometry(1.8,.13,3.5),
-    mat(i%14===0?0xd52e31:0xf1f1f1));
+   const k=new THREE.Mesh(new THREE.BoxGeometry(1.8,.13,3.5),mat(i%14===0?0xd52e31:0xf1f1f1));
    k.position.set(p.x,.12,p.z);k.rotation.y=Math.atan2(tangent.x,tangent.z);scene.add(k);
   }
-  // Barriers placed outside the kerbs.
-  for(let i=0;i<n;i+=8){
-   const {p,tangent}=pointAt(i/n,side*14);
-   const barrier=new THREE.Mesh(new THREE.BoxGeometry(2.8,1.1,3.8),mat(0x9ca5ab,.55,.4));
-   barrier.position.set(p.x,.7,p.z);
+  for(let i=0;i<n;i+=4){
+   const {p,tangent}=pointAt(i/n,side*15.2);
+   const barrier=new THREE.Mesh(new THREE.BoxGeometry(3.2,1.25,3.8),mat(0x8f999f,.55,.4));
+   barrier.position.set(p.x,.72,p.z);
    barrier.rotation.y=Math.atan2(tangent.x,tangent.z);scene.add(barrier);
   }
  }
 }
 
-/* Natural scenery: hills, slopes, trees and rocks */
+/* NATURAL ENVIRONMENT: OBJECTS KEPT CLEAR OF ROAD */
+const sceneryColliders=[];
 function addNaturalEnvironment(){
  const ground=new THREE.Mesh(new THREE.PlaneGeometry(3000,3000),mat(0x537c43,0,.95));
  ground.rotation.x=-Math.PI/2;ground.position.y=-.45;ground.receiveShadow=true;scene.add(ground);
 
- // Hills are deliberately placed well outside the road and barriers.
- for(let i=0;i<65;i++){
-  const t=i/65;
+ // Scenery begins beyond the barrier margin.
+ // Each scenery object is also registered for physical collision checks.
+ for(let i=0;i<90;i++){
+  const t=(i+.5)/90;
   for(const side of [-1,1]){
-   const offset=30+Math.random()*95;
+   const offset=28+Math.random()*75;
    const {p}=pointAt(t,side*offset);
-   const radius=13+Math.random()*22;
+   const radius=7+Math.random()*12;
+   const height=5+Math.random()*13;
    const hill=new THREE.Mesh(
     new THREE.SphereGeometry(1,12,9),
     mat([0x527b42,0x657f4a,0x777d54][i%3])
    );
-   hill.scale.set(radius,5+Math.random()*14,radius*1.15);
-   hill.position.set(p.x,-.4+hill.scale.y*.5,p.z);
-   hill.castShadow=true;hill.receiveShadow=true;scene.add(hill);
+   hill.scale.set(radius,height,radius*1.15);
+   hill.position.set(p.x,-.4+height*.5,p.z);
+   hill.receiveShadow=true;hill.castShadow=true;scene.add(hill);
+   sceneryColliders.push({x:p.x,z:p.z,radius:radius*.9,kind:"hill"});
   }
  }
 
- // Rocky slopes and boulders away from the circuit.
  for(let i=0;i<100;i++){
-  const t=Math.random();
-  const side=Math.random()<.5?-1:1;
-  const offset=18+Math.random()*65;
+  const t=Math.random(),side=Math.random()<.5?-1:1;
+  const offset=23+Math.random()*60;
   const {p}=pointAt(t,side*offset);
-  const rock=new THREE.Mesh(
-   new THREE.DodecahedronGeometry(1,1),
-   mat(i%3===0?0x77766d:0x666a62)
-  );
-  const s=1.5+Math.random()*5;
-  rock.scale.set(s,s*.8,s*1.3);
-  rock.position.set(p.x,s*.45,p.z);
+  const radius=1.5+Math.random()*3.5;
+  const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(1,1),mat(0x74766e));
+  rock.scale.set(radius,radius*.8,radius*1.3);
+  rock.position.set(p.x,radius*.4,p.z);
   rock.rotation.set(Math.random(),Math.random(),Math.random());
   rock.castShadow=true;rock.receiveShadow=true;scene.add(rock);
+  sceneryColliders.push({x:p.x,z:p.z,radius:radius+1,kind:"rock"});
  }
 
- // Trees far from the track.
  for(let i=0;i<120;i++){
-  const t=Math.random();
-  const side=Math.random()<.5?-1:1;
-  const {p}=pointAt(t,side*(45+Math.random()*100));
+  const t=Math.random(),side=Math.random()<.5?-1:1;
+  const {p}=pointAt(t,side*(50+Math.random()*90));
   const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.4,.6,4,7),mat(0x60452d));
   trunk.position.set(p.x,2,p.z);scene.add(trunk);
   const leaves=new THREE.Mesh(new THREE.ConeGeometry(3.2,8,8),mat(0x28653a));
@@ -338,7 +342,7 @@ function addNaturalEnvironment(){
  }
 }
 
-/* World */
+/* WORLD */
 function initWorld(){
  const canvas=$("game");
  scene=new THREE.Scene();
@@ -358,11 +362,10 @@ function initWorld(){
  sun.shadow.mapSize.set(2048,2048);scene.add(sun);
 
  trackCurve=buildTrack();trackLength=trackCurve.getLength();
+ sceneryColliders.length=0;
  addNaturalEnvironment();makeRoad();
 
- player=makeCar(0xe63232);scene.add(player);
- putCar(player,0,0);
-
+ player=makeCar(0xe63232);scene.add(player);putCar(player,0,0);
  opponents=[];
  const colors=[0x2068d7,0xf0c62b,0x13a77a,0xd8d8d8];
  const offsets=[-6,-2,2,6];
@@ -372,8 +375,9 @@ function initWorld(){
   putCar(car,progress,offsets[i]);
   opponents.push({
    mesh:car,name:"Racer "+(i+2),
-   progress,speed:0,targetSpeed:105+Math.random()*22,
-   distance:0,lateral:offsets[i]
+   progress,distance:0,speed:0,
+   targetSpeed:105+Math.random()*22,
+   lateral:offsets[i],collisionCooldown:0
   });
  }
  resizeRace();
@@ -393,10 +397,93 @@ function resizeRace(){
 }
 window.addEventListener("resize",resizeRace);
 
-/* Camera follows closely behind the player */
+/* AUDIO */
+function crashSound(){
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return;
+  if(!audioContext)audioContext=new AC();
+  if(audioContext.state==="suspended")audioContext.resume();
+  const now=audioContext.currentTime;
+  const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+  const filter=audioContext.createBiquadFilter();
+  osc.type="sawtooth";
+  osc.frequency.setValueAtTime(105,now);
+  osc.frequency.exponentialRampToValueAtTime(28,now+.24);
+  filter.type="lowpass";filter.frequency.value=250;
+  gain.gain.setValueAtTime(.22,now);
+  gain.gain.exponentialRampToValueAtTime(.001,now+.3);
+  osc.connect(filter);filter.connect(gain);gain.connect(audioContext.destination);
+  osc.start(now);osc.stop(now+.31);
+ }catch(e){}
+}
+
+/* COLLISION RESPONSE */
+function impact(force=1){
+ if(collisionCooldown>0)return;
+ collisionCooldown=.85;
+ speed*=Math.max(0,.18-force*.08);
+ cameraShake=Math.max(cameraShake,.8);
+ crashSound();
+ if(navigator.vibrate)navigator.vibrate([80,35,100]);
+}
+
+function checkPlayerBarrierCollision(){
+ // Track surface half-width is 11m; kerb/barrier line is outside it.
+ if(Math.abs(lateral)>12.3){
+  impact(1.4);
+  lateral=Math.sign(lateral)*12.35;
+ }
+}
+
+function checkCarToCarCollisions(dt){
+ const playerProgress=((distance/trackLength)%1+1)%1;
+ const playerPoint=trackCurve.getPointAt(playerProgress);
+
+ opponents.forEach(bot=>{
+  bot.collisionCooldown=Math.max(0,bot.collisionCooldown-dt);
+  const rivalPoint=trackCurve.getPointAt(bot.progress);
+  const dx=playerPoint.x-rivalPoint.x;
+  const dz=playerPoint.z-rivalPoint.z;
+  const separation=Math.sqrt(dx*dx+dz*dz);
+  const sideGap=Math.abs(lateral-bot.lateral);
+
+  if(separation<4.3&&sideGap<3.5){
+   if(collisionCooldown<=0)impact(1.2);
+   if(bot.collisionCooldown<=0){
+    bot.speed=Math.max(12,bot.speed*.45);
+    bot.targetSpeed=Math.max(55,bot.targetSpeed*.75);
+    bot.lateral+=bot.lateral>=lateral?1.8:-1.8;
+    bot.collisionCooldown=1;
+   }
+   // Push player away rather than letting cars overlap.
+   if(speed>0){
+    lateral+=lateral>=bot.lateral?-.7:.7;
+   }
+  }
+ });
+}
+
+function checkSceneryCollision(){
+ const progress=((distance/trackLength)%1+1)%1;
+ const {p}=pointAt(progress,lateral);
+ for(const obstacle of sceneryColliders){
+  const dx=p.x-obstacle.x,dz=p.z-obstacle.z;
+  const d=Math.hypot(dx,dz);
+  if(d<obstacle.radius+1.8){
+   impact(1.5);
+   // Push the car away from the obstacle.
+   const away=d>0?dx/d:1;
+   lateral+=away*1.2;
+   break;
+  }
+ }
+}
+
+/* DRIVER CAMERA */
 function updateCamera(dt){
  const progress=((distance/trackLength)%1+1)%1;
- const {p,tangent,normal}=pointAt(progress,lateral);
+ const {p,tangent}=pointAt(progress,lateral);
  const desired=p.clone()
   .addScaledVector(tangent,-9)
   .add(new THREE.Vector3(0,4.1,0));
@@ -410,28 +497,25 @@ function updateCamera(dt){
  camera.lookAt(target);
 }
 
-/* Live minimap */
+/* MINIMAP */
 const mapCanvas=$("map"),mapCtx=mapCanvas.getContext("2d");
 function drawMap(){
  const w=mapCanvas.clientWidth||90,h=mapCanvas.clientHeight||100;
  mapCanvas.width=w*2;mapCanvas.height=h*2;
- mapCtx.setTransform(2,0,0,2,0,0);
- mapCtx.clearRect(0,0,w,h);
- const points=[];
- for(let i=0;i<=220;i++)points.push(trackCurve.getPointAt(i/220));
+ mapCtx.setTransform(2,0,0,2,0,0);mapCtx.clearRect(0,0,w,h);
+ const pts=[];
+ for(let i=0;i<=220;i++)pts.push(trackCurve.getPointAt(i/220));
  let minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;
- points.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z);});
+ pts.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z);});
  const scale=Math.min((w-15)/(maxX-minX),(h-15)/(maxZ-minZ));
  const project=p=>({x:(p.x-minX)*scale+(w-(maxX-minX)*scale)/2,y:(p.z-minZ)*scale+(h-(maxZ-minZ)*scale)/2});
  mapCtx.beginPath();
- points.forEach((p,i)=>{const q=project(p);i?mapCtx.lineTo(q.x,q.y):mapCtx.moveTo(q.x,q.y);});
+ pts.forEach((p,i)=>{const q=project(p);i?mapCtx.lineTo(q.x,q.y):mapCtx.moveTo(q.x,q.y);});
  mapCtx.closePath();mapCtx.strokeStyle="#e3e8eb";mapCtx.lineWidth=6;mapCtx.stroke();
  mapCtx.strokeStyle="#363f48";mapCtx.lineWidth=3;mapCtx.stroke();
 
- const playerP=trackCurve.getPointAt(((distance/trackLength)%1+1)%1);
- const pp=project(playerP);
- mapCtx.beginPath();mapCtx.arc(pp.x,pp.y,4,0,Math.PI*2);mapCtx.fillStyle="#caff45";mapCtx.fill();
-
+ const me=project(trackCurve.getPointAt(((distance/trackLength)%1+1)%1));
+ mapCtx.beginPath();mapCtx.arc(me.x,me.y,4,0,Math.PI*2);mapCtx.fillStyle="#caff45";mapCtx.fill();
  opponents.forEach((bot,i)=>{
   const q=project(trackCurve.getPointAt(bot.progress));
   mapCtx.beginPath();mapCtx.arc(q.x,q.y,3.2,0,Math.PI*2);
@@ -439,70 +523,24 @@ function drawMap(){
  });
 }
 
-/* Crash sound - no messages */
-function crashSound(){
- try{
-  const AC=window.AudioContext||window.webkitAudioContext;
-  if(!AC)return;
-  if(!audioContext)audioContext=new AC();
-  if(audioContext.state==="suspended")audioContext.resume();
-
-  const now=audioContext.currentTime;
-  const osc=audioContext.createOscillator();
-  const gain=audioContext.createGain();
-  const filter=audioContext.createBiquadFilter();
-  osc.type="sawtooth";
-  osc.frequency.setValueAtTime(95,now);
-  osc.frequency.exponentialRampToValueAtTime(28,now+.22);
-  filter.type="lowpass";filter.frequency.value=240;
-  gain.gain.setValueAtTime(.22,now);
-  gain.gain.exponentialRampToValueAtTime(.001,now+.28);
-  osc.connect(filter);filter.connect(gain);gain.connect(audioContext.destination);
-  osc.start(now);osc.stop(now+.3);
- }catch(e){}
-}
-
-/* Collisions: no pop-ups, only physical reaction and sound */
-function collide(){
- if(collisionCooldown>0)return;
- collisionCooldown=1.0;
- speed*=.12;
- cameraShake=1.0;
- crashSound();
- if(navigator.vibrate)navigator.vibrate([75,35,100]);
-}
-
-function checkCollisions(dt){
- collisionCooldown=Math.max(0,collisionCooldown-dt);
- cameraShake=Math.max(0,cameraShake-dt*2.4);
-
- // Road edge, barrier and terrain collision.
- if(Math.abs(lateral)>10.4){
-  collide();
-  lateral=Math.sign(lateral)*10.55;
- }
-
- // Collision with nearby rocks/hills, which are off-road.
- if(Math.abs(lateral)>11.2)collide();
-
- // Rival car contact.
- const progress=((distance/trackLength)%1+1)%1;
+/* RIVALS */
+function updateRivals(dt){
  opponents.forEach(bot=>{
-  let gap=Math.abs(progress-bot.progress);
-  gap=Math.min(gap,1-gap);
-  if(gap*trackLength<4.3&&Math.abs(lateral-bot.lateral)<2.2&&Math.abs(speed)>15){
-   collide();
-   bot.speed=Math.max(0,bot.speed-15);
-  }
+  bot.speed+=(bot.targetSpeed-bot.speed)*dt*.28;
+  bot.distance+=bot.speed/3.6*dt;
+  bot.progress=(bot.progress+bot.speed/3.6*dt/trackLength)%1;
+  putCar(bot.mesh,bot.progress,bot.lateral);
+  bot.mesh.userData.wheels.forEach(w=>w.rotation.x-=bot.speed*dt*.08);
  });
 
- // Collision recovery: reverse away and steer back inside the track.
- if(Math.abs(lateral)<8.7&&controls.reverse&&speed<0){
-  lateral*=.94;
- }
+ const ranking=[
+  {name:"YOU",distance,player:true},
+  ...opponents.map(b=>({name:b.name,distance:b.distance}))
+ ].sort((a,b)=>b.distance-a.distance);
+ $("position").textContent=(ranking.findIndex(x=>x.player)+1)+" / 5";
 }
 
-/* Driving */
+/* DRIVING */
 function updateDriving(dt){
  const maxSpeed=CAR_SPEEDS[selectedCar];
 
@@ -521,37 +559,25 @@ function updateDriving(dt){
 
  const steerPower=.8+Math.abs(speed)/maxSpeed*.9;
  lateral+=steering*steerPower*dt*(speed<0?-4.5:4.5);
- lateral=Math.max(-13,Math.min(13,lateral));
+ lateral=Math.max(-17,Math.min(17,lateral));
 
  distance=Math.max(0,distance+speed/3.6*dt);
  const progress=((distance/trackLength)%1+1)%1;
- player.userData.wheels.forEach(w=>w.rotation.x-=speed*dt*.08);
  putCar(player,progress,lateral);
+ player.userData.wheels.forEach(w=>w.rotation.x-=speed*dt*.08);
 
+ checkPlayerBarrierCollision();
+ checkSceneryCollision();
+ checkCarToCarCollisions(dt);
+ collisionCooldown=Math.max(0,collisionCooldown-dt);
+ cameraShake=Math.max(0,cameraShake-dt*2.4);
  updateCamera(dt);
- checkCollisions(dt);
 
  $("speed").textContent=Math.abs(Math.round(speed))+" km/h";
  $("distance").textContent=(distance/1000).toFixed(2)+" km";
 }
 
-/* Opponents */
-function updateRivals(dt){
- opponents.forEach(bot=>{
-  bot.speed+=(bot.targetSpeed-bot.speed)*dt*.28;
-  bot.distance+=bot.speed/3.6*dt;
-  bot.progress=(bot.progress+bot.speed/3.6*dt/trackLength)%1;
-  putCar(bot.mesh,bot.progress,bot.lateral);
-  bot.mesh.userData.wheels.forEach(w=>w.rotation.x-=bot.speed*dt*.08);
- });
- const ranks=[
-  {name:"YOU",distance,player:true},
-  ...opponents.map(b=>({name:b.name,distance:b.distance}))
- ].sort((a,b)=>b.distance-a.distance);
- $("position").textContent=(ranks.findIndex(x=>x.player)+1)+" / 5";
-}
-
-/* Race timer and loop */
+/* TIMER AND LOOP */
 function updateTimer(dt){
  elapsed+=dt;remaining=Math.max(0,RACE_SECONDS-elapsed);
  const s=Math.ceil(remaining);
@@ -566,6 +592,7 @@ function loop(){
  if(remaining<=0)finishRace();
 }
 
+/* START */
 window.startRace=function(){
  $("garage").classList.add("hidden");
  $("results").classList.add("hidden");
@@ -576,33 +603,56 @@ window.startRace=function(){
  try{
   initWorld();active=true;clock=new THREE.Clock();loop();
  }catch(e){
-  console.error(e);alert("The racing scene could not start. Please reload.");
+  console.error(e);alert("The race could not start. Please reload.");
   returnGarage();
  }
 };
 
+/* RESULTS AND RETURN TO GAMES */
 function finishRace(){
  if(!active)return;
  active=false;cancelAnimationFrame(raf);
- const ranks=[
+
+ const ranking=[
   {name:"YOU",distance,player:true},
   ...opponents.map(b=>({name:b.name,distance:b.distance}))
  ].sort((a,b)=>b.distance-a.distance);
- const pos=ranks.findIndex(x=>x.player)+1;
- const suffix=pos===1?"st":pos===2?"nd":pos===3?"rd":"th";
+ const place=ranking.findIndex(x=>x.player)+1;
+ const suffix=place===1?"st":place===2?"nd":place===3?"rd":"th";
+
  $("raceScreen").classList.add("hidden");
  $("results").classList.remove("hidden");
- $("resultTitle").textContent=pos===1?"GRAND PRIX WINNER!":"RACE FINISHED";
- $("resultPosition").textContent=pos+suffix+" PLACE";
+ $("resultTitle").textContent=place===1?"GRAND PRIX WINNER!":"RACE FINISHED";
+ $("resultPosition").textContent=place+suffix+" PLACE";
  $("resultDescription").textContent="You travelled "+(distance/1000).toFixed(2)+" km in two minutes.";
+
+ // Do not claim payment until a real server verifies and credits the wallet.
+ $("rewardStatus").textContent="Prize status: Awaiting server verification. Your actual reward will appear in your EarnGig wallet after the race result has been verified and approved.";
+
  $("leaderboard").innerHTML="";
- ranks.forEach((r,i)=>{
+ ranking.forEach((r,i)=>{
   const row=document.createElement("div");row.className="leader";
   const name=document.createElement("strong");name.textContent=(i+1)+". "+r.name;
   const dist=document.createElement("span");dist.textContent=(r.distance/1000).toFixed(2)+" km";
   row.append(name,dist);$("leaderboard").appendChild(row);
  });
+
+ returnSeconds=10;
+ $("returnCountdown").textContent=returnSeconds;
+ countdownTimer=setInterval(()=>{
+  returnSeconds--;
+  $("returnCountdown").textContent=Math.max(0,returnSeconds);
+  if(returnSeconds<=0)goToGames();
+ },1000);
 }
+
+window.goToGames=function(){
+ clearInterval(countdownTimer);
+ clearTimeout(returnTimer);
+ returnGarage();
+ window.location.href=GAME_URL;
+};
+
 window.returnGarage=function(){
  active=false;cancelAnimationFrame(raf);
  if(renderer){renderer.dispose();renderer=null;}
@@ -621,7 +671,7 @@ window.returnGarage=function(){
  $("garage").classList.remove("hidden");
 };
 
-/* Steering wheel */
+/* STEERING WHEEL */
 const wheel=$("steeringWheel");
 let dragging=false,lastX=0,wheelRotation=0;
 wheel.addEventListener("pointerdown",e=>{
@@ -639,7 +689,7 @@ function releaseWheel(){
 }
 ["pointerup","pointercancel","lostpointercapture"].forEach(t=>wheel.addEventListener(t,releaseWheel));
 
-/* Pedals */
+/* PEDALS */
 function holdButton(id,key){
  const el=$(id);
  el.addEventListener("pointerdown",e=>{
@@ -653,7 +703,7 @@ holdButton("gas","gas");
 holdButton("reverse","reverse");
 holdButton("brake","brake");
 
-/* Keyboard */
+/* KEYBOARD */
 document.addEventListener("keydown",e=>{
  const k=e.key.toLowerCase();
  if(k==="arrowleft"||k==="a")steering=-1;
