@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novels - EarnGig</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#29243a;
+}
+
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+
+.header{
+  background:#fff;
+  border-bottom:1px solid #eee8f5;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.nav{
+  max-width:1150px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#5424b8;
+  font-size:25px;
+  font-weight:900;
+}
+
+.crown{
+  width:27px;
+  height:25px;
+  display:block;
+}
+
+.navlinks{
+  display:flex;
+  align-items:center;
+  gap:17px;
+  font-size:13px;
+  color:#625c70;
+}
+
+.navlinks a:hover{color:#642bd1}
+
+.menu-btn{
+  display:none;
+  background:#f2edff;
+  color:#5925bd;
+  padding:9px 12px;
+  border-radius:8px;
+}
+
+.container{
+  max-width:1150px;
+  margin:28px auto;
+  padding:0 20px;
+}
+
+.hero{
+  background:linear-gradient(120deg,#f5f0ff,#fff9eb);
+  border:1px solid #e9defa;
+  border-radius:17px;
+  padding:25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.hero h1{
+  font-size:27px;
+  color:#392064;
+  margin-bottom:8px;
+}
+
+.hero p{
+  font-size:13px;
+  color:#756d83;
+  line-height:1.6;
+}
+
+.hero-icon{font-size:43px}
+
+.top-info{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin:22px 0;
+  flex-wrap:wrap;
+}
+
+.earn-info{
+  background:#fff9e8;
+  border:1px solid #f1e2b5;
+  color:#886300;
+  border-radius:10px;
+  padding:11px 15px;
+  font-size:13px;
+}
+
+.search{
+  width:100%;
+  max-width:330px;
+  padding:12px 14px;
+  border:1px solid #e5dced;
+  border-radius:10px;
+  outline:none;
+  background:#fff;
+  font-size:13px;
+}
+
+.search:focus{
+  border-color:#8d65d4;
+  box-shadow:0 0 0 3px #642bd112;
+}
+
+.section-heading{
+  font-size:19px;
+  margin:25px 0 14px;
+}
+
+.categories{
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  margin-bottom:18px;
+}
+
+.category{
+  white-space:nowrap;
+  padding:9px 15px;
+  border-radius:30px;
+  background:#f5f2fa;
+  color:#665d76;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.category.active{
+  background:#642bd1;
+  color:white;
+}
+
+.novel-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:15px;
+}
+
+.novel-card{
+  border:1px solid #eee8f5;
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+  transition:.2s;
+  min-width:0;
+}
+
+.novel-card:hover{
+  border-color:#c9b2ef;
+  transform:translateY(-3px);
+  box-shadow:0 6px 17px #38206410;
+}
+
+.cover{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  display:block;
+  background:#eee7f8;
+}
+
+.novel-info{
+  padding:10px;
+}
+
+.novel-title{
+  font-size:13px;
+  line-height:1.4;
+  font-weight:700;
+  min-height:36px;
+  margin-bottom:8px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.novel-reward{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px;
+  background:#fff8e6;
+  color:#926600;
+  border-radius:7px;
+  padding:7px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.coin-icon{font-size:14px}
+
+.read-btn{
+  display:block;
+  width:100%;
+  margin-top:8px;
+  padding:9px 5px;
+  border-radius:7px;
+  background:#642bd1;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold;
+  text-align:center;
+}
+
+.read-btn:hover{background:#4e1eae}
+
+.empty{
+  display:none;
+  grid-column:1/-1;
+  text-align:center;
+  color:#888;
+  padding:35px;
+  font-size:14px;
+}
+
+.notice{
+  margin-top:27px;
+  padding:15px;
+  background:#faf8ff;
+  border:1px solid #e9e0fa;
+  border-radius:11px;
+  font-size:12px;
+  color:#756d83;
+  line-height:1.7;
+}
+
+footer{
+  text-align:center;
+  padding:30px 15px;
+  font-size:12px;
+  color:#999;
+}
+
+@media(max-width:900px){
+  .novel-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+
+@media(max-width:650px){
+  .navlinks{
+    display:none;
+    position:absolute;
+    top:60px;
+    left:0;
+    right:0;
+    padding:18px;
+    background:#fff;
+    box-shadow:0 8px 15px #0001;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .navlinks.show{display:flex}
+  .menu-btn{display:block}
+  .novel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero h1{font-size:23px}
+}
+
+@media(max-width:400px){
+  .novel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .novel-info{padding:8px}
+  .novel-title{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<nav class="nav">
+
+  <a class="brand" href="index.html">
+    <svg class="crown" viewBox="0 0 32 29" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 8L9 14L15.8 3L23 14L29 8L26 24H6L3 8Z"
+            fill="#E5B52E" stroke="#BD8914"
+            stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M6 26H26" stroke="#BD8914"
+            stroke-width="2" stroke-linecap="round"/>
+      <circle cx="3" cy="7" r="2" fill="#F6D978"/>
+      <circle cx="16" cy="3" r="2" fill="#F6D978"/>
+      <circle cx="29" cy="7" r="2" fill="#F6D978"/>
+      <path d="M10 18H22" stroke="#FFF0B5"
+            stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+
+  <div class="navlinks" id="navlinks">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="games.html">Games</a>
+    <a href="novels.html">Novels</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="earn-more.html">Earn More</a>
+    <a href="wallet.html">Wallet</a>
+    <a href="profile.html">Profile</a>
+  </div>
+
+</nav>
+</header>
+
+<main class="container">
+
+<section class="hero">
+  <div>
+    <h1>Read Stories. Earn Coins. 📚</h1>
+    <p>Explore exciting stories, discover new authors and earn coins by reading novels on EarnGig.</p>
+  </div>
+  <div class="hero-icon">📖✨</div>
+</section>
+
+<div class="top-info">
+  <div class="earn-info">
+    🪙 Earn coins by completing eligible novels
+  </div>
+
+  <input
+    type="search"
+    class="search"
+    id="searchInput"
+    placeholder="Search novels or titles..."
+    oninput="searchNovels()"
+  >
+</div>
+
+<h2 class="section-heading">Explore Novels</h2>
+
+<div class="categories">
+  <button class="category active" onclick="filterNovels('all',this)">All Novels</button>
+  <button class="category" onclick="filterNovels('romance',this)">Romance</button>
+  <button class="category" onclick="filterNovels('drama',this)">Drama</button>
+  <button class="category" onclick="filterNovels('fantasy',this)">Fantasy</button>
+  <button class="category" onclick="filterNovels('mystery',this)">Mystery</button>
+  <button class="category" onclick="filterNovels('adventure',this)">Adventure</button>
+  <button class="category" onclick="filterNovels('thriller',this)">Thriller</button>
+</div>
+
+<div class="novel-grid" id="novelGrid">
+
+  <article class="novel-card" data-category="romance" data-title="The Billionaire's Secret">
+    <img class="cover" src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=550&fit=crop" alt="The Billionaire's Secret cover">
+    <div class="novel-info">
+      <div class="novel-title">The Billionaire's Secret</div>
+      <div class="novel-reward"><span>🪙 5,000</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <article class="novel-card" data-category="drama" data-title="Broken Promises">
+    <img class="cover" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=550&fit=crop" alt="Broken Promises cover">
+    <div class="novel-info">
+      <div class="novel-title">Broken Promises</div>
+      <div class="novel-reward"><span>🪙 3,500</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <article class="novel-card" data-category="fantasy" data-title="Kingdom of Shadows">
+    <img class="cover" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=550&fit=crop" alt="Kingdom of Shadows cover">
+    <div class="novel-info">
+      <div class="novel-title">Kingdom of Shadows</div>
+      <div class="novel-reward"><span>🪙 7,000</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <article class="novel-card" data-category="mystery" data-title="The Missing Diary">
+    <img class="cover" src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=400&h=550&fit=crop" alt="The Missing Diary cover">
+    <div class="novel-info">
+      <div class="novel-title">The Missing Diary</div>
+      <div class="novel-reward"><span>🪙 4,000</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <article class="novel-card" data-category="adventure" data-title="Beyond the Horizon">
+    <img class="cover" src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400&h=550&fit=crop" alt="Beyond the Horizon cover">
+    <div class="novel-info">
+      <div class="novel-title">Beyond the Horizon</div>
+      <div class="novel-reward"><span>🪙 6,000</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <article class="novel-card" data-category="thriller" data-title="The Last Witness">
+    <img class="cover" src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=400&h=550&fit=crop" alt="The Last Witness cover">
+    <div class="novel-info">
+      <div class="novel-title">The Last Witness</div>
+      <div class="novel-reward"><span>🪙 4,500</span><span>Coins</span></div>
+      <a class="read-btn" href="#" onclick="openNovel(event,this)">Read Novel</a>
+    </div>
+  </article>
+
+  <div class="empty" id="emptyState">
+    No novels found. Try another search.
+  </div>
+
+</div>
+
+<div class="notice">
+  <strong>How novel rewards work</strong><br>
+  Each novel displays its potential coin reward. Rewards are earned after the required reading is completed and verified. The titles, covers and rewards on this page are demonstration content until real novels and reading records are connected.
+</div>
+
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('navlinks').classList.toggle('show');
+}
+
+let activeCategory = 'all';
+
+function filterNovels(category,button){
+  activeCategory = category;
+
+  document.querySelectorAll('.category').forEach(item=>{
+    item.classList.remove('active');
+  });
+
+  button.classList.add('active');
+  applyFilters();
+}
+
+function searchNovels(){
+  applyFilters();
+}
+
+function applyFilters(){
+  const query = document.getElementById('searchInput')
+    .value.toLowerCase().trim();
+
+  const cards = document.querySelectorAll('.novel-card');
+  let visible = 0;
+
+  cards.forEach(card=>{
+    const category = card.dataset.category;
+    const title = card.dataset.title.toLowerCase();
+
+    const matchesCategory =
+      activeCategory === 'all' || category === activeCategory;
+
+    const matchesSearch = title.includes(query);
+
+    if(matchesCategory && matchesSearch){
+      card.style.display = '';
+      visible++;
+    }else{
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('emptyState').style.display =
+    visible ? 'none' : 'block';
+}
+
+function openNovel(event,button){
+  event.preventDefault();
+
+  const title = button.closest('.novel-card').dataset.title;
+
+  alert(
+    'You selected "' + title + '".\n\n' +
+    'The novel reader will be connected when we create the reading page.'
+  );
+}
+</script>
+
+</body>
+</html>
