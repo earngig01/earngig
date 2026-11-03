@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard | EarnGig</title>
+
+<style>
+:root {
+  --purple: #7027c7;
+  --dark-purple: #50169b;
+  --lavender: #f4edff;
+  --gold: #e6b83f;
+  --text: #282338;
+  --muted: #777386;
+  --border: #e9e2f2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: var(--text);
+}
+
+header {
+  padding: 15px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: white;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--purple);
+  font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.brand svg {
+  width: 26px;
+  height: 26px;
+}
+
+.back {
+  color: var(--purple);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 950px;
+  margin: 30px auto;
+  padding: 0 18px 55px;
+}
+
+.heading {
+  margin-bottom: 22px;
+}
+
+.heading h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.heading p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.hero {
+  background: linear-gradient(135deg, #7027c7, #431080);
+  border-radius: 17px;
+  color: white;
+  text-align: center;
+  padding: 27px 15px;
+  margin-bottom: 22px;
+}
+
+.hero-icon {
+  font-size: 43px;
+  margin-bottom: 8px;
+}
+
+.hero h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  font-size: 13px;
+  opacity: .9;
+  line-height: 1.6;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 11px 17px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab.active {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: white;
+}
+
+.top-three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 25px;
+}
+
+.podium {
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 18px 8px;
+  background: white;
+}
+
+.podium.first {
+  padding-top: 26px;
+  background: #fffaf0;
+  border-color: #f0d88e;
+}
+
+.medal {
+  font-size: 31px;
+  margin-bottom: 9px;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--lavender);
+  color: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.podium strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+
+.podium small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.points {
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 800;
+  margin-top: 9px;
+}
+
+.list-card {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.list-heading {
+  padding: 17px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-heading h3 {
+  font-size: 16px;
+}
+
+.list-heading span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.player:last-child {
+  border-bottom: none;
+}
+
+.rank {
+  width: 27px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--muted);
+  text-align: center;
+}
+
+.player-avatar {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  background: var(--lavender);
+  color: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.player-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.player-info strong {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.player-info small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.player-points {
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.you {
+  background: #faf7ff;
+  border-left: 3px solid var(--purple);
+}
+
+.my-rank {
+  margin-top: 22px;
+  background: var(--lavender);
+  border: 1px solid #e0d0f6;
+  border-radius: 12px;
+  padding: 17px;
+}
+
+.my-rank h3 {
+  font-size: 15px;
+  color: var(--purple-dark);
+  margin-bottom: 9px;
+}
+
+.my-rank p {
+  font-size: 13px;
+  color: #51436a;
+  line-height: 1.7;
+}
+
+.empty {
+  padding: 30px 15px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 17px;
+  text-align: center;
+}
+
+@media(max-width: 550px) {
+  .heading h1 {
+    font-size: 24px;
+  }
+
+  .podium {
+    padding: 14px 5px;
+  }
+
+  .podium.first {
+    padding-top: 21px;
+  }
+
+  .avatar {
+    width: 43px;
+    height: 43px;
+  }
+
+  .podium strong {
+    font-size: 11px;
+  }
+
+  .player {
+    padding: 12px 10px;
+    gap: 8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none">
+      <path d="M8 19L19 30L31 9L44 30L56 19L51 47H13L8 19Z"
+        fill="#E6B83F" stroke="#C49320" stroke-width="2.5"/>
+      <path d="M14 52H50" stroke="#E6B83F" stroke-width="4"
+        stroke-linecap="round"/>
+      <circle cx="8" cy="17" r="4" fill="#F4D477"/>
+      <circle cx="31" cy="7" r="4" fill="#F4D477"/>
+      <circle cx="56" cy="17" r="4" fill="#F4D477"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <a href="dashboard.html" class="back">← Dashboard</a>
+</header>
+
+<main class="container">
+
+  <div class="heading">
+    <h1>EarnGig Leaderboard</h1>
+    <p>See how you rank among other EarnGig members.</p>
+  </div>
+
+  <section class="hero">
+    <div class="hero-icon">🏆</div>
+    <h2>Earn More. Climb Higher.</h2>
+    <p>Complete eligible activities, earn coins and work your way up the leaderboard.</p>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-period="weekly">Weekly</button>
+    <button class="tab" data-period="monthly">Monthly</button>
+    <button class="tab" data-period="alltime">All Time</button>
+  </div>
+
+  <section class="top-three" id="topThree"></section>
+
+  <section class="list-card">
+    <div class="list-heading">
+      <h3>Top Earners</h3>
+      <span>Ranked by coins earned</span>
+    </div>
+
+    <div id="leaderboardList"></div>
+  </section>
+
+  <section class="my-rank">
+    <h3>📍 Your Ranking</h3>
+    <p id="myRankText">
+      Your personal ranking will appear here when your verified earning data is connected.
+    </p>
+  </section>
+
+  <p class="note">
+    Leaderboard entries currently use demonstration data. Live rankings, verified earnings and ranking periods will be connected to the EarnGig account system later.
+  </p>
+
+</main>
+
+<script>
+const demoData = {
+  weekly: [
+    {name:"CoinMaster", coins:18500},
+    {name:"StarQueen", coins:16200},
+    {name:"GigChampion", coins:14900},
+    {name:"BrightMind", coins:12100},
+    {name:"LuckyEarn", coins:10900},
+    {name:"TopReader", coins:9500},
+    {name:"GamePro", coins:8700},
+    {name:"SmartGig", coins:7600},
+    {name:"GoldHunter", coins:6400},
+    {name:"FastLearner", coins:5200}
+  ],
+
+  monthly: [
+    {name:"StarQueen", coins:75800},
+    {name:"CoinMaster", coins:69400},
+    {name:"GigChampion", coins:58200},
+    {name:"LuckyEarn", coins:49300},
+    {name:"BrightMind", coins:42100},
+    {name:"GamePro", coins:38500},
+    {name:"TopReader", coins:32900},
+    {name:"GoldHunter", coins:28400},
+    {name:"SmartGig", coins:23100},
+    {name:"FastLearner", coins:19500}
+  ],
+
+  alltime: [
+    {name:"GigChampion", coins:285000},
+    {name:"StarQueen", coins:263000},
+    {name:"CoinMaster", coins:248000},
+    {name:"TopReader", coins:198000},
+    {name:"LuckyEarn", coins:174000},
+    {name:"BrightMind", coins:152000},
+    {name:"GoldHunter", coins:131000},
+    {name:"GamePro", coins:119000},
+    {name:"SmartGig", coins:97000},
+    {name:"FastLearner", coins:82000}
+  ]
+};
+
+let currentPeriod = "weekly";
+
+function formatCoins(value) {
+  return Number(value || 0).toLocaleString("en-NG");
+}
+
+function initials(name) {
+  return String(name || "U")
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(word => word.charAt(0).toUpperCase())
+    .join("");
+}
+
+function getCurrentUser() {
+  const possibleKeys = [
+    "earngig_user_profile",
+    "earngig_current_user"
+  ];
+
+  for (const key of possibleKeys) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || "null");
+
+      if (data) {
+        return {
+          name: data.username || data.fullName || data.name || "You",
+          coins: Number(data.coins || data.totalCoins || 0)
+        };
+      }
+    } catch (error) {}
+  }
+
+  return {name:"You", coins:0};
+}
+
+function renderLeaderboard() {
+  const entries = [...demoData[currentPeriod]]
+    .sort((a, b) => b.coins - a.coins);
+
+  const podium = [
+    {position:1, index:1, medal:"🥇", label:"1st Place"},
+    {position:2, index:0, medal:"🥈", label:"2nd Place"},
+    {position:3, index:2, medal:"🥉", label:"3rd Place"}
+  ];
+
+  document.getElementById("topThree").innerHTML = podium.map(item => {
+    const person = entries[item.index];
+
+    return `
+      <div class="podium ${item.position === 1 ? "first" : ""}">
+        <div class="medal">${item.medal}</div>
+        <div class="avatar">${initials(person.name)}</div>
+        <strong>${escapeHTML(person.name)}</strong>
+        <small>${item.label}</small>
+        <div class="points">${formatCoins(person.coins)} coins</div>
+      </div>
+    `;
+  }).join("");
+
+  const user = getCurrentUser();
+
+  document.getElementById("leaderboardList").innerHTML =
+    entries.map((person, index) => `
+      <div class="player">
+        <div class="rank">#${index + 1}</div>
+        <div class="player-avatar">${initials(person.name)}</div>
+        <div class="player-info">
+          <strong>${escapeHTML(person.name)}</strong>
+          <small>EarnGig member</small>
+        </div>
+        <div class="player-points">${formatCoins(person.coins)} coins</div>
+      </div>
+    `).join("");
+
+  const userRank = entries.findIndex(person =>
+    person.name.toLowerCase() === user.name.toLowerCase()
+  );
+
+  if (userRank >= 0) {
+    document.getElementById("myRankText").textContent =
+      `You are ranked #${userRank + 1} in this demonstration leaderboard.`;
+  } else {
+    document.getElementById("myRankText").textContent =
+      `Your account is not included in this demonstration leaderboard. Your live ranking will appear when verified account earnings are connected.`;
+  }
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(tab =>
+      tab.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    currentPeriod = button.dataset.period;
+    renderLeaderboard();
+  });
+});
+
+renderLeaderboard();
+</script>
+
+</body>
+</html>
