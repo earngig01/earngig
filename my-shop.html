@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Seller Dashboard | EarnGig</title>
+<style>
+:root{--purple:#7028a8;--deep:#4d167c;--lavender:#f5effb;--border:#eadff3;--gold:#d6a52a;--text:#241b2b;--muted:#81768a;--white:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--text);min-height:100vh}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{height:70px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
+.brand{font-size:25px;font-weight:900;letter-spacing:-1px}
+.crown{color:var(--gold);vertical-align:2px}
+.gig{color:var(--purple)}
+.top-actions{display:flex;align-items:center;gap:12px}
+.top-actions a{font-size:13px;font-weight:700;color:var(--purple)}
+.menu-btn{border:1px solid var(--border);background:#fff;border-radius:9px;padding:9px 12px;color:var(--purple)}
+.container{max-width:1200px;width:92%;margin:30px auto 60px}
+.back{color:var(--purple);font-size:13px;font-weight:700;display:inline-block;margin-bottom:18px}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
+.heading h1{font-size:29px;margin-bottom:7px}
+.heading p{font-size:13px;color:var(--muted)}
+.primary{background:var(--purple);color:#fff;border:0;border-radius:9px;padding:12px 17px;font-weight:800;font-size:13px}
+.primary:hover{background:var(--deep)}
+.secondary{background:#fff;color:var(--purple);border:1px solid var(--purple);border-radius:9px;padding:10px 14px;font-weight:700;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:28px}
+.stat{padding:19px;border:1px solid var(--border);border-radius:14px;background:#fff}
+.stat-icon{width:40px;height:40px;border-radius:11px;background:var(--lavender);display:grid;place-items:center;font-size:20px;margin-bottom:13px}
+.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
+.stat strong{font-size:25px;color:var(--purple)}
+.panel{border:1px solid var(--border);border-radius:15px;background:#fff;padding:20px;margin-bottom:22px}
+.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.panel-heading h2{font-size:18px}
+.panel-heading p{font-size:12px;color:var(--muted);margin-top:5px}
+.notice{background:#f8f3fc;border:1px solid #e9dcf4;border-radius:10px;padding:13px 15px;color:#604276;font-size:12px;line-height:1.6;margin-bottom:20px}
+.quick-links{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.quick-link{border:1px solid var(--border);border-radius:12px;padding:17px;display:block;transition:.2s}
+.quick-link:hover{border-color:var(--purple);background:#fcf9ff;transform:translateY(-2px)}
+.quick-link span{font-size:25px;display:block;margin-bottom:10px}
+.quick-link strong{display:block;font-size:14px;margin-bottom:6px}
+.quick-link small{font-size:11px;color:var(--muted);line-height:1.5}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters button{border:1px solid var(--border);background:#fff;color:#6c5c77;border-radius:20px;padding:8px 13px;font-size:11px;font-weight:700}
+.filters button.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.product-image{height:150px;background:var(--lavender);display:grid;place-items:center;font-size:45px;color:var(--purple)}
+.product-info{padding:13px}
+.product-info h3{font-size:14px;margin-bottom:7px}
+.product-info p{font-size:11px;color:var(--muted);margin-bottom:10px}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.product-price{font-size:14px;font-weight:900;color:var(--purple)}
+.status{font-size:10px;padding:5px 8px;border-radius:20px;background:#f0eaf5;color:#70428d}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
+.empty span{font-size:35px;display:block;margin-bottom:12px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:grid;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:700}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:12px;outline:none;background:#fff;color:var(--text);font-size:13px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
+.field textarea{min-height:90px;resize:vertical}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+footer{border-top:1px solid var(--border);padding:22px 5%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+footer a{color:var(--purple);font-weight:700}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}.product-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.heading h1{font-size:24px}.quick-links{grid-template-columns:1fr}.product-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.topbar{padding:0 4%}.container{width:92%;margin-top:22px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+<a href="index.html" class="brand"><span class="crown">♛</span> Earn<span class="gig">Gig</span></a>
+<div class="top-actions">
+<a href="dashboard.html">Dashboard</a>
+<a href="marketplace.html">Marketplace</a>
+<button class="menu-btn" onclick="location.href='storefront.html'">My Store</button>
+</div>
+</header>
+
+<main class="container">
+<a class="back" href="dashboard.html">← Back to Dashboard</a>
+
+<section class="heading">
+<div>
+<h1>Seller Dashboard</h1>
+<p>Manage your shop, products and sales on EarnGig.</p>
+</div>
+<button class="primary" onclick="document.getElementById('addProduct').scrollIntoView({behavior:'smooth'})">＋ Add Product</button>
+</section>
+
+<div class="notice">
+<strong>Welcome to your seller space.</strong> Add products, manage your listings and keep track of your shop activity. Product and sales figures on this frontend demo are stored in this browser.
+</div>
+
+<section class="stats">
+<div class="stat"><div class="stat-icon">📦</div><small>Total Products</small><strong id="totalProducts">0</strong></div>
+<div class="stat"><div class="stat-icon">🟢</div><small>Active Listings</small><strong id="activeProducts">0</strong></div>
+<div class="stat"><div class="stat-icon">🛒</div><small>Total Orders</small><strong id="totalOrders">0</strong></div>
+<div class="stat"><div class="stat-icon">💰</div><small>Sales Revenue</small><strong id="totalRevenue">₦0</strong></div>
+</section>
+
+<section class="panel">
+<div class="panel-heading">
+<div><h2>Shop Management</h2><p>Quick access to your seller tools.</p></div>
+</div>
+<div class="quick-links">
+<a class="quick-link" href="storefront.html"><span>🏪</span><strong>View My Store</strong><small>See how your storefront appears to customers.</small></a>
+<a class="quick-link" href="marketplace.html"><span>🛍️</span><strong>Visit Marketplace</strong><small>Explore products listed across EarnGig.</small></a>
+<a class="quick-link" href="advertise.html"><span>📣</span><strong>Promote My Business</strong><small>Explore advertising opportunities for your shop.</small></a>
+</div>
+</section>
+
+<section class="panel" id="addProduct">
+<div class="panel-heading">
+<div><h2>Add a Product</h2><p>Create a product listing for your shop.</p></div>
+</div>
+<form id="productForm">
+<div class="form-grid">
+<div class="field">
+<label for="productName">Product Name</label>
+<input id="productName" required maxlength="100" placeholder="Enter product name">
+</div>
+<div class="field">
+<label for="productPrice">Price (₦)</label>
+<input id="productPrice" type="number" min="1" step="0.01" required placeholder="Enter price">
+</div>
+<div class="field">
+<label for="productCategory">Category</label>
+<select id="productCategory" required>
+<option value="">Choose category</option>
+<option>Fashion</option>
+<option>Electronics</option>
+<option>Beauty</option>
+<option>Food and Drinks</option>
+<option>Home and Living</option>
+<option>Books</option>
+<option>Services</option>
+<option>Other</option>
+</select>
+</div>
+<div class="field">
+<label for="productStock">Available Quantity</label>
+<input id="productStock" type="number" min="1" step="1" required placeholder="Enter quantity">
+</div>
+<div class="field full">
+<label for="productImage">Product Image URL (optional)</label>
+<input id="productImage" type="url" placeholder="https://example.com/product.jpg">
+</div>
+<div class="field full">
+<label for="productDescription">Product Description</label>
+<textarea id="productDescription" maxlength="1000" required placeholder="Describe your product..."></textarea>
+</div>
+</div>
+<div class="form-actions">
+<button class="primary" type="submit">Save Product</button>
+<button class="secondary" type="reset">Clear Form</button>
+</div>
+</form>
+</section>
+
+<section class="panel">
+<div class="panel-heading">
+<div><h2>My Products</h2><p>Manage the products you have added.</p></div>
+</div>
+<div class="filters">
+<button class="active" data-filter="all">All Products</button>
+<button data-filter="active">Active</button>
+<button data-filter="paused">Paused</button>
+</div>
+<div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="panel">
+<div class="panel-heading">
+<div><h2>Recent Orders</h2><p>Your latest customer orders will appear here.</p></div>
+</div>
+<div class="empty"><span>🧾</span>No orders have been recorded yet.</div>
+</section>
+
+</main>
+
+<footer>
+<a href="dashboard.html">← Back to Dashboard</a>
+<span>© 2026 EarnGig. All rights reserved.</span>
+</footer>
+
+<script>
+const STORAGE_KEY="earngig_seller_products";
+let products=[];
+let currentFilter="all";
+
+function loadProducts(){
+try{
+const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+products=Array.isArray(saved)?saved:[];
+}catch(error){products=[]}
+renderProducts();
+}
+
+function saveProducts(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(products));
+renderProducts();
+}
+
+function money(value){
+return "₦"+Number(value||0).toLocaleString("en-NG",{maximumFractionDigits:2});
+}
+
+function updateStats(){
+document.getElementById("totalProducts").textContent=products.length;
+document.getElementById("activeProducts").textContent=products.filter(p=>p.status==="active").length;
+document.getElementById("totalOrders").textContent="0";
+document.getElementById("totalRevenue").textContent=money(0);
+}
+
+function renderProducts(){
+updateStats();
+const grid=document.getElementById("productGrid");
+const visible=products.filter(p=>currentFilter==="all"||p.status===currentFilter);
+
+if(!visible.length){
+grid.innerHTML='<div class="empty" style="grid-column:1/-1"><span>📦</span>No products here yet. Add your first product above.</div>';
+return;
+}
+
+grid.innerHTML=visible.map(product=>{
+const image=product.image
+?`<img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" style="width:100%;height:100%;object-fit:cover">`
+:`<span>📦</span>`;
+
+return `
+<article class="product-card">
+<div class="product-image">${image}</div>
+<div class="product-info">
+<h3>${escapeHTML(product.name)}</h3>
+<p>${escapeHTML(product.category)} · Stock: ${Number(product.stock)}</p>
+<p>${escapeHTML(product.description)}</p>
+<div class="product-bottom">
+<strong class="product-price">${money(product.price)}</strong>
+<span class="status">${product.status==="active"?"Active":"Paused"}</span>
+</div>
+<div class="form-actions">
+<button class="secondary" onclick="toggleProduct('${product.id}')">${product.status==="active"?"Pause":"Activate"}</button>
+<button class="secondary" onclick="deleteProduct('${product.id}')">Delete</button>
+</div>
+</div>
+</article>`;
+}).join("");
+}
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[char]));
+}
+
+document.getElementById("productForm").addEventListener("submit",event=>{
+event.preventDefault();
+
+const product={
+id:"product_"+Date.now(),
+name:document.getElementById("productName").value.trim(),
+price:Number(document.getElementById("productPrice").value),
+category:document.getElementById("productCategory").value,
+stock:Number(document.getElementById("productStock").value),
+image:document.getElementById("productImage").value.trim(),
+description:document.getElementById("productDescription").value.trim(),
+status:"active",
+createdAt:new Date().toISOString()
+};
+
+if(!product.name||product.price<=0||product.stock<1||!product.category||!product.description){
+alert("Please complete all required product details.");
+return;
+}
+
+products.unshift(product);
+saveProducts();
+event.target.reset();
+alert("Product saved in your seller dashboard.");
+document.getElementById("productGrid").scrollIntoView({behavior:"smooth"});
+});
+
+function toggleProduct(id){
+const product=products.find(p=>p.id===id);
+if(!product)return;
+product.status=product.status==="active"?"paused":"active";
+saveProducts();
+}
+
+function deleteProduct(id){
+if(!confirm("Delete this product listing?"))return;
+products=products.filter(p=>p.id!==id);
+saveProducts();
+}
+
+document.querySelectorAll("[data-filter]").forEach(button=>{
+button.addEventListener("click",()=>{
+document.querySelectorAll("[data-filter]").forEach(item=>item.classList.remove("active"));
+button.classList.add("active");
+currentFilter=button.dataset.filter;
+renderProducts();
+});
+});
+
+loadProducts();
+</script>
+
+</body>
+</html>
