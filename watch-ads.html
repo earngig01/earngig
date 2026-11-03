@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Ads - EarnGig</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,sans-serif;background:#fff;color:#24213a}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit;cursor:pointer;border:0}
+    .header{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10}
+    .nav{max-width:1150px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .brand{font-size:25px;font-weight:900;color:#5424b8}
+    .brand span{color:#e4a900}
+    .navlinks{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:13px;color:#555}
+    .navlinks a:hover{color:#642bd1}
+    .menu-btn{display:none;background:#f2edff;color:#5925bd;padding:9px 12px;border-radius:9px}
+    .container{max-width:1100px;margin:30px auto;padding:0 20px}
+    .hero{background:linear-gradient(120deg,#f5f0ff,#fff8e8);border:1px solid #e9ddff;border-radius:20px;padding:30px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .hero h1{font-size:30px;margin-bottom:10px;color:#35205f}
+    .hero p{color:#6d6880;line-height:1.6;max-width:550px}
+    .hero-icon{font-size:65px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:22px 0}
+    .stat{border:1px solid #eee8fa;border-radius:15px;padding:18px;background:#fff}
+    .stat small{color:#888}
+    .stat strong{display:block;font-size:24px;color:#5925bd;margin-top:8px}
+    .section-title{font-size:21px;margin:28px 0 14px}
+    .filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+    .filter{background:#f5f2fa;color:#625a70;padding:9px 15px;border-radius:30px;font-size:13px}
+    .filter.active{background:#642bd1;color:#fff}
+    .ads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .ad-card{border:1px solid #eee8fa;border-radius:16px;padding:18px;transition:.2s}
+    .ad-card:hover{border-color:#cbb5f4;transform:translateY(-2px)}
+    .ad-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+    .ad-icon{width:48px;height:48px;background:#f2edff;border-radius:13px;display:grid;place-items:center;font-size:25px}
+    .reward{background:#fff5d8;color:#946500;padding:7px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+    .ad-card h3{font-size:17px;margin-bottom:7px}
+    .ad-card p{font-size:13px;color:#777;line-height:1.5;min-height:40px}
+    .ad-meta{display:flex;justify-content:space-between;color:#777;font-size:12px;margin:15px 0}
+    .watch-btn{width:100%;background:#642bd1;color:white;padding:12px;border-radius:10px;font-weight:bold}
+    .watch-btn:hover{background:#4e1eae}
+    .watch-btn:disabled{background:#c9c3d5;cursor:not-allowed}
+    .notice{background:#faf8ff;border:1px solid #e9e0fa;padding:16px;border-radius:13px;color:#716982;font-size:13px;line-height:1.6;margin-top:24px}
+    .modal-bg{display:none;position:fixed;inset:0;background:#171020a8;z-index:30;align-items:center;justify-content:center;padding:18px}
+    .modal{background:#fff;width:100%;max-width:440px;border-radius:20px;padding:25px;text-align:center}
+    .modal h2{color:#5424b8;margin:12px 0}
+    .ad-screen{background:#f5f1fb;border:1px dashed #c7b5e8;border-radius:15px;padding:30px 15px;margin:18px 0}
+    .ad-screen .big{font-size:55px}
+    .timer{font-size:36px;font-weight:900;color:#5424b8;margin:12px}
+    .progress{height:9px;background:#eee;border-radius:20px;overflow:hidden;margin:15px 0}
+    .progress-bar{height:100%;width:0;background:#6b35d2;transition:width 1s linear}
+    .close-btn{background:#eee;color:#555;padding:11px 18px;border-radius:10px;margin-top:10px}
+    .success{color:#16834c;font-weight:bold}
+    .empty{display:none;text-align:center;padding:35px;color:#888;grid-column:1/-1}
+    footer{text-align:center;color:#999;font-size:12px;padding:30px 15px}
+    @media(max-width:760px){
+      .navlinks{display:none;position:absolute;top:62px;left:0;right:0;background:#fff;padding:18px;box-shadow:0 8px 15px #0001;flex-direction:column;align-items:flex-start}
+      .navlinks.show{display:flex}
+      .menu-btn{display:block}
+      .hero{padding:23px}.hero h1{font-size:25px}.hero-icon{font-size:45px}
+      .ads-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:500px){
+      .stats{grid-template-columns:1fr}
+      .ads-grid{grid-template-columns:1fr}
+      .hero-icon{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <nav class="nav">
+    <a class="brand" href="index.html">♛ EarnGig</a>
+    <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    <div class="navlinks" id="navlinks">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="games.html">Games</a>
+      <a href="novels.html">Novels</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="earn-more.html">Earn More</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <h1>Watch Ads. Earn Coins. 🎁</h1>
+      <p>Discover sponsored content, watch available adverts and earn rewards. Check each advert's reward and viewing time before starting.</p>
+    </div>
+    <div class="hero-icon">📺💰</div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <small>Ads watched today</small>
+      <strong id="watchedCount">0</strong>
+    </div>
+    <div class="stat">
+      <small>Today's demo rewards</small>
+      <strong id="earnedCoins">0</strong>
+    </div>
+    <div class="stat">
+      <small>Daily ad limit</small>
+      <strong id="dailyLimit">10</strong>
+    </div>
+  </section>
+
+  <h2 class="section-title">Available adverts</h2>
+
+  <div class="filters">
+    <button class="filter active" onclick="filterAds('all',this)">All Ads</button>
+    <button class="filter" onclick="filterAds('short',this)">Short Ads</button>
+    <button class="filter" onclick="filterAds('medium',this)">Medium Ads</button>
+    <button class="filter" onclick="filterAds('long',this)">Long Ads</button>
+  </div>
+
+  <section class="ads-grid" id="adsGrid">
+    <article class="ad-card" data-category="short">
+      <div class="ad-top">
+        <div class="ad-icon">🛍️</div>
+        <span class="reward">+100 coins</span>
+      </div>
+      <h3>Shopping Spotlight</h3>
+      <p>Discover featured products and new shopping offers.</p>
+      <div class="ad-meta"><span>⏱ 15 seconds</span><span>Short Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,15,100,'Shopping Spotlight')">Watch Ad</button>
+    </article>
+
+    <article class="ad-card" data-category="short">
+      <div class="ad-top">
+        <div class="ad-icon">📱</div>
+        <span class="reward">+100 coins</span>
+      </div>
+      <h3>App Discovery</h3>
+      <p>Explore a featured mobile app and what it offers.</p>
+      <div class="ad-meta"><span>⏱ 15 seconds</span><span>Short Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,15,100,'App Discovery')">Watch Ad</button>
+    </article>
+
+    <article class="ad-card" data-category="medium">
+      <div class="ad-top">
+        <div class="ad-icon">🎮</div>
+        <span class="reward">+200 coins</span>
+      </div>
+      <h3>Gaming Showcase</h3>
+      <p>Check out a featured game and its latest highlights.</p>
+      <div class="ad-meta"><span>⏱ 30 seconds</span><span>Medium Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,30,200,'Gaming Showcase')">Watch Ad</button>
+    </article>
+
+    <article class="ad-card" data-category="medium">
+      <div class="ad-top">
+        <div class="ad-icon">🎓</div>
+        <span class="reward">+200 coins</span>
+      </div>
+      <h3>Learning Corner</h3>
+      <p>Discover an educational service or learning resource.</p>
+      <div class="ad-meta"><span>⏱ 30 seconds</span><span>Medium Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,30,200,'Learning Corner')">Watch Ad</button>
+    </article>
+
+    <article class="ad-card" data-category="long">
+      <div class="ad-top">
+        <div class="ad-icon">🚀</div>
+        <span class="reward">+500 coins</span>
+      </div>
+      <h3>Brand Showcase</h3>
+      <p>Watch a longer featured brand presentation.</p>
+      <div class="ad-meta"><span>⏱ 60 seconds</span><span>Long Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,60,500,'Brand Showcase')">Watch Ad</button>
+    </article>
+
+    <article class="ad-card" data-category="long">
+      <div class="ad-top">
+        <div class="ad-icon">🌍</div>
+        <span class="reward">+500 coins</span>
+      </div>
+      <h3>Business Feature</h3>
+      <p>Explore a featured business, service or campaign.</p>
+      <div class="ad-meta"><span>⏱ 60 seconds</span><span>Long Ad</span></div>
+      <button class="watch-btn" onclick="startAd(this,60,500,'Business Feature')">Watch Ad</button>
+    </article>
+
+    <div class="empty" id="emptyState">No adverts in this category.</div>
+  </section>
+
+  <div class="notice">
+    <strong>Important:</strong> This is the frontend preview of EarnGig's ad-watching feature. The adverts and rewards shown here are demonstrations only. No real advert is served and no coins are credited to your wallet yet. Verified ad views and actual rewards will be connected later.
+  </div>
+</main>
+
+<div class="modal-bg" id="adModal">
+  <div class="modal">
+    <div class="ad-screen">
+      <div class="big">📺</div>
+      <h3 id="adTitle">Sponsored Advert</h3>
+      <p style="color:#777;font-size:13px;margin-top:7px">Demo advert viewing session</p>
+      <div class="timer" id="timer">15</div>
+      <p style="font-size:12px;color:#888">Seconds remaining</p>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <p id="adStatus" style="font-size:13px;color:#777">Please wait while the demo runs.</p>
+    </div>
+    <div id="adResult"></div>
+    <button class="close-btn" id="closeModal" onclick="closeAd()" disabled>Please wait...</button>
+  </div>
+</div>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+  const DAILY_LIMIT = 10;
+  let activeTimer = null;
+  let currentButton = null;
+  let currentDuration = 0;
+  let secondsLeft = 0;
+  let currentReward = 0;
+  let watchedToday = 0;
+  let earnedToday = 0;
+
+  function toggleMenu(){
+    document.getElementById('navlinks').classList.toggle('show');
+  }
+
+  function getTodayKey(){
+    const d = new Date();
+    return 'earngig_ads_' + d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0');
+  }
+
+  function loadStats(){
+    try{
+      const saved = JSON.parse(localStorage.getItem(getTodayKey()) || '{}');
+      watchedToday = Number(saved.watched || 0);
+      earnedToday = Number(saved.earned || 0);
+    }catch(e){
+      watchedToday = 0;
+      earnedToday = 0;
+    }
+    updateStats();
+  }
+
+  function updateStats(){
+    document.getElementById('watchedCount').textContent = watchedToday;
+    document.getElementById('earnedCoins').textContent = earnedToday.toLocaleString();
+    document.getElementById('dailyLimit').textContent =
+      Math.max(0,DAILY_LIMIT-watchedToday) + ' left';
+    document.querySelectorAll('.watch-btn').forEach(btn=>{
+      if(watchedToday >= DAILY_LIMIT) btn.disabled = true;
+    });
+  }
+
+  function saveStats(){
+    localStorage.setItem(getTodayKey(),JSON.stringify({
+      watched:watchedToday,
+      earned:earnedToday
+    }));
+  }
+
+  function filterAds(category,button){
+    document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+    button.classList.add('active');
+
+    let visible = 0;
+    document.querySelectorAll('.ad-card').forEach(card=>{
+      const show = category === 'all' || card.dataset.category === category;
+      card.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+
+    document.getElementById('emptyState').style.display = visible ? 'none' : 'block';
+  }
+
+  function startAd(button,duration,reward,title){
+    if(watchedToday >= DAILY_LIMIT){
+      alert('You have reached the daily demo viewing limit.');
+      return;
+    }
+
+    if(activeTimer) return;
+
+    currentButton = button;
+    currentDuration = duration;
+    secondsLeft = duration;
+    currentReward = reward;
+
+    document.getElementById('adTitle').textContent = title;
+    document.getElementById('timer').textContent = secondsLeft;
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('adStatus').textContent = 'Please wait while the demo runs.';
+    document.getElementById('adResult').innerHTML = '';
+    document.getElementById('closeModal').disabled = true;
+    document.getElementById('closeModal').textContent = 'Please wait...';
+    document.getElementById('adModal').style.display = 'flex';
+
+    activeTimer = setInterval(()=>{
+      secondsLeft--;
+      document.getElementById('timer').textContent = secondsLeft;
+      const progress = ((duration-secondsLeft)/duration)*100;
+      document.getElementById('progressBar').style.width = progress + '%';
+
+      if(secondsLeft <= 0){
+        clearInterval(activeTimer);
+        activeTimer = null;
+        finishAd();
+      }
+    },1000);
+  }
+
+  function finishAd(){
+    document.getElementById('adStatus').textContent = 'Demo viewing completed.';
+    document.getElementById('adResult').innerHTML =
+      '<p class="success">✓ Demo completed! +' +
+      currentReward.toLocaleString() + ' coins shown as a preview.</p>' +
+      '<p style="font-size:12px;color:#888;margin-top:8px">No real coins have been credited.</p>';
+
+    watchedToday++;
+    earnedToday += currentReward;
+    saveStats();
+    updateStats();
+
+    if(currentButton) currentButton.textContent = 'Demo Completed';
+    document.getElementById('closeModal').disabled = false;
+    document.getElementById('closeModal').textContent = 'Close';
+  }
+
+  function closeAd(){
+    if(activeTimer) return;
+    document.getElementById('adModal').style.display = 'none';
+    currentButton = null;
+  }
+
+  loadStats();
+</script>
+
+</body>
+</html>
