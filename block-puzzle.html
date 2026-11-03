@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>EarnGig Block Puzzle</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#18242c;font-family:Arial,sans-serif;touch-action:none;color:white}
+#game{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;padding:12px 10px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#43535a,#17242d 75%)}
+header{width:100%;max-width:480px;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#ffffff12;border:1px solid #ffffff22;border-radius:15px}
+header small{display:block;color:#aebfc2;font-size:10px;font-weight:bold;margin-bottom:5px}
+header strong{font-size:21px}
+#timer{color:#ffe08b}
+#goal{width:100%;max-width:480px;text-align:center;margin:12px 0 9px;color:#e3eeee;font-size:13px}
+#goal strong{color:#ffe08b}
+#boardWrap{width:min(88vw,390px,43vh);aspect-ratio:1;position:relative;padding:7px;background:linear-gradient(145deg,#b2c0ba,#536b69);border-radius:17px;box-shadow:0 12px 35px #0008,inset 0 2px 5px #ffffff80}
+#board{width:100%;height:100%;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:4px;padding:3px;background:#243b3e;border-radius:11px}
+.cell{border-radius:5px;background:linear-gradient(145deg,#33494c,#263a3d);border:1px solid #ffffff0b;position:relative}
+.cell.filled{background:linear-gradient(145deg,#f6c86a,#d58a36);border:1px solid #ffe5a1;box-shadow:inset 0 2px 4px #fff7,0 2px 5px #0004}
+.cell.preview{background:#a8dfad!important;box-shadow:inset 0 0 0 2px #e6ffe7}
+.cell.invalid{background:#e87c7c!important;box-shadow:inset 0 0 0 2px #ffe1e1}
+#piecesTitle{width:100%;max-width:480px;margin:15px 0 8px;text-align:center;font-size:12px;color:#c7d7d8}
+#pieces{width:100%;max-width:480px;display:flex;justify-content:space-around;align-items:center;gap:6px;min-height:110px}
+.piece{width:31%;height:104px;border-radius:13px;background:#ffffff12;border:1px solid #ffffff20;display:flex;align-items:center;justify-content:center;touch-action:none;position:relative}
+.piece.used{opacity:.2;pointer-events:none}
+.shape{display:grid;gap:4px;touch-action:none}
+.block{width:clamp(16px,4.5vw,24px);height:clamp(16px,4.5vw,24px);border-radius:5px;background:linear-gradient(145deg,#ffe19a,#e5a541);border:1px solid #fff0b5;box-shadow:inset 0 2px 3px #fff9,0 2px 4px #0004}
+#controls{display:flex;gap:9px;margin-top:10px}
+.control{padding:11px 18px;border-radius:12px;background:#f3c96d;color:#332a20;font-weight:900;border:0;font-size:13px}
+#help{font-size:10px;color:#b6c5c7;text-align:center;margin-top:9px}
+#screen{position:fixed;inset:0;z-index:20;background:#101820eF;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+#screen.hide{display:none}
+.panel{width:min(390px,100%);padding:27px 22px;background:linear-gradient(145deg,#405c5a,#1c3038);border:2px solid #c6b477;border-radius:23px;box-shadow:0 15px 45px #0009}
+.panel h1{font-size:29px;color:#ffe08b;margin:0 0 12px}
+.panel p{font-size:14px;line-height:1.6;color:#e2eded}
+#start{background:linear-gradient(145deg,#ffe18c,#e8a841);color:#392a1b;border:0;border-radius:13px;padding:16px 32px;font-weight:900;font-size:17px;margin-top:12px}
+#dragGhost{position:fixed;z-index:15;pointer-events:none;display:none;transform:translate(-50%,-50%)}
+#dragGhost .shape{gap:4px}
+</style>
+</head>
+<body>
+<div id="game">
+ <header>
+  <div><small>YOUR SCORE</small><strong id="score">0</strong></div>
+  <div style="text-align:center"><small>FILLED</small><strong id="filled">0/36</strong></div>
+  <div style="text-align:right"><small>TIME LEFT</small><strong id="timer">03:00</strong></div>
+ </header>
+
+ <div id="goal">Fill every square in the <strong>6 × 6 BOX</strong> to win!</div>
+
+ <div id="boardWrap">
+  <div id="board"></div>
+ </div>
+
+ <div id="piecesTitle">DRAG A SHAPE INTO THE BOX</div>
+ <div id="pieces"></div>
+
+ <div id="controls">
+  <button class="control" id="rotate">↻ ROTATE</button>
+  <button class="control" id="reset">RESET PIECES</button>
+ </div>
+ <div id="help">Select a shape, rotate if needed, then drag it onto the board.</div>
+</div>
+
+<div id="dragGhost"><div class="shape"></div></div>
+
+<div id="screen">
+ <div class="panel">
+  <h1 id="heading">BLOCK PUZZLE</h1>
+  <p id="message">Arrange the different block shapes to fill every square in the box. No overlap and no empty spaces!</p>
+  <p><b>36 SQUARES · 3 MINUTES · COMPLETE THE BOX</b></p>
+  <button id="start">START PUZZLE</button>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const SIZE=6;
+const TOTAL=36;
+const $=id=>document.getElementById(id);
+
+let board=[];
+let pieces=[];
+let selected=null;
+let rotation=0;
+let score=0;
+let seconds=180;
+let running=false;
+let ended=false;
+let lastTime=0;
+let animation=0;
+let drag=null;
+let cells=[];
+let touchOffset={x:0,y:0};
+
+const SHAPES=[
+ [[0,0],[1,0],[2,0],[3,0]],
+ [[0,0],[0,1],[1,0],[1,1]],
+ [[0,0],[1,0],[2,0],[2,1]],
+ [[0,0],[0,1],[0,2],[1,1]],
+ [[0,0],[1,0],[1,1],[2,1]],
+ [[0,0],[1,0],[2,0],[1,1]],
+ [[0,0],[1,0],[2,0],[3,0],[3,1]],
+ [[0,0],[0,1],[0,2],[1,0],[2,0]],
+ [[0,0],[1,0],[1,1],[1,2]],
+ [[0,0],[1,0],[2,0],[2,1],[2,2]],
+ [[0,0],[0,1],[0,2],[1,2],[2,2]],
+ [[0,0],[1,0],[1,1],[2,1],[2,2]]
+];
+
+function copyShape(shape){return shape.map(p=>[p[0],p[1]])}
+
+function normalize(shape){
+ const minR=Math.min(...shape.map(p=>p[0]));
+ const minC=Math.min(...shape.map(p=>p[1]));
+ return shape.map(([r,c])=>[r-minR,c-minC]);
+}
+
+function rotateShape(shape){
+ return normalize(shape.map(([r,c])=>[c,-r]));
+}
+
+function randomShape(){
+ return copyShape(SHAPES[Math.floor(Math.random()*SHAPES.length)]);
+}
+
+function makeBoard(){
+ board=Array.from({length:SIZE},()=>Array(SIZE).fill(0));
+ const boardEl=$("board");
+ boardEl.innerHTML="";
+ cells=[];
+ for(let r=0;r<SIZE;r++){
+  for(let c=0;c<SIZE;c++){
+   const cell=document.createElement("div");
+   cell.className="cell";
+   cell.dataset.row=r;
+   cell.dataset.col=c;
+   boardEl.appendChild(cell);
+   cells.push(cell);
+  }
+ }
+}
+
+function newPieces(){
+ pieces=[
+  {shape:randomShape(),used:false},
+  {shape:randomShape(),used:false},
+  {shape:randomShape(),used:false}
+ ];
+ selected=null;
+ rotation=0;
+ renderPieces();
+}
+
+function renderShape(shape,container){
+ container.innerHTML="";
+ const maxR=Math.max(...shape.map(p=>p[0]))+1;
+ const maxC=Math.max(...shape.map(p=>p[1]))+1;
+ container.style.gridTemplateRows=`repeat(${maxR},auto)`;
+ container.style.gridTemplateColumns=`repeat(${maxC},auto)`;
+ const occupied=new Set(shape.map(([r,c])=>r+","+c));
+ for(let r=0;r<maxR;r++){
+  for(let c=0;c<maxC;c++){
+   const block=document.createElement("div");
+   if(occupied.has(r+","+c))block.className="block";
+   else block.style.width="clamp(16px,4.5vw,24px)";
+   container.appendChild(block);
+  }
+ }
+}
+
+function renderPieces(){
+ const holder=$("pieces");
+ holder.innerHTML="";
+ pieces.forEach((piece,index)=>{
+  const box=document.createElement("div");
+  box.className="piece"+(piece.used?" used":"");
+  box.dataset.index=index;
+  const shape=document.createElement("div");
+  shape.className="shape";
+  renderShape(piece.shape,shape);
+  box.appendChild(shape);
+  box.addEventListener("pointerdown",e=>startDrag(e,index));
+  holder.appendChild(box);
+ });
+}
+
+function updateUI(){
+ const count=board.flat().filter(Boolean).length;
+ $("score").textContent=score;
+ $("filled").textContent=count+"/"+TOTAL;
+ const m=Math.floor(seconds/60);
+ const s=Math.floor(seconds%60);
+ $("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+ $("timer").style.color=seconds<=20?"#ff7777":"#ffe08b";
+}
+
+function canPlace(shape,row,col){
+ for(const [r,c] of shape){
+  const rr=row+r,cc=col+c;
+  if(rr<0||rr>=SIZE||cc<0||cc>=SIZE)return false;
+  if(board[rr][cc])return false;
+ }
+ return true;
+}
+
+function hasPossibleMove(){
+ for(const piece of pieces){
+  if(piece.used)continue;
+  for(let rot=0;rot<4;rot++){
+   let shape=copyShape(piece.shape);
+   for(let k=0;k<rot;k++)shape=rotateShape(shape);
+   for(let r=0;r<SIZE;r++){
+    for(let c=0;c<SIZE;c++){
+     if(canPlace(shape,r,c))return true;
+    }
+   }
+  }
+ }
+ return false;
+}
+
+function renderBoard(){
+ cells.forEach(cell=>{
+  cell.className="cell";
+  const r=Number(cell.dataset.row);
+  const c=Number(cell.dataset.col);
+  if(board[r][c])cell.classList.add("filled");
+ });
+}
+
+function showPreview(row,col,shape){
+ cells.forEach(cell=>cell.classList.remove("preview","invalid"));
+ const valid=canPlace(shape,row,col);
+ for(const [r,c] of shape){
+  const rr=row+r,cc=col+c;
+  if(rr>=0&&rr<SIZE&&cc>=0&&cc<SIZE){
+   const cell=cells[rr*SIZE+cc];
+   cell.classList.add(valid?"preview":"invalid");
+  }
+ }
+ return valid;
+}
+
+function clearPreview(){
+ cells.forEach(cell=>cell.classList.remove("preview","invalid"));
+}
+
+function startDrag(e,index){
+ if(!running||ended||pieces[index].used)return;
+ e.preventDefault();
+ selected=index;
+ rotation=0;
+ const box=e.currentTarget.getBoundingClientRect();
+ touchOffset.x=e.clientX-box.left;
+ touchOffset.y=e.clientY-box.top;
+ drag={index,pointer:e.pointerId};
+ const ghost=$("dragGhost");
+ ghost.style.display="block";
+ renderShape(pieces[index].shape,ghost.firstElementChild);
+ moveGhost(e);
+ window.addEventListener("pointermove",moveDrag);
+ window.addEventListener("pointerup",endDrag,{once:true});
+ window.addEventListener("pointercancel",cancelDrag,{once:true});
+}
+
+function moveGhost(e){
+ if(!drag)return;
+ const ghost=$("dragGhost");
+ ghost.style.left=e.clientX+"px";
+ ghost.style.top=e.clientY+"px";
+}
+
+function moveDrag(e){
+ if(!drag||e.pointerId!==drag.pointer)return;
+ e.preventDefault();
+ moveGhost(e);
+ const rect=$("board").getBoundingClientRect();
+ const cellW=rect.width/ SIZE;
+ const cellH=rect.height/ SIZE;
+ const row=Math.floor((e.clientY-rect.top)/cellH);
+ const col=Math.floor((e.clientX-rect.left)/cellW);
+ const shape=pieces[drag.index].shape;
+ showPreview(row,col,shape);
+}
+
+function endDrag(e){
+ if(!drag||e.pointerId!==drag.pointer)return;
+ const rect=$("board").getBoundingClientRect();
+ const cellW=rect.width/SIZE;
+ const cellH=rect.height/SIZE;
+ const row=Math.floor((e.clientY-rect.top)/cellH);
+ const col=Math.floor((e.clientX-rect.left)/cellW);
+ const piece=pieces[drag.index];
+ clearPreview();
+
+ if(canPlace(piece.shape,row,col)){
+  placeShape(piece.shape,row,col,drag.index);
+ }
+ cancelDrag();
+}
+
+function cancelDrag(){
+ drag=null;
+ $("dragGhost").style.display="none";
+ clearPreview();
+ window.removeEventListener("pointermove",moveDrag);
+}
+
+function placeShape(shape,row,col,index){
+ for(const [r,c] of shape)board[row+r][col+c]=1;
+ pieces[index].used=true;
+ score+=shape.length*10;
+ sound(560,.07);
+ renderBoard();
+ const count=board.flat().filter(Boolean).length;
+ updateUI();
+
+ if(count===TOTAL){
+  finish(true,"PUZZLE COMPLETE!","You filled every square perfectly!");return;
+ }
+
+ if(pieces.every(p=>p.used))newPieces();
+ else renderPieces();
+
+ if(!hasPossibleMove())finish(false,"NO MORE MOVES","There is no space for the remaining block shapes.");
+}
+
+function rotateSelected(){
+ if(!running||!selected||pieces[selected].used)return;
+ pieces[selected].shape=rotateShape(pieces[selected].shape);
+ renderPieces();
+ sound(450,.05);
+}
+
+function sound(freq,duration){
+ try{
+  const a=new(window.AudioContext||window.webkitAudioContext)();
+  const o=a.createOscillator(),g=a.createGain();
+  o.frequency.value=freq;
+  g.gain.setValueAtTime(.04,a.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);
+  o.connect(g);g.connect(a.destination);
+  o.start();o.stop(a.currentTime+duration);
+ }catch(e){}
+}
+
+function startGame(){
+ cancelAnimationFrame(animation);
+ score=0;seconds=180;ended=false;running=true;
+ makeBoard();newPieces();updateUI();
+ $("screen").classList.add("hide");
+ lastTime=performance.now();
+ animation=requestAnimationFrame(loop);
+}
+
+function loop(now){
+ if(!running||ended)return;
+ const dt=Math.min((now-lastTime)/1000,.1);
+ lastTime=now;
+ seconds-=dt;
+ if(seconds<=0){
+  seconds=0;updateUI();
+  finish(false,"TIME UP","You didn't complete the box before time ran out.");return;
+ }
+ updateUI();
+ animation=requestAnimationFrame(loop);
+}
+
+function finish(won,title,message){
+ if(ended)return;
+ ended=true;running=false;
+ cancelAnimationFrame(animation);
+ $("heading").textContent=title;
+ $("message").textContent=message+" Your score: "+score+".";
+ $("start").textContent="RETURN TO GAMES";
+ $("screen").classList.remove("hide");
+ setTimeout(()=>location.replace("games.html"),2500);
+}
+
+$("rotate").addEventListener("click",rotateSelected);
+$("reset").addEventListener("click",()=>{
+ if(!running)return;
+ makeBoard();newPieces();score=0;updateUI();
+});
+$("start").addEventListener("click",()=>{
+ if(ended){location.replace("games.html");return}
+ startGame();
+});
+
+makeBoard();
+updateUI();
+renderPieces();
+</script>
+</body>
+</html>
