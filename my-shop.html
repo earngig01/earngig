@@ -2,313 +2,1243 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffffff">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Seller Dashboard | EarnGig</title>
+
 <style>
-:root{--purple:#7028a8;--deep:#4d167c;--lavender:#f5effb;--border:#eadff3;--gold:#d6a52a;--text:#241b2b;--muted:#81768a;--white:#fff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--text);min-height:100vh}
-a{text-decoration:none;color:inherit}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.topbar{height:70px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
-.brand{font-size:25px;font-weight:900;letter-spacing:-1px}
-.crown{color:var(--gold);vertical-align:2px}
-.gig{color:var(--purple)}
-.top-actions{display:flex;align-items:center;gap:12px}
-.top-actions a{font-size:13px;font-weight:700;color:var(--purple)}
-.menu-btn{border:1px solid var(--border);background:#fff;border-radius:9px;padding:9px 12px;color:var(--purple)}
-.container{max-width:1200px;width:92%;margin:30px auto 60px}
-.back{color:var(--purple);font-size:13px;font-weight:700;display:inline-block;margin-bottom:18px}
-.heading{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:25px}
-.heading h1{font-size:29px;margin-bottom:7px}
-.heading p{font-size:13px;color:var(--muted)}
-.primary{background:var(--purple);color:#fff;border:0;border-radius:9px;padding:12px 17px;font-weight:800;font-size:13px}
-.primary:hover{background:var(--deep)}
-.secondary{background:#fff;color:var(--purple);border:1px solid var(--purple);border-radius:9px;padding:10px 14px;font-weight:700;font-size:12px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:28px}
-.stat{padding:19px;border:1px solid var(--border);border-radius:14px;background:#fff}
-.stat-icon{width:40px;height:40px;border-radius:11px;background:var(--lavender);display:grid;place-items:center;font-size:20px;margin-bottom:13px}
-.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
-.stat strong{font-size:25px;color:var(--purple)}
-.panel{border:1px solid var(--border);border-radius:15px;background:#fff;padding:20px;margin-bottom:22px}
-.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}
-.panel-heading h2{font-size:18px}
-.panel-heading p{font-size:12px;color:var(--muted);margin-top:5px}
-.notice{background:#f8f3fc;border:1px solid #e9dcf4;border-radius:10px;padding:13px 15px;color:#604276;font-size:12px;line-height:1.6;margin-bottom:20px}
-.quick-links{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
-.quick-link{border:1px solid var(--border);border-radius:12px;padding:17px;display:block;transition:.2s}
-.quick-link:hover{border-color:var(--purple);background:#fcf9ff;transform:translateY(-2px)}
-.quick-link span{font-size:25px;display:block;margin-bottom:10px}
-.quick-link strong{display:block;font-size:14px;margin-bottom:6px}
-.quick-link small{font-size:11px;color:var(--muted);line-height:1.5}
-.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
-.filters button{border:1px solid var(--border);background:#fff;color:#6c5c77;border-radius:20px;padding:8px 13px;font-size:11px;font-weight:700}
-.filters button.active{background:var(--purple);border-color:var(--purple);color:#fff}
-.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.product-image{height:150px;background:var(--lavender);display:grid;place-items:center;font-size:45px;color:var(--purple)}
-.product-info{padding:13px}
-.product-info h3{font-size:14px;margin-bottom:7px}
-.product-info p{font-size:11px;color:var(--muted);margin-bottom:10px}
-.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.product-price{font-size:14px;font-weight:900;color:var(--purple)}
-.status{font-size:10px;padding:5px 8px;border-radius:20px;background:#f0eaf5;color:#70428d}
-.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
-.empty span{font-size:35px;display:block;margin-bottom:12px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.field{display:grid;gap:7px}
-.field.full{grid-column:1/-1}
-.field label{font-size:12px;font-weight:700}
-.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:12px;outline:none;background:#fff;color:var(--text);font-size:13px}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
-.field textarea{min-height:90px;resize:vertical}
-.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
-footer{border-top:1px solid var(--border);padding:22px 5%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
-footer a{color:var(--purple);font-weight:700}
-@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}.product-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:540px){.heading h1{font-size:24px}.quick-links{grid-template-columns:1fr}.product-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.topbar{padding:0 4%}.container{width:92%;margin-top:22px}}
+:root {
+    --purple: #6d35c7;
+    --purple-dark: #4c2097;
+    --purple-light: #f3edff;
+    --gold: #e7b94f;
+    --text: #242033;
+    --muted: #777286;
+    --border: #e9e3f2;
+    --background: #ffffff;
+    --success: #16834a;
+    --danger: #d83b4d;
+    --warning: #b7791f;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+header {
+    min-height: 70px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 5%;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 20;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--purple-dark);
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.brand svg {
+    width: 25px;
+    height: 25px;
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.header-links a:hover {
+    color: var(--purple);
+}
+
+.menu-btn {
+    display: none;
+    border: 0;
+    background: var(--purple-light);
+    color: var(--purple);
+    border-radius: 9px;
+    padding: 10px 13px;
+    font-size: 20px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 245px 1fr;
+    min-height: calc(100vh - 70px);
+}
+
+.sidebar {
+    border-right: 1px solid var(--border);
+    padding: 25px 16px;
+    background: #fff;
+}
+
+.sidebar h3 {
+    font-size: 11px;
+    color: #9a91a8;
+    letter-spacing: 1px;
+    margin: 20px 10px 10px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #575164;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: var(--purple-light);
+    color: var(--purple);
+}
+
+.main {
+    padding: 30px;
+    max-width: 1400px;
+    width: 100%;
+}
+
+.page-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.page-heading h1 {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+.page-heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.btn {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 17px;
+    font-weight: 700;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.btn-primary {
+    background: var(--purple);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--purple-dark);
+}
+
+.btn-outline {
+    border: 1px solid var(--purple);
+    background: #fff;
+    color: var(--purple);
+}
+
+.btn-gold {
+    background: var(--gold);
+    color: #382600;
+}
+
+.btn-danger {
+    background: #fff0f1;
+    color: var(--danger);
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin-bottom: 9px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 11px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.status.pending {
+    background: #fff5df;
+    color: #946000;
+}
+
+.status.approved {
+    background: #e6f8ed;
+    color: #16834a;
+}
+
+.status.rejected {
+    background: #ffe9eb;
+    color: #c52e40;
+}
+
+.status.returned {
+    background: #fff0df;
+    color: #a85c08;
+}
+
+.status.unpaid {
+    background: #fff5df;
+    color: #946000;
+}
+
+.status.paid {
+    background: #e6f8ed;
+    color: #16834a;
+}
+
+.notice {
+    border: 1px solid #e5d8ff;
+    background: #faf7ff;
+    padding: 16px;
+    border-radius: 11px;
+    color: #51406c;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 15px;
+}
+
+.notice.warning {
+    border-color: #f3dfb3;
+    background: #fffaf0;
+    color: #805b17;
+}
+
+.notice.success {
+    border-color: #c9ecd7;
+    background: #f1fbf5;
+    color: #17683e;
+}
+
+.notice.error {
+    border-color: #f4cbd0;
+    background: #fff5f6;
+    color: #a42c3b;
+}
+
+.status-panel {
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 22px;
+}
+
+.status-panel h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.status-panel p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.status-panel .status {
+    margin-bottom: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.price {
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--purple-dark);
+    margin: 15px 0;
+}
+
+.price small {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.feature-list {
+    list-style: none;
+    margin: 16px 0;
+}
+
+.feature-list li {
+    font-size: 13px;
+    padding: 7px 0;
+    color: #575164;
+}
+
+.feature-list li::before {
+    content: "✓";
+    color: var(--success);
+    font-weight: 800;
+    margin-right: 8px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 17px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    color: var(--text);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--purple);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.stat {
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 17px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat h3 {
+    margin-top: 9px;
+    font-size: 23px;
+    color: var(--purple-dark);
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 550px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 13px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+th {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.empty {
+    text-align: center;
+    padding: 28px 12px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.promo {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.promo h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.promo strong {
+    display: block;
+    color: var(--purple-dark);
+    font-size: 19px;
+    margin: 9px 0;
+}
+
+.promo p {
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+footer {
+    border-top: 1px solid var(--border);
+    padding: 22px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media(max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar.show {
+        display: block;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .header-links {
+        display: none;
+    }
+
+    .main {
+        padding: 20px 15px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .promo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 550px) {
+    .grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .promo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-heading h1 {
+        font-size: 23px;
+    }
+}
 </style>
 </head>
+
 <body>
 
-<header class="topbar">
-<a href="index.html" class="brand"><span class="crown">♛</span> Earn<span class="gig">Gig</span></a>
-<div class="top-actions">
-<a href="dashboard.html">Dashboard</a>
-<a href="marketplace.html">Marketplace</a>
-<button class="menu-btn" onclick="location.href='storefront.html'">My Store</button>
-</div>
+<header>
+    <a href="index.html" class="brand">
+        <svg viewBox="0 0 40 32" fill="none" aria-hidden="true">
+            <path d="M5 8L12 15L20 3L28 15L35 8L32 26H8L5 8Z"
+                  fill="#E7B94F" stroke="#C18B24" stroke-width="1.5"
+                  stroke-linejoin="round"/>
+            <path d="M9 29H31" stroke="#C18B24" stroke-width="2"
+                  stroke-linecap="round"/>
+            <circle cx="5" cy="7" r="2" fill="#E7B94F"/>
+            <circle cx="20" cy="3" r="2" fill="#E7B94F"/>
+            <circle cx="35" cy="7" r="2" fill="#E7B94F"/>
+        </svg>
+        EarnGig
+    </a>
+
+    <nav class="header-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="marketplace.html">Marketplace</a>
+        <a href="storefront.html">My Store</a>
+    </nav>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
 </header>
 
-<main class="container">
-<a class="back" href="dashboard.html">← Back to Dashboard</a>
+<div class="layout">
 
-<section class="heading">
-<div>
-<h1>Seller Dashboard</h1>
-<p>Manage your shop, products and sales on EarnGig.</p>
-</div>
-<button class="primary" onclick="document.getElementById('addProduct').scrollIntoView({behavior:'smooth'})">＋ Add Product</button>
-</section>
+<aside class="sidebar" id="sidebar">
+    <h3>SELLER CENTRE</h3>
+    <a href="my-shop.html" class="active">📊 Overview</a>
+    <a href="store-registration.html">📝 Store Registration</a>
+    <a href="#store-setup" onclick="showSection('store-setup')">🏪 Store Setup</a>
+    <a href="#customisation" onclick="showSection('customisation')">🎨 Store Customisation</a>
+    <a href="#products" onclick="showSection('products')">📦 My Products</a>
+    <a href="#orders" onclick="showSection('orders')">🛍️ Orders</a>
+    <a href="#promotions" onclick="showSection('promotions')">🚀 Promotions</a>
+    <a href="#earnings" onclick="showSection('earnings')">💰 Sales & Earnings</a>
 
-<div class="notice">
-<strong>Welcome to your seller space.</strong> Add products, manage your listings and keep track of your shop activity. Product and sales figures on this frontend demo are stored in this browser.
-</div>
+    <h3>MAIN PLATFORM</h3>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="marketplace.html">🛒 Marketplace</a>
+    <a href="wallet.html">👛 My Wallet</a>
+    <a href="settings.html">⚙️ Account Settings</a>
+    <a href="support.html">💬 Support</a>
+</aside>
 
-<section class="stats">
-<div class="stat"><div class="stat-icon">📦</div><small>Total Products</small><strong id="totalProducts">0</strong></div>
-<div class="stat"><div class="stat-icon">🟢</div><small>Active Listings</small><strong id="activeProducts">0</strong></div>
-<div class="stat"><div class="stat-icon">🛒</div><small>Total Orders</small><strong id="totalOrders">0</strong></div>
-<div class="stat"><div class="stat-icon">💰</div><small>Sales Revenue</small><strong id="totalRevenue">₦0</strong></div>
-</section>
+<main class="main">
 
-<section class="panel">
-<div class="panel-heading">
-<div><h2>Shop Management</h2><p>Quick access to your seller tools.</p></div>
-</div>
-<div class="quick-links">
-<a class="quick-link" href="storefront.html"><span>🏪</span><strong>View My Store</strong><small>See how your storefront appears to customers.</small></a>
-<a class="quick-link" href="marketplace.html"><span>🛍️</span><strong>Visit Marketplace</strong><small>Explore products listed across EarnGig.</small></a>
-<a class="quick-link" href="advertise.html"><span>📣</span><strong>Promote My Business</strong><small>Explore advertising opportunities for your shop.</small></a>
-</div>
-</section>
+    <div class="page-heading">
+        <div>
+            <h1>Seller Dashboard</h1>
+            <p>Manage your store application, products, orders and promotions.</p>
+        </div>
+        <a href="store-registration.html" class="btn btn-primary">＋ Register Your Store</a>
+    </div>
 
-<section class="panel" id="addProduct">
-<div class="panel-heading">
-<div><h2>Add a Product</h2><p>Create a product listing for your shop.</p></div>
-</div>
-<form id="productForm">
-<div class="form-grid">
-<div class="field">
-<label for="productName">Product Name</label>
-<input id="productName" required maxlength="100" placeholder="Enter product name">
-</div>
-<div class="field">
-<label for="productPrice">Price (₦)</label>
-<input id="productPrice" type="number" min="1" step="0.01" required placeholder="Enter price">
-</div>
-<div class="field">
-<label for="productCategory">Category</label>
-<select id="productCategory" required>
-<option value="">Choose category</option>
-<option>Fashion</option>
-<option>Electronics</option>
-<option>Beauty</option>
-<option>Food and Drinks</option>
-<option>Home and Living</option>
-<option>Books</option>
-<option>Services</option>
-<option>Other</option>
-</select>
-</div>
-<div class="field">
-<label for="productStock">Available Quantity</label>
-<input id="productStock" type="number" min="1" step="1" required placeholder="Enter quantity">
-</div>
-<div class="field full">
-<label for="productImage">Product Image URL (optional)</label>
-<input id="productImage" type="url" placeholder="https://example.com/product.jpg">
-</div>
-<div class="field full">
-<label for="productDescription">Product Description</label>
-<textarea id="productDescription" maxlength="1000" required placeholder="Describe your product..."></textarea>
-</div>
-</div>
-<div class="form-actions">
-<button class="primary" type="submit">Save Product</button>
-<button class="secondary" type="reset">Clear Form</button>
-</div>
-</form>
-</section>
+    <section id="application-section" class="status-panel">
+        <span class="status pending" id="application-badge">APPLICATION REQUIRED</span>
+        <h2 id="application-title">Start Your Seller Registration</h2>
+        <p id="application-description">
+            Before opening a store on EarnGig, submit your seller application and the required identity and product evidence. Our admin team will review your application before you can pay the store opening fee.
+        </p>
+        <div id="application-note"></div>
+        <a href="store-registration.html" class="btn btn-primary" id="application-action">
+            Start Store Registration
+        </a>
+    </section>
 
-<section class="panel">
-<div class="panel-heading">
-<div><h2>My Products</h2><p>Manage the products you have added.</p></div>
-</div>
-<div class="filters">
-<button class="active" data-filter="all">All Products</button>
-<button data-filter="active">Active</button>
-<button data-filter="paused">Paused</button>
-</div>
-<div class="product-grid" id="productGrid"></div>
-</section>
+    <section id="payment-section" class="card hidden">
+        <h2>Basic Store Opening</h2>
+        <p>Your application has been approved. Pay the one-time store opening fee to unlock your store setup.</p>
+        <div class="price">₦20,000 <small>one-time payment</small></div>
+        <ul class="feature-list">
+            <li>Access to your seller dashboard</li>
+            <li>Create and manage product listings</li>
+            <li>Receive customer orders</li>
+            <li>Set up your basic storefront</li>
+        </ul>
+        <button class="btn btn-primary" onclick="startBasicPayment()">
+            Proceed to Payment
+        </button>
+        <div class="notice warning">
+            Payment processing is not connected in this frontend version. This button will not collect money or mark your account as paid.
+        </div>
+    </section>
 
-<section class="panel">
-<div class="panel-heading">
-<div><h2>Recent Orders</h2><p>Your latest customer orders will appear here.</p></div>
-</div>
-<div class="empty"><span>🧾</span>No orders have been recorded yet.</div>
-</section>
+    <section id="store-area" class="hidden">
+
+        <div class="stats">
+            <div class="stat">
+                <span>Total Products</span>
+                <h3 id="total-products">0</h3>
+            </div>
+            <div class="stat">
+                <span>Active Listings</span>
+                <h3 id="active-products">0</h3>
+            </div>
+            <div class="stat">
+                <span>Total Orders</span>
+                <h3 id="total-orders">0</h3>
+            </div>
+            <div class="stat">
+                <span>Sales Revenue</span>
+                <h3 id="sales-revenue">₦0</h3>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>My Store</h2>
+                <p>View your public storefront and the products customers can browse.</p>
+                <br>
+                <a href="storefront.html" class="btn btn-outline">View My Store</a>
+            </div>
+
+            <div class="card">
+                <h2>Marketplace</h2>
+                <p>Explore the EarnGig marketplace and see how your products appear to customers.</p>
+                <br>
+                <a href="marketplace.html" class="btn btn-outline">Visit Marketplace</a>
+            </div>
+        </div>
+
+        <section class="card" id="store-setup">
+            <h2>Store Setup</h2>
+            <p>Complete your store information. Your basic store access must be activated before this section is available.</p>
+
+            <form id="store-form" class="form-grid">
+                <div class="form-group">
+                    <label for="store-name">Store Name</label>
+                    <input id="store-name" required placeholder="Your business name">
+                </div>
+
+                <div class="form-group">
+                    <label for="store-category">Business Category</label>
+                    <select id="store-category" required>
+                        <option value="">Select category</option>
+                        <option>Fashion</option>
+                        <option>Electronics</option>
+                        <option>Food and Drinks</option>
+                        <option>Beauty and Personal Care</option>
+                        <option>Home and Living</option>
+                        <option>Books and Education</option>
+                        <option>Services</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="store-description">Store Description</label>
+                    <textarea id="store-description" placeholder="Tell customers about your business"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="store-phone">Business Phone</label>
+                    <input id="store-phone" type="tel" placeholder="Phone number">
+                </div>
+
+                <div class="form-group">
+                    <label for="store-location">Business Location</label>
+                    <input id="store-location" placeholder="City and state">
+                </div>
+
+                <div class="form-group full">
+                    <button class="btn btn-primary" type="submit">Save Store Details</button>
+                </div>
+            </form>
+            <div id="store-save-message"></div>
+        </section>
+
+        <section class="card" id="customisation">
+            <h2>Premium Store Customisation</h2>
+            <p>Upgrade your storefront with a custom welcome banner, business introduction and alternative product display layouts.</p>
+            <div class="price">₦10,000 <small>one-time optional upgrade</small></div>
+
+            <ul class="feature-list">
+                <li>Custom welcome banner</li>
+                <li>Business introduction section</li>
+                <li>Additional product display styles</li>
+                <li>Premium storefront appearance</li>
+            </ul>
+
+            <button class="btn btn-gold" onclick="startPremiumPayment()">
+                Upgrade Storefront
+            </button>
+
+            <div class="notice warning">
+                Premium payment is not connected yet. No payment will be collected by this button.
+            </div>
+        </section>
+
+        <section class="card" id="products">
+            <h2>Add a Product</h2>
+            <p>Add products you want customers to see in your store.</p>
+
+            <form id="product-form" class="form-grid">
+                <div class="form-group">
+                    <label for="product-name">Product Name</label>
+                    <input id="product-name" required placeholder="Product name">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-price">Price (₦)</label>
+                    <input id="product-price" type="number" min="1" required placeholder="Product price">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-category">Category</label>
+                    <input id="product-category" required placeholder="Product category">
+                </div>
+
+                <div class="form-group">
+                    <label for="product-stock">Stock Quantity</label>
+                    <input id="product-stock" type="number" min="0" required placeholder="Available quantity">
+                </div>
+
+                <div class="form-group full">
+                    <label for="product-image">Product Image URL</label>
+                    <input id="product-image" type="url" placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group full">
+                    <label for="product-description">Product Description</label>
+                    <textarea id="product-description" placeholder="Describe your product"></textarea>
+                </div>
+
+                <div class="form-group full">
+                    <button type="submit" class="btn btn-primary">＋ Add Product</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>My Products</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list"></tbody>
+                </table>
+            </div>
+            <div id="products-empty" class="empty">You have not added any products yet.</div>
+        </section>
+
+        <section class="card" id="orders">
+            <h2>Recent Orders</h2>
+            <div class="empty">Your customer orders will appear here when available.</div>
+        </section>
+
+        <section class="card" id="promotions">
+            <h2>Promote Your Products and Store</h2>
+            <p>Choose a promotion package when you want more visibility on EarnGig.</p>
+
+            <h3 style="margin-top:22px;font-size:15px;">Featured Product</h3>
+            <div class="promo-grid">
+                <div class="promo">
+                    <h3>24 Hours</h3>
+                    <strong>₦1,000</strong>
+                    <p>Feature one product for 24 hours.</p>
+                    <button class="btn btn-outline" onclick="promotionNotice('Feature product for 24 hours',1000)">Select</button>
+                </div>
+
+                <div class="promo">
+                    <h3>7 Days</h3>
+                    <strong>₦5,500</strong>
+                    <p>Feature one product for 7 days.</p>
+                    <button class="btn btn-outline" onclick="promotionNotice('Feature product for 7 days',5500)">Select</button>
+                </div>
+
+                <div class="promo">
+                    <h3>30 Days</h3>
+                    <strong>₦15,000</strong>
+                    <p>Feature one product for 30 days.</p>
+                    <button class="btn btn-outline" onclick="promotionNotice('Feature product for 30 days',15000)">Select</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top:25px;font-size:15px;">Featured Store</h3>
+            <div class="promo-grid">
+                <div class="promo">
+                    <h3>7 Days</h3>
+                    <strong>₦20,000</strong>
+                    <p>Feature your store for 7 days.</p>
+                    <button class="btn btn-outline" onclick="promotionNotice('Feature store for 7 days',20000)">Select</button>
+                </div>
+
+                <div class="promo">
+                    <h3>30 Days</h3>
+                    <strong>₦50,000</strong>
+                    <p>Feature your store for 30 days.</p>
+                    <button class="btn btn-outline" onclick="promotionNotice('Feature store for 30 days',50000)">Select</button>
+                </div>
+            </div>
+
+            <div class="notice warning">
+                Promotion buttons are frontend placeholders. They do not charge your account or activate promotions.
+            </div>
+        </section>
+
+        <section class="card" id="earnings">
+            <h2>Sales and Earnings</h2>
+            <p>Your verified sales, customer payments and earnings will be displayed here.</p>
+            <div class="notice">
+                EarnGig applies a checkout service charge to customer purchases. The charge is based on purchase value, with a minimum of ₦100 and a maximum of ₦1,000.
+            </div>
+        </section>
+
+    </section>
 
 </main>
+</div>
 
 <footer>
-<a href="dashboard.html">← Back to Dashboard</a>
-<span>© 2026 EarnGig. All rights reserved.</span>
+    © 2026 EarnGig. All rights reserved.
+    <br><br>
+    <a href="help.html">Help</a> ·
+    <a href="support.html">Support</a> ·
+    <a href="contact.html">Contact</a> ·
+    <a href="terms.html">Terms</a> ·
+    <a href="privacy.html">Privacy</a>
 </footer>
 
 <script>
-const STORAGE_KEY="earngig_seller_products";
-let products=[];
-let currentFilter="all";
+const APPLICATIONS_KEY = "earngig_store_applications";
+const PRODUCTS_KEY = "earngig_seller_products";
+const STORE_KEY = "earngig_seller_store";
+const CUSTOMISATION_KEY = "earngig_seller_customisation";
+const ENTITLEMENTS_KEY = "earngig_seller_entitlements";
 
-function loadProducts(){
-try{
-const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-products=Array.isArray(saved)?saved:[];
-}catch(error){products=[]}
-renderProducts();
+function readStorage(key, fallback) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value === null ? fallback : value;
+    } catch (error) {
+        return fallback;
+    }
 }
 
-function saveProducts(){
-localStorage.setItem(STORAGE_KEY,JSON.stringify(products));
-renderProducts();
+function getApplications() {
+    const applications = readStorage(APPLICATIONS_KEY, []);
+    return Array.isArray(applications) ? applications : [];
 }
 
-function money(value){
-return "₦"+Number(value||0).toLocaleString("en-NG",{maximumFractionDigits:2});
+/*
+  Demo account matching:
+  Set earngig_current_user_email in localStorage to the logged-in vendor's email.
+  Until account identity is connected, a single saved application can be displayed.
+  Multiple applications require a matching email.
+*/
+function getCurrentApplication() {
+    const applications = getApplications();
+    const currentEmail = (
+        localStorage.getItem("earngig_current_user_email") || ""
+    ).trim().toLowerCase();
+
+    if (currentEmail) {
+        return applications.find(app =>
+            String(app.email || "").trim().toLowerCase() === currentEmail
+        ) || null;
+    }
+
+    if (applications.length === 1) {
+        return applications[0];
+    }
+
+    return null;
 }
 
-function updateStats(){
-document.getElementById("totalProducts").textContent=products.length;
-document.getElementById("activeProducts").textContent=products.filter(p=>p.status==="active").length;
-document.getElementById("totalOrders").textContent="0";
-document.getElementById("totalRevenue").textContent=money(0);
+function getEntitlements() {
+    return readStorage(ENTITLEMENTS_KEY, {});
 }
 
-function renderProducts(){
-updateStats();
-const grid=document.getElementById("productGrid");
-const visible=products.filter(p=>currentFilter==="all"||p.status===currentFilter);
-
-if(!visible.length){
-grid.innerHTML='<div class="empty" style="grid-column:1/-1"><span>📦</span>No products here yet. Add your first product above.</div>';
-return;
+function isBasicStorePaid() {
+    const entitlements = getEntitlements();
+    return entitlements.basicStorePaid === true;
 }
 
-grid.innerHTML=visible.map(product=>{
-const image=product.image
-?`<img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" style="width:100%;height:100%;object-fit:cover">`
-:`<span>📦</span>`;
-
-return `
-<article class="product-card">
-<div class="product-image">${image}</div>
-<div class="product-info">
-<h3>${escapeHTML(product.name)}</h3>
-<p>${escapeHTML(product.category)} · Stock: ${Number(product.stock)}</p>
-<p>${escapeHTML(product.description)}</p>
-<div class="product-bottom">
-<strong class="product-price">${money(product.price)}</strong>
-<span class="status">${product.status==="active"?"Active":"Paused"}</span>
-</div>
-<div class="form-actions">
-<button class="secondary" onclick="toggleProduct('${product.id}')">${product.status==="active"?"Pause":"Activate"}</button>
-<button class="secondary" onclick="deleteProduct('${product.id}')">Delete</button>
-</div>
-</div>
-</article>`;
-}).join("");
+function isPremiumPaid() {
+    const entitlements = getEntitlements();
+    return entitlements.premiumCustomisationPaid === true;
 }
 
-function escapeHTML(value){
-return String(value??"").replace(/[&<>"']/g,char=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[char]));
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("show");
 }
 
-document.getElementById("productForm").addEventListener("submit",event=>{
-event.preventDefault();
+function showSection(id) {
+    const section = document.getElementById(id);
+    if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-const product={
-id:"product_"+Date.now(),
-name:document.getElementById("productName").value.trim(),
-price:Number(document.getElementById("productPrice").value),
-category:document.getElementById("productCategory").value,
-stock:Number(document.getElementById("productStock").value),
-image:document.getElementById("productImage").value.trim(),
-description:document.getElementById("productDescription").value.trim(),
-status:"active",
-createdAt:new Date().toISOString()
-};
-
-if(!product.name||product.price<=0||product.stock<1||!product.category||!product.description){
-alert("Please complete all required product details.");
-return;
+    if (window.innerWidth <= 900) {
+        document.getElementById("sidebar").classList.remove("show");
+    }
 }
 
-products.unshift(product);
-saveProducts();
-event.target.reset();
-alert("Product saved in your seller dashboard.");
-document.getElementById("productGrid").scrollIntoView({behavior:"smooth"});
+function setApplicationStatus(application) {
+    const badge = document.getElementById("application-badge");
+    const title = document.getElementById("application-title");
+    const description = document.getElementById("application-description");
+    const note = document.getElementById("application-note");
+    const action = document.getElementById("application-action");
+    const paymentSection = document.getElementById("payment-section");
+    const storeArea = document.getElementById("store-area");
+
+    note.innerHTML = "";
+    paymentSection.classList.add("hidden");
+    storeArea.classList.add("hidden");
+
+    if (!application) {
+        badge.className = "status pending";
+        badge.textContent = "APPLICATION REQUIRED";
+        title.textContent = "Start Your Seller Registration";
+        description.textContent =
+            "Submit your seller application and required identity and product evidence. Admin must approve your application before you can pay the store opening fee.";
+        action.textContent = "Start Store Registration";
+        action.href = "store-registration.html";
+        return;
+    }
+
+    const status = String(application.status || "pending").toLowerCase();
+    const adminNote = application.adminNote || application.reviewNote || "";
+
+    if (status === "pending" || status === "submitted") {
+        badge.className = "status pending";
+        badge.textContent = "PENDING REVIEW";
+        title.textContent = "Your Application Is Under Review";
+        description.textContent =
+            "Your seller application has been received in this demo record. Please wait for the admin review. You cannot pay the store opening fee until your application is approved.";
+        action.textContent = "View Registration";
+        action.href = "store-registration.html";
+        action.classList.remove("hidden");
+    }
+
+    else if (status === "returned" || status === "corrections_required") {
+        badge.className = "status returned";
+        badge.textContent = "CORRECTIONS REQUIRED";
+        title.textContent = "Your Application Needs Changes";
+        description.textContent =
+            "The admin has returned your application. Review the feedback and correct the requested information before resubmitting.";
+        note.innerHTML = adminNote
+            ? '<div class="notice warning"><strong>Admin feedback:</strong><br>' + escapeHTML(adminNote) + '</div>'
+            : '<div class="notice warning">Please contact support to confirm the corrections required.</div>';
+        action.textContent = "Review Registration";
+        action.href = "store-registration.html";
+    }
+
+    else if (status === "rejected") {
+        badge.className = "status rejected";
+        badge.textContent = "APPLICATION REJECTED";
+        title.textContent = "Your Store Application Was Rejected";
+        description.textContent =
+            "Your application was not approved. Review the admin feedback below. Contact EarnGig Support if you need clarification.";
+        note.innerHTML = adminNote
+            ? '<div class="notice error"><strong>Admin feedback:</strong><br>' + escapeHTML(adminNote) + '</div>'
+            : '<div class="notice error">No rejection reason was provided in this application record.</div>';
+        action.textContent = "Contact Support";
+        action.href = "support.html";
+    }
+
+    else if (status === "approved") {
+        badge.className = "status approved";
+        badge.textContent = "APPLICATION APPROVED";
+        title.textContent = "Congratulations! Your Application Is Approved";
+        description.textContent =
+            "Your seller application has been approved. The next step is the one-time ₦20,000 basic store opening payment.";
+
+        if (isBasicStorePaid()) {
+            note.innerHTML = '<div class="notice success">Your basic store payment is marked as verified in this browser demo. Store setup is unlocked.</div>';
+            action.classList.add("hidden");
+            storeArea.classList.remove("hidden");
+            loadStoreData();
+        } else {
+            paymentSection.classList.remove("hidden");
+            note.innerHTML = '<div class="notice warning">Your application is approved, but your basic store opening payment has not yet been verified.</div>';
+            action.textContent = "Go to Payment";
+            action.href = "#payment-section";
+        }
+    }
+
+    else {
+        badge.className = "status pending";
+        badge.textContent = "APPLICATION STATUS";
+        title.textContent = "Application Status";
+        description.textContent =
+            "Your application status could not be identified. Please contact support.";
+        action.textContent = "Contact Support";
+        action.href = "support.html";
+    }
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[character]);
+}
+
+function startBasicPayment() {
+    const application = getCurrentApplication();
+
+    if (!application || String(application.status).toLowerCase() !== "approved") {
+        alert("Your store application must be approved before payment.");
+        return;
+    }
+
+    alert(
+        "The ₦20,000 payment gateway is not connected yet. No payment has been collected and your store has not been activated."
+    );
+}
+
+function startPremiumPayment() {
+    if (!isBasicStorePaid()) {
+        alert("You must first complete and verify your ₦20,000 basic store opening payment.");
+        return;
+    }
+
+    alert(
+        "The optional ₦10,000 premium customisation payment gateway is not connected yet. No payment has been collected."
+    );
+}
+
+function promotionNotice(packageName, price) {
+    if (!isBasicStorePaid()) {
+        alert("Your basic store must be activated before you can purchase promotions.");
+        return;
+    }
+
+    alert(
+        packageName + " costs ₦" + price.toLocaleString("en-NG") +
+        ". Promotion payment is not connected yet."
+    );
+}
+
+function loadStoreData() {
+    const store = readStorage(STORE_KEY, {});
+
+    document.getElementById("store-name").value = store.name || "";
+    document.getElementById("store-category").value = store.category || "";
+    document.getElementById("store-description").value = store.description || "";
+    document.getElementById("store-phone").value = store.phone || "";
+    document.getElementById("store-location").value = store.location || "";
+
+    const products = readStorage(PRODUCTS_KEY, []);
+    const safeProducts = Array.isArray(products) ? products : [];
+
+    document.getElementById("total-products").textContent = safeProducts.length;
+    document.getElementById("active-products").textContent =
+        safeProducts.filter(product => product.status !== "paused").length;
+
+    document.getElementById("total-orders").textContent = "0";
+    document.getElementById("sales-revenue").textContent = "₦0";
+
+    renderProducts(safeProducts);
+
+    if (isPremiumPaid()) {
+        document.querySelector("#customisation .price").innerHTML =
+            'Premium Activated <small>your upgrade is recorded in this browser demo</small>';
+    }
+}
+
+document.getElementById("store-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!isBasicStorePaid()) {
+        alert("Your basic store payment must be verified first.");
+        return;
+    }
+
+    const store = {
+        name: document.getElementById("store-name").value.trim(),
+        category: document.getElementById("store-category").value,
+        description: document.getElementById("store-description").value.trim(),
+        phone: document.getElementById("store-phone").value.trim(),
+        location: document.getElementById("store-location").value.trim(),
+        updatedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+
+    document.getElementById("store-save-message").innerHTML =
+        '<div class="notice success">Store details saved in this browser.</div>';
 });
 
-function toggleProduct(id){
-const product=products.find(p=>p.id===id);
-if(!product)return;
-product.status=product.status==="active"?"paused":"active";
-saveProducts();
+document.getElementById("product-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!isBasicStorePaid()) {
+        alert("Your basic store payment must be verified first.");
+        return;
+    }
+
+    const products = readStorage(PRODUCTS_KEY, []);
+    const safeProducts = Array.isArray(products) ? products : [];
+
+    const product = {
+        id: "product-" + Date.now(),
+        name: document.getElementById("product-name").value.trim(),
+        price: Number(document.getElementById("product-price").value),
+        category: document.getElementById("product-category").value.trim(),
+        stock: Number(document.getElementById("product-stock").value),
+        image: document.getElementById("product-image").value.trim(),
+        description: document.getElementById("product-description").value.trim(),
+        status: "active",
+        createdAt: new Date().toISOString()
+    };
+
+    safeProducts.unshift(product);
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(safeProducts));
+
+    this.reset();
+    loadStoreData();
+    alert("Product added to your browser demo.");
+});
+
+function renderProducts(products) {
+    const tbody = document.getElementById("products-list");
+    const empty = document.getElementById("products-empty");
+
+    tbody.innerHTML = "";
+
+    if (!products.length) {
+        empty.style.display = "block";
+        return;
+    }
+
+    empty.style.display = "none";
+
+    products.forEach(product => {
+        const row = document.createElement("tr");
+        const nameCell = document.createElement("td");
+        const priceCell = document.createElement("td");
+        const stockCell = document.createElement("td");
+        const statusCell = document.createElement("td");
+        const actionCell = document.createElement("td");
+
+        nameCell.textContent = product.name || "Unnamed product";
+        priceCell.textContent = "₦" + Number(product.price || 0).toLocaleString("en-NG");
+        stockCell.textContent = Number(product.stock || 0);
+        statusCell.textContent = product.status === "paused" ? "Paused" : "Active";
+
+        const toggleButton = document.createElement("button");
+        toggleButton.className = "btn btn-outline";
+        toggleButton.textContent = product.status === "paused" ? "Activate" : "Pause";
+        toggleButton.onclick = () => toggleProduct(product.id);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger";
+        deleteButton.textContent = "Delete";
+        deleteButton.style.marginLeft = "5px";
+        deleteButton.onclick = () => deleteProduct(product.id);
+
+        actionCell.append(toggleButton, deleteButton);
+        row.append(nameCell, priceCell, stockCell, statusCell, actionCell);
+        tbody.appendChild(row);
+    });
 }
 
-function deleteProduct(id){
-if(!confirm("Delete this product listing?"))return;
-products=products.filter(p=>p.id!==id);
-saveProducts();
+function toggleProduct(id) {
+    const products = readStorage(PRODUCTS_KEY, []);
+    const product = products.find(item => item.id === id);
+
+    if (!product) return;
+
+    product.status = product.status === "paused" ? "active" : "paused";
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+    loadStoreData();
 }
 
-document.querySelectorAll("[data-filter]").forEach(button=>{
-button.addEventListener("click",()=>{
-document.querySelectorAll("[data-filter]").forEach(item=>item.classList.remove("active"));
-button.classList.add("active");
-currentFilter=button.dataset.filter;
-renderProducts();
-});
-});
+function deleteProduct(id) {
+    if (!confirm("Are you sure you want to delete this product?")) return;
 
-loadProducts();
+    const products = readStorage(PRODUCTS_KEY, []);
+    const updated = products.filter(item => item.id !== id);
+
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(updated));
+    loadStoreData();
+}
+
+function initialisePage() {
+    const application = getCurrentApplication();
+    setApplicationStatus(application);
+}
+
+initialisePage();
 </script>
 
 </body>
