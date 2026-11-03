@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Help & Support | EarnGig</title>
+
+<style>
+:root {
+  --purple: #7027c7;
+  --purple-dark: #50169b;
+  --lavender: #f4edff;
+  --gold: #e6b83f;
+  --text: #282338;
+  --muted: #777386;
+  --border: #e9e2f2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: var(--text);
+}
+
+header {
+  padding: 16px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: white;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--purple);
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.brand svg {
+  width: 26px;
+  height: 26px;
+}
+
+.back {
+  color: var(--purple);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.container {
+  max-width: 950px;
+  margin: 35px auto;
+  padding: 0 18px 60px;
+}
+
+.hero {
+  text-align: center;
+  padding: 35px 15px;
+  background: var(--lavender);
+  border-radius: 16px;
+  margin-bottom: 30px;
+}
+
+.hero .icon {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.search {
+  width: 100%;
+  max-width: 500px;
+  margin: 22px auto 0;
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid #d9c6f3;
+  border-radius: 9px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search:focus {
+  border-color: var(--purple);
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+  margin-bottom: 35px;
+}
+
+.category {
+  padding: 18px 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.category:hover {
+  border-color: var(--purple);
+  background: #fcfaff;
+  transform: translateY(-2px);
+}
+
+.category .emoji {
+  font-size: 27px;
+  margin-bottom: 9px;
+}
+
+.category strong {
+  font-size: 13px;
+  display: block;
+}
+
+.faq-list {
+  margin-bottom: 35px;
+}
+
+.faq {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 17px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: "+";
+  color: var(--purple);
+  font-size: 20px;
+}
+
+.faq[open] summary::after {
+  content: "−";
+}
+
+.faq-answer {
+  padding: 0 17px 17px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.contact-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 23px;
+  margin-bottom: 25px;
+}
+
+.contact-card h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.contact-card > p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.field textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--purple);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--purple);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: var(--purple-dark);
+}
+
+.message {
+  display: none;
+  margin-bottom: 15px;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.message.success {
+  display: block;
+  background: #e8f8ed;
+  color: #18733e;
+}
+
+.message.error {
+  display: block;
+  background: #fff0f0;
+  color: #b32626;
+}
+
+.contact-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  margin-top: 20px;
+}
+
+.contact-option {
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.contact-option .emoji {
+  font-size: 24px;
+  margin-bottom: 9px;
+}
+
+.contact-option strong {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.contact-option p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.footer-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 25px;
+}
+
+@media(max-width: 650px) {
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-options {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 23px;
+  }
+
+  .contact-card {
+    padding: 17px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none">
+      <path d="M8 19L19 30L31 9L44 30L56 19L51 47H13L8 19Z"
+        fill="#E6B83F" stroke="#C49320" stroke-width="2.5"/>
+      <path d="M14 52H50" stroke="#E6B83F" stroke-width="4"
+        stroke-linecap="round"/>
+      <circle cx="8" cy="17" r="4" fill="#F4D477"/>
+      <circle cx="31" cy="7" r="4" fill="#F4D477"/>
+      <circle cx="56" cy="17" r="4" fill="#F4D477"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <a href="dashboard.html" class="back">← Dashboard</a>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="icon">🎧</div>
+    <h1>How Can We Help You?</h1>
+    <p>Find answers to common questions or send our support team a message.</p>
+
+    <input
+      type="search"
+      class="search"
+      id="faqSearch"
+      placeholder="Search for help..."
+      aria-label="Search frequently asked questions"
+    >
+  </section>
+
+  <section>
+    <h2 class="section-title">Browse Help Categories</h2>
+
+    <div class="categories">
+      <button class="category" onclick="selectCategory('account')">
+        <div class="emoji">👤</div>
+        <strong>Account</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('coins')">
+        <div class="emoji">🪙</div>
+        <strong>Coins & Wallet</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('withdrawals')">
+        <div class="emoji">💳</div>
+        <strong>Withdrawals</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('referrals')">
+        <div class="emoji">👥</div>
+        <strong>Referrals</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('games')">
+        <div class="emoji">🎮</div>
+        <strong>Games</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('novels')">
+        <div class="emoji">📚</div>
+        <strong>Novels</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('marketplace')">
+        <div class="emoji">🛍️</div>
+        <strong>Marketplace</strong>
+      </button>
+
+      <button class="category" onclick="selectCategory('technical')">
+        <div class="emoji">⚙️</div>
+        <strong>Technical Issues</strong>
+      </button>
+    </div>
+  </section>
+
+  <section class="faq-list">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+
+    <div id="faqContainer">
+
+      <details class="faq" data-category="account">
+        <summary>How do I create an EarnGig account?</summary>
+        <div class="faq-answer">
+          Visit the registration page, enter the required information and follow the registration instructions to create your account.
+        </div>
+      </details>
+
+      <details class="faq" data-category="account">
+        <summary>What should I do if I forget my password?</summary>
+        <div class="faq-answer">
+          Use the password recovery option on the login page if available. If you still cannot access your account, contact support.
+        </div>
+      </details>
+
+      <details class="faq" data-category="coins">
+        <summary>How do I earn coins?</summary>
+        <div class="faq-answer">
+          EarnGig offers different earning activities. These may include eligible games, reading novels, referrals and other approved activities. Each activity has its own reward conditions.
+        </div>
+      </details>
+
+      <details class="faq" data-category="coins">
+        <summary>Why have my coins not been credited?</summary>
+        <div class="faq-answer">
+          Some activities require successful completion or verification before rewards are credited. If your reward is still missing, send support the activity name and approximate completion time.
+        </div>
+      </details>
+
+      <details class="faq" data-category="withdrawals">
+        <summary>How do I withdraw my earnings?</summary>
+        <div class="faq-answer">
+          Check your wallet for the available withdrawal options, minimum withdrawal requirements and instructions. Only submit withdrawal requests through official EarnGig pages.
+        </div>
+      </details>
+
+      <details class="faq" data-category="withdrawals">
+        <summary>What should I do if my withdrawal is delayed?</summary>
+        <div class="faq-answer">
+          Check the transaction status in your wallet. If the transaction remains unresolved, contact support with your transaction reference. Never share your password or PIN.
+        </div>
+      </details>
+
+      <details class="faq" data-category="referrals">
+        <summary>How does the referral programme work?</summary>
+        <div class="faq-answer">
+          Share your referral link with others. Referral rewards are subject to the programme's eligibility requirements and successful referral verification.
+        </div>
+      </details>
+
+      <details class="faq" data-category="games">
+        <summary>Why did I not receive a game reward?</summary>
+        <div class="faq-answer">
+          Rewards may depend on completing the required game objective. Check the instructions for that game and contact support if you believe your completed activity was not recognised.
+        </div>
+      </details>
+
+      <details class="faq" data-category="novels">
+        <summary>Do I earn coins just by opening a novel?</summary>
+        <div class="faq-answer">
+          No. Opening a novel does not earn a reward. Readers must complete the novel and pass its story-specific comprehension questions to qualify for the reading reward.
+        </div>
+      </details>
+
+      <details class="faq" data-category="novels">
+        <summary>How can I become an EarnGig writer?</summary>
+        <div class="faq-answer">
+          Visit the Become a Writer page and submit your application. Approved writers can create novels and submit completed work for admin screening.
+        </div>
+      </details>
+
+      <details class="faq" data-category="novels">
+        <summary>When do writers pay the novel upload fee?</summary>
+        <div class="faq-answer">
+          Writers pay only after their submitted novel has been approved. The upload fee depends on the selected reader target and is paid in naira, not coins.
+        </div>
+      </details>
+
+      <details class="faq" data-category="marketplace">
+        <summary>How do I buy something on the marketplace?</summary>
+        <div class="faq-answer">
+          Browse available listings, review the product information and follow the purchase instructions displayed on the listing.
+        </div>
+      </details>
+
+      <details class="faq" data-category="technical">
+        <summary>What if an EarnGig page is not loading?</summary>
+        <div class="faq-answer">
+          Check your internet connection, refresh the page and try again. You can also try another browser or clear your browser cache.
+        </div>
+      </details>
+
+    </div>
+
+    <p id="noResults" style="display:none;text-align:center;color:#777386;font-size:13px;padding:20px">
+      No matching questions found.
+    </p>
+  </section>
+
+  <section class="contact-card">
+    <h2>Contact Support</h2>
+    <p>Can't find the answer? Send us a message and describe the issue you're experiencing.</p>
+
+    <div id="formMessage" class="message"></div>
+
+    <form id="supportForm">
+
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" required placeholder="Enter your full name">
+      </div>
+
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required placeholder="Enter your email">
+      </div>
+
+      <div class="field">
+        <label for="category">Support Category</label>
+        <select id="category" required>
+          <option value="">Select a category</option>
+          <option>Account & Login</option>
+          <option>Coins & Rewards</option>
+          <option>Wallet & Withdrawals</option>
+          <option>Referrals</option>
+          <option>Games</option>
+          <option>Novels & Reading</option>
+          <option>Writer Programme</option>
+          <option>Marketplace</option>
+          <option>Technical Issue</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" required placeholder="Briefly describe your issue">
+      </div>
+
+      <div class="field">
+        <label for="message">Your Message</label>
+        <textarea id="message" required minlength="10"
+          placeholder="Explain what happened and how we can help..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitButton">
+        Send Support Request
+      </button>
+
+    </form>
+
+    <div class="contact-options">
+      <div class="contact-option">
+        <div class="emoji">📩</div>
+        <strong>Support Requests</strong>
+        <p>Use the form above to describe your issue and submit a support request.</p>
+      </div>
+
+      <div class="contact-option">
+        <div class="emoji">🔐</div>
+        <strong>Account Safety</strong>
+        <p>Never share your password, PIN or private account credentials with anyone.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer-note">
+    EarnGig Help & Support<br>
+    We're working to make your experience better.
+  </p>
+
+</main>
+
+<script>
+const SUPPORT_KEY = "earngig_support_requests";
+const PROFILE_KEY = "earngig_user_profile";
+
+function readStorage(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+// Search FAQs
+const searchInput = document.getElementById("faqSearch");
+const faqItems = [...document.querySelectorAll(".faq")];
+
+searchInput.addEventListener("input", filterFAQs);
+
+function filterFAQs() {
+  const query = searchInput.value.toLowerCase().trim();
+  let visible = 0;
+
+  faqItems.forEach(item => {
+    const matches = item.textContent.toLowerCase().includes(query);
+    item.style.display = matches ? "block" : "none";
+
+    if (matches) visible++;
+  });
+
+  document.getElementById("noResults").style.display =
+    visible === 0 ? "block" : "none";
+}
+
+// Category selection
+function selectCategory(category) {
+  searchInput.value = "";
+
+  faqItems.forEach(item => {
+    const matches = item.dataset.category === category;
+    item.style.display = matches ? "block" : "none";
+    item.open = false;
+  });
+
+  document.getElementById("noResults").style.display = "none";
+
+  document.querySelector(".faq-list").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+// Load saved profile details if available
+const profile = readStorage(PROFILE_KEY, {});
+
+document.getElementById("name").value = profile.fullName || "";
+document.getElementById("email").value = profile.email || "";
+
+// Submit support request
+document.getElementById("supportForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const request = {
+    id: "SUP-" + Date.now(),
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    category: document.getElementById("category").value,
+    subject: document.getElementById("subject").value.trim(),
+    message: document.getElementById("message").value.trim(),
+    status: "pending",
+    createdAt: new Date().toISOString()
+  };
+
+  if (
+    !request.name ||
+    !request.email ||
+    !request.category ||
+    !request.subject ||
+    request.message.length < 10
+  ) {
+    showMessage("Please complete all fields correctly.", "error");
+    return;
+  }
+
+  const requests = readStorage(SUPPORT_KEY, []);
+  requests.push(request);
+
+  localStorage.setItem(SUPPORT_KEY, JSON.stringify(requests));
+
+  showMessage(
+    "Your support request has been saved on this device. Online delivery to the EarnGig support team is not connected yet.",
+    "success"
+  );
+
+  document.getElementById("supportForm").reset();
+
+  document.getElementById("name").value = profile.fullName || "";
+  document.getElementById("email").value = profile.email || "";
+});
+
+function showMessage(text, type) {
+  const box = document.getElementById("formMessage");
+  box.textContent = text;
+  box.className = "message " + type;
+
+  box.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+</script>
+
+</body>
+</html>
