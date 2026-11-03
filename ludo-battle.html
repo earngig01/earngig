@@ -3,289 +3,562 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ludo Battle | EarnGig</title>
 <style>
-:root{--bg:#101020;--panel:#1c1c35;--gold:#ffd45b;--muted:#a9a9c2}
+:root{
+ --red:#e94350;--green:#20a66a;--yellow:#f1c13b;--blue:#3985e8;
+ --dark:#17152b;--gold:#ffda70;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#29234d,#101020 65%);color:white;font-family:Arial,sans-serif;min-height:100vh}
-header{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid #393454}
-.brand{font-size:21px;font-weight:900;color:#fff}.crown{color:var(--gold)}
-header a{color:#d9d4ff;text-decoration:none;font-size:14px}
-main{max-width:900px;margin:auto;padding:18px}
-h1{text-align:center;font-size:28px;margin:12px 0 5px}
-.subtitle{text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px}
-.panel{background:#1b1a31;border:1px solid #393454;border-radius:18px;padding:16px;margin-bottom:15px}
-#setup{text-align:center;padding:35px 18px}
-#setup p{color:#c4c1d9;line-height:1.6}
-button{border:0;border-radius:12px;padding:13px 20px;font-weight:800;cursor:pointer;font-size:15px}
-.primary{background:linear-gradient(135deg,#ffe27a,#ffbd36);color:#28203a}
-.secondary{background:#393454;color:white}
-button:disabled{opacity:.4;cursor:not-allowed}
+body{
+ margin:0;min-height:100vh;color:#fff;font-family:Arial,sans-serif;
+ background:radial-gradient(ellipse at top,#39305f 0%,#19172e 55%,#10101d 100%);
+}
+header{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px 18px;border-bottom:1px solid #ffffff20;
+}
+.brand{font-size:22px;font-weight:900}
+.brand span{color:var(--gold)}
+header a{color:#e2dcff;text-decoration:none;font-size:14px}
+main{max-width:760px;margin:auto;padding:17px 13px 35px}
+h1{text-align:center;margin:8px 0;font-size:27px}
+.subtitle{text-align:center;color:#c5bfdc;font-size:13px;margin-bottom:18px}
+.panel{
+ background:linear-gradient(145deg,#262343,#1a1931);
+ border:1px solid #ffffff20;border-radius:20px;padding:16px;
+ box-shadow:0 12px 35px #0004;
+}
+#setup{text-align:center;padding:38px 20px}
+.big-dice{font-size:65px;margin-bottom:12px}
+#setup h2{margin:8px 0 12px}
+#setup p{color:#c7c2dc;line-height:1.6;font-size:14px}
+button{font:inherit;cursor:pointer;border:0}
+.primary{
+ padding:14px 28px;border-radius:13px;
+ background:linear-gradient(135deg,#ffe88d,#f4b934);
+ color:#302342;font-weight:900;font-size:15px;
+ box-shadow:0 4px 0 #b57c20;
+}
+.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #b57c20}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+#searchMessage{font-size:12px;color:#c8c0e6;margin-top:18px}
 #game{display:none}
-.status{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#ddd9f5;font-size:13px;margin-bottom:12px}
-.players{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
-.player{background:#252440;border:1px solid #45415f;border-radius:12px;padding:10px 5px;text-align:center;font-size:12px}
-.player.active{outline:2px solid var(--gold)}
-.dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:5px}
-.board-wrap{display:flex;justify-content:center;align-items:center}
-#board{width:min(94vw,570px);aspect-ratio:1;background:#f5f0e5;border:7px solid #d4c9ac;border-radius:10px;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);position:relative;overflow:hidden;box-shadow:0 12px 35px #0008}
-.cell{border:1px solid #d9d4c7;position:relative;display:flex;align-items:center;justify-content:center}
-.cell.track{background:#fffdf7}
-.cell.safe:after{content:"★";color:#a9a08b;font-size:clamp(8px,2vw,15px)}
-.base{position:absolute;width:40%;height:40%;border:3px solid #fff;border-radius:9px;display:grid;grid-template-columns:1fr 1fr;place-items:center;padding:5px;z-index:1}
-.base.red{top:3.33%;left:3.33%;background:#e94b58}
-.base.green{top:3.33%;right:3.33%;background:#26a96b}
-.base.yellow{bottom:3.33%;right:3.33%;background:#edbd36}
-.base.blue{bottom:3.33%;left:3.33%;background:#438be9}
-.base .home-slot{width:72%;aspect-ratio:1;background:#fff;border-radius:50%;border:2px solid #ddd;box-shadow:inset 0 2px 5px #0002}
-.token{width:75%;height:75%;max-width:27px;max-height:27px;border-radius:50%;border:2px solid white;box-shadow:0 2px 4px #0008;cursor:pointer;z-index:4;position:absolute;display:grid;place-items:center;color:white;font-size:10px;font-weight:bold}
-.token.red{background:#d9273d}.token.green{background:#15975b}.token.yellow{background:#dba817}.token.blue{background:#236bc8}
-.token:after{content:"";width:35%;height:35%;border-radius:50%;background:#ffffff80}
-.center{position:absolute;left:40%;top:40%;width:20%;height:20%;z-index:2;background:conic-gradient(#26a96b 0 25%,#edbd36 0 50%,#438be9 0 75%,#e94b58 0);clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
-.center:after{content:"";position:absolute;inset:25%;background:#fff;border-radius:50%}
-#controls{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:15px}
-.dice{width:66px;height:66px;border-radius:15px;background:#fff;color:#222;font-size:36px;display:grid;place-items:center;box-shadow:0 4px 0 #c6bda8}
-#message{text-align:center;color:#f5d879;font-weight:700;min-height:25px;margin-top:12px}
-#rollBtn{min-width:135px}
-.log{font-size:12px;color:#aaa5c5;text-align:center;margin-top:10px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
+.turn-label{font-size:14px;font-weight:800}
+.turn-label small{display:block;color:#bdb7d6;font-weight:400;margin-top:4px}
+.colour-tag{display:flex;align-items:center;gap:7px;font-size:13px;color:#eee}
+.colour-dot{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 2px 3px #fff8,0 2px 4px #0008}
+.players{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:13px}
+.player{
+ background:#ffffff0b;border:1px solid #ffffff18;border-radius:12px;
+ padding:9px 4px;text-align:center;font-size:12px;color:#fff;
+}
+.player.active{border:2px solid var(--gold);background:#ffffff16}
+.player .colour-dot{display:block;margin:0 auto 6px;width:17px;height:17px}
+.player strong{display:block;font-size:12px}
+#boardWrap{display:flex;justify-content:center}
+#board{
+ width:min(94vw,550px);aspect-ratio:1;position:relative;
+ display:grid;grid-template-columns:repeat(15,1fr);
+ grid-template-rows:repeat(15,1fr);
+ background:#f8f5ed;border:6px solid #e4d9bd;
+ border-radius:9px;overflow:hidden;
+ box-shadow:0 9px 28px #0007,inset 0 0 0 2px #fff;
+}
+.cell{position:relative;border:1px solid #e5dfd3;background:#fffdf8}
+.cell.track{background:#fff}
+.cell.red{background:#f5a5aa}
+.cell.green{background:#a1dfbd}
+.cell.yellow{background:#f3dc91}
+.cell.blue{background:#a7cafa}
+.cell.safe:after{
+ content:"★";position:absolute;inset:0;display:grid;place-items:center;
+ color:#9c927d;font-size:clamp(7px,1.8vw,13px);
+}
+.base{
+ position:absolute;width:40%;height:40%;z-index:2;
+ border:1px solid #ffffff;border-radius:7px;
+ display:grid;place-items:center;padding:5%;
+ box-shadow:inset 0 0 0 2px #ffffff55;
+}
+.base.red{left:0;top:0;background:linear-gradient(145deg,#f35c68,#c9283b)}
+.base.green{right:0;top:0;background:linear-gradient(145deg,#44c988,#087e4b)}
+.base.yellow{right:0;bottom:0;background:linear-gradient(145deg,#ffe17a,#d69b16)}
+.base.blue{left:0;bottom:0;background:linear-gradient(145deg,#65aaff,#2160b7)}
+.base-inner{
+ width:82%;height:82%;background:#fffdf7;border-radius:9px;
+ display:grid;grid-template-columns:1fr 1fr;place-items:center;padding:10%;
+ box-shadow:0 2px 7px #0002;
+}
+.home-slot{
+ width:75%;aspect-ratio:1;border-radius:50%;
+ background:linear-gradient(145deg,#fff,#e7e3dc);
+ border:2px solid #d5d0c7;box-shadow:inset 0 2px 4px #0002;
+}
+.center-home{
+ position:absolute;left:40%;top:40%;width:20%;height:20%;
+ z-index:2;overflow:hidden;
+ background:conic-gradient(from -45deg,var(--red) 0 25%,var(--green) 25% 50%,var(--yellow) 50% 75%,var(--blue) 75% 100%);
+ border:1px solid white;
+}
+.center-home:after{
+ content:"";position:absolute;inset:28%;background:#fffdf7;
+ border-radius:50%;box-shadow:0 1px 4px #0003;
+}
+.token{
+ position:absolute;z-index:5;width:83%;height:83%;left:8.5%;top:8.5%;
+ border-radius:50%;border:2px solid #fff;
+ box-shadow:inset 0 3px 4px #ffffffb0,inset 0 -4px 5px #0003,0 2px 4px #0005;
+ display:grid;place-items:center;padding:0;
+}
+.token:before{
+ content:"";width:42%;height:42%;border-radius:50%;
+ background:linear-gradient(145deg,#ffffffdd,#ffffff35);
+ box-shadow:0 1px 3px #0002;
+}
+.token.red{background:linear-gradient(145deg,#ff7880,#c91d35)}
+.token.green{background:linear-gradient(145deg,#6af0aa,#07844a)}
+.token.yellow{background:linear-gradient(145deg,#fff08a,#d89b13)}
+.token.blue{background:linear-gradient(145deg,#83c2ff,#205dbb)}
+.token.selectable{outline:3px solid #f4b82e;outline-offset:1px;animation:pulse .8s infinite alternate}
+@keyframes pulse{to{transform:scale(1.12)}}
+.controls{
+ display:flex;justify-content:center;align-items:center;gap:15px;
+ margin-top:17px;flex-wrap:wrap;
+}
+.dice-pair{display:flex;gap:9px}
+.die{
+ width:57px;height:57px;background:linear-gradient(145deg,#fff,#e8e3d8);
+ border-radius:13px;color:#28243b;display:grid;place-items:center;
+ font-size:34px;font-weight:bold;
+ box-shadow:0 4px 0 #b9b1a1,0 6px 12px #0004;
+}
+.die.rolling{animation:shake .3s infinite}
+@keyframes shake{50%{transform:rotate(9deg) scale(1.08)}}
+#message{text-align:center;min-height:27px;margin-top:14px;color:#ffe18a;font-weight:700;font-size:14px}
+.hint{text-align:center;color:#b8b2d1;font-size:11px;margin-top:4px}
 #result{display:none;text-align:center;padding:35px 15px}
-#result h2{font-size:30px;color:var(--gold)}
-@media(max-width:520px){main{padding:12px}.players{grid-template-columns:repeat(2,1fr)}.panel{padding:12px}h1{font-size:24px}}
+#result .trophy{font-size:65px}
+#result h2{color:var(--gold);font-size:30px}
+@media(max-width:430px){
+ main{padding:12px 8px}.panel{padding:11px}
+ #board{width:96vw;border-width:4px}
+ .die{width:51px;height:51px}
+ .primary{padding:13px 19px}
+}
 </style>
 </head>
 <body>
-<header><div class="brand"><span class="crown">♛</span> EarnGig</div><a href="games.html">← Back to Games</a></header>
+<header>
+ <div class="brand"><span>♛</span> EarnGig</div>
+ <a href="games.html">← Back to Games</a>
+</header>
+
 <main>
-<h1>🎲 Ludo Battle</h1>
-<div class="subtitle">Four players. One winner. Bring your tokens home!</div>
+ <h1>🎲 Ludo Battle</h1>
+ <div class="subtitle">Roll the dice. Move your pieces. Race home!</div>
 
-<section id="setup" class="panel">
-<div style="font-size:65px">🎲</div>
-<h2>Ready for Ludo Battle?</h2>
-<p>Play with up to three other people. EarnGig will look for waiting players first. Any seats left empty will be filled by computer opponents.</p>
-<p style="font-size:12px">A match has four seats. Once it starts, the players stay together until the game ends.</p>
-<button class="primary" id="playBtn">PLAY NOW</button>
-<div id="searchMessage" class="log"></div>
-</section>
+ <section id="setup" class="panel">
+  <div class="big-dice">🎲 🎲</div>
+  <h2>Ready for Ludo Battle?</h2>
+  <p>Four colours. Four players. One winner.</p>
+  <p>We'll look for players waiting to join your match. Any empty seats will be filled automatically.</p>
+  <button class="primary" id="playBtn">PLAY NOW</button>
+  <div id="searchMessage"></div>
+ </section>
 
-<section id="game" class="panel">
-<div class="status"><span id="turnStatus">Your turn</span><span id="matchStatus">4 players</span></div>
-<div class="players" id="players"></div>
-<div class="board-wrap"><div id="board"></div></div>
-<div id="controls">
-<div class="dice" id="dice">⚀</div>
-<button class="primary" id="rollBtn">ROLL DICE</button>
-</div>
-<div id="message">Roll a six to bring a token out of your base.</div>
-<div class="log">Tap one of your highlighted tokens after rolling.</div>
-</section>
+ <section id="game" class="panel">
+  <div class="topline">
+   <div class="turn-label" id="turnLabel">Your turn<small>Roll both dice</small></div>
+   <div class="colour-tag"><span class="colour-dot" id="myColourDot"></span><span id="myColourText">Your colour</span></div>
+  </div>
+  <div class="players" id="players"></div>
+  <div id="boardWrap"><div id="board"></div></div>
+  <div class="controls">
+   <div class="dice-pair">
+    <div class="die" id="die1">⚀</div>
+    <div class="die" id="die2">⚀</div>
+   </div>
+   <button class="primary" id="rollBtn">ROLL DICE</button>
+  </div>
+  <div id="message">Roll both dice to begin.</div>
+  <div class="hint">A total of 6 is needed to bring a piece out of base. Doubles earn another turn.</div>
+ </section>
 
-<section id="result" class="panel">
-<div style="font-size:60px">🏆</div>
-<h2 id="resultTitle">Match Complete!</h2>
-<p id="resultText"></p>
-<p class="log">Returning to Games...</p>
-</section>
+ <section id="result" class="panel">
+  <div class="trophy">🏆</div>
+  <h2 id="resultTitle">You Won!</h2>
+  <p id="resultText"></p>
+  <p class="hint">Returning to Games...</p>
+ </section>
 </main>
 
 <script>
-const COLORS=["red","green","yellow","blue"];
-const NAMES=["You","Player 2","Player 3","Player 4"];
-const PATH=[
-[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],
-[1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],
-[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
-[14,7],[14,6],[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],
-[8,0],[7,0],[6,0]
-];
+const COLOURS=["red","green","yellow","blue"];
+const COLOUR_NAMES=["Red","Green","Yellow","Blue"];
 const START=[0,13,26,39];
-const HOME=[
-[[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],
-[[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],
-[[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]],
-[[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]]
-];
 const SAFE=[0,8,13,21,26,34,39,47];
-let players=[],turn=0,diceValue=0,rolled=false,finished=false,waiting=[],selectedMoves=[];
+
+const PATH=[
+ [6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],
+ [1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],
+ [8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
+ [14,7],[14,6],[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],
+ [8,0],[7,0],[6,0]
+];
+
+const HOME=[
+ [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],
+ [[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]],
+ [[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]],
+ [[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]]
+];
+
+const BASES=[
+ [[1,1],[1,4],[4,1],[4,4]],
+ [[1,10],[1,13],[4,10],[4,13]],
+ [[10,10],[10,13],[13,10],[13,13]],
+ [[10,1],[10,4],[13,1],[13,4]]
+];
+
+let players=[];
+let turn=0;
+let dice=[1,1];
+let rolled=false;
+let selectable=[];
+let finished=false;
+let humanCount=1;
 let cells=[];
+
 const board=document.getElementById("board");
+const faces=["","⚀","⚁","⚂","⚃","⚄","⚅"];
+
+function cellAt(r,c){return cells[r*15+c]}
 
 function buildBoard(){
  board.innerHTML="";
  cells=[];
- for(let r=0;r<15;r++)for(let c=0;c<15;c++){
-  const el=document.createElement("div");el.className="cell";
-  el.style.gridRow=r+1;el.style.gridColumn=c+1;
-  board.appendChild(el);cells.push(el);
+ for(let r=0;r<15;r++){
+  for(let c=0;c<15;c++){
+   const el=document.createElement("div");
+   el.className="cell";
+   el.style.gridRow=r+1;
+   el.style.gridColumn=c+1;
+   board.appendChild(el);
+   cells.push(el);
+  }
  }
+
+ // Four large coloured base areas.
+ for(let r=0;r<6;r++)for(let c=0;c<6;c++)cellAt(r,c).classList.add("red");
+ for(let r=0;r<6;r++)for(let c=9;c<15;c++)cellAt(r,c).classList.add("green");
+ for(let r=9;r<15;r++)for(let c=9;c<15;c++)cellAt(r,c).classList.add("yellow");
+ for(let r=9;r<15;r++)for(let c=0;c<6;c++)cellAt(r,c).classList.add("blue");
+
  PATH.forEach(([r,c],i)=>{
-  const el=cellAt(r,c);el.classList.add("track");
-  if(SAFE.includes(i))el.classList.add("safe");
+  const el=cellAt(r,c);
+  el.className="cell track"+(SAFE.includes(i)?" safe":"");
  });
- HOME.forEach((lane,p)=>lane.forEach(([r,c],i)=>{
-  const el=cellAt(r,c);el.style.background=["#f6b4bb","#a7e5c4","#f5df9a","#b6d4fa"][p];el.style.border="1px solid #fff";
- }));
- addBase("red",0,0);addBase("green",0,9);addBase("yellow",9,9);addBase("blue",9,0);
- const center=document.createElement("div");center.className="center";board.appendChild(center);
-}
-function cellAt(r,c){return cells[r*15+c]}
-function addBase(color,r,c){
- const b=document.createElement("div");b.className="base "+color;
- b.style.top=(r/15*100)+"%";b.style.left=(c/15*100)+"%";
- for(let i=0;i<4;i++){const s=document.createElement("div");s.className="home-slot";b.appendChild(s)}
- board.appendChild(b);
-}
-function makePlayers(){
- players=COLORS.map((color,i)=>({color,name:NAMES[i],human:i===0,progress:[-1,-1,-1,-1],done:0}));
-}
-function renderPlayers(){
- const box=document.getElementById("players");box.innerHTML="";
- players.forEach((p,i)=>{
-  const el=document.createElement("div");el.className="player"+(turn===i?" active":"");
-  el.innerHTML=`<span class="dot" style="background:${p.color}"></span><b>${p.name}</b><br>${p.human?"You":"Computer"} · ${p.done}/4 home`;
-  box.appendChild(el);
+
+ HOME.forEach((lane,p)=>{
+  lane.forEach(([r,c])=>{
+   cellAt(r,c).className="cell "+COLOURS[p];
+  });
  });
+
+ // Starting squares.
+ START.forEach((index,p)=>{
+  const [r,c]=PATH[index];
+  cellAt(r,c).className="cell "+COLOURS[p]+" safe";
+ });
+
+ addBase("red",0,0);
+ addBase("green",0,9);
+ addBase("yellow",9,9);
+ addBase("blue",9,0);
+
+ const centre=document.createElement("div");
+ centre.className="center-home";
+ board.appendChild(centre);
 }
-function coordFor(p,t){
- const v=p.progress[t];
- if(v<0){
-  const homes=[
-   [[2,2],[2,4],[4,2],[4,4]],
-   [[2,10],[2,12],[4,10],[4,12]],
-   [[10,10],[10,12],[12,10],[12,12]],
-   [[10,2],[10,4],[12,2],[12,4]]
-  ];
-  return homes[COLORS.indexOf(p.color)][t];
+
+function addBase(colour,r,c){
+ const base=document.createElement("div");
+ base.className="base "+colour;
+ base.style.top=(r/15*100)+"%";
+ base.style.left=(c/15*100)+"%";
+ const inner=document.createElement("div");
+ inner.className="base-inner";
+ for(let i=0;i<4;i++){
+  const slot=document.createElement("div");
+  slot.className="home-slot";
+  inner.appendChild(slot);
  }
- if(v>=52)return HOME[COLORS.indexOf(p.color)][Math.min(5,v-52)];
- return PATH[(START[COLORS.indexOf(p.color)]+v)%52];
+ base.appendChild(inner);
+ board.appendChild(base);
 }
-function renderTokens(){
- document.querySelectorAll(".token").forEach(x=>x.remove());
- players.forEach((p,pi)=>p.progress.forEach((v,ti)=>{
-  if(v===57)return;
-  const [r,c]=coordFor(p,ti),el=document.createElement("button");
-  el.className="token "+p.color;
-  el.style.left=(c/15*100+1.1)+"%";el.style.top=(r/15*100+1.1)+"%";
-  el.style.width="4.5%";el.style.height="4.5%";
-  el.title=p.name+" token";
-  if(pi===0&&waiting.includes(ti)&&turn===0&&rolled)el.style.outline="3px solid #ffe16a";
-  el.onclick=()=>chooseToken(pi,ti);
-  board.appendChild(el);
+
+function createPlayers(){
+ players=COLOURS.map((colour,i)=>({
+  colour,
+  progress:[-1,-1,-1,-1],
+  done:0,
+  human:i<humanCount
  }));
 }
-function render(){renderPlayers();renderTokens();document.getElementById("turnStatus").textContent=turn===0?"Your turn":"Waiting for "+players[turn].name;}
-function movable(p,d){
- const list=[];
- p.progress.forEach((v,i)=>{
-  if(v===57)return;
-  if(v===-1&&d===6)list.push(i);
-  else if(v>=0&&v+d<=57)list.push(i);
+
+function renderPlayers(){
+ const wrap=document.getElementById("players");
+ wrap.innerHTML="";
+ players.forEach((p,i)=>{
+  const item=document.createElement("div");
+  item.className="player"+(turn===i?" active":"");
+  item.innerHTML=
+   `<span class="colour-dot" style="background:var(--${p.colour})"></span>
+    <strong>${COLOUR_NAMES[i]}</strong>`;
+  wrap.appendChild(item);
  });
- return list;
 }
-function nextTurn(){
- rolled=false;waiting=[];diceValue=0;
- turn=(turn+1)%4;
- render();
- if(turn!==0&&!finished)setTimeout(botTurn,850);
- else {document.getElementById("message").textContent="Your turn. Roll the dice!";document.getElementById("rollBtn").disabled=false;}
+
+function tokenCoordinate(playerIndex,tokenIndex){
+ const progress=players[playerIndex].progress[tokenIndex];
+ if(progress<0)return BASES[playerIndex][tokenIndex];
+ if(progress>=52)return HOME[playerIndex][Math.min(5,progress-52)];
+ return PATH[(START[playerIndex]+progress)%52];
 }
-function roll(){
+
+function renderTokens(){
+ document.querySelectorAll(".token").forEach(t=>t.remove());
+
+ players.forEach((p,pi)=>{
+  p.progress.forEach((progress,ti)=>{
+   if(progress===57)return;
+   const [r,c]=tokenCoordinate(pi,ti);
+   const token=document.createElement("button");
+   token.className="token "+p.colour;
+   token.style.gridRow=r+1;
+   token.style.gridColumn=c+1;
+   token.style.position="relative";
+   token.style.width="83%";
+   token.style.height="83%";
+   token.style.left="8.5%";
+   token.style.top="8.5%";
+   token.style.alignSelf="center";
+   token.style.justifySelf="center";
+   token.style.gridRow=r+1;
+   token.style.gridColumn=c+1;
+   token.style.zIndex="6";
+
+   if(pi===0&&rolled&&selectable.includes(ti)){
+    token.classList.add("selectable");
+   }
+   token.addEventListener("click",()=>selectToken(pi,ti));
+   board.appendChild(token);
+  });
+ });
+}
+
+function render(){
+ renderPlayers();
+ renderTokens();
+ const label=document.getElementById("turnLabel");
+ label.innerHTML=turn===0?"Your turn<small>Roll both dice</small>":
+  COLOUR_NAMES[turn]+" turn<small>Rolling the dice</small>";
+}
+
+function getMovable(player,distance){
+ const result=[];
+ player.progress.forEach((v,i)=>{
+  if(v===57)return;
+  if(v===-1&&distance===6)result.push(i);
+  else if(v>=0&&v+distance<=57)result.push(i);
+ });
+ return result;
+}
+
+function updateDice(){
+ document.getElementById("die1").textContent=faces[dice[0]];
+ document.getElementById("die2").textContent=faces[dice[1]];
+}
+
+function rollDice(){
  if(finished||rolled||turn!==0)return;
- diceValue=Math.floor(Math.random()*6)+1;rolled=true;
- showDice(diceValue);
- waiting=movable(players[0],diceValue);
+
+ dice=[1+Math.floor(Math.random()*6),1+Math.floor(Math.random()*6)];
+ const total=dice[0]+dice[1];
+ rolled=true;
+ updateDice();
+
+ selectable=getMovable(players[0],total);
+
  document.getElementById("rollBtn").disabled=true;
- if(!waiting.length){
-  document.getElementById("message").textContent=diceValue===6?"No available move. Roll again!":"No available move. Next player's turn.";
-  renderTokens();
-  setTimeout(()=>{if(diceValue===6){rolled=false;document.getElementById("rollBtn").disabled=false;document.getElementById("message").textContent="You rolled a six! Roll again."}else nextTurn()},1000);
+
+ if(selectable.length===0){
+  document.getElementById("message").textContent="No available move with "+total+".";
+  setTimeout(()=>{
+   if(dice[0]===dice[1]){
+    rolled=false;
+    document.getElementById("rollBtn").disabled=false;
+    document.getElementById("message").textContent="You rolled doubles! Roll again.";
+   }else nextTurn();
+  },1000);
   return;
  }
- document.getElementById("message").textContent="Choose a highlighted token to move.";
+
+ document.getElementById("message").textContent="Choose one of your highlighted pieces.";
  renderTokens();
 }
-function showDice(n){
- const faces=["","⚀","⚁","⚂","⚃","⚄","⚅"];
- document.getElementById("dice").textContent=faces[n];
+
+function selectToken(pi,ti){
+ if(finished||pi!==0||turn!==0||!rolled||!selectable.includes(ti))return;
+ movePiece(0,ti,dice[0]+dice[1]);
 }
-function chooseToken(pi,ti){
- if(finished||pi!==0||turn!==0||!rolled||!waiting.includes(ti))return;
- moveToken(0,ti,diceValue);
-}
-function moveToken(pi,ti,d){
- const p=players[pi],v=p.progress[ti];
- if(v===-1)p.progress[ti]=0;
- else p.progress[ti]=v+d;
- const newV=p.progress[ti];
- if(newV<52){
-  const global=(START[pi]+newV)%52;
+
+function movePiece(pi,ti,distance){
+ const p=players[pi];
+ const old=p.progress[ti];
+
+ if(old===-1){
+  p.progress[ti]=0;
+ }else{
+  p.progress[ti]=old+distance;
+ }
+
+ const current=p.progress[ti];
+
+ // Capture opposing pieces when landing on an unprotected square.
+ if(current>=0&&current<52){
+  const global=(START[pi]+current)%52;
   if(!SAFE.includes(global)){
    players.forEach((other,oi)=>{
     if(oi===pi)return;
-    other.progress.forEach((ov,ot)=>{
-     if(ov>=0&&ov<52&&(START[oi]+ov)%52===global)other.progress[ot]=-1;
+    other.progress.forEach((v,j)=>{
+     if(v>=0&&v<52&&(START[oi]+v)%52===global){
+      other.progress[j]=-1;
+     }
     });
    });
   }
  }
+
  if(p.progress[ti]===57)p.done++;
  render();
- if(p.done===4){endGame(pi);return}
- document.getElementById("message").textContent=p.name+" moved a token.";
- if(d===6){rolled=false;waiting=[];if(pi===0){document.getElementById("rollBtn").disabled=false;document.getElementById("message").textContent="You rolled a six! Roll again."}else setTimeout(botTurn,750)}
- else nextTurn();
-}
-function botTurn(){
- if(finished||turn===0)return;
- const p=players[turn],d=Math.floor(Math.random()*6)+1;
- showDice(d);
- const options=movable(p,d);
- document.getElementById("message").textContent=p.name+" rolled "+d+".";
- if(!options.length){
-  if(d===6)setTimeout(botTurn,800);else nextTurn();
+
+ if(p.done===4){
+  endGame(pi);
   return;
  }
- // Prefer a token that can finish, capture or leave the base.
- let choice=options.find(i=>p.progress[i]>=0&&p.progress[i]+d===57);
+
+ document.getElementById("message").textContent=
+  COLOUR_NAMES[pi]+" moved a piece.";
+
+ if(dice[0]===dice[1]){
+  rolled=false;
+  selectable=[];
+  if(pi===0){
+   document.getElementById("rollBtn").disabled=false;
+   document.getElementById("message").textContent="Doubles! You get another turn.";
+  }else{
+   setTimeout(botTurn,750);
+  }
+ }else{
+  nextTurn();
+ }
+}
+
+function nextTurn(){
+ rolled=false;
+ selectable=[];
+ turn=(turn+1)%4;
+ render();
+
+ if(turn===0){
+  document.getElementById("rollBtn").disabled=false;
+  document.getElementById("message").textContent="Your turn. Roll both dice!";
+ }else{
+  document.getElementById("rollBtn").disabled=true;
+  setTimeout(botTurn,850);
+ }
+}
+
+function botTurn(){
+ if(finished||turn===0)return;
+
+ const p=players[turn];
+ dice=[1+Math.floor(Math.random()*6),1+Math.floor(Math.random()*6)];
+ const total=dice[0]+dice[1];
+ updateDice();
+
+ const options=getMovable(p,total);
+ document.getElementById("message").textContent=
+  COLOUR_NAMES[turn]+" is moving.";
+
+ if(!options.length){
+  if(dice[0]===dice[1]){
+   setTimeout(botTurn,800);
+  }else{
+   nextTurn();
+  }
+  return;
+ }
+
+ // Prioritise finishing a piece, then bringing one out of base.
+ let choice=options.find(i=>p.progress[i]>=0&&p.progress[i]+total===57);
  if(choice===undefined)choice=options.find(i=>p.progress[i]===-1);
  if(choice===undefined)choice=options[Math.floor(Math.random()*options.length)];
- setTimeout(()=>moveToken(turn,choice,d),600);
+
+ setTimeout(()=>movePiece(turn,choice,total),700);
 }
+
 function endGame(winner){
  finished=true;
  document.getElementById("game").style.display="none";
  document.getElementById("result").style.display="block";
- document.getElementById("resultTitle").textContent=winner===0?"🏆 You Won!":"Match Complete";
- document.getElementById("resultText").textContent=winner===0?"Congratulations! You brought all four tokens home.":"The winner is "+players[winner].name+". Better luck next time!";
+ document.getElementById("resultTitle").textContent=
+  winner===0?"🏆 You Won!":COLOUR_NAMES[winner]+" Wins!";
+ document.getElementById("resultText").textContent=
+  winner===0?"Congratulations! You brought all four pieces home.":
+  "The "+COLOUR_NAMES[winner]+" pieces reached home first.";
  setTimeout(()=>location.href="games.html",3500);
 }
+
 async function startMatch(){
- document.getElementById("playBtn").disabled=true;
- document.getElementById("searchMessage").textContent="Looking for players...";
- let humanSeats=1;
- // Connect this endpoint to the real matchmaking backend when available.
+ const button=document.getElementById("playBtn");
+ button.disabled=true;
+ document.getElementById("searchMessage").textContent="Finding players...";
+
+ // Real matchmaking requires the EarnGig backend.
  try{
-  const response=await fetch("/api/games/ludo-battle/matchmake",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({game:"ludo-battle",seats:4})});
+  const response=await fetch("/api/games/ludo-battle/matchmake",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({game:"ludo-battle",seats:4})
+  });
   if(response.ok){
    const data=await response.json();
-   if(data.players&&Array.isArray(data.players))humanSeats=Math.min(4,Math.max(1,data.players.length));
+   if(Array.isArray(data.players)){
+    humanCount=Math.max(1,Math.min(4,data.players.length));
+   }
   }
- }catch(e){}
- document.getElementById("searchMessage").textContent=humanSeats>1?"Players found! Preparing your match...":"No other players waiting. Computer opponents are joining...";
- makePlayers();
- for(let i=1;i<humanSeats;i++){players[i].human=true;players[i].name="Player "+(i+1)}
- for(let i=humanSeats;i<4;i++){players[i].human=false;players[i].name="Computer "+i}
- document.getElementById("matchStatus").textContent=humanSeats+" human player(s) · "+(4-humanSeats)+" computer(s)";
+ }catch(error){
+  humanCount=1;
+ }
+
+ document.getElementById("searchMessage").textContent="";
+ createPlayers();
  document.getElementById("setup").style.display="none";
  document.getElementById("game").style.display="block";
- buildBoard();render();
+ document.getElementById("myColourDot").style.background="var(--red)";
+ document.getElementById("myColourText").textContent="Your colour: Red";
+ buildBoard();
+ render();
  document.getElementById("rollBtn").disabled=false;
 }
+
 document.getElementById("playBtn").addEventListener("click",startMatch);
-document.getElementById("rollBtn").addEventListener("click",roll);
+document.getElementById("rollBtn").addEventListener("click",rollDice);
 </script>
 </body>
 </html>
