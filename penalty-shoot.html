@@ -7,66 +7,24 @@
 <title>Penalty Shoot | EarnGig</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;color:#fff;
- font-family:Arial,sans-serif;
- background:radial-gradient(ellipse at top,#28533e,#102b21 65%,#081810);
-}
-header{
- display:flex;justify-content:space-between;align-items:center;
- padding:15px 18px;border-bottom:1px solid #ffffff20;
-}
-.brand{font-size:22px;font-weight:900}
-.brand span{color:#ffd66b}
+body{margin:0;min-height:100vh;color:#fff;font-family:Arial,sans-serif;background:radial-gradient(ellipse at top,#28533e,#102b21 65%,#081810)}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid #ffffff20}
+.brand{font-size:22px;font-weight:900}.brand span{color:#ffd66b}
 header a{color:#d5e9df;text-decoration:none;font-size:14px}
 main{max-width:580px;margin:auto;padding:16px 12px 30px}
 h1{text-align:center;margin:8px 0;font-size:27px}
 .subtitle{text-align:center;color:#c3d9ca;font-size:13px;margin-bottom:17px}
-.game-shell{
- position:relative;overflow:hidden;border-radius:19px;
- border:2px solid #73957b;
- background:#154a31;
- box-shadow:0 15px 40px #0007;
-}
-canvas{
- display:block;width:100%;height:auto;
- touch-action:none;
-}
-.overlay{
- position:absolute;inset:0;z-index:5;
- display:flex;align-items:center;justify-content:center;
- padding:18px;text-align:center;
- background:#071b16d9;backdrop-filter:blur(5px);
-}
-.overlay-card{
- width:min(100%,350px);padding:25px 20px;
- background:linear-gradient(145deg,#28543e,#142f25);
- border:1px solid #ffffff35;border-radius:20px;
- box-shadow:0 15px 45px #0008;
-}
-.emoji{font-size:55px}
-.overlay-card h2{font-size:26px;margin:12px 0}
+.game-shell{position:relative;overflow:hidden;border-radius:19px;border:2px solid #73957b;background:#154a31;box-shadow:0 15px 40px #0007}
+canvas{display:block;width:100%;height:auto;touch-action:none}
+.overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;background:#071b16d9;backdrop-filter:blur(5px)}
+.overlay-card{width:min(100%,350px);padding:25px 20px;background:linear-gradient(145deg,#28543e,#142f25);border:1px solid #ffffff35;border-radius:20px;box-shadow:0 15px 45px #0008}
+.emoji{font-size:55px}.overlay-card h2{font-size:26px;margin:12px 0}
 .overlay-card p{font-size:14px;line-height:1.65;color:#d0e4d5}
-button{
- border:0;border-radius:12px;padding:14px 26px;
- font-weight:900;font-size:15px;cursor:pointer;
- background:linear-gradient(135deg,#ffeb95,#f2b936);
- color:#253426;box-shadow:0 4px 0 #ad7a22;
-}
-button:active{transform:translateY(2px);box-shadow:0 2px 0 #ad7a22}
-.hint{
- text-align:center;font-size:13px;color:#d1e7d7;
- line-height:1.6;padding:13px 7px;
-}
-#resultOverlay{display:none}
-#resultTitle{color:#ffe28b}
-#resultMessage{color:#e2eee5}
+button{border:0;border-radius:12px;padding:14px 26px;font-weight:900;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#ffeb95,#f2b936);color:#253426;box-shadow:0 4px 0 #ad7a22}
+.hint{text-align:center;font-size:13px;color:#d1e7d7;line-height:1.6;padding:13px 7px}
+#resultOverlay{display:none}#resultTitle{color:#ffe28b}#resultMessage{color:#e2eee5}
 #returnMessage{font-size:11px;color:#b6d1bd;margin-top:16px}
-@media(max-width:420px){
- header{padding:13px}
- main{padding:12px 8px}
- h1{font-size:24px}
-}
+@media(max-width:420px){header{padding:13px}main{padding:12px 8px}h1{font-size:24px}}
 </style>
 </head>
 <body>
@@ -74,20 +32,19 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 #ad7a22}
  <div class="brand"><span>♛</span> EarnGig</div>
  <a href="games.html">← Back to Games</a>
 </header>
-
 <main>
  <h1>⚽ Penalty Shoot</h1>
  <div class="subtitle">One shot. Can you beat the goalkeeper?</div>
 
  <div class="game-shell">
-  <canvas id="gameCanvas" width="720" height="900"></canvas>
+  <canvas id="gameCanvas" width="720" height="1000"></canvas>
 
   <div class="overlay" id="startOverlay">
    <div class="overlay-card">
     <div class="emoji">⚽</div>
     <h2>Take Your Shot!</h2>
-    <p>Drag the football towards the part of the net you want to hit. Release to shoot.</p>
-    <p>The goalkeeper will try to catch your shot or punch it away.</p>
+    <p>The goal is ahead of you. Drag the ball towards the part of the net you want to hit, then release.</p>
+    <p>The goalkeeper will dive to catch or punch your shot away.</p>
     <button id="startBtn">START GAME</button>
    </div>
   </div>
@@ -101,631 +58,431 @@ button:active{transform:translateY(2px);box-shadow:0 2px 0 #ad7a22}
    </div>
   </div>
  </div>
-
- <div class="hint" id="hint">
-  Drag the ball towards your chosen spot in the net and release to shoot.
- </div>
+ <div class="hint" id="hint">Drag the ball towards your chosen spot in the distant goal and release.</div>
 </main>
 
 <script>
 const canvas=document.getElementById("gameCanvas");
 const ctx=canvas.getContext("2d");
+const W=720,H=1000;
 
-const W=720,H=900;
-
-const goal={
- left:75,
- right:645,
- top:105,
- bottom:445
-};
-
-const keeperLine=350;
-
-const ball={
- x:360,
- y:755,
- radius:27
-};
+// Goal is deliberately smaller and much farther from the ball.
+const goal={left:190,right:530,top:145,bottom:355};
+const ball={x:360,y:875,radius:29};
+const keeperLine=325;
 
 let phase="intro";
 let dragging=false;
 let aim=null;
 let keeperX=360;
-let keeperIdleTime=0;
 let shot=null;
-let shotOutcome="";
 let resultShown=false;
 let resultSent=false;
-let resultTimerStarted=false;
 
-function clamp(v,min,max){
- return Math.max(min,Math.min(max,v));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const smooth=t=>t*t*(3-2*t);
+
+function polygon(points,fill,stroke=null,lineWidth=1){
+ ctx.beginPath();
+ points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+ ctx.closePath();
+ ctx.fillStyle=fill;ctx.fill();
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}
 }
-function lerp(a,b,t){
- return a+(b-a)*t;
-}
-function smooth(t){
- return t*t*(3-2*t);
-}
 
-/* BACKGROUND */
+function drawStadium(){
+ const sky=ctx.createLinearGradient(0,0,0,260);
+ sky.addColorStop(0,"#172c2d");
+ sky.addColorStop(1,"#355447");
+ ctx.fillStyle=sky;ctx.fillRect(0,0,W,270);
 
-function drawBackground(){
- const grass=ctx.createLinearGradient(0,0,0,H);
- grass.addColorStop(0,"#2c8b54");
- grass.addColorStop(1,"#105331");
-
- ctx.fillStyle=grass;
- ctx.fillRect(0,0,W,H);
-
- for(let i=0;i<9;i++){
-  ctx.fillStyle=i%2===0?"#ffffff08":"#00000006";
-  ctx.fillRect(0,480+i*55,W,55);
- }
-
- // Subtle stadium background behind the goal.
- const stadium=ctx.createLinearGradient(0,0,0,150);
- stadium.addColorStop(0,"#293b34");
- stadium.addColorStop(1,"#172b23");
- ctx.fillStyle=stadium;
- ctx.fillRect(0,0,W,150);
-
- for(let row=0;row<3;row++){
-  for(let i=0;i<27;i++){
-   const colours=["#d8c6a0","#b9d5c3","#d1a75a","#a9b8a9"];
+ // Distant stadium stands.
+ polygon([[0,90],[720,90],[720,270],[0,270]],"#263e36");
+ for(let row=0;row<4;row++){
+  for(let i=0;i<42;i++){
+   const colours=["#c9b58d","#829f8b","#d5a95e","#b6c6b3","#9b7769"];
    ctx.fillStyle=colours[(i+row*3)%colours.length];
    ctx.beginPath();
-   ctx.arc(13+i*27,28+row*37,4,0,Math.PI*2);
+   ctx.arc(i*18+8,112+row*29,3.5,0,Math.PI*2);
    ctx.fill();
   }
  }
+ // Stadium roof and floodlights.
+ ctx.fillStyle="#152721";
+ ctx.fillRect(0,75,720,18);
+ for(const x of [60,660]){
+  ctx.fillStyle="#fff8d8";
+  ctx.shadowColor="#fff8d8";ctx.shadowBlur=22;
+  ctx.beginPath();ctx.arc(x,100,7,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+ }
 
- // Faint ground markings.
- ctx.strokeStyle="#ffffff38";
+ // Long perspective pitch.
+ polygon([[190,350],[530,350],[720,1000],[0,1000]],"#17653c");
+ polygon([[205,365],[515,365],[680,1000],[40,1000]],"#1d7545");
+
+ // Mowing stripes following the field perspective.
+ for(let i=0;i<8;i++){
+  const y1=390+i*76;
+  const y2=y1+76;
+  const left1=190-(y1-350)*.29;
+  const right1=530+(y1-350)*.29;
+  const left2=190-(y2-350)*.29;
+  const right2=530+(y2-350)*.29;
+  if(i%2===0){
+   polygon([[left1,y1],[right1,y1],[right2,y2],[left2,y2]],"#ffffff09");
+  }
+ }
+
+ // Perspective field lines.
+ ctx.strokeStyle="#ffffff70";
  ctx.lineWidth=3;
  ctx.beginPath();
- ctx.moveTo(20,485);
- ctx.lineTo(700,485);
+ ctx.moveTo(190,350);ctx.lineTo(0,1000);
+ ctx.moveTo(530,350);ctx.lineTo(720,1000);
  ctx.stroke();
-}
 
-/* GOAL AND NET */
+ // Distant penalty area.
+ ctx.strokeStyle="#ffffffb0";
+ ctx.lineWidth=3;
+ ctx.strokeRect(230,355,260,120);
+ ctx.strokeRect(270,355,180,65);
+
+ // Penalty spot, visible in foreground.
+ ctx.fillStyle="white";
+ ctx.beginPath();ctx.arc(360,620,5,0,Math.PI*2);ctx.fill();
+
+ // Grass texture near the ball.
+ for(let i=0;i<90;i++){
+  const x=(i*83)%720;
+  const y=650+((i*47)%330);
+  ctx.strokeStyle="#b8df9b20";
+  ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3,y-5);ctx.stroke();
+ }
+}
 
 function drawGoal(){
- // Goal shadow.
- ctx.fillStyle="#06170d55";
- ctx.beginPath();
- ctx.moveTo(goal.left,goal.top);
- ctx.lineTo(goal.right,goal.top);
- ctx.lineTo(goal.right+22,goal.bottom+18);
- ctx.lineTo(goal.left-22,goal.bottom+18);
- ctx.closePath();
- ctx.fill();
-
- // Net background.
- ctx.fillStyle="#e9eee3";
- ctx.beginPath();
- ctx.moveTo(goal.left+8,goal.top+12);
- ctx.lineTo(goal.right-8,goal.top+12);
- ctx.lineTo(goal.right-12,goal.bottom);
- ctx.lineTo(goal.left+12,goal.bottom);
- ctx.closePath();
- ctx.fill();
-
+ // Net depth behind the posts.
+ polygon([[190,145],[530,145],[570,390],[150,390]],"#e4e8dd");
  ctx.save();
  ctx.beginPath();
- ctx.moveTo(goal.left+8,goal.top+12);
- ctx.lineTo(goal.right-8,goal.top+12);
- ctx.lineTo(goal.right-12,goal.bottom);
- ctx.lineTo(goal.left+12,goal.bottom);
- ctx.closePath();
- ctx.clip();
+ ctx.moveTo(190,145);ctx.lineTo(530,145);
+ ctx.lineTo(570,390);ctx.lineTo(150,390);
+ ctx.closePath();ctx.clip();
 
- ctx.strokeStyle="#a1b0a3";
+ ctx.strokeStyle="#9ca99c";
  ctx.lineWidth=2;
 
- for(let x=goal.left;x<=goal.right;x+=27){
-  ctx.beginPath();
-  ctx.moveTo(x,goal.top);
-  ctx.lineTo(x,goal.bottom);
-  ctx.stroke();
+ // Perspective net grid.
+ for(let i=0;i<=16;i++){
+  const x=190+i*340/16;
+  const bottomX=150+i*420/16;
+  ctx.beginPath();ctx.moveTo(x,145);ctx.lineTo(bottomX,390);ctx.stroke();
  }
- for(let y=goal.top+15;y<=goal.bottom;y+=25){
-  ctx.beginPath();
-  ctx.moveTo(goal.left,y);
-  ctx.lineTo(goal.right,y);
-  ctx.stroke();
+ for(let j=0;j<=10;j++){
+  const y=145+j*24.5;
+  const inset=(y-145)*.08;
+  ctx.beginPath();ctx.moveTo(190-inset,y);ctx.lineTo(530+inset,y);ctx.stroke();
  }
-
  ctx.restore();
 
- // Goal posts.
- ctx.lineWidth=16;
+ // Side depth of the goal frame.
+ polygon([[190,145],[150,390],[165,390],[201,145]],"#d6d7ce");
+ polygon([[530,145],[570,390],[555,390],[519,145]],"#c4c8be");
+
+ // Goal posts and crossbar.
  ctx.lineCap="round";
- ctx.strokeStyle="#f7f4e9";
+ ctx.strokeStyle="#aeb3a9";
+ ctx.lineWidth=19;
  ctx.beginPath();
- ctx.moveTo(goal.left,goal.bottom);
- ctx.lineTo(goal.left,goal.top);
- ctx.lineTo(goal.right,goal.top);
- ctx.lineTo(goal.right,goal.bottom);
+ ctx.moveTo(190,365);ctx.lineTo(190,145);
+ ctx.lineTo(530,145);ctx.lineTo(530,365);
  ctx.stroke();
 
- ctx.lineWidth=3;
- ctx.strokeStyle="#b9b6a9";
+ ctx.strokeStyle="#fffdf1";
+ ctx.lineWidth=13;
+ ctx.beginPath();
+ ctx.moveTo(190,365);ctx.lineTo(190,145);
+ ctx.lineTo(530,145);ctx.lineTo(530,365);
  ctx.stroke();
+
+ // Post highlights.
+ ctx.strokeStyle="#ffffff";
+ ctx.lineWidth=3;
+ ctx.beginPath();
+ ctx.moveTo(187,360);ctx.lineTo(187,149);
+ ctx.lineTo(527,149);ctx.lineTo(527,360);
+ ctx.stroke();
+
+ // Goal-line shadow.
+ ctx.fillStyle="#06170d55";
+ ctx.fillRect(175,360,370,9);
 }
 
-/* GOALKEEPER */
-
-function drawGoalkeeper(){
- let dive=0;
- let direction=0;
-
- if(phase==="shot"&&shot){
-  const elapsed=performance.now()-shot.start;
-  const progress=clamp((elapsed-shot.reactionDelay)/shot.diveDuration,0,1);
-  dive=smooth(progress);
-  direction=Math.sign(shot.keeperTarget-shot.keeperStartX);
- }
-
- if(phase==="saved"&&shot){
-  dive=1;
-  direction=shot.diveDirection;
- }
-
- const feetY=438;
+function drawKeeper(){
+ let dive=shot?shot.diveProgress:0;
+ let dir=shot?shot.direction:0;
+ const travel=shot?Math.abs(shot.keeperTarget-shot.keeperStartX):0;
 
  ctx.save();
- ctx.translate(keeperX,feetY);
+ ctx.translate(keeperX,354);
+ ctx.rotate(dir*dive*.42);
 
- // Dive lean.
- ctx.rotate(direction*dive*.32);
-
- // Ground shadow.
- ctx.fillStyle="#07180e66";
+ // Shadow.
+ ctx.fillStyle="#06170d66";
  ctx.beginPath();
- ctx.ellipse(0,5,88,13,0,0,Math.PI*2);
+ ctx.ellipse(0,8,48+travel*.1,8,0,0,Math.PI*2);
  ctx.fill();
 
  // Legs.
  ctx.lineCap="round";
- ctx.strokeStyle="#202c35";
- ctx.lineWidth=25;
-
+ ctx.strokeStyle="#172b3a";ctx.lineWidth=17;
  ctx.beginPath();
- ctx.moveTo(-17,-35);
- ctx.lineTo(-33,-2);
- ctx.moveTo(17,-35);
- ctx.lineTo(35,-2);
+ ctx.moveTo(-11,-30);ctx.lineTo(-20,2);
+ ctx.moveTo(11,-30);ctx.lineTo(20,2);
  ctx.stroke();
 
  // Boots.
- ctx.strokeStyle="#171b20";
- ctx.lineWidth=19;
-
+ ctx.strokeStyle="#111a21";ctx.lineWidth=12;
  ctx.beginPath();
- ctx.moveTo(-33,-2);
- ctx.lineTo(-51,0);
- ctx.moveTo(35,-2);
- ctx.lineTo(53,0);
+ ctx.moveTo(-20,2);ctx.lineTo(-34,4);
+ ctx.moveTo(20,2);ctx.lineTo(34,4);
  ctx.stroke();
 
- // Body.
- const shirt=ctx.createLinearGradient(-38,0,38,0);
- shirt.addColorStop(0,"#d7802f");
- shirt.addColorStop(.5,"#ffc66a");
- shirt.addColorStop(1,"#b96a27");
-
- ctx.fillStyle=shirt;
+ // Shorts.
+ ctx.fillStyle="#1e3c58";
  ctx.beginPath();
- ctx.roundRect(-36,-130,72,105,16);
+ ctx.roundRect(-20,-57,40,30,6);ctx.fill();
+
+ // Jersey.
+ const jersey=ctx.createLinearGradient(-24,0,24,0);
+ jersey.addColorStop(0,"#c16b25");
+ jersey.addColorStop(.5,"#ffbd59");
+ jersey.addColorStop(1,"#b65f20");
+ ctx.fillStyle=jersey;
+ ctx.beginPath();
+ ctx.moveTo(-18,-111);ctx.lineTo(-25,-100);
+ ctx.lineTo(-20,-58);ctx.lineTo(20,-58);
+ ctx.lineTo(25,-100);ctx.lineTo(18,-111);
+ ctx.quadraticCurveTo(0,-121,-18,-111);
  ctx.fill();
 
- // Shirt detail.
- ctx.fillStyle="#fff3d8";
- ctx.fillRect(-6,-123,12,76);
-
- // Arms spread and diving.
- const armReach=80+35*dive;
- const armHeight=-115-30*dive;
-
- ctx.strokeStyle="#d9955c";
- ctx.lineWidth=22;
- ctx.lineCap="round";
-
+ // Arms and gloves.
+ const reach=42+45*dive;
+ const handY=-103-10*dive;
+ ctx.strokeStyle="#bd7952";ctx.lineWidth=13;ctx.lineCap="round";
  ctx.beginPath();
- ctx.moveTo(-29,-112);
- ctx.lineTo(-armReach,armHeight);
- ctx.moveTo(29,-112);
- ctx.lineTo(armReach,armHeight);
+ ctx.moveTo(-17,-100);ctx.lineTo(-dir*reach,handY);
+ ctx.moveTo(17,-100);ctx.lineTo(dir*reach,-91);
  ctx.stroke();
 
- // Gloves.
- ctx.fillStyle="#f5f1df";
- ctx.strokeStyle="#d9d4c5";
- ctx.lineWidth=3;
-
- for(const side of [-1,1]){
-  ctx.beginPath();
-  ctx.arc(side*armReach,armHeight,19,0,Math.PI*2);
-  ctx.fill();
-  ctx.stroke();
+ for(const [x,y] of [[-dir*reach,handY],[dir*reach,-91]]){
+  ctx.fillStyle="#f3f0df";
+  ctx.strokeStyle="#c3c6b9";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(x-10,y-9,20,19,6);ctx.fill();ctx.stroke();
  }
 
- // Neck.
- ctx.fillStyle="#b97852";
- ctx.fillRect(-9,-148,18,23);
-
  // Head.
- ctx.fillStyle="#bd815e";
- ctx.beginPath();
- ctx.arc(0,-164,26,0,Math.PI*2);
- ctx.fill();
-
- // Hair.
- ctx.fillStyle="#27201c";
- ctx.beginPath();
- ctx.arc(0,-173,26,Math.PI,Math.PI*2);
- ctx.fill();
+ ctx.fillStyle="#bf805b";
+ ctx.beginPath();ctx.arc(0,-128,17,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#29211e";
+ ctx.beginPath();ctx.arc(0,-134,17,Math.PI,Math.PI*2);ctx.fill();
 
  ctx.restore();
 }
-
-/* FOOTBALL */
 
 function drawBall(x,y,r){
  ctx.save();
-
- // Shadow.
  ctx.fillStyle="#00170b66";
- ctx.beginPath();
- ctx.ellipse(x+6,y+r*.85,r*1.1,r*.32,0,0,Math.PI*2);
- ctx.fill();
+ ctx.beginPath();ctx.ellipse(x+5,y+r*.8,r*1.1,r*.32,0,0,Math.PI*2);ctx.fill();
 
- const gradient=ctx.createRadialGradient(
-  x-r*.35,y-r*.4,2,x,y,r
- );
- gradient.addColorStop(0,"#ffffff");
- gradient.addColorStop(.72,"#e8e9e2");
- gradient.addColorStop(1,"#abb3a9");
+ const g=ctx.createRadialGradient(x-r*.35,y-r*.4,2,x,y,r);
+ g.addColorStop(0,"#fff");g.addColorStop(.72,"#e8e9e2");g.addColorStop(1,"#aab2a8");
+ ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
 
- ctx.fillStyle=gradient;
- ctx.beginPath();
- ctx.arc(x,y,r,0,Math.PI*2);
- ctx.fill();
-
- // Football pattern.
- ctx.save();
- ctx.beginPath();
- ctx.arc(x,y,r-1,0,Math.PI*2);
- ctx.clip();
-
+ ctx.save();ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.clip();
  ctx.fillStyle="#263033";
-
+ for(let i=0;i<5;i++){
+  const a=-Math.PI/2+i*Math.PI*2/5;
+  ctx.beginPath();
+  ctx.arc(x+Math.cos(a)*r*.65,y+Math.sin(a)*r*.65,r*.17,0,Math.PI*2);
+  ctx.fill();
+ }
  ctx.beginPath();
  for(let i=0;i<5;i++){
   const a=-Math.PI/2+i*Math.PI*2/5;
-  const px=x+Math.cos(a)*r*.34;
-  const py=y+Math.sin(a)*r*.34;
-  if(i===0)ctx.moveTo(px,py);
-  else ctx.lineTo(px,py);
+  const px=x+Math.cos(a)*r*.32,py=y+Math.sin(a)*r*.32;
+  if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
  }
- ctx.closePath();
- ctx.fill();
-
- for(let i=0;i<5;i++){
-  const a=i*Math.PI*2/5;
-  const px=x+Math.cos(a)*r*.69;
-  const py=y+Math.sin(a)*r*.69;
-
-  ctx.beginPath();
-  ctx.arc(px,py,r*.16,0,Math.PI*2);
-  ctx.fill();
- }
-
+ ctx.closePath();ctx.fill();
  ctx.restore();
 
- ctx.strokeStyle="#ffffffa0";
- ctx.lineWidth=2;
- ctx.beginPath();
- ctx.arc(x,y,r-1,0,Math.PI*2);
- ctx.stroke();
-
+ ctx.strokeStyle="#ffffffaa";ctx.lineWidth=2;
+ ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.stroke();
  ctx.restore();
-}
-
-/* AIMING */
-
-function getTarget(){
- if(!aim)return null;
-
- return {
-  x:clamp(aim.x,goal.left+25,goal.right-25),
-  y:clamp(aim.y,goal.top+30,goal.bottom-20)
- };
 }
 
 function drawAim(){
  if(!dragging||!aim)return;
-
- const target=getTarget();
- if(!target)return;
-
  ctx.save();
-
- ctx.setLineDash([11,10]);
- ctx.strokeStyle="#fff1a7";
- ctx.lineWidth=5;
- ctx.beginPath();
- ctx.moveTo(ball.x,ball.y);
- ctx.lineTo(target.x,target.y);
- ctx.stroke();
+ ctx.setLineDash([10,10]);
+ ctx.strokeStyle="#fff0a8";ctx.lineWidth=4;
+ ctx.beginPath();ctx.moveTo(ball.x,ball.y);ctx.lineTo(aim.x,aim.y);ctx.stroke();
  ctx.setLineDash([]);
-
- // Target circle in the net.
- ctx.strokeStyle="#ffffff";
- ctx.lineWidth=4;
- ctx.fillStyle="#ffe17099";
- ctx.beginPath();
- ctx.arc(target.x,target.y,17,0,Math.PI*2);
- ctx.fill();
- ctx.stroke();
-
- ctx.fillStyle="#fff";
- ctx.beginPath();
- ctx.arc(target.x,target.y,5,0,Math.PI*2);
- ctx.fill();
-
+ ctx.fillStyle="#ffe47c88";ctx.strokeStyle="#fff";ctx.lineWidth=3;
+ ctx.beginPath();ctx.arc(aim.x,aim.y,14,0,Math.PI*2);ctx.fill();ctx.stroke();
  ctx.restore();
 }
 
-/* SHOT ANIMATION */
-
-function getShotBallPosition(progress){
- const t=clamp(progress,0,1);
- const eased=t*t*(3-2*t);
-
- return {
-  x:lerp(ball.x,shot.targetX,eased),
-  y:lerp(ball.y,shot.targetY,eased)-Math.sin(t*Math.PI)*32,
-  radius:ball.radius*(1-.35*t)
- };
-}
-
 function updateShot(){
- if(phase==="shot"&&shot){
-  const elapsed=performance.now()-shot.start;
+ if(!shot)return;
+ const elapsed=performance.now()-shot.start;
 
-  // Goalkeeper reacts, then dives towards the ball's path.
-  if(elapsed>shot.reactionDelay){
-   const p=clamp(
-    (elapsed-shot.reactionDelay)/shot.diveDuration,0,1
-   );
-   keeperX=lerp(
-    shot.keeperStartX,
-    shot.keeperTarget,
-    smooth(p)
-   );
+ if(phase==="shot"){
+  const diveTime=clamp((elapsed-shot.reaction)/shot.diveTime,0,1);
+  shot.diveProgress=smooth(diveTime);
+  keeperX=lerp(shot.keeperStartX,shot.keeperTarget,shot.diveProgress);
+
+  if(!shot.checked&&elapsed>=shot.crossingTime){
+   shot.checked=true;
+   const distance=Math.abs(shot.crossingX-keeperX);
+   if(distance<48){
+    shot.saveType="caught";
+    phase="saved";
+    shot.saveStart=performance.now();
+   }else if(distance<88){
+    shot.saveType="punched";
+    phase="saved";
+    shot.saveStart=performance.now();
+   }else{
+    showResult("goal");
+   }
   }
 
-  if(!shot.crossingChecked&&elapsed>=shot.crossingTime){
-   shot.crossingChecked=true;
-   resolveGoalkeeper();
-  }
-
-  if(phase==="shot"&&elapsed>=shot.duration){
-   showResult("goal");
-  }
+  if(phase==="shot"&&elapsed>=shot.duration)showResult("goal");
  }
 
- if(phase==="saved"&&shot){
-  const elapsed=performance.now()-shot.saveStart;
-  if(elapsed>650){
-   showResult(shot.saveType);
-  }
- }
-}
-
-function resolveGoalkeeper(){
- const distance=Math.abs(shot.crossingX-keeperX);
-
- if(distance<55){
-  shot.saveType="caught";
-  shotOutcome="saved";
- }else if(distance<112){
-  shot.saveType="punched";
-  shotOutcome="saved";
- }else{
-  return;
- }
-
- phase="saved";
- shot.saveStart=performance.now();
- shot.diveDirection=Math.sign(shot.keeperTarget-shot.keeperStartX)||1;
-
- if(shot.saveType==="caught"){
-  shot.savedBallX=keeperX;
- }else{
-  shot.savedBallX=shot.crossingX+(shot.crossingX<keeperX?-1:1)*115;
+ if(phase==="saved"&&performance.now()-shot.saveStart>450){
+  showResult(shot.saveType);
  }
 }
 
 function drawMovingBall(){
- if(phase==="shot"&&shot){
-  const elapsed=performance.now()-shot.start;
-  const p=clamp(elapsed/shot.duration,0,1);
-  const position=getShotBallPosition(p);
-  drawBall(position.x,position.y,position.radius);
- }
-
- if(phase==="saved"&&shot){
-  const elapsed=performance.now()-shot.saveStart;
-  const p=clamp(elapsed/650,0,1);
-
+ if(!shot)return;
+ if(phase==="shot"){
+  const t=clamp((performance.now()-shot.start)/shot.duration,0,1);
+  const eased=1-Math.pow(1-t,1.7);
+  const x=lerp(ball.x,shot.targetX,eased);
+  const y=lerp(ball.y,shot.targetY,eased)-Math.sin(t*Math.PI)*17;
+  drawBall(x,y,ball.radius*(1-.25*t));
+ }else if(phase==="saved"){
+  const t=clamp((performance.now()-shot.saveStart)/450,0,1);
   if(shot.saveType==="caught"){
-   drawBall(keeperX,365,ball.radius*.8);
+   drawBall(keeperX,260,ball.radius*.8);
   }else{
-   const x=lerp(shot.crossingX,shot.savedBallX,p);
-   const y=lerp(keeperLine,245,p)-Math.sin(p*Math.PI)*25;
-   drawBall(x,y,ball.radius*(1-p*.3));
+   drawBall(lerp(shot.targetX,shot.targetX+shot.direction*100,t),
+    lerp(shot.targetY,shot.targetY-65,t),
+    ball.radius*(1-.2*t));
   }
  }
 }
 
-/* MAIN DRAW LOOP */
-
-function animate(time){
+function animate(){
  ctx.clearRect(0,0,W,H);
-
- drawBackground();
+ drawStadium();
  drawGoal();
 
  if(phase==="intro"||phase==="ready"){
-  keeperIdleTime=time;
-  keeperX=360+Math.sin(time*.0013)*135;
+  keeperX=360+Math.sin(performance.now()*.0015)*45;
  }
 
- if(phase==="shot"||phase==="saved"){
-  updateShot();
- }
+ if(phase==="shot"||phase==="saved")updateShot();
 
- drawGoalkeeper();
+ drawKeeper();
 
- if(phase==="shot"||phase==="saved"){
-  drawMovingBall();
- }else{
+ if(phase==="shot"||phase==="saved")drawMovingBall();
+ else{
   drawBall(ball.x,ball.y,ball.radius);
   drawAim();
  }
-
  requestAnimationFrame(animate);
 }
 
-/* INPUT */
-
 function canvasPoint(event){
- const rect=canvas.getBoundingClientRect();
- return {
-  x:(event.clientX-rect.left)*W/rect.width,
-  y:(event.clientY-rect.top)*H/rect.height
- };
+ const r=canvas.getBoundingClientRect();
+ return{x:(event.clientX-r.left)*W/r.width,y:(event.clientY-r.top)*H/r.height};
 }
 
 canvas.addEventListener("pointerdown",event=>{
  if(phase!=="ready"||dragging)return;
-
  const p=canvasPoint(event);
- const distance=Math.hypot(p.x-ball.x,p.y-ball.y);
-
- if(distance>85)return;
-
- dragging=true;
- aim=p;
-
+ if(Math.hypot(p.x-ball.x,p.y-ball.y)>90)return;
+ dragging=true;aim=p;
  canvas.setPointerCapture(event.pointerId);
 });
-
 canvas.addEventListener("pointermove",event=>{
- if(!dragging)return;
- aim=canvasPoint(event);
+ if(dragging)aim=canvasPoint(event);
 });
-
 canvas.addEventListener("pointerup",event=>{
  if(!dragging)return;
-
- aim=canvasPoint(event);
- dragging=false;
- shoot();
+ aim=canvasPoint(event);dragging=false;shoot();
 });
-
-canvas.addEventListener("pointercancel",()=>{
- dragging=false;
- aim=null;
-});
-
-/* SHOOT */
+canvas.addEventListener("pointercancel",()=>{dragging=false;aim=null});
 
 function shoot(){
  if(phase!=="ready"||!aim)return;
-
- const target=getTarget();
- if(!target)return;
-
- const dx=target.x-ball.x;
- const dy=target.y-ball.y;
-
- if(dy>-100){
-  dragging=false;
+ if(aim.y>goal.bottom-15){
   aim=null;
-  document.getElementById("hint").textContent=
-   "Aim towards the goal, then release the ball.";
+  document.getElementById("hint").textContent="Aim towards the goal and release.";
   return;
  }
 
- const crossingT=(keeperLine-ball.y)/(target.y-ball.y);
- const crossingX=ball.x+dx*crossingT;
+ const targetX=clamp(aim.x,goal.left+12,goal.right-12);
+ const targetY=clamp(aim.y,goal.top+10,goal.bottom-12);
+ const crossingT=(keeperLine-ball.y)/(targetY-ball.y);
+ const crossingX=ball.x+(targetX-ball.x)*crossingT;
+ const direction=Math.sign(crossingX-keeperX)||1;
 
  shot={
   start:performance.now(),
-  duration:1000,
-  targetX:target.x,
-  targetY:target.y,
-  crossingX,
-  crossingTime:crossingT*1000,
-  crossingChecked:false,
-  reactionDelay:150,
-  diveDuration:450,
+  duration:390,
+  targetX,targetY,crossingX,
+  crossingTime:clamp(crossingT*390,110,310),
+  checked:false,
+  reaction:35,
+  diveTime:220,
   keeperStartX:keeperX,
-  keeperTarget:clamp(crossingX,goal.left+65,goal.right-65)
+  keeperTarget:clamp(crossingX,goal.left+30,goal.right-30),
+  diveProgress:0,
+  direction
  };
-
- phase="shot";
- aim=null;
-
- document.getElementById("hint").textContent=
-  "The goalkeeper is trying to stop your shot!";
+ phase="shot";aim=null;
+ document.getElementById("hint").textContent="The goalkeeper is diving!";
 }
-
-/* RESULTS */
 
 function showResult(type){
  if(resultShown)return;
- resultShown=true;
- phase="result";
+ resultShown=true;phase="result";
 
- let icon,title,message,won=false;
-
- if(type==="goal"){
-  icon="⚽";
-  title="GOAL!";
-  message="You scored! The goalkeeper couldn't stop your shot.";
-  won=true;
- }else if(type==="caught"){
-  icon="🧤";
-  title="CAUGHT!";
-  message="The goalkeeper caught your shot!";
- }else{
-  icon="🧤";
-  title="SAVED!";
-  message="The goalkeeper punched the ball away!";
- }
+ const results={
+  goal:["⚽","GOAL!","You scored! The goalkeeper couldn't stop your shot."],
+  caught:["🧤","CAUGHT!","The goalkeeper caught your shot!"],
+  punched:["🧤","SAVED!","The goalkeeper punched your shot away."]
+ };
+ const [icon,title,message]=results[type];
 
  document.getElementById("resultIcon").textContent=icon;
  document.getElementById("resultTitle").textContent=title;
  document.getElementById("resultMessage").textContent=message;
  document.getElementById("resultOverlay").style.display="flex";
-
- document.getElementById("hint").textContent=
-  won?"You scored a goal!":"The goalkeeper stopped your shot.";
-
- submitResult(won);
+ submitResult(type==="goal");
 }
 
 async function submitResult(won){
  if(resultSent)return;
  resultSent=true;
-
  const status=document.getElementById("returnMessage");
  status.textContent="Checking result...";
 
@@ -734,39 +491,25 @@ async function submitResult(won){
    method:"POST",
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify({
-    game:"penalty-shoot",
-    completed:true,
-    result:won?"win":"loss",
-    score:won?1:0,
-    attempts:1
+    game:"penalty-shoot",completed:true,
+    result:won?"win":"loss",score:won?1:0,attempts:1
    })
   });
-
   if(response.ok){
    const data=await response.json();
-   status.textContent=data.rewardGranted?
-    "Result verified. Returning to Games...":
-    "Result submitted. Returning to Games...";
-  }else{
-   status.textContent="Returning to Games...";
-  }
- }catch(error){
+   status.textContent=data.rewardGranted?"Result verified. Returning to Games...":"Result submitted. Returning to Games...";
+  }else status.textContent="Returning to Games...";
+ }catch(e){
   status.textContent="Returning to Games...";
  }
-
- if(!resultTimerStarted){
-  resultTimerStarted=true;
-  setTimeout(()=>location.href="games.html",3500);
- }
+ setTimeout(()=>location.href="games.html",2500);
 }
-
-/* START */
 
 document.getElementById("startBtn").addEventListener("click",()=>{
  document.getElementById("startOverlay").style.display="none";
  phase="ready";
  document.getElementById("hint").textContent=
-  "Drag the football towards a spot in the net and release to shoot.";
+  "The goal is in the distance. Drag the ball towards your target and release.";
 });
 
 requestAnimationFrame(animate);
