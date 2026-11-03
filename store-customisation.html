@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store Customisation | EarnGig</title>
+
+<style>
+:root {
+    --purple:#6d35c7;
+    --purple-dark:#4c2097;
+    --lavender:#f4efff;
+    --gold:#e7b94f;
+    --text:#292438;
+    --muted:#777286;
+    --border:#e8e1f1;
+    --green:#16834a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:var(--text)}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+header{
+    min-height:70px;padding:12px 5%;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--border)
+}
+.brand{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:800;color:var(--purple-dark)}
+.brand svg{width:25px;height:25px}
+.header-links{display:flex;gap:20px;font-size:13px;font-weight:600}
+.header-links a:hover{color:var(--purple)}
+.menu-btn{display:none;border:0;background:var(--lavender);color:var(--purple);padding:9px 12px;border-radius:8px;font-size:19px}
+.layout{display:grid;grid-template-columns:235px 1fr;min-height:calc(100vh - 70px)}
+.sidebar{border-right:1px solid var(--border);padding:24px 15px}
+.sidebar h3{font-size:11px;color:#9991a6;letter-spacing:1px;margin:17px 10px 10px}
+.sidebar a{display:block;padding:12px;border-radius:9px;font-size:13px;font-weight:600;color:#575164;margin-bottom:5px}
+.sidebar a:hover,.sidebar a.active{background:var(--lavender);color:var(--purple)}
+main{padding:28px;max-width:1400px;width:100%}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap;margin-bottom:23px}
+.heading h1{font-size:27px;margin-bottom:7px}
+.heading p{font-size:13px;color:var(--muted);line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:11px 16px;background:var(--purple);color:#fff;font-size:12px;font-weight:700}
+.btn:hover{background:var(--purple-dark)}
+.btn-outline{background:#fff;color:var(--purple);border:1px solid var(--purple)}
+.btn-gold{background:var(--gold);color:#382600}
+.card{border:1px solid var(--border);border-radius:14px;padding:21px;margin-bottom:20px}
+.card h2{font-size:17px;margin-bottom:8px}
+.card>p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:17px}
+.notice{padding:14px 15px;border:1px solid #eadcfb;background:#faf7ff;color:#594574;border-radius:9px;font-size:12px;line-height:1.7;margin-bottom:17px}
+.notice.warning{background:#fff9eb;border-color:#f1dfb7;color:#805b17}
+.notice.success{background:#f0fbf4;border-color:#c9ecd7;color:#17683e}
+.price{font-size:30px;font-weight:800;color:var(--purple-dark);margin:13px 0}
+.price small{font-size:12px;color:var(--muted);font-weight:400}
+.feature-list{list-style:none;margin:15px 0}
+.feature-list li{font-size:13px;padding:7px 0;color:#575164}
+.feature-list li:before{content:"✓";color:var(--green);font-weight:800;margin-right:8px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.group{display:flex;flex-direction:column;gap:7px}
+.group.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;color:var(--text);background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--purple)}
+textarea{min-height:95px;resize:vertical}
+small{font-size:11px;color:var(--muted);line-height:1.5}
+.preview-banner{height:185px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:#fff;background:linear-gradient(120deg,#4c2097,#8752d8);background-position:center;background-size:cover}
+.preview-banner h2{font-size:25px;margin-bottom:8px;color:#fff}
+.preview-banner p{font-size:13px}
+.preview-intro{padding:18px;border:1px solid var(--border);border-radius:10px;margin-top:14px}
+.preview-intro h3{font-size:16px;margin-bottom:8px}
+.preview-intro p{font-size:13px;color:var(--muted);line-height:1.6}
+.layout-options{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.layout-option{border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer}
+.layout-option.selected{border:2px solid var(--purple);background:#faf7ff}
+.layout-option h3{font-size:13px;margin-bottom:7px}
+.layout-option p{font-size:11px;color:var(--muted);line-height:1.5}
+.layout-option input{width:auto;margin-right:6px}
+.sample-layout{display:grid;gap:5px;margin:12px 0;height:65px}
+.sample-layout span{background:#e6dcf6;border-radius:4px}
+.sample-layout.grid{grid-template-columns:repeat(3,1fr)}
+.sample-layout.list{grid-template-columns:1fr}
+.sample-layout.featured{grid-template-columns:2fr 1fr}
+.sample-layout.featured span:first-child{grid-row:span 2}
+.status{display:inline-block;padding:6px 10px;border-radius:30px;font-size:10px;font-weight:800}
+.status.active{background:#e6f8ed;color:var(--green)}
+.status.locked{background:#fff5df;color:#946000}
+.two-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+footer{text-align:center;padding:22px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.hidden{display:none!important}
+@media(max-width:850px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:none;border-bottom:1px solid var(--border)}
+.sidebar.show{display:block}
+.menu-btn{display:block}
+.header-links{display:none}
+main{padding:20px 14px}
+}
+@media(max-width:600px){
+.form-grid,.two-columns{grid-template-columns:1fr}
+.group.full{grid-column:auto}
+.layout-options{grid-template-columns:1fr}
+.heading h1{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a href="index.html" class="brand">
+<svg viewBox="0 0 40 32" fill="none" aria-hidden="true">
+<path d="M5 8L12 15L20 3L28 15L35 8L32 26H8L5 8Z" fill="#E7B94F" stroke="#C18B24" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M9 29H31" stroke="#C18B24" stroke-width="2" stroke-linecap="round"/>
+<circle cx="5" cy="7" r="2" fill="#E7B94F"/>
+<circle cx="20" cy="3" r="2" fill="#E7B94F"/>
+<circle cx="35" cy="7" r="2" fill="#E7B94F"/>
+</svg>
+EarnGig
+</a>
+
+<nav class="header-links">
+<a href="dashboard.html">Dashboard</a>
+<a href="storefront.html">My Store</a>
+<a href="my-shop.html">Seller Centre</a>
+</nav>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+<h3>SELLER CENTRE</h3>
+<a href="my-shop.html">📊 Overview</a>
+<a href="storefront.html">🏪 My Store</a>
+<a href="store-customisation.html" class="active">🎨 Store Customisation</a>
+<a href="my-products.html">📦 My Products</a>
+<a href="my-orders.html">🛍️ Orders</a>
+<a href="sales-earnings.html">💰 Sales & Earnings</a>
+<a href="promote-store.html">🚀 Promote My Store</a>
+<a href="shop-payments.html">💳 Shop Payments</a>
+<a href="withdrawals.html">🏦 Withdrawals</a>
+<a href="store-settings.html">⚙️ Store Settings</a>
+<h3>MAIN PLATFORM</h3>
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="marketplace.html">🛒 Marketplace</a>
+<a href="wallet.html">👛 My Wallet</a>
+</aside>
+
+<main>
+
+<div class="heading">
+<div>
+<h1>Store Customisation</h1>
+<p>Give your EarnGig storefront a unique look and create a better shopping experience.</p>
+</div>
+<a href="storefront.html" class="btn btn-outline">View My Store</a>
+</div>
+
+<section class="card">
+<div class="two-columns">
+<div>
+<span class="status locked" id="premium-status">PREMIUM UPGRADE</span>
+<h2 style="margin-top:13px">Premium Store Customisation</h2>
+<p>Unlock additional storefront presentation options with a one-time upgrade.</p>
+<div class="price">₦10,000 <small>one-time payment</small></div>
+<ul class="feature-list">
+<li>Custom welcome banner and business introduction</li>
+<li>Alternative product display layouts</li>
+<li>More control over your storefront presentation</li>
+<li>Premium storefront appearance</li>
+</ul>
+<button class="btn btn-gold" id="upgrade-button" onclick="startUpgrade()">Unlock Premium Customisation</button>
+</div>
+
+<div>
+<div class="notice warning">
+<strong>Payment information</strong><br>
+The ₦10,000 premium customisation fee is optional and is separate from your ₦20,000 basic store opening fee.
+</div>
+<div class="notice">
+Your customisation settings are saved in this browser demo. The payment button does not collect money or activate premium access.
+</div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>Storefront Preview</h2>
+<p>Preview the customisation choices you make below.</p>
+
+<div class="preview-banner" id="banner-preview">
+<div>
+<h2 id="preview-title">Welcome to Our Store</h2>
+<p id="preview-subtitle">Discover products you will love.</p>
+</div>
+</div>
+
+<div class="preview-intro">
+<h3 id="preview-intro-title">About Our Business</h3>
+<p id="preview-intro-text">Your business introduction will appear here.</p>
+</div>
+
+</section>
+
+<section class="card">
+<h2>Welcome Banner</h2>
+<p>Set the heading, message and background image for your storefront banner.</p>
+
+<form id="banner-form" class="form-grid">
+<div class="group full">
+<label for="banner-heading">Banner Heading</label>
+<input id="banner-heading" maxlength="90" placeholder="Welcome to our store">
+</div>
+
+<div class="group full">
+<label for="banner-message">Banner Message</label>
+<textarea id="banner-message" placeholder="Tell customers what makes your store special."></textarea>
+</div>
+
+<div class="group full">
+<label for="banner-image">Banner Image URL</label>
+<input id="banner-image" type="url" placeholder="https://example.com/banner.jpg">
+<small>Enter a publicly accessible image URL.</small>
+</div>
+
+<div class="group full">
+<button class="btn" type="submit">Save Banner Settings</button>
+</div>
+</form>
+</section>
+
+<section class="card">
+<h2>Business Introduction</h2>
+<p>Give customers a short introduction to your business.</p>
+
+<form id="intro-form" class="form-grid">
+<div class="group full">
+<label for="intro-heading">Introduction Heading</label>
+<input id="intro-heading" maxlength="80" placeholder="About Our Business">
+</div>
+
+<div class="group full">
+<label for="intro-description">Business Introduction</label>
+<textarea id="intro-description" placeholder="Tell customers your story, what you sell and why they should shop with you."></textarea>
+</div>
+
+<div class="group full">
+<button class="btn" type="submit">Save Business Introduction</button>
+</div>
+</form>
+</section>
+
+<section class="card">
+<h2>Product Display Style</h2>
+<p>Choose how products should be arranged on your storefront.</p>
+
+<div class="layout-options">
+
+<label class="layout-option" id="option-grid">
+<input type="radio" name="layout" value="grid">
+<h3>Grid Display</h3>
+<div class="sample-layout grid">
+<span></span><span></span><span></span>
+<span></span><span></span><span></span>
+</div>
+<p>Show products in an organised grid of cards.</p>
+</label>
+
+<label class="layout-option" id="option-list">
+<input type="radio" name="layout" value="list">
+<h3>List Display</h3>
+<div class="sample-layout list">
+<span></span><span></span><span></span>
+</div>
+<p>Show products in horizontal rows with more room for details.</p>
+</label>
+
+<label class="layout-option" id="option-featured">
+<input type="radio" name="layout" value="featured">
+<h3>Featured Display</h3>
+<div class="sample-layout featured">
+<span></span><span></span><span></span>
+</div>
+<p>Highlight a larger featured product beside smaller cards.</p>
+</label>
+
+</div>
+
+<br>
+<button class="btn" onclick="saveLayout()" type="button">Save Display Style</button>
+<div id="layout-message"></div>
+</section>
+
+<section class="card">
+<h2>Customisation Access</h2>
+<p>Basic store owners can manage their business information and standard storefront details. Premium customisation options are available after the optional upgrade is verified.</p>
+<div id="access-message" class="notice warning"></div>
+</section>
+
+</main>
+</div>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+const STORE_KEY = "earngig_seller_store";
+const CUSTOM_KEY = "earngig_seller_customisation";
+const ENTITLEMENTS_KEY = "earngig_seller_entitlements";
+
+function readStorage(key, fallback) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value === null ? fallback : value;
+    } catch {
+        return fallback;
+    }
+}
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("show");
+}
+
+function isPremiumPaid() {
+    const entitlements = readStorage(ENTITLEMENTS_KEY, {});
+    return entitlements.premiumCustomisationPaid === true;
+}
+
+function startUpgrade() {
+    const entitlements = readStorage(ENTITLEMENTS_KEY, {});
+
+    if (!entitlements.basicStorePaid) {
+        alert("Your ₦20,000 basic store opening payment must be verified first.");
+        return;
+    }
+
+    if (isPremiumPaid()) {
+        alert("Your premium customisation access is already recorded.");
+        return;
+    }
+
+    alert("The ₦10,000 premium payment gateway is not connected yet. No payment has been collected.");
+}
+
+function loadCustomisation() {
+    const store = readStorage(STORE_KEY, {});
+    const custom = readStorage(CUSTOM_KEY, {});
+
+    document.getElementById("banner-heading").value =
+        custom.bannerHeading || store.bannerTitle || "";
+
+    document.getElementById("banner-message").value =
+        custom.bannerMessage || store.bannerText || "";
+
+    document.getElementById("banner-image").value =
+        custom.bannerImage || store.banner || "";
+
+    document.getElementById("intro-heading").value =
+        custom.introHeading || "About Our Business";
+
+    document.getElementById("intro-description").value =
+        custom.introDescription || store.description || "";
+
+    const layout = custom.productLayout || "grid";
+    const radio = document.querySelector('input[name="layout"][value="' + layout + '"]');
+
+    if (radio) radio.checked = true;
+
+    updatePreview();
+    updatePremiumStatus();
+}
+
+function updatePreview() {
+    const heading = document.getElementById("banner-heading").value.trim();
+    const message = document.getElementById("banner-message").value.trim();
+    const image = document.getElementById("banner-image").value.trim();
+    const introHeading = document.getElementById("intro-heading").value.trim();
+    const introDescription = document.getElementById("intro-description").value.trim();
+
+    document.getElementById("preview-title").textContent =
+        heading || "Welcome to Our Store";
+
+    document.getElementById("preview-subtitle").textContent =
+        message || "Discover products you will love.";
+
+    document.getElementById("preview-intro-title").textContent =
+        introHeading || "About Our Business";
+
+    document.getElementById("preview-intro-text").textContent =
+        introDescription || "Your business introduction will appear here.";
+
+    const banner = document.getElementById("banner-preview");
+
+    banner.style.backgroundImage = image
+        ? "linear-gradient(rgba(30,10,55,.35),rgba(30,10,55,.35)),url(" + JSON.stringify(image).slice(1,-1) + ")"
+        : "linear-gradient(120deg,#4c2097,#8752d8)";
+}
+
+function updatePremiumStatus() {
+    const paid = isPremiumPaid();
+    const badge = document.getElementById("premium-status");
+    const button = document.getElementById("upgrade-button");
+    const access = document.getElementById("access-message");
+
+    if (paid) {
+        badge.className = "status active";
+        badge.textContent = "PREMIUM ACTIVE";
+        button.textContent = "Premium Customisation Active";
+        button.disabled = true;
+        button.style.opacity = ".6";
+        access.className = "notice success";
+        access.textContent = "Premium customisation is marked as active in this browser demo.";
+    } else {
+        badge.className = "status locked";
+        badge.textContent = "PREMIUM UPGRADE";
+        button.textContent = "Unlock Premium Customisation";
+        access.className = "notice warning";
+        access.textContent = "Your premium options will be activated after your ₦10,000 payment is verified.";
+    }
+}
+
+function saveCustomisation(messageTarget) {
+    const existing = readStorage(CUSTOM_KEY, {});
+
+    const custom = {
+        ...existing,
+        bannerHeading:document.getElementById("banner-heading").value.trim(),
+        bannerMessage:document.getElementById("banner-message").value.trim(),
+        bannerImage:document.getElementById("banner-image").value.trim(),
+        introHeading:document.getElementById("intro-heading").value.trim(),
+        introDescription:document.getElementById("intro-description").value.trim(),
+        updatedAt:new Date().toISOString()
+    };
+
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
+    updatePreview();
+
+    document.getElementById(messageTarget).innerHTML =
+        '<div class="notice success">Your changes have been saved in this browser.</div>';
+}
+
+document.getElementById("banner-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    saveCustomisation("banner-form");
+});
+
+document.getElementById("intro-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    saveCustomisation("intro-form");
+});
+
+function saveLayout() {
+    const selected = document.querySelector('input[name="layout"]:checked');
+
+    if (!selected) {
+        alert("Please select a product display style.");
+        return;
+    }
+
+    if (!isPremiumPaid()) {
+        alert("The alternative product display styles require the ₦10,000 premium customisation upgrade.");
+        return;
+    }
+
+    const custom = readStorage(CUSTOM_KEY, {});
+    custom.productLayout = selected.value;
+    custom.updatedAt = new Date().toISOString();
+
+    localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
+
+    document.getElementById("layout-message").innerHTML =
+        '<div class="notice success">Your product display style has been saved.</div>';
+
+    document.querySelectorAll(".layout-option").forEach(option => {
+        option.classList.remove("selected");
+    });
+
+    document.getElementById("option-" + selected.value).classList.add("selected");
+}
+
+document.querySelectorAll('input[name="layout"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+        document.querySelectorAll(".layout-option").forEach(option => {
+            option.classList.remove("selected");
+        });
+
+        document.getElementById("option-" + radio.value).classList.add("selected");
+    });
+});
+
+document.querySelectorAll("#banner-form input, #banner-form textarea, #intro-form input, #intro-form textarea")
+.forEach(input => input.addEventListener("input", updatePreview));
+
+loadCustomisation();
+</script>
+
+</body>
+</html>
