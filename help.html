@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Help Centre | EarnGig</title>
+
+<style>
+:root{
+--purple:#7028a8;
+--deep:#4d167c;
+--lavender:#f6f0fb;
+--border:#eadff3;
+--gold:#d6a52a;
+--text:#261c2e;
+--muted:#81768a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:var(--text);min-height:100vh}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+.topbar{height:70px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:5}
+.brand{font-size:25px;font-weight:900;letter-spacing:-1px}
+.crown{color:var(--gold)}
+.gig{color:var(--purple)}
+.top-links{display:flex;gap:20px;align-items:center;font-size:13px;font-weight:700;color:var(--purple)}
+.container{width:92%;max-width:1050px;margin:35px auto 65px}
+.back{display:inline-block;color:var(--purple);font-size:13px;font-weight:700;margin-bottom:22px}
+.hero{text-align:center;padding:42px 20px;background:linear-gradient(135deg,#f8f3fc,#fff);border:1px solid var(--border);border-radius:18px;margin-bottom:30px}
+.hero-icon{font-size:43px;margin-bottom:13px}
+.hero h1{font-size:32px;margin-bottom:10px}
+.hero p{font-size:14px;color:var(--muted);line-height:1.6}
+.search-wrap{max-width:580px;margin:22px auto 0}
+.search-wrap input{width:100%;padding:15px 17px;border:1px solid #d9c8e8;border-radius:10px;outline:none;font-size:14px;background:#fff}
+.search-wrap input:focus{border-color:var(--purple);box-shadow:0 0 0 3px #7028a815}
+.section-title{font-size:20px;margin:30px 0 15px}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.category{border:1px solid var(--border);border-radius:13px;padding:19px;background:#fff;transition:.2s}
+.category:hover{border-color:var(--purple);background:#fcf9ff;transform:translateY(-2px)}
+.category span{font-size:27px;display:block;margin-bottom:10px}
+.category strong{display:block;font-size:14px;margin-bottom:6px}
+.category p{font-size:12px;color:var(--muted);line-height:1.5}
+.faq-list{display:grid;gap:11px}
+.faq-item{border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.faq-question{width:100%;border:0;background:#fff;text-align:left;padding:17px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:700;font-size:13px;color:var(--text)}
+.faq-question:hover{background:#fcf9ff}
+.faq-question span{color:var(--purple);font-size:20px}
+.faq-answer{display:none;padding:0 17px 17px;font-size:12px;line-height:1.7;color:var(--muted)}
+.faq-item.open .faq-answer{display:block}
+.faq-item.open .faq-question{color:var(--purple)}
+.empty{display:none;padding:25px;text-align:center;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:13px}
+.contact-panel{margin-top:30px;padding:25px;border:1px solid var(--border);border-radius:15px;background:var(--lavender);text-align:center}
+.contact-panel h2{font-size:20px;margin-bottom:9px}
+.contact-panel p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:17px}
+.button{display:inline-block;padding:12px 19px;background:var(--purple);color:#fff;border-radius:9px;font-weight:800;font-size:12px}
+.button:hover{background:var(--deep)}
+footer{border-top:1px solid var(--border);padding:23px 5%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+footer a{color:var(--purple);font-weight:700}
+@media(max-width:700px){
+.category-grid{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:26px}
+.top-links{gap:10px;font-size:11px}
+}
+@media(max-width:450px){
+.category-grid{grid-template-columns:1fr}
+.topbar{padding:0 4%}
+.brand{font-size:22px}
+.top-links a:nth-child(2){display:none}
+.container{margin-top:23px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+<a href="index.html" class="brand"><span class="crown">♛</span> Earn<span class="gig">Gig</span></a>
+<nav class="top-links">
+<a href="dashboard.html">Dashboard</a>
+<a href="support.html">Contact Support</a>
+</nav>
+</header>
+
+<main class="container">
+
+<a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+<section class="hero">
+<div class="hero-icon">❓</div>
+<h1>How Can We Help You?</h1>
+<p>Find answers to common questions about using EarnGig, earning coins, reading novels, games and your account.</p>
+
+<div class="search-wrap">
+<input type="search" id="faqSearch" placeholder="Search for an answer..." autocomplete="off">
+</div>
+</section>
+
+<h2 class="section-title">Browse Help Topics</h2>
+
+<section class="category-grid">
+<a class="category" href="#account">
+<span>👤</span>
+<strong>Account and Profile</strong>
+<p>Registration, login and profile information.</p>
+</a>
+
+<a class="category" href="#wallet">
+<span>👛</span>
+<strong>Wallet and Coins</strong>
+<p>Understanding your coin balance and withdrawals.</p>
+</a>
+
+<a class="category" href="#games">
+<span>🎮</span>
+<strong>Games and Rewards</strong>
+<p>Playing games and qualifying for rewards.</p>
+</a>
+
+<a class="category" href="#novels">
+<span>📚</span>
+<strong>Novels and Reading</strong>
+<p>Reading stories and completing reading challenges.</p>
+</a>
+
+<a class="category" href="#marketplace">
+<span>🛍️</span>
+<strong>Marketplace and Store</strong>
+<p>Buying, selling and managing product listings.</p>
+</a>
+
+<a class="category" href="#referrals">
+<span>👥</span>
+<strong>Referrals and Advertising</strong>
+<p>Inviting friends and promoting your business.</p>
+</a>
+</section>
+
+<h2 class="section-title">Frequently Asked Questions</h2>
+
+<div class="faq-list" id="faqList">
+
+<div class="faq-item" id="account" data-category="account profile registration login">
+<button class="faq-question">How do I create an EarnGig account? <span>+</span></button>
+<div class="faq-answer">Visit the registration page, enter the required information and follow the instructions to create your account. After registration, log in to access your dashboard.</div>
+</div>
+
+<div class="faq-item" data-category="account profile">
+<button class="faq-question">How do I update my profile? <span>+</span></button>
+<div class="faq-answer">Open My Profile from your dashboard. You can update the profile information and details made available on your profile page.</div>
+</div>
+
+<div class="faq-item" data-category="account password login">
+<button class="faq-question">What should I do if I forget my password? <span>+</span></button>
+<div class="faq-answer">Use the password recovery option if it is available on the login page. Never share your password or verification codes with another person.</div>
+</div>
+
+<div class="faq-item" id="wallet" data-category="wallet coins balance">
+<button class="faq-question">What are EarnGig coins? <span>+</span></button>
+<div class="faq-answer">Coins are the platform's reward units. Eligible activities may earn coins according to the applicable EarnGig reward rules.</div>
+</div>
+
+<div class="faq-item" data-category="wallet withdrawal money naira">
+<button class="faq-question">How do I withdraw my earnings? <span>+</span></button>
+<div class="faq-answer">Visit My Wallet to view the available wallet options. Withdrawal availability, minimum amounts and processing requirements are subject to EarnGig's applicable rules.</div>
+</div>
+
+<div class="faq-item" data-category="wallet transactions history">
+<button class="faq-question">Where can I see my transactions? <span>+</span></button>
+<div class="faq-answer">Open My Wallet and select Transaction History to review the transaction information available on your account.</div>
+</div>
+
+<div class="faq-item" id="games" data-category="games rewards play">
+<button class="faq-question">How do I earn from games? <span>+</span></button>
+<div class="faq-answer">Visit the Games section, choose an available game and follow its instructions. Rewards depend on the qualifying rules for each game.</div>
+</div>
+
+<div class="faq-item" data-category="games coins rewards">
+<button class="faq-question">Do I earn coins just by opening a game? <span>+</span></button>
+<div class="faq-answer">No. Opening a game alone does not automatically qualify you for a reward. You must meet the relevant game completion and reward conditions.</div>
+</div>
+
+<div class="faq-item" id="novels" data-category="novels reading stories">
+<button class="faq-question">How do I earn from reading novels? <span>+</span></button>
+<div class="faq-answer">You must complete the entire novel and pass its story-specific comprehension questions. Simply opening or starting a novel does not earn a reward.</div>
+</div>
+
+<div class="faq-item" data-category="novels reading progress">
+<button class="faq-question">Can I continue reading a novel later? <span>+</span></button>
+<div class="faq-answer">Reading progress is designed to be saved so you can return and continue where you stopped, subject to the reading feature available on the platform.</div>
+</div>
+
+<div class="faq-item" id="marketplace" data-category="marketplace shopping buying">
+<button class="faq-question">How do I buy products? <span>+</span></button>
+<div class="faq-answer">Visit the Marketplace, explore available listings and follow the purchase instructions provided for the product.</div>
+</div>
+
+<div class="faq-item" data-category="marketplace seller store products">
+<button class="faq-question">How do I become a seller? <span>+</span></button>
+<div class="faq-answer">Visit the Seller Dashboard from your dashboard menu. Use the available shop tools to manage your product listings.</div>
+</div>
+
+<div class="faq-item" id="referrals" data-category="referrals friends invite">
+<button class="faq-question">How do referrals work? <span>+</span></button>
+<div class="faq-answer">Visit Refer Friends to access the referral information available to your account. Follow the instructions there when inviting people to EarnGig.</div>
+</div>
+
+<div class="faq-item" data-category="advertising business promote">
+<button class="faq-question">How can I advertise my business? <span>+</span></button>
+<div class="faq-answer">Open the Advertise section to explore the available advertising information and promotion options.</div>
+</div>
+
+<div class="faq-item" data-category="support contact problem">
+<button class="faq-question">How do I contact EarnGig support? <span>+</span></button>
+<div class="faq-answer">Visit the Support page to find the available support options for reporting a problem or requesting assistance.</div>
+</div>
+
+</div>
+
+<div class="empty" id="noResults">No matching help topics found. Try a different search.</div>
+
+<section class="contact-panel">
+<h2>Still Need Help?</h2>
+<p>If you cannot find the answer you need, visit the support page to explore the available assistance options.</p>
+<a class="button" href="support.html">Visit Support Centre →</a>
+</section>
+
+</main>
+
+<footer>
+<a href="dashboard.html">← EarnGig Dashboard</a>
+<span>© 2026 EarnGig. All rights reserved.</span>
+</footer>
+
+<script>
+const questions=document.querySelectorAll(".faq-question");
+
+questions.forEach(button=>{
+button.addEventListener("click",()=>{
+const item=button.closest(".faq-item");
+const wasOpen=item.classList.contains("open");
+
+document.querySelectorAll(".faq-item.open").forEach(openItem=>{
+openItem.classList.remove("open");
+openItem.querySelector(".faq-question span").textContent="+";
+});
+
+if(!wasOpen){
+item.classList.add("open");
+button.querySelector("span").textContent="−";
+}
+});
+});
+
+const search=document.getElementById("faqSearch");
+const faqItems=document.querySelectorAll(".faq-item");
+const noResults=document.getElementById("noResults");
+
+search.addEventListener("input",()=>{
+const query=search.value.trim().toLowerCase();
+let visibleCount=0;
+
+faqItems.forEach(item=>{
+const searchable=(item.textContent+" "+item.dataset.category).toLowerCase();
+const matches=searchable.includes(query);
+item.style.display=matches?"block":"none";
+if(matches)visibleCount++;
+});
+
+noResults.style.display=visibleCount===0?"block":"none";
+});
+
+document.querySelectorAll(".category").forEach(link=>{
+link.addEventListener("click",()=>{
+const target=document.querySelector(link.getAttribute("href"));
+if(target){
+target.classList.add("open");
+target.querySelector(".faq-question span").textContent="−";
+}
+});
+});
+</script>
+
+</body>
+</html>
