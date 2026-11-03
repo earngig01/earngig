@@ -3,516 +3,318 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Penalty Shoot | EarnGig</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>EarnGig - Moving Goal Challenge</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:#fff;font-family:Arial,sans-serif;background:radial-gradient(ellipse at top,#28533e,#102b21 65%,#081810)}
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid #ffffff20}
-.brand{font-size:22px;font-weight:900}.brand span{color:#ffd66b}
-header a{color:#d5e9df;text-decoration:none;font-size:14px}
-main{max-width:580px;margin:auto;padding:16px 12px 30px}
-h1{text-align:center;margin:8px 0;font-size:27px}
-.subtitle{text-align:center;color:#c3d9ca;font-size:13px;margin-bottom:17px}
-.game-shell{position:relative;overflow:hidden;border-radius:19px;border:2px solid #73957b;background:#154a31;box-shadow:0 15px 40px #0007}
-canvas{display:block;width:100%;height:auto;touch-action:none}
-.overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;background:#071b16d9;backdrop-filter:blur(5px)}
-.overlay-card{width:min(100%,350px);padding:25px 20px;background:linear-gradient(145deg,#28543e,#142f25);border:1px solid #ffffff35;border-radius:20px;box-shadow:0 15px 45px #0008}
-.emoji{font-size:55px}.overlay-card h2{font-size:26px;margin:12px 0}
-.overlay-card p{font-size:14px;line-height:1.65;color:#d0e4d5}
-button{border:0;border-radius:12px;padding:14px 26px;font-weight:900;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#ffeb95,#f2b936);color:#253426;box-shadow:0 4px 0 #ad7a22}
-.hint{text-align:center;font-size:13px;color:#d1e7d7;line-height:1.6;padding:13px 7px}
-#resultOverlay{display:none}#resultTitle{color:#ffe28b}#resultMessage{color:#e2eee5}
-#returnMessage{font-size:11px;color:#b6d1bd;margin-top:16px}
-@media(max-width:420px){header{padding:13px}main{padding:12px 8px}h1{font-size:24px}}
+body{margin:0;background:#071b16;color:white;font-family:Arial,sans-serif;overflow:hidden}
+#game{width:100%;height:100dvh;display:flex;align-items:center;justify-content:center}
+canvas{height:100%;max-width:100%;aspect-ratio:720/1000;object-fit:contain;touch-action:none}
+#screen{position:fixed;inset:0;background:#06150feF;display:flex;align-items:center;justify-content:center;padding:22px;z-index:5}
+.panel{width:min(390px,100%);padding:30px 24px;border:1px solid #a8d8b6;border-radius:22px;background:linear-gradient(145deg,#143b2b,#071c15);text-align:center;box-shadow:0 20px 70px #0009}
+h1{font-size:30px;margin:0 0 12px;color:#c9ff77}
+p{line-height:1.55;color:#d8e8dc}
+button{border:0;border-radius:12px;background:#c6f65c;color:#173016;font-size:18px;font-weight:900;padding:16px 28px;margin-top:14px;width:100%;cursor:pointer}
+.small{font-size:13px;color:#b7cbbd}
 </style>
 </head>
 <body>
-<header>
- <div class="brand"><span>♛</span> EarnGig</div>
- <a href="games.html">← Back to Games</a>
-</header>
-<main>
- <h1>⚽ Penalty Shoot</h1>
- <div class="subtitle">One shot. Can you beat the goalkeeper?</div>
-
- <div class="game-shell">
-  <canvas id="gameCanvas" width="720" height="1000"></canvas>
-
-  <div class="overlay" id="startOverlay">
-   <div class="overlay-card">
-    <div class="emoji">⚽</div>
-    <h2>Take Your Shot!</h2>
-    <p>The goal is ahead of you. Drag the ball towards the part of the net you want to hit, then release.</p>
-    <p>The goalkeeper will dive to catch or punch your shot away.</p>
-    <button id="startBtn">START GAME</button>
-   </div>
+<div id="game"><canvas id="c" width="720" height="1000"></canvas></div>
+<div id="screen">
+  <div class="panel">
+    <h1>⚽ MOVING GOAL</h1>
+    <p>The goalpost moves from side to side. Time your shot and aim carefully to score.</p>
+    <p><b>How to play</b><br>Drag from the ball towards your target, then release to shoot. Get the ball inside the moving goal.</p>
+    <p class="small">One shot. One chance. Can you score?</p>
+    <button id="start">START GAME</button>
   </div>
-
-  <div class="overlay" id="resultOverlay">
-   <div class="overlay-card">
-    <div class="emoji" id="resultIcon">🏆</div>
-    <h2 id="resultTitle">GOAL!</h2>
-    <p id="resultMessage"></p>
-    <div id="returnMessage">Returning to Games...</div>
-   </div>
-  </div>
- </div>
- <div class="hint" id="hint">Drag the ball towards your chosen spot in the distant goal and release.</div>
-</main>
-
+</div>
 <script>
-const canvas=document.getElementById("gameCanvas");
-const ctx=canvas.getContext("2d");
+(()=>{
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const screen=document.getElementById('screen');
+const startBtn=document.getElementById('start');
+
 const W=720,H=1000;
-
-// Goal is deliberately smaller and much farther from the ball.
-const goal={left:190,right:530,top:145,bottom:355};
-const ball={x:360,y:875,radius:29};
-const keeperLine=325;
-
-let phase="intro";
-let dragging=false;
+let state='ready';
+let goalX=360;
+let goalDirection=1;
+let goalSpeed=2.4;
 let aim=null;
-let keeperX=360;
+let pointerDown=false;
 let shot=null;
-let resultShown=false;
-let resultSent=false;
+let resultTimer=0;
+let countdown=0;
+let countdownTimer=0;
+let lastTime=0;
+let elapsed=0;
+let resultText='';
+let resultSub='';
+let goalPassed=false;
 
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const smooth=t=>t*t*(3-2*t);
+const ballStart={x:360,y:855};
+const goalY=220;
+const goalWidth=190;
+const goalHeight=105;
 
-function polygon(points,fill,stroke=null,lineWidth=1){
- ctx.beginPath();
- points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
- ctx.closePath();
- ctx.fillStyle=fill;ctx.fill();
- if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function rounded(x,y,w,h,r,color){
+ ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill();
 }
 
-function drawStadium(){
- const sky=ctx.createLinearGradient(0,0,0,260);
- sky.addColorStop(0,"#172c2d");
- sky.addColorStop(1,"#355447");
- ctx.fillStyle=sky;ctx.fillRect(0,0,W,270);
+function drawPitch(){
+ const g=ctx.createLinearGradient(0,0,0,H);
+ g.addColorStop(0,'#347f42');g.addColorStop(1,'#14512e');
+ ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
 
- // Distant stadium stands.
- polygon([[0,90],[720,90],[720,270],[0,270]],"#263e36");
- for(let row=0;row<4;row++){
-  for(let i=0;i<42;i++){
-   const colours=["#c9b58d","#829f8b","#d5a95e","#b6c6b3","#9b7769"];
-   ctx.fillStyle=colours[(i+row*3)%colours.length];
-   ctx.beginPath();
-   ctx.arc(i*18+8,112+row*29,3.5,0,Math.PI*2);
-   ctx.fill();
-  }
+ for(let i=0;i<10;i++){
+  ctx.fillStyle=i%2===0?'#ffffff08':'#001d0b08';
+  ctx.fillRect(0,i*110,W,110);
  }
- // Stadium roof and floodlights.
- ctx.fillStyle="#152721";
- ctx.fillRect(0,75,720,18);
- for(const x of [60,660]){
-  ctx.fillStyle="#fff8d8";
-  ctx.shadowColor="#fff8d8";ctx.shadowBlur=22;
-  ctx.beginPath();ctx.arc(x,100,7,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;
- }
+ ctx.strokeStyle='#ffffff55';ctx.lineWidth=3;
+ ctx.strokeRect(48,75,624,850);
+ ctx.beginPath();ctx.moveTo(48,530);ctx.lineTo(672,530);ctx.stroke();
+ ctx.beginPath();ctx.ellipse(360,530,105,38,0,0,Math.PI*2);ctx.stroke();
 
- // Long perspective pitch.
- polygon([[190,350],[530,350],[720,1000],[0,1000]],"#17653c");
- polygon([[205,365],[515,365],[680,1000],[40,1000]],"#1d7545");
+ // Distant penalty area
+ ctx.strokeRect(155,75,410,250);
+ ctx.strokeRect(245,75,230,115);
 
- // Mowing stripes following the field perspective.
- for(let i=0;i<8;i++){
-  const y1=390+i*76;
-  const y2=y1+76;
-  const left1=190-(y1-350)*.29;
-  const right1=530+(y1-350)*.29;
-  const left2=190-(y2-350)*.29;
-  const right2=530+(y2-350)*.29;
-  if(i%2===0){
-   polygon([[left1,y1],[right1,y1],[right2,y2],[left2,y2]],"#ffffff09");
-  }
- }
+ // Perspective field markings
+ ctx.strokeStyle='#ffffff30';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(48,75);ctx.lineTo(260,0);
+ ctx.moveTo(672,75);ctx.lineTo(460,0);ctx.stroke();
 
- // Perspective field lines.
- ctx.strokeStyle="#ffffff70";
- ctx.lineWidth=3;
- ctx.beginPath();
- ctx.moveTo(190,350);ctx.lineTo(0,1000);
- ctx.moveTo(530,350);ctx.lineTo(720,1000);
- ctx.stroke();
-
- // Distant penalty area.
- ctx.strokeStyle="#ffffffb0";
- ctx.lineWidth=3;
- ctx.strokeRect(230,355,260,120);
- ctx.strokeRect(270,355,180,65);
-
- // Penalty spot, visible in foreground.
- ctx.fillStyle="white";
- ctx.beginPath();ctx.arc(360,620,5,0,Math.PI*2);ctx.fill();
-
- // Grass texture near the ball.
- for(let i=0;i<90;i++){
-  const x=(i*83)%720;
-  const y=650+((i*47)%330);
-  ctx.strokeStyle="#b8df9b20";
-  ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3,y-5);ctx.stroke();
+ // Stadium background
+ ctx.fillStyle='#102c20';
+ ctx.fillRect(0,0,W,80);
+ for(let i=0;i<45;i++){
+  ctx.fillStyle=['#d4e3c8','#b4d6a4','#e9d8a4','#8fb5a0'][i%4];
+  ctx.beginPath();ctx.arc(12+i*16,38+(i%3)*8,3,0,Math.PI*2);ctx.fill();
  }
 }
 
 function drawGoal(){
- // Net depth behind the posts.
- polygon([[190,145],[530,145],[570,390],[150,390]],"#e4e8dd");
- ctx.save();
- ctx.beginPath();
- ctx.moveTo(190,145);ctx.lineTo(530,145);
- ctx.lineTo(570,390);ctx.lineTo(150,390);
- ctx.closePath();ctx.clip();
+ const left=goalX-goalWidth/2;
+ const right=goalX+goalWidth/2;
+ const top=goalY;
+ const bottom=goalY+goalHeight;
 
- ctx.strokeStyle="#9ca99c";
- ctx.lineWidth=2;
+ // Goal shadow
+ ctx.fillStyle='#00150855';
+ ctx.beginPath();ctx.ellipse(goalX,bottom+16,goalWidth*.7,18,0,0,Math.PI*2);ctx.fill();
 
- // Perspective net grid.
- for(let i=0;i<=16;i++){
-  const x=190+i*340/16;
-  const bottomX=150+i*420/16;
-  ctx.beginPath();ctx.moveTo(x,145);ctx.lineTo(bottomX,390);ctx.stroke();
+ // Net behind the frame
+ ctx.fillStyle='#e8f1e5';
+ ctx.globalAlpha=.17;
+ ctx.fillRect(left,top,goalWidth,goalHeight);
+ ctx.globalAlpha=1;
+ ctx.strokeStyle='#e7eee5aa';ctx.lineWidth=2;
+ for(let x=left+12;x<right;x+=16){
+  ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bottom);ctx.stroke();
  }
- for(let j=0;j<=10;j++){
-  const y=145+j*24.5;
-  const inset=(y-145)*.08;
-  ctx.beginPath();ctx.moveTo(190-inset,y);ctx.lineTo(530+inset,y);ctx.stroke();
+ for(let y=top+12;y<bottom;y+=15){
+  ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();
  }
- ctx.restore();
 
- // Side depth of the goal frame.
- polygon([[190,145],[150,390],[165,390],[201,145]],"#d6d7ce");
- polygon([[530,145],[570,390],[555,390],[519,145]],"#c4c8be");
+ // Goal frame
+ ctx.strokeStyle='#f6f8f3';ctx.lineWidth=13;ctx.lineCap='round';
+ ctx.beginPath();ctx.moveTo(left,bottom);ctx.lineTo(left,top);
+ ctx.lineTo(right,top);ctx.lineTo(right,bottom);ctx.stroke();
 
- // Goal posts and crossbar.
- ctx.lineCap="round";
- ctx.strokeStyle="#aeb3a9";
- ctx.lineWidth=19;
- ctx.beginPath();
- ctx.moveTo(190,365);ctx.lineTo(190,145);
- ctx.lineTo(530,145);ctx.lineTo(530,365);
- ctx.stroke();
+ ctx.strokeStyle='#a8b9ad';ctx.lineWidth=3;
+ ctx.beginPath();ctx.moveTo(left+5,bottom);ctx.lineTo(left+5,top+5);
+ ctx.lineTo(right-5,top+5);ctx.lineTo(right-5,bottom);ctx.stroke();
 
- ctx.strokeStyle="#fffdf1";
- ctx.lineWidth=13;
- ctx.beginPath();
- ctx.moveTo(190,365);ctx.lineTo(190,145);
- ctx.lineTo(530,145);ctx.lineTo(530,365);
- ctx.stroke();
-
- // Post highlights.
- ctx.strokeStyle="#ffffff";
- ctx.lineWidth=3;
- ctx.beginPath();
- ctx.moveTo(187,360);ctx.lineTo(187,149);
- ctx.lineTo(527,149);ctx.lineTo(527,360);
- ctx.stroke();
-
- // Goal-line shadow.
- ctx.fillStyle="#06170d55";
- ctx.fillRect(175,360,370,9);
+ // Goal movement indicator
+ rounded(245,95,230,35,17,'#061d13cc');
+ ctx.fillStyle='#caff79';ctx.font='bold 17px Arial';
+ ctx.textAlign='center';ctx.fillText('MOVING GOAL',360,119);
 }
 
-function drawKeeper(){
- let dive=shot?shot.diveProgress:0;
- let dir=shot?shot.direction:0;
- const travel=shot?Math.abs(shot.keeperTarget-shot.keeperStartX):0;
+function drawBall(x,y,r=29){
+ const shadow=ctx.createRadialGradient(x,y+20,3,x,y+20,38);
+ shadow.addColorStop(0,'#00100688');shadow.addColorStop(1,'#00100600');
+ ctx.fillStyle=shadow;ctx.beginPath();ctx.ellipse(x,y+20,39,17,0,0,Math.PI*2);ctx.fill();
 
- ctx.save();
- ctx.translate(keeperX,354);
- ctx.rotate(dir*dive*.42);
-
- // Shadow.
- ctx.fillStyle="#06170d66";
- ctx.beginPath();
- ctx.ellipse(0,8,48+travel*.1,8,0,0,Math.PI*2);
- ctx.fill();
-
- // Legs.
- ctx.lineCap="round";
- ctx.strokeStyle="#172b3a";ctx.lineWidth=17;
- ctx.beginPath();
- ctx.moveTo(-11,-30);ctx.lineTo(-20,2);
- ctx.moveTo(11,-30);ctx.lineTo(20,2);
- ctx.stroke();
-
- // Boots.
- ctx.strokeStyle="#111a21";ctx.lineWidth=12;
- ctx.beginPath();
- ctx.moveTo(-20,2);ctx.lineTo(-34,4);
- ctx.moveTo(20,2);ctx.lineTo(34,4);
- ctx.stroke();
-
- // Shorts.
- ctx.fillStyle="#1e3c58";
- ctx.beginPath();
- ctx.roundRect(-20,-57,40,30,6);ctx.fill();
-
- // Jersey.
- const jersey=ctx.createLinearGradient(-24,0,24,0);
- jersey.addColorStop(0,"#c16b25");
- jersey.addColorStop(.5,"#ffbd59");
- jersey.addColorStop(1,"#b65f20");
- ctx.fillStyle=jersey;
- ctx.beginPath();
- ctx.moveTo(-18,-111);ctx.lineTo(-25,-100);
- ctx.lineTo(-20,-58);ctx.lineTo(20,-58);
- ctx.lineTo(25,-100);ctx.lineTo(18,-111);
- ctx.quadraticCurveTo(0,-121,-18,-111);
- ctx.fill();
-
- // Arms and gloves.
- const reach=42+45*dive;
- const handY=-103-10*dive;
- ctx.strokeStyle="#bd7952";ctx.lineWidth=13;ctx.lineCap="round";
- ctx.beginPath();
- ctx.moveTo(-17,-100);ctx.lineTo(-dir*reach,handY);
- ctx.moveTo(17,-100);ctx.lineTo(dir*reach,-91);
- ctx.stroke();
-
- for(const [x,y] of [[-dir*reach,handY],[dir*reach,-91]]){
-  ctx.fillStyle="#f3f0df";
-  ctx.strokeStyle="#c3c6b9";ctx.lineWidth=2;
-  ctx.beginPath();ctx.roundRect(x-10,y-9,20,19,6);ctx.fill();ctx.stroke();
+ const b=ctx.createRadialGradient(x-11,y-13,2,x,y,r);
+ b.addColorStop(0,'#ffffff');b.addColorStop(.72,'#e7e9e5');b.addColorStop(1,'#9ca59e');
+ ctx.fillStyle=b;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+ ctx.save();ctx.translate(x,y);
+ ctx.fillStyle='#18231d';
+ ctx.beginPath();ctx.moveTo(-3,-13);ctx.lineTo(10,-7);ctx.lineTo(8,7);ctx.lineTo(-7,10);ctx.lineTo(-13,-2);ctx.closePath();ctx.fill();
+ for(const [px,py] of [[-17,-14],[17,-15],[-19,13],[17,16]]){
+  ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
  }
-
- // Head.
- ctx.fillStyle="#bf805b";
- ctx.beginPath();ctx.arc(0,-128,17,0,Math.PI*2);ctx.fill();
- ctx.fillStyle="#29211e";
- ctx.beginPath();ctx.arc(0,-134,17,Math.PI,Math.PI*2);ctx.fill();
-
  ctx.restore();
-}
-
-function drawBall(x,y,r){
- ctx.save();
- ctx.fillStyle="#00170b66";
- ctx.beginPath();ctx.ellipse(x+5,y+r*.8,r*1.1,r*.32,0,0,Math.PI*2);ctx.fill();
-
- const g=ctx.createRadialGradient(x-r*.35,y-r*.4,2,x,y,r);
- g.addColorStop(0,"#fff");g.addColorStop(.72,"#e8e9e2");g.addColorStop(1,"#aab2a8");
- ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-
- ctx.save();ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.clip();
- ctx.fillStyle="#263033";
- for(let i=0;i<5;i++){
-  const a=-Math.PI/2+i*Math.PI*2/5;
-  ctx.beginPath();
-  ctx.arc(x+Math.cos(a)*r*.65,y+Math.sin(a)*r*.65,r*.17,0,Math.PI*2);
-  ctx.fill();
- }
- ctx.beginPath();
- for(let i=0;i<5;i++){
-  const a=-Math.PI/2+i*Math.PI*2/5;
-  const px=x+Math.cos(a)*r*.32,py=y+Math.sin(a)*r*.32;
-  if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
- }
- ctx.closePath();ctx.fill();
- ctx.restore();
-
- ctx.strokeStyle="#ffffffaa";ctx.lineWidth=2;
- ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.stroke();
- ctx.restore();
+ ctx.strokeStyle='#ffffff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.stroke();
 }
 
 function drawAim(){
- if(!dragging||!aim)return;
- ctx.save();
- ctx.setLineDash([10,10]);
- ctx.strokeStyle="#fff0a8";ctx.lineWidth=4;
- ctx.beginPath();ctx.moveTo(ball.x,ball.y);ctx.lineTo(aim.x,aim.y);ctx.stroke();
- ctx.setLineDash([]);
- ctx.fillStyle="#ffe47c88";ctx.strokeStyle="#fff";ctx.lineWidth=3;
- ctx.beginPath();ctx.arc(aim.x,aim.y,14,0,Math.PI*2);ctx.fill();ctx.stroke();
- ctx.restore();
+ if(!aim||state!=='aiming')return;
+ ctx.strokeStyle='#d7ff76';ctx.lineWidth=5;ctx.setLineDash([12,10]);
+ ctx.beginPath();ctx.moveTo(ballStart.x,ballStart.y);ctx.lineTo(aim.x,aim.y);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle='#d7ff76';ctx.beginPath();ctx.arc(aim.x,aim.y,9,0,Math.PI*2);ctx.fill();
 }
 
-function updateShot(){
- if(!shot)return;
- const elapsed=performance.now()-shot.start;
-
- if(phase==="shot"){
-  const diveTime=clamp((elapsed-shot.reaction)/shot.diveTime,0,1);
-  shot.diveProgress=smooth(diveTime);
-  keeperX=lerp(shot.keeperStartX,shot.keeperTarget,shot.diveProgress);
-
-  if(!shot.checked&&elapsed>=shot.crossingTime){
-   shot.checked=true;
-   const distance=Math.abs(shot.crossingX-keeperX);
-   if(distance<48){
-    shot.saveType="caught";
-    phase="saved";
-    shot.saveStart=performance.now();
-   }else if(distance<88){
-    shot.saveType="punched";
-    phase="saved";
-    shot.saveStart=performance.now();
-   }else{
-    showResult("goal");
-   }
-  }
-
-  if(phase==="shot"&&elapsed>=shot.duration)showResult("goal");
- }
-
- if(phase==="saved"&&performance.now()-shot.saveStart>450){
-  showResult(shot.saveType);
- }
+function drawHUD(){
+ rounded(22,20,190,55,15,'#061d13cc');
+ ctx.fillStyle='white';ctx.font='bold 22px Arial';ctx.textAlign='left';
+ ctx.fillText('EARNGIG ⚽',40,55);
+ rounded(510,20,188,55,15,'#061d13cc');
+ ctx.fillStyle='#d0ff7a';ctx.textAlign='center';ctx.font='bold 18px Arial';
+ ctx.fillText(state==='aiming'?'AIM YOUR SHOT':state==='shot'?'SHOT IN PROGRESS':'ONE SHOT',604,55);
 }
 
-function drawMovingBall(){
- if(!shot)return;
- if(phase==="shot"){
-  const t=clamp((performance.now()-shot.start)/shot.duration,0,1);
-  const eased=1-Math.pow(1-t,1.7);
-  const x=lerp(ball.x,shot.targetX,eased);
-  const y=lerp(ball.y,shot.targetY,eased)-Math.sin(t*Math.PI)*17;
-  drawBall(x,y,ball.radius*(1-.25*t));
- }else if(phase==="saved"){
-  const t=clamp((performance.now()-shot.saveStart)/450,0,1);
-  if(shot.saveType==="caught"){
-   drawBall(keeperX,260,ball.radius*.8);
-  }else{
-   drawBall(lerp(shot.targetX,shot.targetX+shot.direction*100,t),
-    lerp(shot.targetY,shot.targetY-65,t),
-    ball.radius*(1-.2*t));
-  }
- }
-}
-
-function animate(){
+function draw(){
  ctx.clearRect(0,0,W,H);
- drawStadium();
+ drawPitch();
  drawGoal();
+ drawHUD();
 
- if(phase==="intro"||phase==="ready"){
-  keeperX=360+Math.sin(performance.now()*.0015)*45;
- }
-
- if(phase==="shot"||phase==="saved")updateShot();
-
- drawKeeper();
-
- if(phase==="shot"||phase==="saved")drawMovingBall();
- else{
-  drawBall(ball.x,ball.y,ball.radius);
+ if(state==='aiming'||state==='ready'){
   drawAim();
+  drawBall(ballStart.x,ballStart.y);
+  if(state==='aiming'){
+   ctx.fillStyle='#fff';ctx.font='bold 20px Arial';ctx.textAlign='center';
+   ctx.fillText('DRAG TO AIM • RELEASE TO SHOOT',360,940);
+  }else{
+   ctx.fillStyle='#fff';ctx.font='bold 20px Arial';ctx.textAlign='center';
+   ctx.fillText('WAIT FOR THE RIGHT MOMENT',360,940);
+  }
  }
- requestAnimationFrame(animate);
+ if(state==='shot'&&shot){
+  drawBall(shot.x,shot.y,shot.r);
+  if(shot.trail.length){
+   ctx.strokeStyle='#ffffff77';ctx.lineWidth=5;ctx.beginPath();
+   shot.trail.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+   ctx.stroke();
+  }
+ }
+ if(state==='countdown'){
+  drawBall(ballStart.x,ballStart.y);
+  ctx.fillStyle='#fff';ctx.font='bold 120px Arial';ctx.textAlign='center';
+  ctx.fillText(countdown,360,600);
+ }
+ if(state==='result'){
+  ctx.fillStyle='#06170dcc';ctx.fillRect(0,0,W,H);
+  ctx.textAlign='center';ctx.fillStyle=resultText==='GOAL!'?'#caff76':'#ffcf86';
+  ctx.font='bold 86px Arial';ctx.fillText(resultText,360,470);
+  ctx.fillStyle='#fff';ctx.font='bold 28px Arial';ctx.fillText(resultSub,360,525);
+  ctx.font='20px Arial';ctx.fillStyle='#dce8df';ctx.fillText('Returning to Games...',360,590);
+ }
 }
 
-function canvasPoint(event){
- const r=canvas.getBoundingClientRect();
- return{x:(event.clientX-r.left)*W/r.width,y:(event.clientY-r.top)*H/r.height};
+function finish(scored){
+ state='result';
+ resultText=scored?'GOAL!':'MISS!';
+ resultSub=scored?'Beautiful shot! You scored.':'The moving goal got away. Better luck next time.';
+ resultTimer=0;
 }
-
-canvas.addEventListener("pointerdown",event=>{
- if(phase!=="ready"||dragging)return;
- const p=canvasPoint(event);
- if(Math.hypot(p.x-ball.x,p.y-ball.y)>90)return;
- dragging=true;aim=p;
- canvas.setPointerCapture(event.pointerId);
-});
-canvas.addEventListener("pointermove",event=>{
- if(dragging)aim=canvasPoint(event);
-});
-canvas.addEventListener("pointerup",event=>{
- if(!dragging)return;
- aim=canvasPoint(event);dragging=false;shoot();
-});
-canvas.addEventListener("pointercancel",()=>{dragging=false;aim=null});
 
 function shoot(){
- if(phase!=="ready"||!aim)return;
- if(aim.y>goal.bottom-15){
-  aim=null;
-  document.getElementById("hint").textContent="Aim towards the goal and release.";
-  return;
+ if(state!=='aiming'||!aim)return;
+ const dx=aim.x-ballStart.x;
+ const dy=aim.y-ballStart.y;
+ // Drag upward to aim. Aiming point maps to a target across the goal line.
+ let targetX=360+(dx/Math.max(1,Math.abs(dy)))*290;
+ targetX=clamp(targetX,55,665);
+ // A short upward drag still produces a visible angled shot.
+ if(dy>-20)targetX=clamp(360+dx*1.4,55,665);
+ state='shot';
+ shot={x:ballStart.x,y:ballStart.y,startX:ballStart.x,startY:ballStart.y,targetX,
+       progress:0,duration:0.85,trail:[],r:29};
+}
+
+function update(dt){
+ if(state==='ready'){
+  goalX+=goalDirection*goalSpeed*dt*60;
+  if(goalX>535){goalX=535;goalDirection=-1}
+  if(goalX<185){goalX=185;goalDirection=1}
  }
-
- const targetX=clamp(aim.x,goal.left+12,goal.right-12);
- const targetY=clamp(aim.y,goal.top+10,goal.bottom-12);
- const crossingT=(keeperLine-ball.y)/(targetY-ball.y);
- const crossingX=ball.x+(targetX-ball.x)*crossingT;
- const direction=Math.sign(crossingX-keeperX)||1;
-
- shot={
-  start:performance.now(),
-  duration:390,
-  targetX,targetY,crossingX,
-  crossingTime:clamp(crossingT*390,110,310),
-  checked:false,
-  reaction:35,
-  diveTime:220,
-  keeperStartX:keeperX,
-  keeperTarget:clamp(crossingX,goal.left+30,goal.right-30),
-  diveProgress:0,
-  direction
- };
- phase="shot";aim=null;
- document.getElementById("hint").textContent="The goalkeeper is diving!";
-}
-
-function showResult(type){
- if(resultShown)return;
- resultShown=true;phase="result";
-
- const results={
-  goal:["⚽","GOAL!","You scored! The goalkeeper couldn't stop your shot."],
-  caught:["🧤","CAUGHT!","The goalkeeper caught your shot!"],
-  punched:["🧤","SAVED!","The goalkeeper punched your shot away."]
- };
- const [icon,title,message]=results[type];
-
- document.getElementById("resultIcon").textContent=icon;
- document.getElementById("resultTitle").textContent=title;
- document.getElementById("resultMessage").textContent=message;
- document.getElementById("resultOverlay").style.display="flex";
- submitResult(type==="goal");
-}
-
-async function submitResult(won){
- if(resultSent)return;
- resultSent=true;
- const status=document.getElementById("returnMessage");
- status.textContent="Checking result...";
-
- try{
-  const response=await fetch("/api/games/penalty-shoot/complete",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({
-    game:"penalty-shoot",completed:true,
-    result:won?"win":"loss",score:won?1:0,attempts:1
-   })
-  });
-  if(response.ok){
-   const data=await response.json();
-   status.textContent=data.rewardGranted?"Result verified. Returning to Games...":"Result submitted. Returning to Games...";
-  }else status.textContent="Returning to Games...";
- }catch(e){
-  status.textContent="Returning to Games...";
+ if(state==='aiming'){
+  goalX+=goalDirection*goalSpeed*dt*60;
+  if(goalX>535){goalX=535;goalDirection=-1}
+  if(goalX<185){goalX=185;goalDirection=1}
  }
- setTimeout(()=>location.href="games.html",2500);
+ if(state==='shot'&&shot){
+  shot.progress+=dt/shot.duration;
+  const t=clamp(shot.progress,0,1);
+  const ease=1-Math.pow(1-t,2.1);
+  shot.x=shot.startX+(shot.targetX-shot.startX)*ease;
+  shot.y=shot.startY+(goalY+goalHeight*.55-shot.startY)*ease;
+  shot.r=29-13*ease;
+  shot.trail.push({x:shot.x,y:shot.y});
+  if(shot.trail.length>9)shot.trail.shift();
+
+  if(t>=1&&!goalPassed){
+   goalPassed=true;
+   const openingHalf=goalWidth/2-13;
+   const scored=Math.abs(shot.x-goalX)<=openingHalf;
+   finish(scored);
+  }
+ }
+ if(state==='result'){
+  resultTimer+=dt;
+  if(resultTimer>2.5)location.href='games.html';
+ }
+ if(state==='countdown'){
+  countdownTimer+=dt;
+  if(countdownTimer>=1){
+   countdownTimer=0;countdown--;
+   if(countdown<=0){state='aiming'}
+  }
+ }
 }
 
-document.getElementById("startBtn").addEventListener("click",()=>{
- document.getElementById("startOverlay").style.display="none";
- phase="ready";
- document.getElementById("hint").textContent=
-  "The goal is in the distance. Drag the ball towards your target and release.";
+function loop(now){
+ const dt=Math.min(.04,(now-lastTime)/1000||0);
+ lastTime=now;
+ update(dt);
+ draw();
+ requestAnimationFrame(loop);
+}
+
+function pointerPos(e){
+ const rect=canvas.getBoundingClientRect();
+ return {x:(e.clientX-rect.left)*W/rect.width,y:(e.clientY-rect.top)*H/rect.height};
+}
+
+canvas.addEventListener('pointerdown',e=>{
+ if(state!=='aiming')return;
+ const p=pointerPos(e);
+ if(Math.hypot(p.x-ballStart.x,p.y-ballStart.y)<115){
+  pointerDown=true;aim=p;
+  e.preventDefault();
+ }
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!pointerDown||state!=='aiming')return;
+ aim=pointerPos(e);e.preventDefault();
+});
+function releaseAim(e){
+ if(!pointerDown)return;
+ pointerDown=false;
+ if(state==='aiming'&&aim){
+  const p=pointerPos(e);
+  if(p.y<ballStart.y-25)aim=p;
+  shoot();
+ }
+}
+canvas.addEventListener('pointerup',releaseAim);
+canvas.addEventListener('pointercancel',()=>{pointerDown=false});
+
+startBtn.addEventListener('click',()=>{
+ screen.style.display='none';
+ state='countdown';countdown=3;countdownTimer=0;
+ goalX=360;goalDirection=Math.random()>.5?1:-1;
+ goalSpeed=2.4+Math.random()*.7;
+ goalPassed=false;shot=null;aim=null;
 });
 
-requestAnimationFrame(animate);
+requestAnimationFrame(loop);
+})();
 </script>
 </body>
 </html>
