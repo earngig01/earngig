@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>EarnGig Bubble Shooter</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101d35;font-family:Arial,sans-serif;touch-action:none}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+#screen{position:absolute;inset:0;background:#10172bdc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:5;color:white;text-align:center}
+#screen.hide{display:none}
+.panel{width:min(390px,100%);padding:27px 22px;border:2px solid #9c9af5;border-radius:23px;background:linear-gradient(145deg,#303b76,#171e43);box-shadow:0 15px 45px #0009}
+.panel h1{font-size:31px;margin:0 0 12px;color:#ffe17b}
+.panel p{font-size:14px;line-height:1.6;color:#e5e8ff}
+.panel button{background:#ffca57;color:#302348;border:0;border-radius:13px;padding:15px 32px;font-weight:900;font-size:17px;margin-top:12px}
+#status{font-size:12px;color:#ffe17b;min-height:17px}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="screen">
+ <div class="panel">
+  <h1 id="heading">BUBBLE SHOOTER</h1>
+  <p id="message">Aim carefully and shoot colourful bubbles. Match three or more bubbles of the same colour to burst them. Clear the board before the bubbles reach the bottom!</p>
+  <p><b>Match 3+ · Clear the board · Beat the pressure</b></p>
+  <p id="status"></p>
+  <button id="start">START GAME</button>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+const $=id=>document.getElementById(id);
+
+let W=0,H=0,DPR=1;
+let R=17,STEP=34,COLS=9,ROWS=14;
+let board=[];
+let particles=[];
+let flying=null;
+let currentColor=0,nextColor=0;
+let aim={x:0,y:0};
+let shots=0,score=0,level=1,misses=0;
+let running=false,ended=false;
+let animation=0,last=0;
+let ceilingShift=0;
+let soundOn=true;
+let audio=null;
+let shootCooldown=0;
+
+const COLORS=[
+ {main:"#ff536c",light:"#ffb2bd",dark:"#a91e42"},
+ {main:"#4b9cff",light:"#a8d5ff",dark:"#1552b3"},
+ {main:"#ffc343",light:"#fff0a0",dark:"#c27b12"},
+ {main:"#42d6a0",light:"#b1ffe0",dark:"#07845c"},
+ {main:"#ae72ff",light:"#e0c5ff",dark:"#6331b0"},
+ {main:"#ff8b40",light:"#ffd0a2",dark:"#b94c16"}
+];
+
+function resize(){
+ DPR=Math.min(devicePixelRatio||1,2);
+ W=innerWidth;H=innerHeight;
+ canvas.width=W*DPR;
+ canvas.height=H*DPR;
+ canvas.style.width=W+"px";
+ canvas.style.height=H+"px";
+ ctx.setTransform(DPR,0,0,DPR,0,0);
+
+ R=Math.max(14,Math.min(19,W/21));
+ STEP=R*2;
+ COLS=Math.max(6,Math.floor((W-16)/STEP));
+ ROWS=16;
+
+ if(!running)draw();
+}
+addEventListener("resize",resize);
+resize();
+
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+function playSound(freq=500,duration=.08,type="sine"){
+ if(!soundOn)return;
+ try{
+  audio=audio||new(window.AudioContext||window.webkitAudioContext)();
+  if(audio.state==="suspended")audio.resume();
+  const osc=audio.createOscillator();
+  const gain=audio.createGain();
+  osc.type=type;
+  osc.frequency.value=freq;
+  gain.gain.setValueAtTime(.08,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+  osc.connect(gain);gain.connect(audio.destination);
+  osc.start();osc.stop(audio.currentTime+duration);
+ }catch(e){}
+}
+
+function rowX(row,col){
+ const gridWidth=(COLS-1)*STEP+R*2;
+ const start=(W-gridWidth)/2+R;
+ return start+col*STEP+(row%2?R:0);
+}
+function rowY(row){
+ return 105+ceilingShift+row*(STEP*.87);
+}
+function center(row,col){
+ return {x:rowX(row,col),y:rowY(row)};
+}
+function validCell(row,col){
+ return row>=0&&row<ROWS&&col>=0&&col<COLS;
+}
+function neighbours(row,col){
+ if(row%2===0){
+  return [[row,col-1],[row,col+1],[row-1,col-1],[row-1,col],[row+1,col-1],[row+1,col]];
+ }
+ return [[row,col-1],[row,col+1],[row-1,col],[row-1,col+1],[row+1,col],[row+1,col+1]];
+}
+function getNeighbours(row,col){
+ return neighbours(row,col).filter(([r,c])=>validCell(r,c));
+}
+
+function randomColor(){
+ const available=[...new Set(board.flat().filter(x=>x!==null))];
+ if(!available.length)return Math.floor(rand(0,COLORS.length));
+ return available[Math.floor(Math.random()*available.length)];
+}
+
+/* ---------- NEW BOARD ---------- */
+function newBoard(){
+ board=Array.from({length:ROWS},()=>Array(COLS).fill(null));
+ particles=[];
+ flying=null;
+ ceilingShift=0;
+ shots=0;
+ misses=0;
+ score=0;
+ level=1;
+
+ // Dense starting pattern with varied colours.
+ const initialRows=7;
+ for(let r=0;r<initialRows;r++){
+  for(let c=0;c<COLS;c++){
+   if(r>=5&&Math.random()<.13)continue;
+   board[r][c]=Math.floor(Math.random()*5);
+  }
+ }
+
+ // Ensure there are several useful matching opportunities.
+ for(let r=0;r<3;r++){
+  const c=Math.floor(rand(1,COLS-2));
+  const color=Math.floor(rand(0,5));
+  board[r][c]=color;
+  board[r][c+1]=color;
+  board[r][c-1]=color;
+ }
+
+ currentColor=randomColor();
+ nextColor=randomColor();
+ aim={x:W/2,y:H*.35};
+ updateHUD();
+}
+
+/* ---------- HUD ---------- */
+function updateHUD(){
+ // Canvas HUD is drawn in the game.
+}
+
+/* ---------- DRAWING ---------- */
+function roundedRect(x,y,w,h,r,color){
+ ctx.fillStyle=color;
+ ctx.beginPath();
+ ctx.roundRect(x,y,w,h,r);
+ ctx.fill();
+}
+
+function drawBackground(){
+ const g=ctx.createLinearGradient(0,0,W,H);
+ g.addColorStop(0,"#18264b");
+ g.addColorStop(.5,"#263d6b");
+ g.addColorStop(1,"#111b39");
+ ctx.fillStyle=g;
+ ctx.fillRect(0,0,W,H);
+
+ // Subtle background lights.
+ for(let i=0;i<35;i++){
+  const x=(i*137)%W;
+  const y=(i*211)%H;
+  ctx.fillStyle="#ffffff0b";
+  ctx.beginPath();
+  ctx.arc(x,y,(i%3)+1,0,Math.PI*2);
+  ctx.fill();
+ }
+}
+
+function drawBubble(x,y,color,r=R){
+ const c=COLORS[color];
+ if(!c)return;
+
+ ctx.save();
+
+ // Shadow.
+ ctx.shadowColor="#0008";
+ ctx.shadowBlur=6;
+ ctx.shadowOffsetY=4;
+
+ const grad=ctx.createRadialGradient(
+  x-r*.38,y-r*.48,r*.08,
+  x,y,r*1.12
+ );
+ grad.addColorStop(0,c.light);
+ grad.addColorStop(.35,c.main);
+ grad.addColorStop(.82,c.main);
+ grad.addColorStop(1,c.dark);
+
+ ctx.fillStyle=grad;
+ ctx.beginPath();
+ ctx.arc(x,y,r,0,Math.PI*2);
+ ctx.fill();
+
+ ctx.shadowColor="transparent";
+
+ // Gloss highlight.
+ ctx.fillStyle="#ffffff90";
+ ctx.beginPath();
+ ctx.ellipse(x-r*.32,y-r*.42,r*.28,r*.13,-.55,0,Math.PI*2);
+ ctx.fill();
+
+ ctx.fillStyle="#ffffff35";
+ ctx.beginPath();
+ ctx.arc(x-r*.36,y-r*.24,r*.07,0,Math.PI*2);
+ ctx.fill();
+
+ ctx.strokeStyle="#ffffff40";
+ ctx.lineWidth=1;
+ ctx.beginPath();
+ ctx.arc(x,y,r-1,0,Math.PI*2);
+ ctx.stroke();
+
+ ctx.restore();
+}
+
+function drawBoard(){
+ // Danger line.
+ const dangerY=H-145;
+ ctx.strokeStyle="#ff74745c";
+ ctx.lineWidth=2;
+ ctx.setLineDash([8,8]);
+ ctx.beginPath();
+ ctx.moveTo(0,dangerY);
+ ctx.lineTo(W,dangerY);
+ ctx.stroke();
+ ctx.setLineDash([]);
+
+ // Bubbles.
+ for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+   const color=board[r]?.[c];
+   if(color===null||color===undefined)continue;
+   const p=center(r,c);
+   drawBubble(p.x,p.y,color);
+  }
+ }
+
+ // Ceiling marker.
+ ctx.fillStyle="#ffffff25";
+ ctx.fillRect(0,91,W,3);
+}
+
+function drawShooter(){
+ const x=W/2;
+ const y=H-83;
+
+ // Launcher base.
+ ctx.save();
+ ctx.shadowColor="#0008";
+ ctx.shadowBlur=12;
+ ctx.fillStyle="#192d54";
+ ctx.beginPath();
+ ctx.arc(x,y,36,0,Math.PI*2);
+ ctx.fill();
+ ctx.shadowBlur=0;
+ ctx.strokeStyle="#9fb8e9";
+ ctx.lineWidth=3;
+ ctx.stroke();
+ ctx.restore();
+
+ // Aim barrel.
+ const dx=aim.x-x,dy=aim.y-y;
+ let a=Math.atan2(dy,dx);
+ if(a>-Math.PI*.08)a=-Math.PI*.5;
+ a=clamp(a,-Math.PI+.12,-.12);
+
+ ctx.save();
+ ctx.translate(x,y);
+ ctx.rotate(a);
+ roundedRect(0,-9,47,18,8,"#526eaa");
+ roundedRect(23,-6,25,12,5,"#a5c6ee");
+ ctx.restore();
+
+ drawBubble(x,y,currentColor,R*.92);
+
+ // Next bubble.
+ ctx.fillStyle="#ffffffa0";
+ ctx.font="bold 10px Arial";
+ ctx.textAlign="center";
+ ctx.fillText("NEXT",x+65,y+3);
+ drawBubble(x+65,y+25,nextColor,R*.72);
+}
+
+function drawAim(){
+ if(!running||flying)return;
+ const x=W/2,y=H-83;
+ const dx=aim.x-x,dy=aim.y-y;
+ let a=Math.atan2(dy,dx);
+ if(a>-.12)a=-Math.PI/2;
+
+ const length=330;
+ const endX=x+Math.cos(a)*length;
+ const endY=y+Math.sin(a)*length;
+
+ ctx.save();
+ ctx.setLineDash([5,8]);
+ ctx.strokeStyle="#ffffff85";
+ ctx.lineWidth=2;
+ ctx.beginPath();
+ ctx.moveTo(x,y);
+ ctx.lineTo(endX,endY);
+ ctx.stroke();
+ ctx.setLineDash([]);
+ ctx.restore();
+}
+
+function drawTopUI(){
+ roundedRect(12,12,W-24,62,15,"#101d38d9");
+
+ ctx.textAlign="left";
+ ctx.fillStyle="#d7e4ff";
+ ctx.font="bold 10px Arial";
+ ctx.fillText("SCORE",25,32);
+ ctx.fillStyle="#ffe17b";
+ ctx.font="bold 21px Arial";
+ ctx.fillText(score.toLocaleString(),25,57);
+
+ ctx.textAlign="center";
+ ctx.fillStyle="#d7e4ff";
+ ctx.font="bold 10px Arial";
+ ctx.fillText("LEVEL",W/2,32);
+ ctx.fillStyle="#fff";
+ ctx.font="bold 21px Arial";
+ ctx.fillText(level,W/2,57);
+
+ ctx.textAlign="right";
+ ctx.fillStyle="#d7e4ff";
+ ctx.font="bold 10px Arial";
+ ctx.fillText("SHOTS",W-25,32);
+ ctx.fillStyle="#fff";
+ ctx.font="bold 21px Arial";
+ ctx.fillText(shots,W-25,57);
+}
+
+function drawParticles(){
+ for(const p of particles){
+  ctx.globalAlpha=clamp(p.life*2,0,1);
+  ctx.fillStyle=p.color;
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  ctx.fill();
+ }
+ ctx.globalAlpha=1;
+}
+
+function draw(){
+ drawBackground();
+ drawTopUI();
+ drawBoard();
+ drawAim();
+ drawShooter();
+ drawParticles();
+
+ if(flying){
+  drawBubble(flying.x,flying.y,flying.color,R);
+ }
+}
+
+/* ---------- MATCH DETECTION ---------- */
+function groupFrom(row,col){
+ const color=board[row]?.[col];
+ if(color===null||color===undefined)return [];
+
+ const seen=new Set();
+ const group=[];
+ const stack=[[row,col]];
+
+ while(stack.length){
+  const [r,c]=stack.pop();
+  const key=r+","+c;
+  if(seen.has(key)||!validCell(r,c))continue;
+  seen.add(key);
+
+  if(board[r][c]!==color)continue;
+  group.push([r,c]);
+
+  for(const n of getNeighbours(r,c))stack.push(n);
+ }
+ return group;
+}
+
+function removeFloating(){
+ const connected=new Set();
+ const stack=[];
+
+ for(let c=0;c<COLS;c++){
+  if(board[0][c]!==null)stack.push([0,c]);
+ }
+
+ while(stack.length){
+  const [r,c]=stack.pop();
+  const key=r+","+c;
+  if(connected.has(key)||!validCell(r,c))continue;
+  if(board[r][c]===null)continue;
+  connected.add(key);
+  for(const n of getNeighbours(r,c))stack.push(n);
+ }
+
+ let dropped=0;
+
+ for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+   if(board[r][c]!==null&&!connected.has(r+","+c)){
+    const p=center(r,c);
+    burstParticles(p.x,p.y,board[r][c]);
+    board[r][c]=null;
+    dropped++;
+   }
+  }
+ }
+ return dropped;
+}
+
+function burstParticles(x,y,color){
+ const c=COLORS[color];
+ for(let i=0;i<9;i++){
+  const a=Math.random()*Math.PI*2;
+  const speed=rand(35,125);
+  particles.push({
+   x,y,
+   vx:Math.cos(a)*speed,
+   vy:Math.sin(a)*speed,
+   r:rand(2,5),
+   life:rand(.35,.7),
+   color:c.main
+  });
+ }
+}
+
+function burstGroup(group){
+ for(const [r,c] of group){
+  const p=center(r,c);
+  burstParticles(p.x,p.y,board[r][c]);
+  board[r][c]=null;
+ }
+}
+
+function resolveMatch(row,col){
+ const group=groupFrom(row,col);
+ if(group.length>=3){
+  burstGroup(group);
+  const dropped=removeFloating();
+  score+=group.length*10+dropped*20;
+  playSound(640,.12,"sine");
+  updateHUD();
+
+  if(board.every(row=>row.every(v=>v===null))){
+   finish(true,"BOARD CLEARED!","Amazing! You cleared every bubble.");
+   return;
+  }
+
+  if(score>=level*500){
+   level++;
+   playSound(850,.2,"triangle");
+  }
+ }else{
+  misses++;
+  playSound(220,.08,"triangle");
+ }
+
+ // Increase pressure after several shots.
+ if(shots>0&&shots%7===0){
+  addNewRow();
+ }
+
+ checkLose();
+}
+
+/* ---------- SNAP TO GRID ---------- */
+function findNearestCell(x,y){
+ let best=null,bestD=Infinity;
+
+ for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+   if(board[r][c]!==null)continue;
+   const p=center(r,c);
+   const d=Math.hypot(p.x-x,p.y-y);
+   if(d<bestD){
+    bestD=d;
+    best={r,c,x:p.x,y:p.y};
+   }
+  }
+ }
+ return best;
+}
+
+function placeBubble(){
+ if(!flying)return;
+
+ const cell=findNearestCell(flying.x,flying.y);
+ if(!cell){
+  finish(false,"NO SPACE LEFT","The board is full. Try again!");
+  return;
+ }
+
+ board[cell.r][cell.c]=flying.color;
+ const color=flying.color;
+ flying=null;
+
+ resolveMatch(cell.r,cell.c);
+
+ if(!ended){
+  currentColor=nextColor;
+  nextColor=randomColor();
+ }
+}
+
+/* ---------- SHOOTING ---------- */
+function shoot(){
+ if(!running||flying||shootCooldown>0)return;
+
+ const x=W/2,y=H-83;
+ let a=Math.atan2(aim.y-y,aim.x-x);
+ if(a>-.12)a=-Math.PI/2;
+
+ // Prevent firing downwards.
+ if(a>-.12)a=-.12;
+ if(a<-Math.PI+.12)a=-Math.PI+.12;
+
+ flying={
+  x,y,
+  vx:Math.cos(a)*590,
+  vy:Math.sin(a)*590,
+  color:currentColor
+ };
+
+ shots++;
+ shootCooldown=.2;
+ playSound(420,.07,"triangle");
+}
+
+/* ---------- MOVEMENT / COLLISION ---------- */
+function updateFlying(dt){
+ if(!flying)return;
+
+ flying.x+=flying.vx*dt;
+ flying.y+=flying.vy*dt;
+
+ // Side walls.
+ if(flying.x<R){
+  flying.x=R;
+  flying.vx=Math.abs(flying.vx);
+ }
+ if(flying.x>W-R){
+  flying.x=W-R;
+  flying.vx=-Math.abs(flying.vx);
+ }
+
+ // Ceiling.
+ if(flying.y<=rowY(0)+R*.55){
+  placeBubble();
+  return;
+ }
+
+ // Collision with existing bubbles.
+ for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+   if(board[r][c]===null)continue;
+   const p=center(r,c);
+   if(Math.hypot(flying.x-p.x,flying.y-p.y)<R*1.9){
+    placeBubble();
+    return;
+   }
+  }
+ }
+
+ // Safety timeout.
+ if(flying.y<40){
+  placeBubble();
+ }
+}
+
+/* ---------- PRESSURE ---------- */
+function addNewRow(){
+ ceilingShift+=STEP*.87;
+
+ // Move existing bubbles down one row.
+ for(let r=ROWS-1;r>0;r--){
+  board[r]=board[r-1].slice();
+ }
+ board[0]=Array(COLS).fill(null);
+
+ for(let c=0;c<COLS;c++){
+  if(Math.random()<.85){
+   board[0][c]=Math.floor(Math.random()*5);
+  }
+ }
+
+ // Occasionally make a hole.
+ if(Math.random()<.75){
+  board[0][Math.floor(rand(0,COLS))]=null;
+ }
+
+ playSound(170,.15,"sawtooth");
+}
+
+function checkLose(){
+ const danger=H-145;
+
+ for(let r=0;r<ROWS;r++){
+  for(let c=0;c<COLS;c++){
+   if(board[r][c]===null)continue;
+   const p=center(r,c);
+   if(p.y+R>=danger){
+    finish(false,"GAME OVER","The bubbles reached the danger line. Try another round!");
+    return;
+   }
+  }
+ }
+}
+
+/* ---------- END GAME ---------- */
+function finish(won,title,message){
+ if(ended)return;
+ ended=true;
+ running=false;
+ flying=null;
+
+ $("heading").textContent=title;
+ $("message").textContent=message+" Your score: "+score.toLocaleString()+".";
+ $("status").textContent="Your match is complete.";
+ $("start").textContent="PLAY AGAIN";
+ $("screen").classList.remove("hide");
+ playSound(won?850:150,.3,won?"triangle":"sawtooth");
+}
+
+/* ---------- UPDATE ---------- */
+function update(dt){
+ if(!running)return;
+
+ shootCooldown=Math.max(0,shootCooldown-dt);
+
+ if(flying)updateFlying(dt);
+
+ particles=particles.filter(p=>p.life>0);
+ for(const p of particles){
+  p.x+=p.vx*dt;
+  p.y+=p.vy*dt;
+  p.vx*=.98;
+  p.vy*=.98;
+  p.life-=dt;
+ }
+}
+
+/* ---------- INPUT ---------- */
+function point(e){
+ const r=canvas.getBoundingClientRect();
+ return {x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+function setAim(e){
+ const p=point(e);
+ aim.x=p.x;
+ aim.y=p.y;
+
+ const dx=aim.x-W/2;
+ const dy=aim.y-(H-83);
+ if(dy>0)aim.y=H-160;
+}
+
+canvas.addEventListener("pointermove",e=>{
+ if(!running)return;
+ setAim(e);
+});
+
+canvas.addEventListener("pointerdown",e=>{
+ if(!running)return;
+ e.preventDefault();
+ setAim(e);
+ shoot();
+});
+
+canvas.addEventListener("contextmenu",e=>e.preventDefault());
+
+/* ---------- GAME LOOP ---------- */
+function loop(now){
+ if(!running)return;
+ const dt=Math.min((now-last)/1000,.035);
+ last=now;
+ update(dt);
+ draw();
+ if(running)animation=requestAnimationFrame(loop);
+}
+
+/* ---------- START ---------- */
+function startGame(){
+ cancelAnimationFrame(animation);
+ newBoard();
+ ended=false;
+ running=true;
+ $("screen").classList.add("hide");
+ last=performance.now();
+ animation=requestAnimationFrame(loop);
+}
+
+$("start").addEventListener("click",startGame);
+
+draw();
+</script>
+</body>
+</html>
