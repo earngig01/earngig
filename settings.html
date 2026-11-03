@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | EarnGig</title>
+
+<style>
+:root {
+  --purple: #7027c7;
+  --purple-dark: #50169b;
+  --lavender: #f4edff;
+  --gold: #e6b83f;
+  --text: #282338;
+  --muted: #777386;
+  --border: #e9e2f2;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: var(--text);
+}
+
+header {
+  height: 68px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--purple);
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.brand svg {
+  width: 26px;
+  height: 26px;
+}
+
+.back {
+  color: var(--purple);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.container {
+  max-width: 950px;
+  margin: 35px auto;
+  padding: 0 18px 60px;
+}
+
+.heading {
+  margin-bottom: 25px;
+}
+
+.heading h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.heading p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.sidebar {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 10px;
+  position: sticky;
+  top: 85px;
+}
+
+.tab {
+  width: 100%;
+  padding: 13px 12px;
+  border: none;
+  background: white;
+  color: var(--text);
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tab:hover,
+.tab.active {
+  background: var(--lavender);
+  color: var(--purple);
+}
+
+.panel {
+  display: none;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 23px;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel h2 {
+  font-size: 19px;
+  margin-bottom: 7px;
+}
+
+.panel-intro {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-info {
+  flex: 1;
+}
+
+.setting-info strong {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.setting-info span {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.switch {
+  width: 45px;
+  height: 25px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #ccc;
+  border-radius: 30px;
+  transition: .2s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+.switch input:checked + .slider {
+  background: var(--purple);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.field {
+  margin-bottom: 17px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  background: white;
+  color: var(--text);
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--purple);
+}
+
+.primary-btn {
+  background: var(--purple);
+  color: white;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: var(--purple-dark);
+}
+
+.secondary-btn {
+  background: var(--lavender);
+  color: var(--purple);
+  border: none;
+  padding: 12px 17px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.danger-btn {
+  background: #fff0f0;
+  color: #c62828;
+  border: 1px solid #ffd5d5;
+  padding: 12px 17px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.message {
+  display: none;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message.success {
+  display: block;
+  background: #e9f8ef;
+  color: #16713e;
+}
+
+.message.error {
+  display: block;
+  background: #fff0f0;
+  color: #b32626;
+}
+
+.info-box {
+  background: var(--lavender);
+  border: 1px solid #e5d5fa;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #51436a;
+  margin-top: 18px;
+}
+
+.danger-zone {
+  border: 1px solid #ffdada;
+  border-radius: 10px;
+  padding: 17px;
+  margin-top: 20px;
+}
+
+.danger-zone h3 {
+  color: #c62828;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.danger-zone p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 13px;
+}
+
+@media(max-width: 650px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: flex;
+    overflow-x: auto;
+    position: static;
+    gap: 5px;
+  }
+
+  .tab {
+    white-space: nowrap;
+    width: auto;
+    margin: 0;
+  }
+
+  .panel {
+    padding: 17px;
+  }
+
+  .heading h1 {
+    font-size: 24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none">
+      <path d="M8 19L19 30L31 9L44 30L56 19L51 47H13L8 19Z"
+        fill="#E6B83F" stroke="#C49320" stroke-width="2.5"/>
+      <path d="M14 52H50" stroke="#E6B83F" stroke-width="4"
+        stroke-linecap="round"/>
+      <circle cx="8" cy="17" r="4" fill="#F4D477"/>
+      <circle cx="31" cy="7" r="4" fill="#F4D477"/>
+      <circle cx="56" cy="17" r="4" fill="#F4D477"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <a href="dashboard.html" class="back">← Dashboard</a>
+</header>
+
+<div class="container">
+
+  <div class="heading">
+    <h1>Settings</h1>
+    <p>Manage your EarnGig account, preferences and security.</p>
+  </div>
+
+  <div class="settings-layout">
+
+    <nav class="sidebar">
+      <button class="tab active" data-tab="account">👤 Account</button>
+      <button class="tab" data-tab="notifications">🔔 Notifications</button>
+      <button class="tab" data-tab="privacy">🔒 Privacy</button>
+      <button class="tab" data-tab="security">🛡️ Security</button>
+      <button class="tab" data-tab="preferences">⚙️ Preferences</button>
+      <button class="tab" data-tab="logout">🚪 Log Out</button>
+    </nav>
+
+    <div class="content">
+
+      <!-- ACCOUNT -->
+      <section class="panel active" id="account">
+        <h2>Account Information</h2>
+        <p class="panel-intro">Manage your basic account details.</p>
+
+        <div id="accountMessage" class="message"></div>
+
+        <form id="accountForm">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name">
+          </div>
+
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number">
+          </div>
+
+          <div class="field">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Your username">
+          </div>
+
+          <button type="submit" class="primary-btn">Save Changes</button>
+        </form>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="panel" id="notifications">
+        <h2>Notification Settings</h2>
+        <p class="panel-intro">Choose the updates you want to receive.</p>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Account Notifications</strong>
+            <span>Important account activity and security updates.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="accountNotifications" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Earning Updates</strong>
+            <span>Receive updates about coins and completed tasks.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="earningNotifications" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Novel Updates</strong>
+            <span>Updates about novels, reading rewards and writing submissions.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="novelNotifications" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Promotional Notifications</strong>
+            <span>News about offers, campaigns and special activities.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="promoNotifications">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Email Notifications</strong>
+            <span>Receive permitted updates through email.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="emailNotifications" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="info-box">
+          Your notification choices are saved on this device. Actual email and push notification delivery will be connected later.
+        </div>
+      </section>
+
+      <!-- PRIVACY -->
+      <section class="panel" id="privacy">
+        <h2>Privacy Settings</h2>
+        <p class="panel-intro">Control the visibility of your profile information.</p>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Public Profile</strong>
+            <span>Allow other EarnGig members to view your public profile.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="publicProfile" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Show Username in Leaderboards</strong>
+            <span>Allow your username to appear in public rankings.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="leaderboardVisibility" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <strong>Show Activity Status</strong>
+            <span>Allow other members to see when you are active.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" data-setting="activityStatus">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="info-box">
+          These are preference controls for the frontend. Public visibility enforcement will be connected to the account system later.
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="panel" id="security">
+        <h2>Security</h2>
+        <p class="panel-intro">Manage your password and account security.</p>
+
+        <div id="securityMessage" class="message"></div>
+
+        <form id="passwordForm">
+          <div class="field">
+            <label>Current Password</label>
+            <input type="password" id="currentPassword" placeholder="Enter current password" required>
+          </div>
+
+          <div class="field">
+            <label>New Password</label>
+            <input type="password" id="newPassword" placeholder="Enter new password" minlength="8" required>
+          </div>
+
+          <div class="field">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm new password" minlength="8" required>
+          </div>
+
+          <button type="submit" class="primary-btn">Update Password</button>
+        </form>
+
+        <div class="info-box">
+          Password changes require secure server-side verification. This frontend does not change your real account password. Never store your password in browser storage.
+        </div>
+      </section>
+
+      <!-- PREFERENCES -->
+      <section class="panel" id="preferences">
+        <h2>Preferences</h2>
+        <p class="panel-intro">Personalise your EarnGig experience.</p>
+
+        <div class="field">
+          <label>Preferred Language</label>
+          <select id="language">
+            <option value="English">English</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Preferred Currency</label>
+          <select id="currency">
+            <option value="NGN">Nigerian Naira (₦)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Time Zone</label>
+          <select id="timezone">
+            <option value="Africa/Lagos">West Africa Time (WAT)</option>
+          </select>
+        </div>
+
+        <button class="primary-btn" onclick="savePreferences()">Save Preferences</button>
+        <div id="preferenceMessage" class="message"></div>
+      </section>
+
+      <!-- LOGOUT -->
+      <section class="panel" id="logout">
+        <h2>Log Out</h2>
+        <p class="panel-intro">You can safely leave your EarnGig account on this device.</p>
+
+        <div class="info-box">
+          Logging out will end your current local demo session. Your saved profile preferences will remain on this device.
+        </div>
+
+        <div style="margin-top:22px">
+          <button class="danger-btn" onclick="logoutUser()">Log Out of EarnGig</button>
+        </div>
+
+        <div class="danger-zone">
+          <h3>Account Deactivation</h3>
+          <p>
+            Account deactivation and permanent account deletion are not available from this frontend page. Contact EarnGig support when you need help with your account.
+          </p>
+          <a href="contact.html" style="color:var(--purple);font-size:13px;font-weight:700;text-decoration:none">
+            Contact Support →
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const SETTINGS_KEY = "earngig_user_settings";
+const PROFILE_KEY = "earngig_user_profile";
+
+function readStorage(key, fallback = {}) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+let settings = readStorage(SETTINGS_KEY);
+let profile = readStorage(PROFILE_KEY);
+
+function saveSettings() {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+function showMessage(id, text, type = "success") {
+  const element = document.getElementById(id);
+  element.textContent = text;
+  element.className = "message " + type;
+
+  setTimeout(() => {
+    element.className = "message";
+  }, 3500);
+}
+
+// Navigation between settings sections
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.tab;
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.remove("active");
+    });
+
+    document.querySelectorAll(".panel").forEach(panel => {
+      panel.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+// Load profile information
+document.getElementById("fullName").value = profile.fullName || "";
+document.getElementById("email").value = profile.email || "";
+document.getElementById("phone").value = profile.phone || "";
+document.getElementById("username").value = profile.username || "";
+
+// Save profile information
+document.getElementById("accountForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  profile.fullName = document.getElementById("fullName").value.trim();
+  profile.email = document.getElementById("email").value.trim();
+  profile.phone = document.getElementById("phone").value.trim();
+  profile.username = document.getElementById("username").value.trim();
+
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+
+  showMessage("accountMessage", "Your profile preferences have been saved on this device.");
+});
+
+// Load notification and privacy switches
+document.querySelectorAll("[data-setting]").forEach(input => {
+  const key = input.dataset.setting;
+
+  if (settings[key] !== undefined) {
+    input.checked = Boolean(settings[key]);
+  }
+
+  input.addEventListener("change", () => {
+    settings[key] = input.checked;
+    saveSettings();
+  });
+});
+
+// Password interface
+document.getElementById("passwordForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const current = document.getElementById("currentPassword").value;
+  const newPassword = document.getElementById("newPassword").value;
+  const confirm = document.getElementById("confirmPassword").value;
+
+  if (!current || !newPassword || !confirm) {
+    showMessage("securityMessage", "Please complete all password fields.", "error");
+    return;
+  }
+
+  if (newPassword.length < 8) {
+    showMessage("securityMessage", "Your new password must contain at least 8 characters.", "error");
+    return;
+  }
+
+  if (newPassword !== confirm) {
+    showMessage("securityMessage", "Your new passwords do not match.", "error");
+    return;
+  }
+
+  showMessage(
+    "securityMessage",
+    "Password changes are not connected yet. Your password has not been changed.",
+    "error"
+  );
+
+  document.getElementById("passwordForm").reset();
+});
+
+// Preferences
+const savedPreferences = settings.preferences || {};
+
+document.getElementById("language").value = savedPreferences.language || "English";
+document.getElementById("currency").value = savedPreferences.currency || "NGN";
+document.getElementById("timezone").value = savedPreferences.timezone || "Africa/Lagos";
+
+function savePreferences() {
+  settings.preferences = {
+    language: document.getElementById("language").value,
+    currency: document.getElementById("currency").value,
+    timezone: document.getElementById("timezone").value
+  };
+
+  saveSettings();
+
+  showMessage("preferenceMessage", "Your preferences have been saved.");
+}
+
+// Logout
+function logoutUser() {
+  const confirmed = confirm("Are you sure you want to log out of EarnGig?");
+
+  if (!confirmed) return;
+
+  // Clear only common demo session keys.
+  [
+    "earngig_logged_in",
+    "earngig_current_user",
+    "earngig_user_session",
+    "earngig_auth"
+  ].forEach(key => localStorage.removeItem(key));
+
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
