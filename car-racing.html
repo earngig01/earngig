@@ -11,22 +11,10 @@
 <style>
 *{box-sizing:border-box}
 html,body{
- margin:0;background:#10151b;color:#fff;
- font-family:Arial,sans-serif;
- -webkit-user-select:none;user-select:none;
- -webkit-touch-callout:none;
+ margin:0;background:#10151b;color:#fff;font-family:Arial,sans-serif;
+ user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
 }
-button{
- border:0;border-radius:12px;
- font-weight:900;cursor:pointer;
- -webkit-user-select:none;user-select:none;
- -webkit-touch-callout:none;
- -webkit-tap-highlight-color:transparent;
- touch-action:none;
- outline:none;
-}
-button:focus{outline:none}
-button:active{filter:brightness(1.08)}
+body{overscroll-behavior:none}
 header{
  height:58px;padding:0 15px;background:#192129;
  border-bottom:1px solid #35424d;
@@ -44,6 +32,13 @@ main{width:min(1100px,97%);margin:14px auto}
 h1{text-align:center;font-size:27px}
 .muted{color:#b6c1c9;line-height:1.55}
 .tag{color:#caff45;font-size:11px;letter-spacing:1.5px;font-weight:bold}
+button{
+ border:0;border-radius:12px;font-weight:900;cursor:pointer;
+ -webkit-tap-highlight-color:transparent;
+ user-select:none;-webkit-user-select:none;
+ -webkit-touch-callout:none;
+}
+button:focus{outline:none}
 .primary{background:#caff45;color:#14200d}
 .secondary{background:#394650;color:white}
 .full{width:100%;padding:17px;font-size:17px}
@@ -99,8 +94,6 @@ h1{text-align:center;font-size:27px}
 #mapTitle{text-align:center;font-size:9px;color:#caff45;font-weight:bold;margin-bottom:3px}
 #map{width:100%;height:110px;display:block}
 #mapLegend{font-size:8px;color:#d7dfe5;text-align:center}
-
-/* Holographic countdown */
 #countdown{
  position:absolute;inset:0;z-index:20;
  display:flex;align-items:center;justify-content:center;
@@ -111,23 +104,18 @@ h1{text-align:center;font-size:27px}
  display:flex;align-items:center;justify-content:center;
  width:clamp(145px,38vw,240px);
  height:clamp(145px,38vw,240px);
- border:2px solid #caff45;
- border-radius:50%;
+ border:2px solid #caff45;border-radius:50%;
  background:radial-gradient(circle,#caff4522,#061a2b88 65%,#061a2b33);
- color:#eaffad;
- font-size:clamp(90px,24vw,155px);
- font-weight:1000;
- text-shadow:0 0 12px #caff45,0 0 35px #caff45,0 0 65px #3affff;
+ color:#eaffad;font-size:clamp(90px,24vw,155px);
+ font-weight:1000;text-shadow:0 0 12px #caff45,0 0 35px #caff45,0 0 65px #3affff;
  box-shadow:0 0 20px #caff4580,inset 0 0 28px #caff4533;
- animation:holoPulse .75s ease-in-out infinite alternate;
+ animation:holoPulse .75s ease-in-out infinite alternate
 }
 #countdownText.go{
  width:clamp(230px,65vw,420px);
  height:clamp(115px,30vw,180px);
- border-radius:18px;
- font-size:clamp(65px,18vw,110px);
- color:#fff;
- background:linear-gradient(110deg,#caff4522,#0ff5ff33,#caff4522);
+ border-radius:18px;font-size:clamp(65px,18vw,110px);
+ color:white;background:linear-gradient(110deg,#caff4522,#0ff5ff33,#caff4522)
 }
 @keyframes holoPulse{
  from{transform:scale(.78);opacity:.65;filter:brightness(.9)}
@@ -145,9 +133,8 @@ h1{text-align:center;font-size:27px}
 #steeringWheel{
  width:105px;height:105px;border:9px solid #aab3ba;
  border-radius:50%;position:relative;touch-action:none;
- user-select:none;-webkit-user-select:none;
  background:radial-gradient(circle,#343d45 0 18%,#111820 20% 100%);
- box-shadow:inset 0 0 0 3px #252d34,0 3px 8px #0008;
+ box-shadow:inset 0 0 0 3px #252d34,0 3px 8px #0008
 }
 #steeringWheel:before,#steeringWheel:after{
  content:"";position:absolute;background:#aab3ba;
@@ -159,14 +146,17 @@ h1{text-align:center;font-size:27px}
 }
 .pedals{display:grid;grid-template-columns:1fr;gap:8px}
 .pedals button{
- height:61px;display:flex;align-items:center;
- justify-content:center;font-size:28px;
- position:relative;overflow:hidden;
+ height:61px;display:flex;align-items:center;justify-content:center;
+ font-size:28px;position:relative;touch-action:none!important;
+ -webkit-user-select:none!important;user-select:none!important;
+ -webkit-touch-callout:none!important;
+ -webkit-tap-highlight-color:transparent;
 }
+.pedals button.pressed{filter:brightness(1.2);transform:scale(.98)}
 .gas{background:#caff45;color:#14200d}
 .reverse{background:#394650;color:white}
 .brake{background:#b83e36;color:white}
-.control-symbol{pointer-events:none;user-select:none;-webkit-user-select:none}
+.control-symbol{pointer-events:none}
 .note{font-size:12px;color:#aebbc4;line-height:1.5}
 .leader{
  display:flex;justify-content:space-between;
@@ -285,12 +275,12 @@ h1{text-align:center;font-size:27px}
    </div>
   </div>
   <div class="pedals">
-   <button class="gas" id="gas" aria-label="Accelerate"><span class="control-symbol">▲</span></button>
-   <button class="reverse" id="reverse" aria-label="Reverse"><span class="control-symbol">▼</span></button>
-   <button class="brake" id="brake" aria-label="Brake"><span class="control-symbol">■</span></button>
+   <button class="gas" id="gas" type="button" aria-label="Accelerate"><span class="control-symbol">▲</span></button>
+   <button class="reverse" id="reverse" type="button" aria-label="Reverse"><span class="control-symbol">▼</span></button>
+   <button class="brake" id="brake" type="button" aria-label="Brake"><span class="control-symbol">■</span></button>
   </div>
  </div>
- <p class="note" style="text-align:center">Drag the steering wheel. Hold ▲ to accelerate, ▼ to reverse and ■ to brake.</p>
+ <p class="note" style="text-align:center">Hold ▲ to accelerate, ▼ to reverse and ■ to brake. Drag the steering wheel to turn.</p>
 </section>
 
 <section id="results" class="panel hidden">
@@ -354,11 +344,9 @@ function makeCar(color){
 
  const cockpit=new THREE.Mesh(new THREE.SphereGeometry(.48,16,12),glass);
  cockpit.scale.set(.78,.6,1.2);
- cockpit.position.set(0,1.03,.15);
- car.add(cockpit);
+ cockpit.position.set(0,1.03,.15);car.add(cockpit);
  const helmet=new THREE.Mesh(new THREE.SphereGeometry(.23,12,10),material(0xffcf42));
- helmet.position.set(0,1.34,.15);
- car.add(helmet);
+ helmet.position.set(0,1.34,.15);car.add(helmet);
 
  const wheels=[];
  for(const x of [-.98,.98]){
@@ -428,8 +416,7 @@ function makeRoad(){
  }
  const geometry=new THREE.BufferGeometry();
  geometry.setAttribute("position",new THREE.Float32BufferAttribute(verts,3));
- geometry.setIndex(indices);
- geometry.computeVertexNormals();
+ geometry.setIndex(indices);geometry.computeVertexNormals();
  const road=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({
   color:0x292d33,side:THREE.DoubleSide,roughness:.95
  }));
@@ -454,47 +441,35 @@ function addEnvironment(){
   new THREE.PlaneGeometry(3000,3000),
   material(0x537c43,0,.95)
  );
- ground.rotation.x=-Math.PI/2;
- ground.position.y=-.45;
- ground.receiveShadow=true;
- scene.add(ground);
+ ground.rotation.x=-Math.PI/2;ground.position.y=-.45;
+ ground.receiveShadow=true;scene.add(ground);
  sceneryColliders=[];
 
- // Hills are placed far outside the circuit.
  for(let i=0;i<16;i++){
-  const t=(i+.5)/16;
-  const side=i%2===0?-1:1;
+  const t=(i+.5)/16,side=i%2===0?-1:1;
   const {p}=pointAt(t,side*(110+Math.random()*45));
-  const radius=12+Math.random()*16;
-  const height=8+Math.random()*12;
+  const radius=12+Math.random()*16,height=8+Math.random()*12;
   const hill=new THREE.Mesh(
    new THREE.SphereGeometry(1,10,8),
    material([0x527b42,0x657f4a,0x777d54][i%3])
   );
   hill.scale.set(radius,height,radius*1.2);
-  hill.position.set(p.x,height*.45,p.z);
-  scene.add(hill);
+  hill.position.set(p.x,height*.45,p.z);scene.add(hill);
   sceneryColliders.push({x:p.x,z:p.z,radius:radius*.8});
  }
-
- // Only five distant rocks.
  for(let i=0;i<5;i++){
-  const t=Math.random();
-  const side=Math.random()<.5?-1:1;
+  const t=Math.random(),side=Math.random()<.5?-1:1;
   const {p}=pointAt(t,side*(90+Math.random()*45));
   const radius=2+Math.random()*2.5;
   const rock=new THREE.Mesh(
    new THREE.DodecahedronGeometry(1,1),material(0x74766e)
   );
   rock.scale.set(radius,radius*.8,radius*1.3);
-  rock.position.set(p.x,radius*.4,p.z);
-  scene.add(rock);
+  rock.position.set(p.x,radius*.4,p.z);scene.add(rock);
   sceneryColliders.push({x:p.x,z:p.z,radius:radius+1});
  }
-
  for(let i=0;i<20;i++){
-  const t=Math.random();
-  const side=Math.random()<.5?-1:1;
+  const t=Math.random(),side=Math.random()<.5?-1:1;
   const {p}=pointAt(t,side*(100+Math.random()*65));
   const trunk=new THREE.Mesh(
    new THREE.CylinderGeometry(.35,.5,4,7),material(0x60452d)
@@ -513,7 +488,6 @@ function initWorld(){
  scene.background=new THREE.Color(0x9bc8e7);
  scene.fog=new THREE.Fog(0x9bc8e7,350,1150);
  camera=new THREE.PerspectiveCamera(68,1,.1,2000);
-
  renderer=new THREE.WebGLRenderer({
   canvas,antialias:false,powerPreference:"high-performance"
  });
@@ -521,15 +495,12 @@ function initWorld(){
  renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;
  renderer.toneMappingExposure=1.1;
-
  scene.add(new THREE.HemisphereLight(0xffffff,0x64724f,2.2));
  const sun=new THREE.DirectionalLight(0xfff2df,2.5);
  sun.position.set(-150,250,100);scene.add(sun);
 
- trackCurve=buildTrack();
- trackLength=trackCurve.getLength();
- addEnvironment();
- makeRoad();
+ trackCurve=buildTrack();trackLength=trackCurve.getLength();
+ addEnvironment();makeRoad();
 
  const {p,tangent}=pointAt(0);
  const line=new THREE.Mesh(
@@ -547,7 +518,6 @@ function initWorld(){
   {progress:-.008,offset:4.2}
  ];
  const colors=[0xe63232,0x2068d7,0xf0c62b,0x13a77a,0xd8d8d8];
-
  player=makeCar(colors[0]);scene.add(player);
  putCar(player,grid[0].progress,grid[0].offset);
  opponents=[];
@@ -558,25 +528,21 @@ function initWorld(){
   opponents.push({
    mesh:car,name:"Racer "+(i+1),
    progress:((grid[i].progress%1)+1)%1,
-   distance:0,speed:0,
-   targetSpeed:105+Math.random()*22,
+   distance:0,speed:0,targetSpeed:105+Math.random()*22,
    lateral:grid[i].offset,collisionCooldown:0
   });
  }
  distance=0;lateral=0;speed=0;
- resizeRace();
- updateCamera(.016);
+ resizeRace();updateCamera(.016);
  renderer.render(scene,camera);
 }
 
 function resizeRace(){
  if(!renderer||!camera)return;
  const canvas=$("game");
- const w=Math.max(1,canvas.clientWidth);
- const h=Math.max(1,canvas.clientHeight);
+ const w=Math.max(1,canvas.clientWidth),h=Math.max(1,canvas.clientHeight);
  renderer.setSize(w,h,false);
- camera.aspect=w/h;
- camera.updateProjectionMatrix();
+ camera.aspect=w/h;camera.updateProjectionMatrix();
 }
 window.addEventListener("resize",resizeRace);
 
@@ -600,8 +566,7 @@ function crashSound(){
   if(!audioContext)audioContext=new AC();
   if(audioContext.state==="suspended")audioContext.resume();
   const now=audioContext.currentTime;
-  const osc=audioContext.createOscillator();
-  const gain=audioContext.createGain();
+  const osc=audioContext.createOscillator(),gain=audioContext.createGain();
   osc.type="sawtooth";
   osc.frequency.setValueAtTime(105,now);
   osc.frequency.exponentialRampToValueAtTime(28,now+.24);
@@ -613,9 +578,7 @@ function crashSound(){
 }
 function impact(){
  if(collisionCooldown>0)return;
- collisionCooldown=.9;
- speed*=.18;
- cameraShake=.8;
+ collisionCooldown=.9;speed*=.18;cameraShake=.8;
  crashSound();
  if(navigator.vibrate)navigator.vibrate([80,35,100]);
 }
@@ -650,14 +613,12 @@ function checkCarCollisions(){
  });
 }
 
-/* Live minimap */
-const mapCanvas=$("map");
-const mapCtx=mapCanvas.getContext("2d");
+/* Live race map */
+const mapCanvas=$("map"),mapCtx=mapCanvas.getContext("2d");
 function drawMap(){
  const w=mapCanvas.clientWidth||90,h=mapCanvas.clientHeight||100;
  mapCanvas.width=w*2;mapCanvas.height=h*2;
- mapCtx.setTransform(2,0,0,2,0,0);
- mapCtx.clearRect(0,0,w,h);
+ mapCtx.setTransform(2,0,0,2,0,0);mapCtx.clearRect(0,0,w,h);
  const pts=[];
  for(let i=0;i<=220;i++)pts.push(trackCurve.getPointAt(i/220));
  let minX=Infinity,maxX=-Infinity,minZ=Infinity,maxZ=-Infinity;
@@ -672,17 +633,13 @@ function drawMap(){
  });
  mapCtx.beginPath();
  pts.forEach((p,i)=>{
-  const q=project(p);
-  i?mapCtx.lineTo(q.x,q.y):mapCtx.moveTo(q.x,q.y);
+  const q=project(p);i?mapCtx.lineTo(q.x,q.y):mapCtx.moveTo(q.x,q.y);
  });
- mapCtx.closePath();
- mapCtx.strokeStyle="#e3e8eb";mapCtx.lineWidth=6;mapCtx.stroke();
+ mapCtx.closePath();mapCtx.strokeStyle="#e3e8eb";mapCtx.lineWidth=6;mapCtx.stroke();
  mapCtx.strokeStyle="#363f48";mapCtx.lineWidth=3;mapCtx.stroke();
-
  const me=project(trackCurve.getPointAt(((distance/trackLength)%1+1)%1));
  mapCtx.beginPath();mapCtx.arc(me.x,me.y,4,0,Math.PI*2);
  mapCtx.fillStyle="#caff45";mapCtx.fill();
-
  opponents.forEach((bot,i)=>{
   const q=project(trackCurve.getPointAt(bot.progress));
   mapCtx.beginPath();mapCtx.arc(q.x,q.y,3.2,0,Math.PI*2);
@@ -691,23 +648,18 @@ function drawMap(){
  });
 }
 
-/* Hologram countdown */
+/* Countdown */
 function playCountdown(){
- active=false;
- elapsed=0;remaining=RACE_SECONDS;speed=0;distance=0;
- const text=$("countdownText");
- const overlay=$("countdown");
+ active=false;elapsed=0;remaining=RACE_SECONDS;speed=0;distance=0;
+ const text=$("countdownText"),overlay=$("countdown");
  overlay.classList.remove("hidden");
-
  ["3","2","1","GO!"].forEach((value,index)=>{
   const id=setTimeout(()=>{
    text.textContent=value;
    text.classList.toggle("go",value==="GO!");
    if(value==="GO!"){
-    active=true;
-    elapsed=0;remaining=RACE_SECONDS;
-    clock=new THREE.Clock();
-    loop();
+    active=true;elapsed=0;remaining=RACE_SECONDS;
+    clock=new THREE.Clock();loop();
     const hide=setTimeout(()=>overlay.classList.add("hidden"),900);
     countdownTimeouts.push(hide);
    }
@@ -716,7 +668,7 @@ function playCountdown(){
  });
 }
 
-/* Driving */
+/* Race physics */
 function updateDriving(dt){
  if(!active)return;
  const maxSpeed=CAR_SPEEDS[selectedCar];
@@ -771,8 +723,7 @@ function updateRivals(dt){
 }
 function updateTimer(dt){
  if(!active)return;
- elapsed+=dt;
- remaining=Math.max(0,RACE_SECONDS-elapsed);
+ elapsed+=dt;remaining=Math.max(0,RACE_SECONDS-elapsed);
  const s=Math.ceil(remaining);
  $("timer").textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
 }
@@ -787,19 +738,15 @@ function loop(){
 
 window.startRace=function(){
  clearInterval(returnCountdownTimer);
- countdownTimeouts.forEach(clearTimeout);
- countdownTimeouts=[];
+ countdownTimeouts.forEach(clearTimeout);countdownTimeouts=[];
  $("garage").classList.add("hidden");
  $("results").classList.add("hidden");
  $("raceScreen").classList.remove("hidden");
-
  elapsed=0;remaining=RACE_SECONDS;distance=0;speed=0;
  lateral=0;steering=0;cameraShake=0;collisionCooldown=0;
  controls.gas=false;controls.reverse=false;controls.brake=false;
-
  try{
-  initWorld();
-  playCountdown();
+  initWorld();playCountdown();
  }catch(error){
   console.error("EarnGig race startup error:",error);
   alert("The racing scene could not start. Please reload. "+(error.message||error));
@@ -833,12 +780,9 @@ function finishRace(){
   const dist=document.createElement("span");dist.textContent=(r.distance/1000).toFixed(2)+" km";
   row.append(name,dist);$("leaderboard").appendChild(row);
  });
-
- let seconds=10;
- $("returnCountdown").textContent=seconds;
+ let seconds=10;$("returnCountdown").textContent=seconds;
  returnCountdownTimer=setInterval(()=>{
-  seconds--;
-  $("returnCountdown").textContent=Math.max(0,seconds);
+  seconds--;$("returnCountdown").textContent=Math.max(0,seconds);
   if(seconds<=0)goToGames();
  },1000);
 }
@@ -860,11 +804,10 @@ function cleanupWorld(){
 }
 window.goToGames=function(){
  clearInterval(returnCountdownTimer);
- cleanupWorld();
- window.location.href="games.html";
+ cleanupWorld();window.location.href="games.html";
 };
 
-/* Steering wheel drag */
+/* Steering wheel */
 const wheel=$("steeringWheel");
 let dragging=false,lastX=0,wheelRotation=0;
 wheel.addEventListener("pointerdown",e=>{
@@ -888,30 +831,60 @@ function releaseWheel(){
  wheel.addEventListener(t,releaseWheel)
 );
 
-/* Hold controls: prevent text selection and browser gestures */
-function holdButton(id,key){
- const el=$(id);
- const press=e=>{
-  e.preventDefault();
-  if(!active)return;
-  controls[key]=true;
-  try{el.setPointerCapture(e.pointerId)}catch(_){}
- };
- const release=e=>{
-  e.preventDefault();
-  controls[key]=false;
- };
- el.addEventListener("pointerdown",press);
- ["pointerup","pointercancel","lostpointercapture","contextmenu"].forEach(t=>
-  el.addEventListener(t,release)
- );
- el.addEventListener("dragstart",e=>e.preventDefault());
- el.addEventListener("selectstart",e=>e.preventDefault());
+/*
+  FIXED TOUCH CONTROLS:
+  - No pointer capture.
+  - No touch event duplication.
+  - Touch down activates immediately.
+  - Finger can move outside the button while holding.
+  - Release anywhere on the page deactivates it.
+*/
+let heldControl=null;
+
+function releaseHeldControl(){
+ if(!heldControl)return;
+ controls[heldControl]=false;
+ const button=$(heldControl);
+ if(button)button.classList.remove("pressed");
+ heldControl=null;
 }
+
+function holdButton(id,key){
+ const button=$(id);
+
+ button.addEventListener("pointerdown",e=>{
+  if(e.pointerType==="mouse"&&e.button!==0)return;
+  e.preventDefault();
+  e.stopPropagation();
+  if(!active)return;
+
+  releaseHeldControl();
+  heldControl=key;
+  controls[key]=true;
+  button.classList.add("pressed");
+ },{passive:false});
+
+ button.addEventListener("contextmenu",e=>e.preventDefault());
+ button.addEventListener("dragstart",e=>e.preventDefault());
+ button.addEventListener("selectstart",e=>e.preventDefault());
+ button.addEventListener("click",e=>{
+  e.preventDefault();
+  e.stopPropagation();
+ });
+}
+
+window.addEventListener("pointerup",releaseHeldControl,{passive:false});
+window.addEventListener("pointercancel",releaseHeldControl,{passive:false});
+window.addEventListener("blur",releaseHeldControl);
+document.addEventListener("visibilitychange",()=>{
+ if(document.hidden)releaseHeldControl();
+});
+
 holdButton("gas","gas");
 holdButton("reverse","reverse");
 holdButton("brake","brake");
 
+/* Keyboard controls */
 document.addEventListener("keydown",e=>{
  if(!active)return;
  const k=e.key.toLowerCase();
