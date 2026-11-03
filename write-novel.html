@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Write a Novel - EarnGig</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#29243a;
+}
+
+a{text-decoration:none;color:inherit}
+button,input,textarea,select{font:inherit}
+
+.topbar{
+  background:#fff;
+  border-bottom:1px solid #eee8f5;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.nav{
+  max-width:1100px;
+  margin:auto;
+  padding:13px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#5424b8;
+  font-size:23px;
+  font-weight:900;
+}
+
+.crown{width:27px;height:25px}
+
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.nav-btn{
+  padding:10px 13px;
+  border-radius:7px;
+  background:#f1ebff;
+  color:#642bd1;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.container{
+  max-width:1100px;
+  margin:25px auto;
+  padding:0 18px;
+}
+
+.page-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.page-heading h1{
+  font-size:23px;
+  margin-bottom:6px;
+}
+
+.page-heading p{
+  color:#81798c;
+  font-size:12px;
+}
+
+.save-status{
+  color:#32875b;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.editor-layout{
+  display:grid;
+  grid-template-columns:245px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+.sidebar{
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:16px;
+  background:#fff;
+}
+
+.sidebar h3{
+  font-size:14px;
+  margin-bottom:13px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid #e4ddec;
+  border-radius:8px;
+  padding:11px;
+  outline:none;
+  color:#29243a;
+  background:#fff;
+  font-size:13px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:#8652e5;
+  box-shadow:0 0 0 3px #642bd111;
+}
+
+.chapter-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:11px;
+}
+
+.chapter-heading h3{
+  margin:0;
+}
+
+.add-chapter{
+  background:#f1ebff;
+  color:#642bd1;
+  padding:8px 10px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.chapter-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.chapter-tab{
+  width:100%;
+  text-align:left;
+  background:#f8f6fb;
+  color:#554b65;
+  padding:11px;
+  border-radius:7px;
+  font-size:12px;
+  border:1px solid transparent;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.chapter-tab.active{
+  background:#f1ebff;
+  color:#642bd1;
+  border-color:#d9c7fa;
+  font-weight:bold;
+}
+
+.chapter-tab.done{
+  border-left:3px solid #39a56e;
+}
+
+.editor{
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:20px;
+  min-width:0;
+}
+
+.editor-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:17px;
+}
+
+.editor-top h2{
+  font-size:17px;
+}
+
+.word-count{
+  font-size:11px;
+  color:#81798c;
+}
+
+.chapter-title-field{
+  margin-bottom:13px;
+}
+
+.chapter-title-field label{
+  display:block;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+.chapter-title-field input{
+  width:100%;
+  border:1px solid #e4ddec;
+  border-radius:8px;
+  padding:12px;
+  font-size:14px;
+  outline:none;
+}
+
+.chapter-title-field input:focus{
+  border-color:#8652e5;
+}
+
+.story-editor{
+  width:100%;
+  min-height:430px;
+  resize:vertical;
+  border:1px solid #e4ddec;
+  border-radius:9px;
+  padding:17px;
+  font-family:Georgia,serif;
+  font-size:15px;
+  line-height:1.9;
+  color:#393244;
+  outline:none;
+}
+
+.story-editor:focus{
+  border-color:#8652e5;
+}
+
+.editor-hint{
+  color:#938a9d;
+  font-size:11px;
+  line-height:1.6;
+  margin-top:9px;
+}
+
+.chapter-tools{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.tool-left,.tool-right{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.button{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.button-purple{
+  background:#642bd1;
+  color:#fff;
+}
+
+.button-light{
+  background:#f1ebff;
+  color:#642bd1;
+}
+
+.button-danger{
+  background:#fff0f0;
+  color:#c0392b;
+}
+
+.button-dark{
+  background:#33283f;
+  color:#fff;
+}
+
+.button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.bottom-actions{
+  margin-top:20px;
+  padding-top:17px;
+  border-top:1px solid #eee7f5;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.bottom-actions p{
+  font-size:11px;
+  color:#81798c;
+  line-height:1.6;
+}
+
+.submit-btn{
+  background:#642bd1;
+  color:#fff;
+  padding:13px 19px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.notice{
+  margin-top:20px;
+  padding:14px;
+  background:#faf8fd;
+  border:1px solid #eee7f5;
+  border-radius:10px;
+  font-size:11px;
+  line-height:1.7;
+  color:#766d82;
+}
+
+footer{
+  border-top:1px solid #eee8f5;
+  text-align:center;
+  padding:22px;
+  margin-top:40px;
+  color:#999;
+  font-size:11px;
+}
+
+@media(max-width:750px){
+  .editor-layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .chapter-list{
+    flex-direction:row;
+    overflow-x:auto;
+    padding-bottom:5px;
+  }
+  .chapter-tab{
+    width:auto;
+    min-width:105px;
+  }
+  .story-editor{min-height:350px}
+}
+
+@media(max-width:420px){
+  .brand{font-size:20px}
+  .nav-btn{font-size:10px;padding:9px}
+  .editor{padding:13px}
+  .page-heading h1{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+
+    <a href="index.html" class="brand">
+      <svg class="crown" viewBox="0 0 32 29" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8L9 14L15.8 3L23 14L29 8L26 24H6L3 8Z"
+              fill="#E5B52E" stroke="#BD8914"
+              stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M6 26H26" stroke="#BD8914"
+              stroke-width="2" stroke-linecap="round"/>
+        <circle cx="3" cy="7" r="2" fill="#F6D978"/>
+        <circle cx="16" cy="3" r="2" fill="#F6D978"/>
+        <circle cx="29" cy="7" r="2" fill="#F6D978"/>
+      </svg>
+      EarnGig
+    </a>
+
+    <div class="nav-actions">
+      <a href="writer-studio.html" class="nav-btn">My Novels</a>
+      <a href="dashboard.html" class="nav-btn">Dashboard</a>
+    </div>
+
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="page-heading">
+    <div>
+      <h1>Novel Writing Room ✍️</h1>
+      <p>Write your story, save your progress and continue whenever you're ready.</p>
+    </div>
+
+    <div class="save-status" id="saveStatus">Not saved yet</div>
+  </section>
+
+  <div class="editor-layout">
+
+    <aside class="sidebar">
+
+      <h3>Novel Details</h3>
+
+      <div class="field">
+        <label for="novelTitle">Novel Title *</label>
+        <input type="text" id="novelTitle"
+               placeholder="Enter your novel title"
+               maxlength="120">
+      </div>
+
+      <div class="field">
+        <label for="novelGenre">Genre *</label>
+        <select id="novelGenre">
+          <option value="">Choose a genre</option>
+          <option>Romance</option>
+          <option>Billionaire Romance</option>
+          <option>Drama</option>
+          <option>Thriller</option>
+          <option>Mystery</option>
+          <option>Fantasy</option>
+          <option>Adventure</option>
+          <option>Science Fiction</option>
+          <option>Horror</option>
+          <option>Crime</option>
+          <option>Historical Fiction</option>
+          <option>Inspirational</option>
+          <option>Young Adult</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="novelDescription">Short Description</label>
+        <textarea id="novelDescription" rows="4"
+          placeholder="Give readers a short introduction to your story..."
+          maxlength="500"></textarea>
+      </div>
+
+      <div class="chapter-heading">
+        <h3>Chapters</h3>
+        <button class="add-chapter" id="addChapter">
+          + Add Chapter
+        </button>
+      </div>
+
+      <div class="chapter-list" id="chapterList"></div>
+
+    </aside>
+
+    <section class="editor">
+
+      <div class="editor-top">
+        <h2 id="editorHeading">Chapter 1</h2>
+        <span class="word-count" id="wordCount">0 words</span>
+      </div>
+
+      <div class="chapter-title-field">
+        <label for="chapterTitle">Chapter Title</label>
+        <input type="text" id="chapterTitle"
+               placeholder="Enter chapter title">
+      </div>
+
+      <textarea
+        class="story-editor"
+        id="chapterContent"
+        placeholder="Begin writing your story here...
+
+You can write as much as you need. Your work will be saved automatically while you write."
+      ></textarea>
+
+      <p class="editor-hint">
+        Tip: Separate paragraphs with a blank line to make your novel
+        comfortable for readers.
+      </p>
+
+      <div class="chapter-tools">
+
+        <div class="tool-left">
+          <button class="button button-light" id="previousChapter">
+            ← Previous
+          </button>
+
+          <button class="button button-light" id="nextChapter">
+            Next Chapter →
+          </button>
+        </div>
+
+        <div class="tool-right">
+          <button class="button button-danger" id="deleteChapter">
+            Delete Chapter
+          </button>
+
+          <button class="button button-purple" id="saveButton">
+            Save Draft
+          </button>
+        </div>
+
+      </div>
+
+      <div class="bottom-actions">
+
+        <p>
+          Your draft stays in your Writer Studio.<br>
+          You can return and continue editing later.
+        </p>
+
+        <button class="submit-btn" id="finishButton">
+          Finish & Submit →
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="notice">
+    <strong>Before submitting:</strong>
+    Review your title, description and all chapters carefully.
+    Your completed novel will be sent for admin screening.
+    You will only be asked to pay the upload fee if your novel is approved.
+  </div>
+
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+
+/*
+  EARNGIG NOVEL EDITOR
+
+  Draft storage:
+  earngig_writer_novels
+
+  Each writer's draft is stored locally in this browser.
+  The same storage key is used by writer-studio.html.
+*/
+
+const STORAGE_KEY = "earngig_writer_novels";
+
+const params = new URLSearchParams(window.location.search);
+const requestedId = params.get("id");
+
+let novels = loadNovels();
+let currentNovel = null;
+let currentChapter = 0;
+let saveTimer = null;
+
+function loadNovels(){
+  try{
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return Array.isArray(data) ? data : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function saveNovels(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(novels));
+}
+
+function createId(){
+  return "novel-" + Date.now() + "-" +
+    Math.random().toString(36).slice(2,8);
+}
+
+function createNewNovel(){
+
+  return {
+    id:createId(),
+    title:"",
+    genre:"",
+    description:"",
+    status:"draft",
+    chapters:[
+      {
+        title:"Chapter 1",
+        content:""
+      }
+    ],
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+  };
+}
+
+function initialise(){
+
+  if(requestedId){
+    currentNovel = novels.find(n=>n.id === requestedId);
+  }
+
+  if(!currentNovel){
+    currentNovel = createNewNovel();
+    novels.push(currentNovel);
+    saveNovels();
+  }
+
+  if(!Array.isArray(currentNovel.chapters) ||
+     currentNovel.chapters.length === 0){
+
+    currentNovel.chapters = [
+      {title:"Chapter 1",content:""}
+    ];
+  }
+
+  $("novelTitle").value = currentNovel.title || "";
+  $("novelGenre").value = currentNovel.genre || "";
+  $("novelDescription").value = currentNovel.description || "";
+
+  openChapter(0);
+  updateChapterList();
+  updateWordCount();
+
+  if(requestedId){
+    setSaveStatus("Draft loaded");
+  }else{
+    setSaveStatus("New novel");
+  }
+}
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function setSaveStatus(message){
+  $("saveStatus").textContent = message;
+}
+
+function getCurrentChapter(){
+  return currentNovel.chapters[currentChapter];
+}
+
+function openChapter(index){
+
+  if(index < 0 || index >= currentNovel.chapters.length) return;
+
+  saveCurrentChapter();
+
+  currentChapter = index;
+
+  const chapter = getCurrentChapter();
+
+  $("chapterTitle").value = chapter.title || "";
+  $("chapterContent").value = chapter.content || "";
+
+  $("editorHeading").textContent =
+    "Chapter " + (index + 1);
+
+  $("previousChapter").disabled = index === 0;
+
+  $("nextChapter").disabled =
+    index === currentNovel.chapters.length - 1;
+
+  updateChapterList();
+  updateWordCount();
+}
+
+function saveCurrentChapter(){
+
+  if(!currentNovel) return;
+
+  const chapter = getCurrentChapter();
+
+  if(!chapter) return;
+
+  chapter.title = $("chapterTitle").value.trim();
+  chapter.content = $("chapterContent").value;
+}
+
+function updateChapterList(){
+
+  const list = $("chapterList");
+  list.innerHTML = "";
+
+  currentNovel.chapters.forEach((chapter,index)=>{
+
+    const button = document.createElement("button");
+    button.className = "chapter-tab";
+
+    if(index === currentChapter){
+      button.classList.add("active");
+    }
+
+    if(chapter.content && chapter.content.trim().length > 0){
+      button.classList.add("done");
+    }
+
+    button.textContent =
+      (index + 1) + ". " +
+      (chapter.title || "Untitled Chapter");
+
+    button.title = button.textContent;
+
+    button.onclick = ()=>{
+      saveCurrentChapter();
+      openChapter(index);
+    };
+
+    list.appendChild(button);
+  });
+
+  $("previousChapter").disabled = currentChapter === 0;
+
+  $("nextChapter").disabled =
+    currentChapter === currentNovel.chapters.length - 1;
+}
+
+function addChapter(){
+
+  saveCurrentChapter();
+
+  const newChapterNumber = currentNovel.chapters.length + 1;
+
+  currentNovel.chapters.push({
+    title:"Chapter " + newChapterNumber,
+    content:""
+  });
+
+  currentChapter = currentNovel.chapters.length - 1;
+
+  openChapter(currentChapter);
+  updateChapterList();
+
+  saveDraft();
+}
+
+function deleteChapter(){
+
+  if(currentNovel.chapters.length <= 1){
+    alert("A novel must have at least one chapter.");
+    return;
+  }
+
+  const confirmed = confirm(
+    "Are you sure you want to delete this chapter? This cannot be undone."
+  );
+
+  if(!confirmed) return;
+
+  currentNovel.chapters.splice(currentChapter,1);
+
+  currentChapter = Math.max(0,currentChapter - 1);
+
+  openChapter(currentChapter);
+  updateChapterList();
+
+  saveDraft();
+}
+
+function saveDraft(){
+
+  saveCurrentChapter();
+
+  currentNovel.title = $("novelTitle").value.trim();
+  currentNovel.genre = $("novelGenre").value;
+  currentNovel.description = $("novelDescription").value.trim();
+
+  currentNovel.updatedAt = new Date().toISOString();
+
+  const index = novels.findIndex(n=>n.id === currentNovel.id);
+
+  if(index === -1){
+    novels.push(currentNovel);
+  }else{
+    novels[index] = currentNovel;
+  }
+
+  saveNovels();
+
+  setSaveStatus("✓ Draft saved");
+
+  return true;
+}
+
+function scheduleAutoSave(){
+
+  setSaveStatus("Saving...");
+
+  clearTimeout(saveTimer);
+
+  saveTimer = setTimeout(()=>{
+    saveDraft();
+  },800);
+}
+
+function updateWordCount(){
+
+  const text = $("chapterContent").value.trim();
+
+  const words = text
+    ? text.split(/\s+/).filter(Boolean).length
+    : 0;
+
+  $("wordCount").textContent =
+    words.toLocaleString() + " words";
+}
+
+function previousChapter(){
+  saveDraft();
+  openChapter(currentChapter - 1);
+}
+
+function nextChapter(){
+  saveDraft();
+  openChapter(currentChapter + 1);
+}
+
+function finishNovel(){
+
+  saveDraft();
+
+  const title = currentNovel.title;
+  const genre = currentNovel.genre;
+
+  if(!title){
+    alert("Please enter your novel title.");
+    $("novelTitle").focus();
+    return;
+  }
+
+  if(!genre){
+    alert("Please select a genre for your novel.");
+    $("novelGenre").focus();
+    return;
+  }
+
+  const emptyChapters = currentNovel.chapters.filter(
+    chapter=>!chapter.content || !chapter.content.trim()
+  );
+
+  if(emptyChapters.length > 0){
+    alert(
+      "Some chapters are empty. Please complete or remove them before submitting."
+    );
+    return;
+  }
+
+  const untitledChapters = currentNovel.chapters.filter(
+    chapter=>!chapter.title || !chapter.title.trim()
+  );
+
+  if(untitledChapters.length > 0){
+    alert("Please give every chapter a title before submitting.");
+    return;
+  }
+
+  if(currentNovel.chapters.length < 2){
+    const proceed = confirm(
+      "Your novel currently has only one chapter. Are you sure it is complete?"
+    );
+
+    if(!proceed) return;
+  }
+
+  window.location.href =
+    "submit-novel.html?id=" + encodeURIComponent(currentNovel.id);
+}
+
+$("addChapter").addEventListener("click",addChapter);
+
+$("deleteChapter").addEventListener("click",deleteChapter);
+
+$("saveButton").addEventListener("click",saveDraft);
+
+$("previousChapter").addEventListener("click",previousChapter);
+
+$("nextChapter").addEventListener("click",nextChapter);
+
+$("finishButton").addEventListener("click",finishNovel);
+
+[
+  "novelTitle",
+  "novelGenre",
+  "novelDescription",
+  "chapterTitle",
+  "chapterContent"
+].forEach(id=>{
+
+  $(id).addEventListener("input",()=>{
+
+    if(id === "chapterContent"){
+      updateWordCount();
+    }
+
+    if(id === "chapterTitle" || id === "chapterContent"){
+      updateChapterList();
+    }
+
+    scheduleAutoSave();
+  });
+
+  $(id).addEventListener("change",scheduleAutoSave);
+});
+
+window.addEventListener("beforeunload",()=>{
+  saveDraft();
+});
+
+initialise();
+
+</script>
+
+</body>
+</html>
