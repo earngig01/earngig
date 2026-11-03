@@ -1,1097 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Writer Studio - EarnGig</title>
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-  font-family:Arial,sans-serif;
-  background:#fff;
-  color:#29243a;
-}
-
-a{text-decoration:none;color:inherit}
-button{font:inherit;cursor:pointer;border:0}
-
-.topbar{
-  background:#fff;
-  border-bottom:1px solid #eee8f5;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-
-.nav{
-  max-width:1100px;
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#5424b8;
-  font-size:24px;
-  font-weight:900;
-}
-
-.crown{width:27px;height:25px}
-
-.nav-links{
-  display:flex;
-  gap:18px;
-  font-size:13px;
-  color:#625b6d;
-}
-
-.nav-links a:hover{color:#642bd1}
-
-.container{
-  max-width:1100px;
-  margin:28px auto;
-  padding:0 18px;
-}
-
-.welcome{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:23px;
-}
-
-.welcome h1{
-  font-size:25px;
-  margin-bottom:7px;
-}
-
-.welcome p{
-  color:#81798c;
-  font-size:13px;
-}
-
-.status{
-  background:#f1ebff;
-  color:#642bd1;
-  padding:9px 13px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.hero{
-  background:linear-gradient(120deg,#5424b8,#8652e5);
-  color:#fff;
-  padding:27px;
-  border-radius:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-bottom:22px;
-}
-
-.hero h2{
-  font-size:23px;
-  margin-bottom:9px;
-}
-
-.hero p{
-  font-size:13px;
-  line-height:1.7;
-  color:#eee5ff;
-  max-width:550px;
-}
-
-.create-btn{
-  background:#fff;
-  color:#642bd1;
-  padding:14px 19px;
-  border-radius:9px;
-  font-size:13px;
-  font-weight:bold;
-  white-space:nowrap;
-}
-
-.create-btn:hover{background:#f2ebff}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;
-  margin-bottom:27px;
-}
-
-.stat-card{
-  border:1px solid #eee7f5;
-  border-radius:12px;
-  padding:17px;
-}
-
-.stat-card small{
-  color:#81798c;
-  font-size:11px;
-}
-
-.stat-card strong{
-  display:block;
-  font-size:24px;
-  margin-top:9px;
-  color:#5424b8;
-}
-
-.section{margin-top:25px}
-
-.section-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:14px;
-}
-
-.section-heading h2{font-size:19px}
-
-.filters{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:3px 1px 12px;
-  margin-bottom:12px;
-}
-
-.filter-btn{
-  flex-shrink:0;
-  padding:9px 13px;
-  border-radius:20px;
-  background:#f5f2f9;
-  color:#655b72;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.filter-btn.active{
-  background:#642bd1;
-  color:#fff;
-}
-
-.novel-list{
-  display:grid;
-  gap:13px;
-}
-
-.novel-card{
-  border:1px solid #eee7f5;
-  border-radius:13px;
-  padding:15px;
-  display:grid;
-  grid-template-columns:76px 1fr;
-  gap:15px;
-  min-width:0;
-}
-
-.novel-cover{
-  width:76px;
-  height:105px;
-  object-fit:cover;
-  border-radius:8px;
-  background:#f0eaf7;
-}
-
-.novel-info{min-width:0}
-
-.novel-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.novel-info h3{
-  font-size:15px;
-  margin-bottom:6px;
-  overflow-wrap:anywhere;
-}
-
-.novel-meta{
-  color:#81798c;
-  font-size:11px;
-  line-height:1.7;
-}
-
-.status-badge{
-  display:inline-block;
-  padding:6px 9px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:bold;
-  background:#f1ebff;
-  color:#642bd1;
-}
-
-.status-draft{background:#f1f0f3;color:#625b6d}
-.status-review{background:#fff5df;color:#9b700b}
-.status-approved{background:#eaf6ff;color:#2876a8}
-.status-payment{background:#fff5df;color:#9b700b}
-.status-published{background:#e9f8ef;color:#25804d}
-.status-rejected{background:#fff0f0;color:#c0392b}
-.status-completed{background:#e9f8ef;color:#25804d}
-
-.reader-progress{
-  margin-top:12px;
-}
-
-.reader-progress-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  font-size:10px;
-  color:#756d80;
-  margin-bottom:6px;
-}
-
-.reader-progress-track{
-  height:7px;
-  background:#eeeaf4;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.reader-progress-fill{
-  height:100%;
-  background:#642bd1;
-  border-radius:20px;
-}
-
-.novel-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:12px;
-}
-
-.action-btn{
-  padding:8px 11px;
-  border-radius:7px;
-  font-size:10px;
-  font-weight:bold;
-}
-
-.view-btn{
-  background:#f1ebff;
-  color:#642bd1;
-}
-
-.edit-btn{
-  background:#eeeaff;
-  color:#5424b8;
-}
-
-.delete-btn{
-  background:#fff0f0;
-  color:#c0392b;
-}
-
-.empty{
-  border:1px dashed #d9cce9;
-  background:#fcfaff;
-  border-radius:13px;
-  padding:35px 18px;
-  text-align:center;
-}
-
-.empty .icon{
-  font-size:36px;
-  margin-bottom:12px;
-}
-
-.empty h3{
-  font-size:16px;
-  margin-bottom:7px;
-}
-
-.empty p{
-  color:#81798c;
-  font-size:12px;
-  line-height:1.7;
-  max-width:430px;
-  margin:0 auto 15px;
-}
-
-.purple-btn{
-  display:inline-block;
-  background:#642bd1;
-  color:#fff;
-  padding:11px 17px;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.info-panel{
-  background:#faf8fd;
-  border:1px solid #eee7f5;
-  border-radius:12px;
-  padding:18px;
-  margin-top:27px;
-}
-
-.info-panel h3{
-  font-size:15px;
-  margin-bottom:10px;
-}
-
-.info-panel p{
-  font-size:12px;
-  color:#777080;
-  line-height:1.8;
-}
-
-/* NOVEL VIEWER */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#171020a8;
-  z-index:100;
-  padding:20px;
-  overflow-y:auto;
-}
-
-.modal-box{
-  background:#fff;
-  width:100%;
-  max-width:760px;
-  margin:25px auto;
-  border-radius:15px;
-  padding:22px;
-}
-
-.modal-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.modal-header h2{font-size:19px}
-
-.close-modal{
-  background:#f1ebff;
-  color:#642bd1;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  font-size:20px;
-}
-
-.preview-cover{
-  width:100px;
-  height:135px;
-  object-fit:cover;
-  border-radius:8px;
-  float:left;
-  margin:0 15px 12px 0;
-}
-
-.preview-description{
-  color:#777080;
-  font-size:12px;
-  line-height:1.7;
-  margin-bottom:18px;
-}
-
-.preview-chapter{
-  clear:both;
-  border-top:1px solid #eee7f5;
-  padding-top:18px;
-  margin-top:18px;
-}
-
-.preview-chapter h3{
-  font-size:16px;
-  margin-bottom:12px;
-  color:#5424b8;
-}
-
-.preview-chapter p{
-  font-family:Georgia,serif;
-  font-size:14px;
-  line-height:1.9;
-  color:#40394d;
-  margin-bottom:14px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-footer{
-  border-top:1px solid #eee8f5;
-  margin-top:40px;
-  padding:22px;
-  text-align:center;
-  color:#999;
-  font-size:11px;
-}
-
-@media(max-width:750px){
-  .nav-links{display:none}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .welcome h1{font-size:22px}
-}
-
-@media(max-width:480px){
-  .novel-card{
-    grid-template-columns:62px 1fr;
-    gap:11px;
-    padding:11px;
-  }
-  .novel-cover{
-    width:62px;
-    height:90px;
-  }
-  .novel-info h3{font-size:13px}
-  .stat-card{padding:12px}
-  .stat-card strong{font-size:20px}
-  .hero{padding:20px}
-  .modal{padding:9px}
-  .modal-box{padding:15px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Ads & Earn - EarnGig</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,sans-serif;background:#fff;color:#28233a}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit;cursor:pointer;border:0}
+    .header{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10}
+    .nav{max-width:1100px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-size:25px;font-weight:900;color:#5926bd}
+    .brand span{color:#e0aa18}
+    .navlinks{display:flex;gap:18px;align-items:center;font-size:13px;color:#5c566b}
+    .navlinks a:hover{color:#642bd1}
+    .menu-btn{display:none;background:#f2edff;color:#5926bd;padding:9px 12px;border-radius:9px}
+    .container{max-width:850px;margin:35px auto;padding:0 20px}
+    .hero{text-align:center;padding:32px 20px;background:linear-gradient(130deg,#f4efff,#fff9e9);border:1px solid #e9defa;border-radius:20px}
+    .hero-icon{font-size:55px;margin-bottom:12px}
+    .hero h1{font-size:30px;color:#382064;margin-bottom:10px}
+    .hero p{color:#716a80;line-height:1.6;max-width:560px;margin:auto}
+    .reward-banner{margin:22px 0;background:#fff;border:1px solid #eee6fa;border-radius:16px;padding:20px;display:flex;justify-content:space-around;gap:15px;text-align:center}
+    .reward-item small{color:#888;font-size:12px}
+    .reward-item strong{display:block;color:#5926bd;font-size:25px;margin-top:7px}
+    .watch-panel{background:#fff;border:1px solid #e9e1f5;border-radius:20px;padding:24px;text-align:center;box-shadow:0 8px 28px #4020800b}
+    .watch-panel h2{font-size:21px;margin-bottom:9px}
+    .watch-panel>p{font-size:13px;color:#817b8e;line-height:1.6}
+    .progress-wrap{margin:24px 0 18px}
+    .progress-label{display:flex;justify-content:space-between;font-size:12px;color:#777;margin-bottom:9px}
+    .progress{height:11px;background:#eeeaf4;border-radius:20px;overflow:hidden}
+    .progress-bar{height:100%;width:0;background:linear-gradient(90deg,#5424b8,#9b70ec);border-radius:20px;transition:width .3s}
+    .watch-btn{width:100%;max-width:390px;padding:17px 20px;background:#642bd1;color:#fff;border-radius:13px;font-size:17px;font-weight:bold;box-shadow:0 6px 16px #642bd12c}
+    .watch-btn:hover{background:#4f1eaf}
+    .watch-btn:disabled{background:#bdb6ca;box-shadow:none;cursor:not-allowed}
+    .message{margin-top:15px;font-size:13px;color:#777;line-height:1.6}
+    .video-panel{display:none;margin-top:22px;background:#171323;border-radius:16px;padding:14px;color:#fff}
+    .video-panel h3{font-size:15px;text-align:left;margin:3px 0 12px}
+    video{width:100%;max-height:430px;background:#000;border-radius:10px;display:block}
+    .video-note{font-size:12px;color:#c7bfd6;margin-top:12px;line-height:1.5}
+    .daily-done{display:none;margin-top:20px;padding:18px;background:#f1fff7;border:1px solid #ccebd9;border-radius:14px;color:#176a42;line-height:1.6}
+    .notice{margin-top:22px;padding:16px;background:#faf8ff;border:1px solid #e9e0fa;border-radius:13px;color:#756d83;font-size:12px;line-height:1.7}
+    footer{text-align:center;padding:30px 15px;color:#999;font-size:12px}
+    @media(max-width:700px){
+      .navlinks{display:none;position:absolute;top:62px;left:0;right:0;background:#fff;padding:18px;box-shadow:0 8px 15px #0001;flex-direction:column;align-items:flex-start}
+      .navlinks.show{display:flex}
+      .menu-btn{display:block}
+      .hero h1{font-size:25px}
+      .reward-banner{padding:17px 8px}
+      .reward-item strong{font-size:21px}
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="topbar">
+<header class="header">
   <nav class="nav">
-
-    <a href="index.html" class="brand">
-      <svg class="crown" viewBox="0 0 32 29" fill="none"
-           xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 8L9 14L15.8 3L23 14L29 8L26 24H6L3 8Z"
-              fill="#E5B52E" stroke="#BD8914"
-              stroke-width="1.4" stroke-linejoin="round"/>
-        <path d="M6 26H26" stroke="#BD8914"
-              stroke-width="2" stroke-linecap="round"/>
-        <circle cx="3" cy="7" r="2" fill="#F6D978"/>
-        <circle cx="16" cy="3" r="2" fill="#F6D978"/>
-        <circle cx="29" cy="7" r="2" fill="#F6D978"/>
-      </svg>
-      EarnGig
-    </a>
-
-    <div class="nav-links">
+    <a class="brand" href="index.html">♛ EarnGig</a>
+    <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    <div class="navlinks" id="navlinks">
       <a href="dashboard.html">Dashboard</a>
-      <a href="novels.html">Read Novels</a>
-      <a href="profile.html">My Profile</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="games.html">Games</a>
+      <a href="novels.html">Novels</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="earn-more.html">Earn More</a>
+      <a href="profile.html">Profile</a>
     </div>
-
-    <a href="dashboard.html" class="nav-links">← Dashboard</a>
-
   </nav>
 </header>
 
 <main class="container">
 
-  <section class="welcome">
-    <div>
-      <h1>Writer Studio ✍️</h1>
-      <p>Manage your novels, submissions, readers and writing progress.</p>
-    </div>
-
-    <div class="status" id="writerStatus">Writer Studio</div>
-  </section>
-
   <section class="hero">
-    <div>
-      <h2>Your stories. Your readers. Your earnings.</h2>
-      <p>
-        Create novels, submit them for review, track reader completion
-        and manage your published stories from one place.
-      </p>
-    </div>
-
-    <a href="write-novel.html" class="create-btn">
-      + Create New Novel
-    </a>
+    <div class="hero-icon">📺💰</div>
+    <h1>Watch Videos & Earn Coins</h1>
+    <p>Watch sponsored videos from EarnGig advertisers. Complete each video to earn your reward. Come back tomorrow for another 10 videos!</p>
   </section>
 
-  <section class="stats">
-
-    <div class="stat-card">
-      <small>Total Novels</small>
-      <strong id="totalNovels">0</strong>
+  <section class="reward-banner">
+    <div class="reward-item">
+      <small>Reward per completed video</small>
+      <strong>200 Coins</strong>
     </div>
-
-    <div class="stat-card">
-      <small>Drafts</small>
-      <strong id="totalDrafts">0</strong>
+    <div class="reward-item">
+      <small>Maximum videos per day</small>
+      <strong>10</strong>
     </div>
-
-    <div class="stat-card">
-      <small>Under Review</small>
-      <strong id="totalReview">0</strong>
+    <div class="reward-item">
+      <small>Maximum daily earnings</small>
+      <strong>2,000</strong>
     </div>
-
-    <div class="stat-card">
-      <small>Published Novels</small>
-      <strong id="totalPublished">0</strong>
-    </div>
-
   </section>
 
-  <section class="section">
+  <section class="watch-panel">
+    <h2>Your Daily Ad-Watching Session</h2>
+    <p>Click the button below to watch the next available sponsored video. Your reward is earned only when the entire video finishes.</p>
 
-    <div class="section-heading">
-      <h2>My Novel Library</h2>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Today's completed videos</span>
+        <strong id="progressText">0 / 10</strong>
+      </div>
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
     </div>
 
-    <div class="filters" id="filters">
+    <button class="watch-btn" id="watchButton" onclick="watchNext()">
+      ▶ WATCH & EARN 200 COINS
+    </button>
 
-      <button class="filter-btn active" data-filter="all">All Novels</button>
-      <button class="filter-btn" data-filter="draft">Drafts</button>
-      <button class="filter-btn" data-filter="submitted">Submitted</button>
-      <button class="filter-btn" data-filter="review">Under Review</button>
-      <button class="filter-btn" data-filter="approved">Approved</button>
-      <button class="filter-btn" data-filter="published">Published</button>
-      <button class="filter-btn" data-filter="completed">Completed</button>
-
-    </div>
-
-    <div class="novel-list" id="novelList"></div>
-
-    <div class="empty" id="emptyNovels" style="display:none">
-      <div class="icon">📚</div>
-      <h3 id="emptyTitle">No novels here yet</h3>
-      <p id="emptyDescription">
-        Your novels will appear here when you create them.
-      </p>
-      <a href="write-novel.html" class="purple-btn" id="emptyCreate">
-        Create a Novel
-      </a>
-    </div>
-
-  </section>
-
-  <section class="info-panel">
-    <h3>How Reader Completion Works</h3>
-    <p>
-      Each published novel has a reader quantity selected by its writer.
-      The progress tracker shows how many readers have successfully
-      completed the novel compared with the selected quantity.
-      A reader only counts after successfully completing the reading
-      process and passing the novel's comprehension questions.
-      Writers earn 250 coins for each qualifying reader.
+    <p class="message" id="message">
+      You have 10 videos available today. Each completed video earns 200 coins.
     </p>
+
+    <div class="video-panel" id="videoPanel">
+      <h3 id="videoTitle">Sponsored Video</h3>
+      <video id="adVideo" controls playsinline controlsList="nodownload">
+        Your browser does not support video playback.
+      </video>
+      <p class="video-note" id="videoNote">
+        Watch the entire video to complete this viewing session.
+      </p>
+    </div>
+
+    <div class="daily-done" id="dailyDone">
+      <strong>🎉 You've completed all 10 videos for today!</strong>
+      <p>You've reached today's viewing limit. Come back tomorrow to watch more sponsored videos.</p>
+    </div>
   </section>
+
+  <div class="notice">
+    <strong>How it works</strong><br>
+    • Each fully completed sponsored video earns 200 coins.<br>
+    • You can complete a maximum of 10 videos per day.<br>
+    • Closing or skipping a video before it finishes does not earn a reward.<br>
+    • Active advertiser campaigns remain available throughout their paid campaign period. A 7-day campaign remains active for 7 days, and a monthly campaign remains active for its paid month. The same campaign can be shown again on following days.<br><br>
+    <strong>Frontend preview:</strong> Video campaigns must be supplied by the advertiser system. This page is ready to load them, but actual campaign delivery, secure completion verification and wallet crediting will be connected when we build the backend. The coin counter currently records demo rewards in this browser only.
+  </div>
 
 </main>
-
-<!-- NOVEL PREVIEW MODAL -->
-
-<div class="modal" id="novelModal">
-  <div class="modal-box">
-
-    <div class="modal-header">
-      <h2 id="previewTitle">Novel Preview</h2>
-      <button class="close-modal" onclick="closePreview()">×</button>
-    </div>
-
-    <div id="previewContent"></div>
-
-  </div>
-</div>
 
 <footer>© 2026 EarnGig. All rights reserved.</footer>
 
 <script>
+  const DAILY_LIMIT = 10;
+  const REWARD_PER_VIDEO = 200;
 
-const NOVEL_KEY = "earngig_writer_novels";
+  const CAMPAIGNS_KEY = 'earngig_active_campaigns';
 
-let currentFilter = "all";
-let currentNovels = [];
+  let completedToday = 0;
+  let demoCoinsToday = 0;
+  let currentCampaign = null;
+  let videoCompleted = false;
+  let isPlaying = false;
 
-function $(id){
-  return document.getElementById(id);
-}
+  const video = document.getElementById('adVideo');
+  const watchButton = document.getElementById('watchButton');
+  const message = document.getElementById('message');
+  const videoPanel = document.getElementById('videoPanel');
 
-function getNovels(){
-
-  try{
-    const data = JSON.parse(localStorage.getItem(NOVEL_KEY) || "[]");
-    return Array.isArray(data) ? data : [];
-  }catch(error){
-    return [];
-  }
-}
-
-function saveNovels(){
-  localStorage.setItem(NOVEL_KEY,JSON.stringify(currentNovels));
-}
-
-function getTarget(novel){
-  return Number(
-    novel.readerTarget ||
-    novel.selectedReaders ||
-    novel.readerCount ||
-    novel.targetReaders ||
-    0
-  );
-}
-
-function getCompletedReaders(novel){
-  return Number(
-    novel.completedReaders ||
-    novel.successfulReaders ||
-    novel.readersCompleted ||
-    0
-  );
-}
-
-function isCompleted(novel){
-
-  const target = getTarget(novel);
-  const completed = getCompletedReaders(novel);
-
-  return novel.status === "published" &&
-         target > 0 &&
-         completed >= target;
-}
-
-function getStatusLabel(novel){
-
-  if(isCompleted(novel)) return "Reader Target Completed";
-
-  const names = {
-    draft:"Saved Draft",
-    submitted:"Submitted",
-    review:"Under Review",
-    approved:"Approved",
-    payment:"Awaiting Upload Payment",
-    published:"Published",
-    rejected:"Needs Revision"
-  };
-
-  return names[novel.status] || "Draft";
-}
-
-function getStatusClass(novel){
-
-  if(isCompleted(novel)) return "status-completed";
-
-  const classes = {
-    draft:"status-draft",
-    submitted:"status-review",
-    review:"status-review",
-    approved:"status-approved",
-    payment:"status-payment",
-    published:"status-published",
-    rejected:"status-rejected"
-  };
-
-  return classes[novel.status] || "status-draft";
-}
-
-function getFilteredNovels(){
-
-  if(currentFilter === "all"){
-    return currentNovels;
+  function toggleMenu(){
+    document.getElementById('navlinks').classList.toggle('show');
   }
 
-  if(currentFilter === "completed"){
-    return currentNovels.filter(isCompleted);
+  function todayKey(){
+    const d = new Date();
+    return 'earngig_watch_ads_' +
+      d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0');
   }
 
-  if(currentFilter === "submitted"){
-    return currentNovels.filter(n=>
-      ["submitted","review","approved","payment","published"].includes(n.status)
-    );
-  }
-
-  if(currentFilter === "published"){
-    return currentNovels.filter(n=>n.status === "published");
-  }
-
-  if(currentFilter === "review"){
-    return currentNovels.filter(n=>n.status === "review");
-  }
-
-  if(currentFilter === "approved"){
-    return currentNovels.filter(n=>
-      ["approved","payment"].includes(n.status)
-    );
-  }
-
-  return currentNovels.filter(n=>n.status === currentFilter);
-}
-
-function renderStats(){
-
-  const drafts = currentNovels.filter(n=>n.status === "draft");
-  const review = currentNovels.filter(n=>n.status === "review");
-  const published = currentNovels.filter(n=>n.status === "published");
-
-  $("totalNovels").textContent = currentNovels.length;
-  $("totalDrafts").textContent = drafts.length;
-  $("totalReview").textContent = review.length;
-  $("totalPublished").textContent = published.length;
-}
-
-function renderNovels(){
-
-  currentNovels = getNovels();
-
-  renderStats();
-
-  const list = $("novelList");
-  const empty = $("emptyNovels");
-
-  list.innerHTML = "";
-
-  const novels = getFilteredNovels();
-
-  if(novels.length === 0){
-
-    empty.style.display = "block";
-
-    const messages = {
-      all:["No novels yet","Create your first novel and it will appear here."],
-      draft:["No saved drafts","Your unfinished novels will appear here."],
-      submitted:["No submitted novels","Novels you submit will appear here."],
-      review:["No novels under review","Novels being screened by the admin will appear here."],
-      approved:["No approved novels","Approved novels waiting for payment will appear here."],
-      published:["No published novels","Your published novels will appear here."],
-      completed:["No completed novels yet","Novels that reach their selected reader target will appear here."]
-    };
-
-    const message = messages[currentFilter] || messages.all;
-
-    $("emptyTitle").textContent = message[0];
-    $("emptyDescription").textContent = message[1];
-
-    $("emptyCreate").style.display =
-      currentFilter === "all" || currentFilter === "draft"
-        ? "inline-block"
-        : "none";
-
-    return;
-  }
-
-  empty.style.display = "none";
-
-  novels.forEach(novel=>{
-
-    const card = document.createElement("article");
-    card.className = "novel-card";
-
-    const cover = document.createElement("img");
-    cover.className = "novel-cover";
-    cover.alt = "Novel cover";
-    cover.src = novel.cover || "";
-
-    if(!novel.cover){
-      cover.style.display = "none";
+  function loadDailyData(){
+    try{
+      const data = JSON.parse(localStorage.getItem(todayKey()) || '{}');
+      completedToday = Number(data.completed || 0);
+      demoCoinsToday = Number(data.coins || 0);
+    }catch(error){
+      completedToday = 0;
+      demoCoinsToday = 0;
     }
 
-    const info = document.createElement("div");
-    info.className = "novel-info";
+    completedToday = Math.min(DAILY_LIMIT,Math.max(0,completedToday));
+    updateDisplay();
+  }
 
-    const top = document.createElement("div");
-    top.className = "novel-top";
+  function saveDailyData(){
+    localStorage.setItem(todayKey(),JSON.stringify({
+      completed:completedToday,
+      coins:demoCoinsToday
+    }));
+  }
 
-    const titleArea = document.createElement("div");
+  function updateDisplay(){
+    document.getElementById('progressText').textContent =
+      completedToday + ' / ' + DAILY_LIMIT;
 
-    const title = document.createElement("h3");
-    title.textContent = novel.title || "Untitled Novel";
+    document.getElementById('progressBar').style.width =
+      (completedToday / DAILY_LIMIT * 100) + '%';
 
-    const meta = document.createElement("div");
-    meta.className = "novel-meta";
+    if(completedToday >= DAILY_LIMIT){
+      watchButton.disabled = true;
+      watchButton.textContent = 'DAILY LIMIT REACHED';
+      document.getElementById('dailyDone').style.display = 'block';
+      message.textContent = 'You have completed all your videos for today.';
+    }else if(!isPlaying && !videoCompleted){
+      watchButton.disabled = false;
+      watchButton.textContent = '▶ WATCH & EARN 200 COINS';
+    }
+  }
 
-    const chapterCount = Array.isArray(novel.chapters)
-      ? novel.chapters.length
-      : 0;
+  function getActiveCampaigns(){
+    let campaigns = [];
 
-    meta.textContent =
-      (novel.genre || "Genre not selected") +
-      " • " + chapterCount + " chapters";
-
-    titleArea.appendChild(title);
-    titleArea.appendChild(meta);
-
-    const badge = document.createElement("span");
-    badge.className = "status-badge " + getStatusClass(novel);
-    badge.textContent = getStatusLabel(novel);
-
-    top.appendChild(titleArea);
-    top.appendChild(badge);
-
-    info.appendChild(top);
-
-    if(novel.status === "published" || getTarget(novel) > 0){
-
-      const target = getTarget(novel);
-      const completed = getCompletedReaders(novel);
-
-      const safeTarget = target > 0 ? target : 0;
-      const safeCompleted = Math.min(completed, safeTarget);
-
-      const percentage = safeTarget > 0
-        ? Math.min(100,Math.round((safeCompleted / safeTarget) * 100))
-        : 0;
-
-      const progress = document.createElement("div");
-      progress.className = "reader-progress";
-
-      const progressTop = document.createElement("div");
-      progressTop.className = "reader-progress-top";
-
-      const left = document.createElement("span");
-      left.textContent = "Successful readers";
-
-      const right = document.createElement("strong");
-      right.textContent = safeTarget > 0
-        ? safeCompleted.toLocaleString() + " / " +
-          safeTarget.toLocaleString()
-        : "Reader target not set";
-
-      const track = document.createElement("div");
-      track.className = "reader-progress-track";
-
-      const fill = document.createElement("div");
-      fill.className = "reader-progress-fill";
-      fill.style.width = percentage + "%";
-
-      track.appendChild(fill);
-      progressTop.appendChild(left);
-      progressTop.appendChild(right);
-
-      progress.appendChild(progressTop);
-      progress.appendChild(track);
-
-      info.appendChild(progress);
-
-      if(isCompleted(novel)){
-        const completedLabel = document.createElement("div");
-        completedLabel.className = "novel-meta";
-        completedLabel.style.color = "#25804d";
-        completedLabel.style.marginTop = "7px";
-        completedLabel.textContent =
-          "✓ All selected reader slots completed";
-        info.appendChild(completedLabel);
-      }
+    try{
+      campaigns = JSON.parse(localStorage.getItem(CAMPAIGNS_KEY) || '[]');
+    }catch(error){
+      campaigns = [];
     }
 
-    const actions = document.createElement("div");
-    actions.className = "novel-actions";
+    if(!Array.isArray(campaigns)) return [];
 
-    const view = document.createElement("button");
-    view.className = "action-btn view-btn";
-    view.textContent = "View Novel";
-    view.onclick = ()=>viewNovel(novel.id);
+    const now = Date.now();
 
-    actions.appendChild(view);
+    return campaigns.filter(campaign=>{
+      if(!campaign || !campaign.videoUrl) return false;
 
-    if(["draft","rejected"].includes(novel.status)){
+      const start = campaign.startAt ? new Date(campaign.startAt).getTime() : 0;
+      const end = campaign.endAt ? new Date(campaign.endAt).getTime() : Infinity;
 
-      const edit = document.createElement("a");
-      edit.className = "action-btn edit-btn";
-      edit.href = "write-novel.html?id=" + encodeURIComponent(novel.id);
-      edit.textContent = "Continue Writing";
-
-      actions.appendChild(edit);
-    }
-
-    const remove = document.createElement("button");
-    remove.className = "action-btn delete-btn";
-    remove.textContent = "Delete";
-    remove.onclick = ()=>deleteNovel(novel.id);
-
-    actions.appendChild(remove);
-
-    info.appendChild(actions);
-
-    card.appendChild(cover);
-    card.appendChild(info);
-
-    list.appendChild(card);
-  });
-}
-
-function viewNovel(id){
-
-  const novel = currentNovels.find(n=>n.id === id);
-
-  if(!novel) return;
-
-  $("previewTitle").textContent = novel.title || "Untitled Novel";
-
-  const content = $("previewContent");
-  content.innerHTML = "";
-
-  if(novel.cover){
-
-    const cover = document.createElement("img");
-    cover.className = "preview-cover";
-    cover.src = novel.cover;
-    cover.alt = "Novel cover";
-
-    content.appendChild(cover);
-  }
-
-  const description = document.createElement("p");
-  description.className = "preview-description";
-
-  description.textContent =
-    (novel.genre || "Genre not selected") +
-    " • " +
-    (novel.chapters ? novel.chapters.length : 0) +
-    " chapters" +
-    (novel.description ? "\n\n" + novel.description : "");
-
-  content.appendChild(description);
-
-  if(novel.status){
-
-    const status = document.createElement("p");
-    status.className = "preview-description";
-    status.textContent = "Status: " + getStatusLabel(novel);
-    content.appendChild(status);
-  }
-
-  if(getTarget(novel) > 0){
-
-    const readers = document.createElement("p");
-    readers.className = "preview-description";
-
-    readers.textContent =
-      "Reader progress: " +
-      getCompletedReaders(novel).toLocaleString() +
-      " / " + getTarget(novel).toLocaleString() +
-      " successful readers";
-
-    content.appendChild(readers);
-  }
-
-  const chapters = Array.isArray(novel.chapters)
-    ? novel.chapters
-    : [];
-
-  chapters.forEach((chapter,index)=>{
-
-    const section = document.createElement("section");
-    section.className = "preview-chapter";
-
-    const heading = document.createElement("h3");
-    heading.textContent =
-      "Chapter " + (index + 1) +
-      ": " + (chapter.title || "Untitled Chapter");
-
-    section.appendChild(heading);
-
-    const text = chapter.content || "";
-
-    const paragraphs = text.split(/\n\s*\n/);
-
-    paragraphs.forEach(paragraph=>{
-
-      if(!paragraph.trim()) return;
-
-      const p = document.createElement("p");
-      p.textContent = paragraph;
-      section.appendChild(p);
+      return now >= start && now <= end;
     });
+  }
 
-    content.appendChild(section);
+  function watchNext(){
+    if(completedToday >= DAILY_LIMIT){
+      updateDisplay();
+      return;
+    }
+
+    if(isPlaying || videoCompleted) return;
+
+    const campaigns = getActiveCampaigns();
+
+    if(campaigns.length === 0){
+      message.textContent =
+        'There are no sponsored videos available right now. Please check again later.';
+      return;
+    }
+
+    const campaignIndex = completedToday % campaigns.length;
+    currentCampaign = campaigns[campaignIndex];
+
+    videoCompleted = false;
+    isPlaying = true;
+
+    document.getElementById('videoTitle').textContent =
+      currentCampaign.title || 'Sponsored Video';
+
+    videoPanel.style.display = 'block';
+    video.src = currentCampaign.videoUrl;
+    video.load();
+
+    watchButton.disabled = true;
+    watchButton.textContent = 'VIDEO IN PROGRESS';
+
+    message.textContent =
+      'Your sponsored video is ready. Complete the entire video to earn 200 coins.';
+
+    document.getElementById('videoNote').textContent =
+      'Your reward is only counted after the video reaches the end.';
+
+    video.play().then(()=>{
+      // Playback has started.
+    }).catch(()=>{
+      isPlaying = false;
+      watchButton.disabled = false;
+      watchButton.textContent = '▶ PLAY VIDEO';
+      message.textContent =
+        'Tap the video player to start playback. Your reward is counted only after it finishes.';
+    });
+  }
+
+  video.addEventListener('ended',function(){
+    if(!isPlaying || videoCompleted) return;
+
+    videoCompleted = true;
+    isPlaying = false;
+
+    completedToday++;
+    demoCoinsToday += REWARD_PER_VIDEO;
+
+    saveDailyData();
+
+    document.getElementById('videoNote').textContent =
+      '✓ Video finished. Your 200-coin demo reward has been recorded.';
+
+    message.textContent =
+      'Video completed! 200 demo coins earned. You can watch the next available video.';
+
+    watchButton.disabled = false;
+    watchButton.textContent = '▶ WATCH NEXT VIDEO — 200 COINS';
+
+    updateDisplay();
+
+    if(completedToday >= DAILY_LIMIT){
+      watchButton.disabled = true;
+      watchButton.textContent = 'DAILY LIMIT REACHED';
+    }
+
+    video.pause();
   });
 
-  if(chapters.length === 0){
+  video.addEventListener('error',function(){
+    if(!currentCampaign) return;
 
-    const empty = document.createElement("p");
-    empty.className = "preview-description";
-    empty.textContent = "No chapters have been written yet.";
-    content.appendChild(empty);
-  }
-
-  $("novelModal").style.display = "block";
-  document.body.style.overflow = "hidden";
-}
-
-function closePreview(){
-  $("novelModal").style.display = "none";
-  document.body.style.overflow = "";
-}
-
-function deleteNovel(id){
-
-  const novel = currentNovels.find(n=>n.id === id);
-
-  if(!novel) return;
-
-  const confirmed = confirm(
-    'Are you sure you want to permanently delete "' +
-    (novel.title || "Untitled Novel") +
-    '"? This will remove it from your Writer Studio.'
-  );
-
-  if(!confirmed) return;
-
-  currentNovels = currentNovels.filter(n=>n.id !== id);
-
-  saveNovels();
-  renderNovels();
-}
-
-$("filters").addEventListener("click",function(event){
-
-  const button = event.target.closest("[data-filter]");
-
-  if(!button) return;
-
-  currentFilter = button.dataset.filter;
-
-  document.querySelectorAll(".filter-btn").forEach(btn=>{
-    btn.classList.toggle("active",btn === button);
+    isPlaying = false;
+    watchButton.disabled = false;
+    watchButton.textContent = '▶ TRY AGAIN';
+    message.textContent =
+      'This video could not be loaded. Please try again later.';
   });
 
-  renderNovels();
-});
+  video.addEventListener('play',function(){
+    if(videoCompleted) return;
+    isPlaying = true;
+    watchButton.disabled = true;
+  });
 
-$("novelModal").addEventListener("click",function(event){
+  video.addEventListener('pause',function(){
+    if(videoCompleted) return;
 
-  if(event.target === this){
-    closePreview();
-  }
-});
+    if(!video.ended && video.currentTime > 0){
+      message.textContent =
+        'Video paused. Continue watching until the video finishes to earn your reward.';
+    }
+  });
 
-document.addEventListener("keydown",function(event){
-
-  if(event.key === "Escape"){
-    closePreview();
-  }
-});
-
-const writerStatus = localStorage.getItem("earngig_writer_status");
-
-$("writerStatus").textContent =
-  writerStatus === "approved"
-    ? "✓ Approved Writer"
-    : "Writer Studio";
-
-renderNovels();
-
+  loadDailyData();
 </script>
 
 </body>
