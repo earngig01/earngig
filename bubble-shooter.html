@@ -7,8 +7,8 @@
 <title>EarnGig Bubble Shooter</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#101b39;touch-action:pan-x pan-y}
-canvas{display:block;width:100%;height:100%;touch-action:pan-x pan-y}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101b39;font-family:Arial,sans-serif;touch-action:none}
+canvas{display:block;width:100%;height:100%;touch-action:none}
 #screen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:#10172bdc;color:white;text-align:center}
 #screen.hide{display:none}
 .panel{width:min(390px,100%);padding:28px 22px;border:2px solid #aaa2ff;border-radius:25px;background:linear-gradient(145deg,#35488a,#171e43);box-shadow:0 18px 55px #0009}
@@ -16,9 +16,7 @@ canvas{display:block;width:100%;height:100%;touch-action:pan-x pan-y}
 .panel p{font-size:15px;line-height:1.65;color:#e8edff}
 button{border:0;cursor:pointer;touch-action:manipulation;font-weight:900}
 #start{background:#ffca57;color:#302348;border-radius:14px;padding:17px 34px;font-size:19px;margin-top:15px}
-#shootBtn{position:fixed;z-index:10;bottom:20px;left:50%;transform:translateX(-50%);width:150px;height:54px;border-radius:30px;background:linear-gradient(145deg,#ffe78a,#ffb832);color:#37264b;font-size:18px;box-shadow:0 7px 22px #0007, inset 0 2px 3px #fff9;display:none}
-#shootBtn:active{transform:translateX(-50%) scale(.95)}
-#hint{position:fixed;z-index:5;bottom:85px;left:0;width:100%;text-align:center;color:#e8edff;font-size:12px;text-shadow:0 2px 5px #000;pointer-events:none}
+#hint{position:fixed;z-index:5;bottom:16px;left:0;width:100%;text-align:center;color:#e8edff;font-size:12px;text-shadow:0 2px 5px #000;pointer-events:none}
 </style>
 </head>
 <body>
@@ -27,14 +25,12 @@ button{border:0;cursor:pointer;touch-action:manipulation;font-weight:900}
 <div id="screen">
  <div class="panel">
   <h1 id="heading">BUBBLE SHOOTER</h1>
-  <p id="message">Choose your target by tapping anywhere on the board. Adjust your aim until you are happy, then press SHOOT to fire. Match three or more bubbles of the same colour to burst them!</p>
-  <p><b>AIM CAREFULLY · SHOOT PRECISELY · CLEAR THE BOARD</b></p>
+  <p id="message">Touch and drag your finger to aim. Move freely until you find the perfect direction. Release your finger to shoot! Match three or more bubbles of the same colour to burst them.</p>
+  <p><b>DRAG TO AIM · RELEASE TO SHOOT</b></p>
   <button id="start" type="button">START GAME</button>
  </div>
 </div>
-
-<div id="hint">TAP THE BOARD TO AIM · PRESS SHOOT TO FIRE</div>
-<button id="shootBtn" type="button">SHOOT</button>
+<div id="hint">DRAG ANYWHERE ON THE BOARD TO AIM · RELEASE TO SHOOT</div>
 
 <script>
 "use strict";
@@ -57,7 +53,8 @@ let board=[],particles=[],flying=null;
 let currentColor=0,nextColor=0;
 let aim={x:0,y:0};
 let shots=0,score=0,level=1;
-let running=false,ended=false;
+let running=false,ended=false,dragging=false;
+let pointerId=null;
 let animation=0,last=0,ceilingShift=0,shootCooldown=0;
 let audio=null;
 
@@ -132,50 +129,31 @@ function roundRect(x,y,w,h,r,color){
  ctx.fill();
 }
 
-/* Rich glass-like bubble rendering */
 function drawBubble(x,y,color,r=R){
  const c=COLORS[color];if(!c)return;
  ctx.save();
-
- ctx.shadowColor="#02091d99";
- ctx.shadowBlur=r*.55;
- ctx.shadowOffsetY=r*.24;
+ ctx.shadowColor="#02091d99";ctx.shadowBlur=r*.55;ctx.shadowOffsetY=r*.24;
 
  let g=ctx.createRadialGradient(x-r*.38,y-r*.48,r*.04,x+r*.08,y+r*.12,r*1.12);
- g.addColorStop(0,"#ffffff");
- g.addColorStop(.12,c.light);
- g.addColorStop(.38,c.main);
- g.addColorStop(.76,c.main);
- g.addColorStop(1,c.dark);
-
- ctx.fillStyle=g;
- ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-
+ g.addColorStop(0,"#ffffff");g.addColorStop(.12,c.light);
+ g.addColorStop(.38,c.main);g.addColorStop(.76,c.main);g.addColorStop(1,c.dark);
+ ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
  ctx.shadowColor="transparent";
 
- /* Glossy upper reflection */
  const shine=ctx.createRadialGradient(x-r*.34,y-r*.48,1,x-r*.22,y-r*.35,r*.65);
- shine.addColorStop(0,"#ffffffed");
- shine.addColorStop(.25,"#ffffff9c");
- shine.addColorStop(1,"#ffffff00");
- ctx.fillStyle=shine;
- ctx.beginPath();ctx.ellipse(x-r*.22,y-r*.39,r*.48,r*.25,-.55,0,Math.PI*2);ctx.fill();
+ shine.addColorStop(0,"#ffffffed");shine.addColorStop(.25,"#ffffff9c");shine.addColorStop(1,"#ffffff00");
+ ctx.fillStyle=shine;ctx.beginPath();
+ ctx.ellipse(x-r*.22,y-r*.39,r*.48,r*.25,-.55,0,Math.PI*2);ctx.fill();
 
- /* Small bright highlight */
- ctx.fillStyle="#ffffffed";
- ctx.beginPath();ctx.ellipse(x-r*.37,y-r*.48,r*.14,r*.075,-.5,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#ffffffed";ctx.beginPath();
+ ctx.ellipse(x-r*.37,y-r*.48,r*.14,r*.075,-.5,0,Math.PI*2);ctx.fill();
 
- /* Lower reflected glow */
  const lower=ctx.createRadialGradient(x+r*.25,y+r*.55,1,x+r*.2,y+r*.55,r*.58);
- lower.addColorStop(0,"#ffffff55");
- lower.addColorStop(1,"#ffffff00");
- ctx.fillStyle=lower;
- ctx.beginPath();ctx.arc(x,y,r*.9,0,Math.PI*2);ctx.fill();
+ lower.addColorStop(0,"#ffffff55");lower.addColorStop(1,"#ffffff00");
+ ctx.fillStyle=lower;ctx.beginPath();ctx.arc(x,y,r*.9,0,Math.PI*2);ctx.fill();
 
- /* Fine glass rim */
  ctx.strokeStyle="#ffffff75";ctx.lineWidth=Math.max(1,r*.065);
  ctx.beginPath();ctx.arc(x,y,r*.96,0,Math.PI*2);ctx.stroke();
-
  ctx.restore();
 }
 
@@ -183,8 +161,6 @@ function drawBackground(){
  const g=ctx.createLinearGradient(0,0,W,H);
  g.addColorStop(0,"#17284f");g.addColorStop(.48,"#354e82");g.addColorStop(1,"#111b3a");
  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-
- /* Soft glowing atmosphere */
  for(let i=0;i<8;i++){
   const x=(i*193+70)%W,y=(i*257+160)%H;
   const glow=ctx.createRadialGradient(x,y,0,x,y,100);
@@ -196,8 +172,7 @@ function drawBackground(){
 function drawBoard(){
  const danger=H-145;
  ctx.strokeStyle="#ff8caa70";ctx.lineWidth=2;ctx.setLineDash([8,8]);
- ctx.beginPath();ctx.moveTo(0,danger);ctx.lineTo(W,danger);ctx.stroke();
- ctx.setLineDash([]);
+ ctx.beginPath();ctx.moveTo(0,danger);ctx.lineTo(W,danger);ctx.stroke();ctx.setLineDash([]);
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
   const color=board[r]?.[c];
   if(color===null||color===undefined)continue;
@@ -212,16 +187,13 @@ function getAngle(){
 
 function drawShooter(){
  const x=W/2,y=H-110,a=getAngle();
- ctx.save();
- ctx.shadowColor="#0009";ctx.shadowBlur=18;
+ ctx.save();ctx.shadowColor="#0009";ctx.shadowBlur=18;
  ctx.fillStyle="#15264c";ctx.beginPath();ctx.arc(x,y,39,0,Math.PI*2);ctx.fill();
- ctx.shadowBlur=0;ctx.strokeStyle="#c0d6ff";ctx.lineWidth=3;
- ctx.stroke();ctx.restore();
+ ctx.shadowBlur=0;ctx.strokeStyle="#c0d6ff";ctx.lineWidth=3;ctx.stroke();ctx.restore();
 
  ctx.save();ctx.translate(x,y);ctx.rotate(a);
  roundRect(0,-10,48,20,9,"#536fae");
- roundRect(24,-7,27,14,6,"#c0dcff");
- ctx.restore();
+ roundRect(24,-7,27,14,6,"#c0dcff");ctx.restore();
 
  drawBubble(x,y,currentColor,R*.92);
  ctx.fillStyle="#fff";ctx.font="bold 10px Arial";ctx.textAlign="center";
@@ -233,23 +205,20 @@ function drawAim(){
  if(!running||flying)return;
  const x=W/2,y=H-110,a=getAngle();
  const dx=Math.cos(a),dy=Math.sin(a);
-
- /* Aim guide */
- ctx.save();ctx.setLineDash([5,8]);
- ctx.strokeStyle="#ffffffb8";ctx.lineWidth=2;
+ ctx.save();
+ ctx.setLineDash([5,8]);ctx.strokeStyle=dragging?"#ffe58b":"#ffffff8c";ctx.lineWidth=2;
  ctx.beginPath();ctx.moveTo(x+dx*42,y+dy*42);
- ctx.lineTo(x+dx*330,y+dy*330);ctx.stroke();
- ctx.setLineDash([]);
+ ctx.lineTo(x+dx*330,y+dy*330);ctx.stroke();ctx.setLineDash([]);
 
- /* Target marker */
  const tx=aim.x,ty=aim.y;
  ctx.strokeStyle="#ffe58b";ctx.lineWidth=2;
  ctx.beginPath();ctx.arc(tx,ty,11,0,Math.PI*2);ctx.stroke();
- ctx.beginPath();ctx.moveTo(tx-16,ty);ctx.lineTo(tx-6,ty);
+ ctx.beginPath();
+ ctx.moveTo(tx-16,ty);ctx.lineTo(tx-6,ty);
  ctx.moveTo(tx+6,ty);ctx.lineTo(tx+16,ty);
  ctx.moveTo(tx,ty-16);ctx.lineTo(tx,ty-6);
- ctx.moveTo(tx,ty+6);ctx.lineTo(tx,ty+16);ctx.stroke();
- ctx.restore();
+ ctx.moveTo(tx,ty+6);ctx.lineTo(tx,ty+16);
+ ctx.stroke();ctx.restore();
 }
 
 function drawTopUI(){
@@ -269,8 +238,8 @@ function draw(){
  drawBackground();drawTopUI();drawBoard();drawAim();drawShooter();
  if(flying)drawBubble(flying.x,flying.y,flying.color);
  for(const p of particles){
-  ctx.globalAlpha=clamp(p.life*2,0,1);
-  ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.color;
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
  }
  ctx.globalAlpha=1;
 }
@@ -388,13 +357,12 @@ function checkLose(){
 
 function finish(won,title,message){
  if(ended)return;
- ended=true;running=false;flying=null;
+ ended=true;running=false;dragging=false;pointerId=null;flying=null;
  cancelAnimationFrame(animation);
  $("heading").textContent=title;
  $("message").textContent=message+" Your score: "+score.toLocaleString()+".";
  $("start").textContent="RETURN TO GAMES";
  $("screen").classList.remove("hide");
- $("shootBtn").style.display="none";
  $("hint").style.display="none";
  setTimeout(()=>location.replace("games.html"),2500);
 }
@@ -409,20 +377,57 @@ function update(dt){
  }
 }
 
-function setAimFromEvent(e){
+/* Smooth continuous finger tracking */
+function updateAim(e){
  const rect=canvas.getBoundingClientRect();
- const x=e.clientX-rect.left,y=e.clientY-rect.top;
- /* Keep the target above the shooter */
- aim.x=clamp(x,12,W-12);
- aim.y=clamp(y,90,H-175);
- draw();
+ const px=e.clientX-rect.left;
+ const py=e.clientY-rect.top;
+ const sx=W/2,sy=H-110;
+
+ let dx=px-sx,dy=py-sy;
+
+ // Keep the aim directed upward and prevent aiming backwards.
+ if(dy>-25)dy=-25;
+
+ const length=Math.hypot(dx,dy)||1;
+ const minAngle=-Math.PI+.12;
+ const maxAngle=-.12;
+ const angle=clamp(Math.atan2(dy,dx),minAngle,maxAngle);
+
+ // Aim direction follows the finger directly, without grid snapping.
+ const distance=Math.max(120,Math.min(450,length));
+ aim.x=sx+Math.cos(angle)*distance;
+ aim.y=sy+Math.sin(angle)*distance;
 }
 
-/* Touching the board ONLY aims. It never shoots. */
 canvas.addEventListener("pointerdown",e=>{
- if(!running||ended)return;
+ if(!running||ended||flying||dragging)return;
  e.preventDefault();
- setAimFromEvent(e);
+ dragging=true;
+ pointerId=e.pointerId;
+ updateAim(e);
+ draw();
+});
+
+canvas.addEventListener("pointermove",e=>{
+ if(!running||!dragging||e.pointerId!==pointerId)return;
+ e.preventDefault();
+ updateAim(e);
+ draw();
+});
+
+function releaseAim(e){
+ if(!dragging||e.pointerId!==pointerId)return;
+ e.preventDefault();
+ updateAim(e);
+ dragging=false;
+ pointerId=null;
+ shoot();
+}
+
+canvas.addEventListener("pointerup",releaseAim);
+canvas.addEventListener("pointercancel",e=>{
+ if(e.pointerId===pointerId){dragging=false;pointerId=null}
 });
 
 function loop(now){
@@ -437,7 +442,6 @@ function startGame(){
  cancelAnimationFrame(animation);
  newBoard();ended=false;running=true;
  $("screen").classList.add("hide");
- $("shootBtn").style.display="block";
  $("hint").style.display="block";
  last=performance.now();draw();
  animation=requestAnimationFrame(loop);
@@ -447,12 +451,6 @@ $("start").addEventListener("click",e=>{
  e.preventDefault();
  if(ended){location.replace("games.html");return}
  startGame();
-});
-
-$("shootBtn").addEventListener("click",e=>{
- e.preventDefault();
- if(!running||ended)return;
- shoot();
 });
 
 resize();draw();
