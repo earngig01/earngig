@@ -7,32 +7,18 @@
 <title>EarnGig Bubble Shooter</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101d35;font-family:Arial,sans-serif;touch-action:none}
-canvas{display:block;width:100%;height:100%;touch-action:none}
-#screen{
- position:fixed;inset:0;background:#10172bdc;
- display:flex;align-items:center;justify-content:center;
- padding:20px;z-index:100;color:white;text-align:center;
- pointer-events:auto;
-}
-#screen.hide{display:none!important;pointer-events:none}
-.panel{
- width:min(390px,100%);padding:27px 22px;
- border:2px solid #9c9af5;border-radius:23px;
- background:linear-gradient(145deg,#303b76,#171e43);
- box-shadow:0 15px 45px #0009;
-}
-.panel h1{font-size:31px;margin:0 0 12px;color:#ffe17b}
-.panel p{font-size:14px;line-height:1.6;color:#e5e8ff}
-.panel button{
- position:relative;z-index:101;
- background:#ffca57;color:#302348;border:0;
- border-radius:13px;padding:17px 32px;
- font-weight:900;font-size:19px;margin-top:12px;
- cursor:pointer;touch-action:manipulation;
- pointer-events:auto;min-width:190px;
-}
-#status{font-size:12px;color:#ffe17b;min-height:17px}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#101b39;touch-action:pan-x pan-y}
+canvas{display:block;width:100%;height:100%;touch-action:pan-x pan-y}
+#screen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:#10172bdc;color:white;text-align:center}
+#screen.hide{display:none}
+.panel{width:min(390px,100%);padding:28px 22px;border:2px solid #aaa2ff;border-radius:25px;background:linear-gradient(145deg,#35488a,#171e43);box-shadow:0 18px 55px #0009}
+.panel h1{font-size:31px;color:#ffe17b;margin:0 0 15px}
+.panel p{font-size:15px;line-height:1.65;color:#e8edff}
+button{border:0;cursor:pointer;touch-action:manipulation;font-weight:900}
+#start{background:#ffca57;color:#302348;border-radius:14px;padding:17px 34px;font-size:19px;margin-top:15px}
+#shootBtn{position:fixed;z-index:10;bottom:20px;left:50%;transform:translateX(-50%);width:150px;height:54px;border-radius:30px;background:linear-gradient(145deg,#ffe78a,#ffb832);color:#37264b;font-size:18px;box-shadow:0 7px 22px #0007, inset 0 2px 3px #fff9;display:none}
+#shootBtn:active{transform:translateX(-50%) scale(.95)}
+#hint{position:fixed;z-index:5;bottom:85px;left:0;width:100%;text-align:center;color:#e8edff;font-size:12px;text-shadow:0 2px 5px #000;pointer-events:none}
 </style>
 </head>
 <body>
@@ -41,12 +27,14 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 <div id="screen">
  <div class="panel">
   <h1 id="heading">BUBBLE SHOOTER</h1>
-  <p id="message">Aim carefully and shoot colourful bubbles. Match three or more bubbles of the same colour to burst them. Clear the board before the bubbles reach the bottom!</p>
-  <p><b>Match 3+ · Clear the board · Beat the pressure</b></p>
-  <p id="status"></p>
-  <button type="button" id="start">START GAME</button>
+  <p id="message">Choose your target by tapping anywhere on the board. Adjust your aim until you are happy, then press SHOOT to fire. Match three or more bubbles of the same colour to burst them!</p>
+  <p><b>AIM CAREFULLY · SHOOT PRECISELY · CLEAR THE BOARD</b></p>
+  <button id="start" type="button">START GAME</button>
  </div>
 </div>
+
+<div id="hint">TAP THE BOARD TO AIM · PRESS SHOOT TO FIRE</div>
+<button id="shootBtn" type="button">SHOOT</button>
 
 <script>
 "use strict";
@@ -56,12 +44,12 @@ const ctx=canvas.getContext("2d");
 const $=id=>document.getElementById(id);
 
 const COLORS=[
- {main:"#ff536c",light:"#ffb2bd",dark:"#a91e42"},
- {main:"#4b9cff",light:"#a8d5ff",dark:"#1552b3"},
- {main:"#ffc343",light:"#fff0a0",dark:"#c27b12"},
- {main:"#42d6a0",light:"#b1ffe0",dark:"#07845c"},
- {main:"#ae72ff",light:"#e0c5ff",dark:"#6331b0"},
- {main:"#ff8b40",light:"#ffd0a2",dark:"#b94c16"}
+ {main:"#ff4778",light:"#ffd5e2",dark:"#b71950"},
+ {main:"#38a8ff",light:"#d0f0ff",dark:"#1454b7"},
+ {main:"#ffc12e",light:"#fff7c2",dark:"#c47a08"},
+ {main:"#28dca4",light:"#d0fff0",dark:"#087c59"},
+ {main:"#b16cff",light:"#f0d9ff",dark:"#622bb0"},
+ {main:"#ff843d",light:"#ffe0c4",dark:"#b74317"}
 ];
 
 let W,H,DPR,R,STEP,COLS,ROWS=16;
@@ -74,19 +62,16 @@ let animation=0,last=0,ceilingShift=0,shootCooldown=0;
 let audio=null;
 
 function resize(){
- DPR=Math.min(window.devicePixelRatio||1,2);
- W=window.innerWidth;H=window.innerHeight;
- canvas.width=Math.round(W*DPR);
- canvas.height=Math.round(H*DPR);
- canvas.style.width=W+"px";
- canvas.style.height=H+"px";
+ DPR=Math.min(devicePixelRatio||1,2);
+ W=innerWidth;H=innerHeight;
+ canvas.width=W*DPR;canvas.height=H*DPR;
+ canvas.style.width=W+"px";canvas.style.height=H+"px";
  ctx.setTransform(DPR,0,0,DPR,0,0);
  R=Math.max(14,Math.min(19,W/21));
- STEP=R*2;
- COLS=Math.max(6,Math.floor((W-16)/STEP));
+ STEP=R*2;COLS=Math.max(6,Math.floor((W-16)/STEP));
  if(!running)draw();
 }
-window.addEventListener("resize",resize);
+addEventListener("resize",resize);
 
 const rand=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -97,7 +82,7 @@ function sound(freq=500,duration=.08,type="sine"){
   if(audio.state==="suspended")audio.resume();
   const o=audio.createOscillator(),g=audio.createGain();
   o.type=type;o.frequency.value=freq;
-  g.gain.setValueAtTime(.07,audio.currentTime);
+  g.gain.setValueAtTime(.06,audio.currentTime);
   g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
   o.connect(g);g.connect(audio.destination);
   o.start();o.stop(audio.currentTime+duration);
@@ -106,15 +91,14 @@ function sound(freq=500,duration=.08,type="sine"){
 
 function center(r,c){
  const gridWidth=(COLS-1)*STEP+R*2;
- return {
-  x:(W-gridWidth)/2+R+c*STEP+(r%2?R:0),
-  y:105+ceilingShift+r*(STEP*.87)
- };
+ return {x:(W-gridWidth)/2+R+c*STEP+(r%2?R:0),
+ y:105+ceilingShift+r*(STEP*.87)};
 }
 function valid(r,c){return r>=0&&r<ROWS&&c>=0&&c<COLS}
 function neighbours(r,c){
- if(r%2===0)return [[r,c-1],[r,c+1],[r-1,c-1],[r-1,c],[r+1,c-1],[r+1,c]];
- return [[r,c-1],[r,c+1],[r-1,c],[r-1,c+1],[r+1,c],[r+1,c+1]];
+ return r%2===0?
+ [[r,c-1],[r,c+1],[r-1,c-1],[r-1,c],[r+1,c-1],[r+1,c]]:
+ [[r,c-1],[r,c+1],[r-1,c],[r-1,c+1],[r+1,c],[r+1,c+1]];
 }
 function getNeighbours(r,c){return neighbours(r,c).filter(([a,b])=>valid(a,b))}
 
@@ -125,9 +109,8 @@ function randomColor(){
 
 function newBoard(){
  board=Array.from({length:ROWS},()=>Array(COLS).fill(null));
- particles=[];flying=null;
- ceilingShift=0;shots=0;score=0;level=1;shootCooldown=0;
-
+ particles=[];flying=null;ceilingShift=0;
+ shots=0;score=0;level=1;shootCooldown=0;
  for(let r=0;r<7;r++){
   for(let c=0;c<COLS;c++){
    if(r>=5&&Math.random()<.13)continue;
@@ -137,89 +120,140 @@ function newBoard(){
  for(let r=0;r<3;r++){
   const c=Math.floor(rand(1,Math.max(2,COLS-2)));
   const color=Math.floor(rand(0,5));
-  board[r][c]=color;
-  board[r][c+1]=color;
-  board[r][c-1]=color;
+  board[r][c]=color;board[r][c+1]=color;board[r][c-1]=color;
  }
- currentColor=randomColor();
- nextColor=randomColor();
+ currentColor=randomColor();nextColor=randomColor();
  aim={x:W/2,y:H*.35};
 }
 
 function roundRect(x,y,w,h,r,color){
- ctx.fillStyle=color;
- ctx.beginPath();
- if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);
- else ctx.rect(x,y,w,h);
+ ctx.fillStyle=color;ctx.beginPath();
+ if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h);
  ctx.fill();
 }
 
+/* Rich glass-like bubble rendering */
 function drawBubble(x,y,color,r=R){
  const c=COLORS[color];if(!c)return;
  ctx.save();
- ctx.shadowColor="#0008";ctx.shadowBlur=6;ctx.shadowOffsetY=4;
- const g=ctx.createRadialGradient(x-r*.38,y-r*.48,r*.08,x,y,r*1.12);
- g.addColorStop(0,c.light);g.addColorStop(.35,c.main);
- g.addColorStop(.82,c.main);g.addColorStop(1,c.dark);
- ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
- ctx.shadowColor="transparent";ctx.fillStyle="#ffffff90";
- ctx.beginPath();ctx.ellipse(x-r*.32,y-r*.42,r*.28,r*.13,-.55,0,Math.PI*2);ctx.fill();
- ctx.strokeStyle="#ffffff40";ctx.lineWidth=1;
- ctx.beginPath();ctx.arc(x,y,r-1,0,Math.PI*2);ctx.stroke();
+
+ ctx.shadowColor="#02091d99";
+ ctx.shadowBlur=r*.55;
+ ctx.shadowOffsetY=r*.24;
+
+ let g=ctx.createRadialGradient(x-r*.38,y-r*.48,r*.04,x+r*.08,y+r*.12,r*1.12);
+ g.addColorStop(0,"#ffffff");
+ g.addColorStop(.12,c.light);
+ g.addColorStop(.38,c.main);
+ g.addColorStop(.76,c.main);
+ g.addColorStop(1,c.dark);
+
+ ctx.fillStyle=g;
+ ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+
+ ctx.shadowColor="transparent";
+
+ /* Glossy upper reflection */
+ const shine=ctx.createRadialGradient(x-r*.34,y-r*.48,1,x-r*.22,y-r*.35,r*.65);
+ shine.addColorStop(0,"#ffffffed");
+ shine.addColorStop(.25,"#ffffff9c");
+ shine.addColorStop(1,"#ffffff00");
+ ctx.fillStyle=shine;
+ ctx.beginPath();ctx.ellipse(x-r*.22,y-r*.39,r*.48,r*.25,-.55,0,Math.PI*2);ctx.fill();
+
+ /* Small bright highlight */
+ ctx.fillStyle="#ffffffed";
+ ctx.beginPath();ctx.ellipse(x-r*.37,y-r*.48,r*.14,r*.075,-.5,0,Math.PI*2);ctx.fill();
+
+ /* Lower reflected glow */
+ const lower=ctx.createRadialGradient(x+r*.25,y+r*.55,1,x+r*.2,y+r*.55,r*.58);
+ lower.addColorStop(0,"#ffffff55");
+ lower.addColorStop(1,"#ffffff00");
+ ctx.fillStyle=lower;
+ ctx.beginPath();ctx.arc(x,y,r*.9,0,Math.PI*2);ctx.fill();
+
+ /* Fine glass rim */
+ ctx.strokeStyle="#ffffff75";ctx.lineWidth=Math.max(1,r*.065);
+ ctx.beginPath();ctx.arc(x,y,r*.96,0,Math.PI*2);ctx.stroke();
+
  ctx.restore();
 }
 
 function drawBackground(){
  const g=ctx.createLinearGradient(0,0,W,H);
- g.addColorStop(0,"#18264b");g.addColorStop(.5,"#263d6b");g.addColorStop(1,"#111b39");
+ g.addColorStop(0,"#17284f");g.addColorStop(.48,"#354e82");g.addColorStop(1,"#111b3a");
  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- for(let i=0;i<35;i++){
-  ctx.fillStyle="#ffffff0b";ctx.beginPath();
-  ctx.arc(i*137%W,i*211%H,i%3+1,0,Math.PI*2);ctx.fill();
+
+ /* Soft glowing atmosphere */
+ for(let i=0;i<8;i++){
+  const x=(i*193+70)%W,y=(i*257+160)%H;
+  const glow=ctx.createRadialGradient(x,y,0,x,y,100);
+  glow.addColorStop(0,"#9cbaff12");glow.addColorStop(1,"#9cbaff00");
+  ctx.fillStyle=glow;ctx.fillRect(x-100,y-100,200,200);
  }
 }
 
 function drawBoard(){
  const danger=H-145;
- ctx.strokeStyle="#ff74745c";ctx.lineWidth=2;ctx.setLineDash([8,8]);
- ctx.beginPath();ctx.moveTo(0,danger);ctx.lineTo(W,danger);ctx.stroke();ctx.setLineDash([]);
- for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-   const color=board[r]?.[c];
-   if(color===null||color===undefined)continue;
-   const p=center(r,c);drawBubble(p.x,p.y,color);
-  }
+ ctx.strokeStyle="#ff8caa70";ctx.lineWidth=2;ctx.setLineDash([8,8]);
+ ctx.beginPath();ctx.moveTo(0,danger);ctx.lineTo(W,danger);ctx.stroke();
+ ctx.setLineDash([]);
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  const color=board[r]?.[c];
+  if(color===null||color===undefined)continue;
+  const p=center(r,c);drawBubble(p.x,p.y,color);
  }
 }
 
+function getAngle(){
+ const x=W/2,y=H-110;
+ return clamp(Math.atan2(aim.y-y,aim.x-x),-Math.PI+.12,-.12);
+}
+
 function drawShooter(){
- const x=W/2,y=H-83;
- ctx.save();ctx.shadowColor="#0008";ctx.shadowBlur=12;
- ctx.fillStyle="#192d54";ctx.beginPath();ctx.arc(x,y,36,0,Math.PI*2);ctx.fill();
- ctx.shadowBlur=0;ctx.strokeStyle="#9fb8e9";ctx.lineWidth=3;ctx.stroke();ctx.restore();
- let a=Math.atan2(aim.y-y,aim.x-x);
- a=clamp(a,-Math.PI+.12,-.12);
+ const x=W/2,y=H-110,a=getAngle();
+ ctx.save();
+ ctx.shadowColor="#0009";ctx.shadowBlur=18;
+ ctx.fillStyle="#15264c";ctx.beginPath();ctx.arc(x,y,39,0,Math.PI*2);ctx.fill();
+ ctx.shadowBlur=0;ctx.strokeStyle="#c0d6ff";ctx.lineWidth=3;
+ ctx.stroke();ctx.restore();
+
  ctx.save();ctx.translate(x,y);ctx.rotate(a);
- roundRect(0,-9,47,18,8,"#526eaa");
- roundRect(23,-6,25,12,5,"#a5c6ee");ctx.restore();
+ roundRect(0,-10,48,20,9,"#536fae");
+ roundRect(24,-7,27,14,6,"#c0dcff");
+ ctx.restore();
+
  drawBubble(x,y,currentColor,R*.92);
- ctx.fillStyle="#ffffffa0";ctx.font="bold 10px Arial";ctx.textAlign="center";
- ctx.fillText("NEXT",x+65,y+3);drawBubble(x+65,y+25,nextColor,R*.72);
+ ctx.fillStyle="#fff";ctx.font="bold 10px Arial";ctx.textAlign="center";
+ ctx.fillText("NEXT",x+67,y+4);
+ drawBubble(x+67,y+26,nextColor,R*.72);
 }
 
 function drawAim(){
  if(!running||flying)return;
- const x=W/2,y=H-83;
- let a=Math.atan2(aim.y-y,aim.x-x);
- a=clamp(a,-Math.PI+.12,-.12);
- ctx.save();ctx.setLineDash([5,8]);ctx.strokeStyle="#ffffff85";ctx.lineWidth=2;
- ctx.beginPath();ctx.moveTo(x,y);
- ctx.lineTo(x+Math.cos(a)*330,y+Math.sin(a)*330);
- ctx.stroke();ctx.setLineDash([]);ctx.restore();
+ const x=W/2,y=H-110,a=getAngle();
+ const dx=Math.cos(a),dy=Math.sin(a);
+
+ /* Aim guide */
+ ctx.save();ctx.setLineDash([5,8]);
+ ctx.strokeStyle="#ffffffb8";ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(x+dx*42,y+dy*42);
+ ctx.lineTo(x+dx*330,y+dy*330);ctx.stroke();
+ ctx.setLineDash([]);
+
+ /* Target marker */
+ const tx=aim.x,ty=aim.y;
+ ctx.strokeStyle="#ffe58b";ctx.lineWidth=2;
+ ctx.beginPath();ctx.arc(tx,ty,11,0,Math.PI*2);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(tx-16,ty);ctx.lineTo(tx-6,ty);
+ ctx.moveTo(tx+6,ty);ctx.lineTo(tx+16,ty);
+ ctx.moveTo(tx,ty-16);ctx.lineTo(tx,ty-6);
+ ctx.moveTo(tx,ty+6);ctx.lineTo(tx,ty+16);ctx.stroke();
+ ctx.restore();
 }
 
 function drawTopUI(){
- roundRect(12,12,W-24,62,15,"#101d38d9");
+ roundRect(12,12,W-24,62,15,"#101d38e8");
  ctx.textAlign="left";ctx.fillStyle="#d7e4ff";ctx.font="bold 10px Arial";
  ctx.fillText("SCORE",25,32);ctx.fillStyle="#ffe17b";ctx.font="bold 21px Arial";
  ctx.fillText(score.toLocaleString(),25,57);
@@ -235,30 +269,28 @@ function draw(){
  drawBackground();drawTopUI();drawBoard();drawAim();drawShooter();
  if(flying)drawBubble(flying.x,flying.y,flying.color);
  for(const p of particles){
-  ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.color;
-  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=clamp(p.life*2,0,1);
+  ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
  }
  ctx.globalAlpha=1;
 }
 
 function groupFrom(row,col){
- const color=board[row]?.[col];
- if(color===null||color===undefined)return [];
+ const color=board[row]?.[col];if(color===null||color===undefined)return [];
  const seen=new Set(),group=[],stack=[[row,col]];
  while(stack.length){
   const [r,c]=stack.pop(),key=r+","+c;
   if(seen.has(key)||!valid(r,c))continue;
   seen.add(key);if(board[r][c]!==color)continue;
-  group.push([r,c]);
-  for(const n of getNeighbours(r,c))stack.push(n);
+  group.push([r,c]);for(const n of getNeighbours(r,c))stack.push(n);
  }
  return group;
 }
 
 function burstParticles(x,y,color){
- for(let i=0;i<9;i++){
+ for(let i=0;i<12;i++){
   const a=Math.random()*Math.PI*2,s=rand(35,125);
-  particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:rand(2,5),life:rand(.35,.7),color:COLORS[color].main});
+  particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:rand(2,5),life:rand(.35,.7),color:COLORS[color].light});
  }
 }
 
@@ -268,16 +300,13 @@ function removeFloating(){
  while(stack.length){
   const [r,c]=stack.pop(),key=r+","+c;
   if(connected.has(key)||!valid(r,c)||board[r][c]===null)continue;
-  connected.add(key);
-  for(const n of getNeighbours(r,c))stack.push(n);
+  connected.add(key);for(const n of getNeighbours(r,c))stack.push(n);
  }
  let dropped=0;
- for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-   if(board[r][c]!==null&&!connected.has(r+","+c)){
-    const p=center(r,c);burstParticles(p.x,p.y,board[r][c]);
-    board[r][c]=null;dropped++;
-   }
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  if(board[r][c]!==null&&!connected.has(r+","+c)){
+   const p=center(r,c);burstParticles(p.x,p.y,board[r][c]);
+   board[r][c]=null;dropped++;
   }
  }
  return dropped;
@@ -302,12 +331,10 @@ function resolveMatch(row,col){
 
 function findNearestCell(x,y){
  let best=null,bestD=Infinity;
- for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-   if(board[r][c]!==null)continue;
-   const p=center(r,c),d=Math.hypot(p.x-x,p.y-y);
-   if(d<bestD){bestD=d;best={r,c,x:p.x,y:p.y}}
-  }
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  if(board[r][c]!==null)continue;
+  const p=center(r,c),d=Math.hypot(p.x-x,p.y-y);
+  if(d<bestD){bestD=d;best={r,c,x:p.x,y:p.y}}
  }
  return best;
 }
@@ -323,10 +350,8 @@ function placeBubble(){
 
 function shoot(){
  if(!running||ended||flying||shootCooldown>0)return;
- const x=W/2,y=H-83;
- let a=Math.atan2(aim.y-y,aim.x-x);
- a=clamp(a,-Math.PI+.12,-.12);
- flying={x,y,vx:Math.cos(a)*590,vy:Math.sin(a)*590,color:currentColor};
+ const x=W/2,y=H-110,a=getAngle();
+ flying={x,y,vx:Math.cos(a)*650,vy:Math.sin(a)*650,color:currentColor};
  shots++;shootCooldown=.2;sound(420,.07,"triangle");
 }
 
@@ -336,12 +361,10 @@ function updateFlying(dt){
  if(flying.x<R){flying.x=R;flying.vx=Math.abs(flying.vx)}
  if(flying.x>W-R){flying.x=W-R;flying.vx=-Math.abs(flying.vx)}
  if(flying.y<=center(0,0).y){placeBubble();return}
- for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-   if(board[r][c]===null)continue;
-   const p=center(r,c);
-   if(Math.hypot(flying.x-p.x,flying.y-p.y)<R*1.9){placeBubble();return}
-  }
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  if(board[r][c]===null)continue;
+  const p=center(r,c);
+  if(Math.hypot(flying.x-p.x,flying.y-p.y)<R*1.9){placeBubble();return}
  }
 }
 
@@ -356,12 +379,9 @@ function addNewRow(){
 
 function checkLose(){
  const danger=H-145;
- for(let r=0;r<ROWS;r++){
-  for(let c=0;c<COLS;c++){
-   if(board[r][c]===null)continue;
-   if(center(r,c).y+R>=danger){
-    finish(false,"GAME OVER","The bubbles reached the danger line.");return;
-   }
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  if(board[r][c]!==null&&center(r,c).y+R>=danger){
+   finish(false,"GAME OVER","The bubbles reached the danger line.");return;
   }
  }
 }
@@ -372,12 +392,11 @@ function finish(won,title,message){
  cancelAnimationFrame(animation);
  $("heading").textContent=title;
  $("message").textContent=message+" Your score: "+score.toLocaleString()+".";
- $("status").textContent="Returning to Games...";
  $("start").textContent="RETURN TO GAMES";
- $("start").disabled=false;
  $("screen").classList.remove("hide");
- sound(won?850:150,.3,won?"triangle":"sawtooth");
- setTimeout(()=>location.replace("games.html"),2200);
+ $("shootBtn").style.display="none";
+ $("hint").style.display="none";
+ setTimeout(()=>location.replace("games.html"),2500);
 }
 
 function update(dt){
@@ -386,25 +405,25 @@ function update(dt){
  if(flying)updateFlying(dt);
  particles=particles.filter(p=>p.life>0);
  for(const p of particles){
-  p.x+=p.vx*dt;p.y+=p.vy*dt;
-  p.vx*=.98;p.vy*=.98;p.life-=dt;
+  p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.98;p.vy*=.98;p.life-=dt;
  }
 }
 
-function point(e){
- const r=canvas.getBoundingClientRect();
- return {x:e.clientX-r.left,y:e.clientY-r.top};
-}
-function setAim(e){
- const p=point(e);aim.x=p.x;aim.y=Math.min(p.y,H-160);
+function setAimFromEvent(e){
+ const rect=canvas.getBoundingClientRect();
+ const x=e.clientX-rect.left,y=e.clientY-rect.top;
+ /* Keep the target above the shooter */
+ aim.x=clamp(x,12,W-12);
+ aim.y=clamp(y,90,H-175);
+ draw();
 }
 
-canvas.addEventListener("pointermove",e=>{if(running)setAim(e)});
+/* Touching the board ONLY aims. It never shoots. */
 canvas.addEventListener("pointerdown",e=>{
- if(!running)return;
- e.preventDefault();setAim(e);shoot();
+ if(!running||ended)return;
+ e.preventDefault();
+ setAimFromEvent(e);
 });
-canvas.addEventListener("contextmenu",e=>e.preventDefault());
 
 function loop(now){
  if(!running||ended)return;
@@ -418,25 +437,25 @@ function startGame(){
  cancelAnimationFrame(animation);
  newBoard();ended=false;running=true;
  $("screen").classList.add("hide");
- last=performance.now();
- draw();
+ $("shootBtn").style.display="block";
+ $("hint").style.display="block";
+ last=performance.now();draw();
  animation=requestAnimationFrame(loop);
 }
 
-// Direct touch and click support for mobile browsers.
-function handleStart(e){
+$("start").addEventListener("click",e=>{
  e.preventDefault();
- e.stopPropagation();
  if(ended){location.replace("games.html");return}
  startGame();
-}
-const startButton=$("start");
-startButton.addEventListener("click",handleStart);
-startButton.addEventListener("pointerup",handleStart);
-startButton.addEventListener("touchend",handleStart,{passive:false});
+});
 
-resize();
-draw();
+$("shootBtn").addEventListener("click",e=>{
+ e.preventDefault();
+ if(!running||ended)return;
+ shoot();
+});
+
+resize();draw();
 </script>
 </body>
 </html>
