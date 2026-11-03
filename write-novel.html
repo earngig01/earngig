@@ -94,7 +94,7 @@ button,input,textarea,select{font:inherit}
 
 .editor-layout{
   display:grid;
-  grid-template-columns:245px 1fr;
+  grid-template-columns:260px 1fr;
   gap:18px;
   align-items:start;
 }
@@ -111,9 +111,7 @@ button,input,textarea,select{font:inherit}
   margin-bottom:13px;
 }
 
-.field{
-  margin-bottom:16px;
-}
+.field{margin-bottom:17px}
 
 .field label{
   display:block;
@@ -142,6 +140,82 @@ button,input,textarea,select{font:inherit}
   box-shadow:0 0 0 3px #642bd111;
 }
 
+/* COVER UPLOAD */
+
+.cover-upload{
+  border:1px solid #eee7f5;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:18px;
+  background:#fcfaff;
+}
+
+.cover-upload h3{
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.cover-preview{
+  width:125px;
+  height:165px;
+  margin:0 auto 12px;
+  border-radius:8px;
+  overflow:hidden;
+  background:#eee8f5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#8b8198;
+  text-align:center;
+  font-size:12px;
+}
+
+.cover-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.cover-placeholder{
+  padding:10px;
+  line-height:1.6;
+}
+
+.cover-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.cover-button{
+  display:block;
+  width:100%;
+  text-align:center;
+  padding:10px;
+  border-radius:7px;
+  background:#642bd1;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.remove-cover{
+  background:#fff0f0;
+  color:#c0392b;
+}
+
+.cover-note{
+  font-size:10px;
+  color:#8b8198;
+  line-height:1.5;
+  margin-top:9px;
+  text-align:center;
+}
+
+#coverInput{display:none}
+
 .chapter-heading{
   display:flex;
   justify-content:space-between;
@@ -150,9 +224,7 @@ button,input,textarea,select{font:inherit}
   margin-bottom:11px;
 }
 
-.chapter-heading h3{
-  margin:0;
-}
+.chapter-heading h3{margin:0}
 
 .add-chapter{
   background:#f1ebff;
@@ -210,18 +282,14 @@ button,input,textarea,select{font:inherit}
   margin-bottom:17px;
 }
 
-.editor-top h2{
-  font-size:17px;
-}
+.editor-top h2{font-size:17px}
 
 .word-count{
   font-size:11px;
   color:#81798c;
 }
 
-.chapter-title-field{
-  margin-bottom:13px;
-}
+.chapter-title-field{margin-bottom:13px}
 
 .chapter-title-field label{
   display:block;
@@ -239,9 +307,7 @@ button,input,textarea,select{font:inherit}
   outline:none;
 }
 
-.chapter-title-field input:focus{
-  border-color:#8652e5;
-}
+.chapter-title-field input:focus{border-color:#8652e5}
 
 .story-editor{
   width:100%;
@@ -257,9 +323,7 @@ button,input,textarea,select{font:inherit}
   outline:none;
 }
 
-.story-editor:focus{
-  border-color:#8652e5;
-}
+.story-editor:focus{border-color:#8652e5}
 
 .editor-hint{
   color:#938a9d;
@@ -305,11 +369,6 @@ button,input,textarea,select{font:inherit}
 .button-danger{
   background:#fff0f0;
   color:#c0392b;
-}
-
-.button-dark{
-  background:#33283f;
-  color:#fff;
 }
 
 .button:disabled{
@@ -365,16 +424,12 @@ footer{
 
 @media(max-width:750px){
   .editor-layout{grid-template-columns:1fr}
-  .sidebar{position:static}
   .chapter-list{
     flex-direction:row;
     overflow-x:auto;
     padding-bottom:5px;
   }
-  .chapter-tab{
-    width:auto;
-    min-width:105px;
-  }
+  .chapter-tab{width:auto;min-width:105px}
   .story-editor{min-height:350px}
 }
 
@@ -420,9 +475,8 @@ footer{
   <section class="page-heading">
     <div>
       <h1>Novel Writing Room ✍️</h1>
-      <p>Write your story, save your progress and continue whenever you're ready.</p>
+      <p>Write your story, upload its cover, save your progress and continue whenever you're ready.</p>
     </div>
-
     <div class="save-status" id="saveStatus">Not saved yet</div>
   </section>
 
@@ -463,8 +517,45 @@ footer{
       <div class="field">
         <label for="novelDescription">Short Description</label>
         <textarea id="novelDescription" rows="4"
-          placeholder="Give readers a short introduction to your story..."
+          placeholder="Introduce your story to readers..."
           maxlength="500"></textarea>
+      </div>
+
+      <div class="cover-upload">
+
+        <h3>Novel Cover Photo *</h3>
+
+        <div class="cover-preview">
+          <img id="coverPreview" alt="Novel cover preview">
+          <div class="cover-placeholder" id="coverPlaceholder">
+            📚<br>
+            Your novel cover<br>
+            will appear here
+          </div>
+        </div>
+
+        <input type="file"
+               id="coverInput"
+               accept="image/jpeg,image/png,image/webp">
+
+        <div class="cover-buttons">
+          <label for="coverInput" class="cover-button">
+            📷 Upload Cover Photo
+          </label>
+
+          <button type="button"
+                  class="cover-button remove-cover"
+                  id="removeCover"
+                  style="display:none">
+            Remove Cover
+          </button>
+        </div>
+
+        <p class="cover-note">
+          JPG, PNG or WEBP. Recommended portrait cover.
+          Maximum original image size: 8MB.
+        </p>
+
       </div>
 
       <div class="chapter-heading">
@@ -500,45 +591,32 @@ You can write as much as you need. Your work will be saved automatically while y
       ></textarea>
 
       <p class="editor-hint">
-        Tip: Separate paragraphs with a blank line to make your novel
-        comfortable for readers.
+        Tip: Separate paragraphs with a blank line to make your novel comfortable for readers.
       </p>
 
       <div class="chapter-tools">
 
         <div class="tool-left">
-          <button class="button button-light" id="previousChapter">
-            ← Previous
-          </button>
-
-          <button class="button button-light" id="nextChapter">
-            Next Chapter →
-          </button>
+          <button class="button button-light" id="previousChapter">← Previous</button>
+          <button class="button button-light" id="nextChapter">Next Chapter →</button>
         </div>
 
         <div class="tool-right">
-          <button class="button button-danger" id="deleteChapter">
-            Delete Chapter
-          </button>
-
-          <button class="button button-purple" id="saveButton">
-            Save Draft
-          </button>
+          <button class="button button-danger" id="deleteChapter">Delete Chapter</button>
+          <button class="button button-purple" id="saveButton">Save Draft</button>
         </div>
 
       </div>
 
       <div class="bottom-actions">
-
         <p>
           Your draft stays in your Writer Studio.<br>
-          You can return and continue editing later.
+          Return whenever you are ready to continue.
         </p>
 
         <button class="submit-btn" id="finishButton">
           Finish & Submit →
         </button>
-
       </div>
 
     </section>
@@ -547,9 +625,9 @@ You can write as much as you need. Your work will be saved automatically while y
 
   <div class="notice">
     <strong>Before submitting:</strong>
-    Review your title, description and all chapters carefully.
+    Check your title, cover photo, description and every chapter.
     Your completed novel will be sent for admin screening.
-    You will only be asked to pay the upload fee if your novel is approved.
+    You will only pay the upload fee if your novel is approved.
   </div>
 
 </main>
@@ -558,18 +636,7 @@ You can write as much as you need. Your work will be saved automatically while y
 
 <script>
 
-/*
-  EARNGIG NOVEL EDITOR
-
-  Draft storage:
-  earngig_writer_novels
-
-  Each writer's draft is stored locally in this browser.
-  The same storage key is used by writer-studio.html.
-*/
-
 const STORAGE_KEY = "earngig_writer_novels";
-
 const params = new URLSearchParams(window.location.search);
 const requestedId = params.get("id");
 
@@ -577,6 +644,10 @@ let novels = loadNovels();
 let currentNovel = null;
 let currentChapter = 0;
 let saveTimer = null;
+
+function $(id){
+  return document.getElementById(id);
+}
 
 function loadNovels(){
   try{
@@ -588,7 +659,7 @@ function loadNovels(){
 }
 
 function saveNovels(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(novels));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(novels));
 }
 
 function createId(){
@@ -597,18 +668,15 @@ function createId(){
 }
 
 function createNewNovel(){
-
   return {
     id:createId(),
     title:"",
     genre:"",
     description:"",
+    cover:"",
     status:"draft",
     chapters:[
-      {
-        title:"Chapter 1",
-        content:""
-      }
+      {title:"Chapter 1",content:""}
     ],
     createdAt:new Date().toISOString(),
     updatedAt:new Date().toISOString()
@@ -629,7 +697,6 @@ function initialise(){
 
   if(!Array.isArray(currentNovel.chapters) ||
      currentNovel.chapters.length === 0){
-
     currentNovel.chapters = [
       {title:"Chapter 1",content:""}
     ];
@@ -639,27 +706,132 @@ function initialise(){
   $("novelGenre").value = currentNovel.genre || "";
   $("novelDescription").value = currentNovel.description || "";
 
+  if(currentNovel.cover){
+    displayCover(currentNovel.cover);
+  }
+
   openChapter(0);
   updateChapterList();
   updateWordCount();
+}
 
-  if(requestedId){
-    setSaveStatus("Draft loaded");
-  }else{
-    setSaveStatus("New novel");
+function displayCover(imageData){
+
+  $("coverPreview").src = imageData;
+  $("coverPreview").style.display = "block";
+  $("coverPlaceholder").style.display = "none";
+  $("removeCover").style.display = "block";
+}
+
+function clearCover(){
+
+  currentNovel.cover = "";
+
+  $("coverInput").value = "";
+  $("coverPreview").src = "";
+  $("coverPreview").style.display = "none";
+  $("coverPlaceholder").style.display = "block";
+  $("removeCover").style.display = "none";
+
+  scheduleAutoSave();
+}
+
+function uploadCover(file){
+
+  if(!file) return;
+
+  const allowed = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if(!allowed.includes(file.type)){
+    alert("Please upload a JPG, PNG or WEBP image.");
+    $("coverInput").value = "";
+    return;
   }
-}
 
-function $(id){
-  return document.getElementById(id);
-}
+  if(file.size > 8 * 1024 * 1024){
+    alert("Your image is too large. Please choose an image below 8MB.");
+    $("coverInput").value = "";
+    return;
+  }
 
-function setSaveStatus(message){
-  $("saveStatus").textContent = message;
+  const reader = new FileReader();
+
+  reader.onload = function(event){
+
+    const image = new Image();
+
+    image.onload = function(){
+
+      const canvas = document.createElement("canvas");
+
+      const maxWidth = 600;
+      const maxHeight = 800;
+
+      let width = image.width;
+      let height = image.height;
+
+      const scale = Math.min(
+        maxWidth / width,
+        maxHeight / height,
+        1
+      );
+
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const context = canvas.getContext("2d");
+
+      context.drawImage(image,0,0,width,height);
+
+      const compressedImage = canvas.toDataURL(
+        "image/jpeg",
+        0.78
+      );
+
+      currentNovel.cover = compressedImage;
+
+      displayCover(compressedImage);
+
+      saveDraft();
+
+      $("coverInput").value = "";
+    };
+
+    image.onerror = function(){
+      alert("This image could not be opened. Please choose another image.");
+    };
+
+    image.src = event.target.result;
+  };
+
+  reader.onerror = function(){
+    alert("Unable to read this image. Please try again.");
+  };
+
+  reader.readAsDataURL(file);
 }
 
 function getCurrentChapter(){
   return currentNovel.chapters[currentChapter];
+}
+
+function saveCurrentChapter(){
+
+  if(!currentNovel) return;
+
+  const chapter = getCurrentChapter();
+
+  if(!chapter) return;
+
+  chapter.title = $("chapterTitle").value.trim();
+  chapter.content = $("chapterContent").value;
 }
 
 function openChapter(index){
@@ -675,8 +847,7 @@ function openChapter(index){
   $("chapterTitle").value = chapter.title || "";
   $("chapterContent").value = chapter.content || "";
 
-  $("editorHeading").textContent =
-    "Chapter " + (index + 1);
+  $("editorHeading").textContent = "Chapter " + (index + 1);
 
   $("previousChapter").disabled = index === 0;
 
@@ -685,18 +856,6 @@ function openChapter(index){
 
   updateChapterList();
   updateWordCount();
-}
-
-function saveCurrentChapter(){
-
-  if(!currentNovel) return;
-
-  const chapter = getCurrentChapter();
-
-  if(!chapter) return;
-
-  chapter.title = $("chapterTitle").value.trim();
-  chapter.content = $("chapterContent").value;
 }
 
 function updateChapterList(){
@@ -713,15 +872,13 @@ function updateChapterList(){
       button.classList.add("active");
     }
 
-    if(chapter.content && chapter.content.trim().length > 0){
+    if(chapter.content && chapter.content.trim()){
       button.classList.add("done");
     }
 
     button.textContent =
       (index + 1) + ". " +
       (chapter.title || "Untitled Chapter");
-
-    button.title = button.textContent;
 
     button.onclick = ()=>{
       saveCurrentChapter();
@@ -741,10 +898,10 @@ function addChapter(){
 
   saveCurrentChapter();
 
-  const newChapterNumber = currentNovel.chapters.length + 1;
+  const number = currentNovel.chapters.length + 1;
 
   currentNovel.chapters.push({
-    title:"Chapter " + newChapterNumber,
+    title:"Chapter " + number,
     content:""
   });
 
@@ -752,7 +909,6 @@ function addChapter(){
 
   openChapter(currentChapter);
   updateChapterList();
-
   saveDraft();
 }
 
@@ -763,11 +919,9 @@ function deleteChapter(){
     return;
   }
 
-  const confirmed = confirm(
-    "Are you sure you want to delete this chapter? This cannot be undone."
-  );
-
-  if(!confirmed) return;
+  if(!confirm("Are you sure you want to delete this chapter?")){
+    return;
+  }
 
   currentNovel.chapters.splice(currentChapter,1);
 
@@ -775,7 +929,6 @@ function deleteChapter(){
 
   openChapter(currentChapter);
   updateChapterList();
-
   saveDraft();
 }
 
@@ -797,16 +950,20 @@ function saveDraft(){
     novels[index] = currentNovel;
   }
 
-  saveNovels();
-
-  setSaveStatus("✓ Draft saved");
-
-  return true;
+  try{
+    saveNovels();
+    $("saveStatus").textContent = "✓ Draft saved";
+    return true;
+  }catch(error){
+    $("saveStatus").textContent = "Save failed";
+    alert("Your draft could not be saved. Your browser storage may be full.");
+    return false;
+  }
 }
 
 function scheduleAutoSave(){
 
-  setSaveStatus("Saving...");
+  $("saveStatus").textContent = "Saving...";
 
   clearTimeout(saveTimer);
 
@@ -839,20 +996,23 @@ function nextChapter(){
 
 function finishNovel(){
 
-  saveDraft();
+  if(!saveDraft()) return;
 
-  const title = currentNovel.title;
-  const genre = currentNovel.genre;
-
-  if(!title){
+  if(!currentNovel.title){
     alert("Please enter your novel title.");
     $("novelTitle").focus();
     return;
   }
 
-  if(!genre){
-    alert("Please select a genre for your novel.");
+  if(!currentNovel.genre){
+    alert("Please select a novel genre.");
     $("novelGenre").focus();
+    return;
+  }
+
+  if(!currentNovel.cover){
+    alert("Please upload a cover photo for your novel.");
+    $("coverInput").focus();
     return;
   }
 
@@ -860,10 +1020,8 @@ function finishNovel(){
     chapter=>!chapter.content || !chapter.content.trim()
   );
 
-  if(emptyChapters.length > 0){
-    alert(
-      "Some chapters are empty. Please complete or remove them before submitting."
-    );
+  if(emptyChapters.length){
+    alert("Please complete or remove all empty chapters.");
     return;
   }
 
@@ -871,33 +1029,32 @@ function finishNovel(){
     chapter=>!chapter.title || !chapter.title.trim()
   );
 
-  if(untitledChapters.length > 0){
-    alert("Please give every chapter a title before submitting.");
+  if(untitledChapters.length){
+    alert("Please give every chapter a title.");
     return;
   }
 
   if(currentNovel.chapters.length < 2){
-    const proceed = confirm(
-      "Your novel currently has only one chapter. Are you sure it is complete?"
-    );
-
-    if(!proceed) return;
+    if(!confirm("Your novel has only one chapter. Is it complete?")){
+      return;
+    }
   }
 
   window.location.href =
     "submit-novel.html?id=" + encodeURIComponent(currentNovel.id);
 }
 
+$("coverInput").addEventListener("change",function(){
+  uploadCover(this.files[0]);
+});
+
+$("removeCover").addEventListener("click",clearCover);
+
 $("addChapter").addEventListener("click",addChapter);
-
 $("deleteChapter").addEventListener("click",deleteChapter);
-
 $("saveButton").addEventListener("click",saveDraft);
-
 $("previousChapter").addEventListener("click",previousChapter);
-
 $("nextChapter").addEventListener("click",nextChapter);
-
 $("finishButton").addEventListener("click",finishNovel);
 
 [
