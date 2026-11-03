@@ -6,46 +6,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#170329">
 <title>My Wallet | EarnGig</title>
-
 <style>
-:root {
-  --lime:#caff19;
-  --gold:#ffd12d;
-  --muted:#c8b6d8;
-}
+:root{--lime:#caff19;--gold:#ffd12d;--muted:#c8b6d8}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:radial-gradient(ellipse at 50% 0%,#3b075d,transparent 45%),
-  linear-gradient(135deg,#10021e,#19032c 60%,#10021e);
-  color:white;font-family:Arial,Helvetica,sans-serif;min-height:100vh;
+background:radial-gradient(ellipse at 50% 0%,#3b075d,transparent 45%),linear-gradient(135deg,#10021e,#19032c 60%,#10021e);
+color:white;font-family:Arial,Helvetica,sans-serif;min-height:100vh
 }
 a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 button{cursor:pointer}
 header{
-  min-height:72px;padding:10px 3%;background:#18032c;
-  border-bottom:1px solid #a32be655;display:flex;
-  align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:50;
+min-height:72px;padding:10px 3%;background:#18032c;border-bottom:1px solid #a32be655;
+display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50
 }
 .brand{font-size:27px;font-weight:900;letter-spacing:-1.5px}
 .crown{color:var(--gold)}
 .gig{color:var(--lime)}
 .header-right{display:flex;align-items:center;gap:12px}
 .avatar{
-  width:36px;height:36px;border-radius:50%;display:grid;
-  place-items:center;background:#5d198c;border:2px solid var(--gold);
+width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+background:#5d198c;border:2px solid var(--gold)
 }
 .menu-button{
-  width:39px;height:39px;border:1px solid #a33bd0;
-  background:#31094d;color:white;border-radius:10px;font-size:22px;
+width:39px;height:39px;border:1px solid #a33bd0;
+background:#31094d;color:white;border-radius:10px;font-size:22px
 }
 .overlay{position:fixed;inset:0;background:#0009;z-index:80;display:none}
 .overlay.open{display:block}
 .side-menu{
-  position:fixed;top:0;right:-320px;width:min(310px,85vw);
-  height:100%;overflow-y:auto;z-index:90;background:#1b0430;
-  border-left:1px solid #a32be6;padding:23px 18px;transition:right .25s;
+position:fixed;top:0;right:-320px;width:min(310px,85vw);height:100%;
+overflow-y:auto;z-index:90;background:#1b0430;border-left:1px solid #a32be6;
+padding:23px 18px;transition:right .25s
 }
 .side-menu.open{right:0}
 .menu-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #ffffff20}
@@ -54,19 +46,15 @@ header{
 .side-menu a{display:flex;align-items:center;gap:12px;padding:13px 10px;border-radius:9px;font-size:14px;font-weight:bold;color:#eee2f6}
 .side-menu a:hover,.side-menu a.current{background:#4a126b;color:var(--lime)}
 .side-menu a span{font-size:19px}
-
 .container{width:94%;max-width:1150px;margin:30px auto 55px}
 .page-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}
 .page-heading h1{font-size:30px;margin-bottom:7px}
 .page-heading p{color:var(--muted);font-size:14px;line-height:1.5}
 .back-link{color:var(--lime);font-size:13px;font-weight:bold}
-
 .balance-card{
-  padding:30px;border-radius:22px;
-  background:radial-gradient(circle at 90% 10%,#8b22c9,transparent 45%),
-  linear-gradient(120deg,#260644,#57108c);
-  border:1px solid #b84aff;box-shadow:0 0 30px #a51cff35;
-  margin-bottom:22px;position:relative;overflow:hidden;
+padding:30px;border-radius:22px;
+background:radial-gradient(circle at 90% 10%,#8b22c9,transparent 45%),linear-gradient(120deg,#260644,#57108c);
+border:1px solid #b84aff;box-shadow:0 0 30px #a51cff35;margin-bottom:22px;position:relative;overflow:hidden
 }
 .balance-card:after{content:"🪙";position:absolute;right:30px;top:20px;font-size:100px;opacity:.15}
 .balance-label{font-size:14px;color:#e2d2f1;margin-bottom:12px}
@@ -76,10 +64,9 @@ header{
 .btn{display:inline-flex;justify-content:center;align-items:center;padding:13px 20px;border-radius:10px;font-weight:900;border:0}
 .btn-lime{background:var(--lime);color:#190b24}
 .btn-outline{background:transparent;border:1px solid #e2aaff;color:white}
-
 .available-card{
-  padding:24px;border-radius:18px;background:linear-gradient(140deg,#24103c,#351052);
-  border:1px solid #9b4bc5;margin-bottom:27px;
+padding:24px;border-radius:18px;background:linear-gradient(140deg,#24103c,#351052);
+border:1px solid #9b4bc5;margin-bottom:27px
 }
 .available-title{color:#e6d4f3;font-size:14px;font-weight:bold;margin-bottom:17px}
 .available-main{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
@@ -87,6 +74,24 @@ header{
 .available-naira{font-size:clamp(22px,4vw,30px);font-weight:900}
 .available-caption{color:var(--muted);font-size:12px;margin-top:7px}
 .conversion-note{margin-top:18px;padding-top:15px;border-top:1px solid #ffffff20;color:#d9c4e9;font-size:12px;line-height:1.6}
+
+/* REFERRAL REWARDS */
+.referral-card{
+padding:24px;border-radius:18px;
+background:linear-gradient(140deg,#291044,#45136c);
+border:1px solid #a34acb;margin-bottom:27px
+}
+.referral-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.referral-heading h2{font-size:21px}
+.reward-tag{background:#cafa19;color:#190b24;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:900}
+.referral-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.referral-stat{background:#1a082c;border:1px solid #744096;border-radius:12px;padding:18px}
+.referral-stat strong{display:block;color:var(--lime);font-size:25px;margin-bottom:7px;overflow-wrap:anywhere}
+.referral-stat span{font-size:12px;color:#c8b6d8}
+.referral-description{font-size:13px;color:#d9c4e9;line-height:1.7;margin-top:17px}
+.referral-link{display:inline-block;color:var(--lime);font-size:13px;font-weight:bold;margin-top:15px}
+.referral-link:hover{text-decoration:underline}
+.referral-note{font-size:11px;color:#bda9ce;line-height:1.6;margin-top:13px}
 
 .section{margin:28px 0}
 .section-title{font-size:21px;font-weight:900;margin-bottom:15px}
@@ -97,63 +102,51 @@ header{
 .field.full{grid-column:1/-1}
 .field label{font-size:13px;font-weight:bold;color:#f1e4fa}
 .field input{
-  width:100%;padding:14px;border-radius:9px;border:1px solid #77419b;
-  background:#170429;color:white;outline:none;
+width:100%;padding:14px;border-radius:9px;border:1px solid #77419b;
+background:#170429;color:white;outline:none
 }
 .field input:focus{border-color:var(--lime)}
 .field input::placeholder{color:#907da1}
-
-/* SEARCHABLE BANK PICKER */
 .bank-picker{position:relative}
 .bank-trigger{
-  width:100%;padding:14px;text-align:left;
-  border-radius:9px;border:1px solid #77419b;
-  background:#170429;color:white;
-  display:flex;justify-content:space-between;align-items:center;
+width:100%;padding:14px;text-align:left;border-radius:9px;border:1px solid #77419b;
+background:#170429;color:white;display:flex;justify-content:space-between;align-items:center
 }
 .bank-trigger:hover{border-color:var(--lime)}
 .bank-trigger .placeholder{color:#a995b8}
 .bank-dropdown{
-  display:none;position:absolute;top:calc(100% + 7px);
-  left:0;right:0;z-index:30;background:#210638;
-  border:1px solid #a34acb;border-radius:12px;
-  padding:12px;box-shadow:0 12px 30px #0009;
+display:none;position:absolute;top:calc(100% + 7px);left:0;right:0;z-index:30;
+background:#210638;border:1px solid #a34acb;border-radius:12px;padding:12px;box-shadow:0 12px 30px #0009
 }
 .bank-dropdown.open{display:block}
 .bank-search{
-  width:100%;padding:12px;border-radius:8px;
-  border:1px solid #8651a4;background:#130323;
-  color:white;outline:none;margin-bottom:10px;
+width:100%;padding:12px;border-radius:8px;border:1px solid #8651a4;
+background:#130323;color:white;outline:none;margin-bottom:10px
 }
 .bank-search:focus{border-color:var(--lime)}
 .bank-list{max-height:230px;overflow-y:auto}
 .bank-option{
-  width:100%;padding:12px 10px;background:transparent;
-  border:0;border-radius:7px;color:#f5eafa;text-align:left;
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:13px;
+width:100%;padding:12px 10px;background:transparent;border:0;border-radius:7px;
+color:#f5eafa;text-align:left;display:flex;justify-content:space-between;align-items:center;font-size:13px
 }
 .bank-option:hover{background:#4a126b;color:var(--lime)}
 .bank-option.selected{background:#351052;color:var(--lime)}
 .no-bank{padding:15px 8px;text-align:center;color:#c8b6d8;font-size:13px}
 .amount-preview{
-  grid-column:1/-1;background:#351052;border:1px solid #8f49b3;
-  padding:16px;border-radius:10px;display:flex;
-  justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+grid-column:1/-1;background:#351052;border:1px solid #8f49b3;padding:16px;border-radius:10px;
+display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap
 }
 .amount-preview span{font-size:13px;color:#d9c4e9}
 .amount-preview strong{font-size:20px;color:var(--lime)}
 .notice{
-  padding:13px 15px;border-radius:10px;background:#4a3215;
-  border:1px solid #a57b31;color:#ffe4a5;
-  font-size:12px;line-height:1.6;margin-top:18px;
+padding:13px 15px;border-radius:10px;background:#4a3215;border:1px solid #a57b31;
+color:#ffe4a5;font-size:12px;line-height:1.6;margin-top:18px
 }
 .form-actions{margin-top:18px}
 .form-message{display:none;margin-top:14px;padding:12px;border-radius:9px;font-size:13px;line-height:1.5}
 .form-message.show{display:block}
 .form-message.error{background:#511d30;color:#ffb2c2}
 .form-message.info{background:#173f28;color:#a6ffc0}
-
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:520px}
 th,td{padding:14px 12px;text-align:left;border-bottom:1px solid #ffffff18;font-size:13px}
@@ -161,169 +154,201 @@ th{color:#c6a6dd;font-size:11px;text-transform:uppercase}
 td{color:#f3eafa}
 .empty{padding:28px 10px;text-align:center;color:var(--muted);font-size:13px}
 footer{border-top:1px solid #8b35b855;padding:24px 4%;text-align:center;color:#bda9ce;font-size:12px}
-
 @media(max-width:650px){
-  header{padding:10px 4%}
-  .brand{font-size:24px}
-  .container{margin-top:22px}
-  .page-heading h1{font-size:25px}
-  .balance-card{padding:22px}
-  .available-card{padding:19px}
-  .panel{padding:17px}
-  .form-grid{grid-template-columns:1fr}
-  .field.full,.amount-preview{grid-column:auto}
-  .available-main{align-items:flex-start;flex-direction:column}
+header{padding:10px 4%}
+.brand{font-size:24px}
+.container{margin-top:22px}
+.page-heading h1{font-size:25px}
+.balance-card{padding:22px}
+.available-card,.referral-card{padding:19px}
+.panel{padding:17px}
+.form-grid{grid-template-columns:1fr}
+.field.full,.amount-preview{grid-column:auto}
+.available-main{align-items:flex-start;flex-direction:column}
+.referral-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
-
 <body>
 
 <header>
-  <a href="../index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
-  <div class="header-right">
-    <a href="profile.html" class="avatar">👤</a>
-    <button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
-  </div>
+<a href="index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
+<div class="header-right">
+<a href="profile.html" class="avatar">👤</a>
+<button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
+</div>
 </header>
 
 <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
 <aside class="side-menu" id="sideMenu">
-  <div class="menu-head">
-    <a href="../index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
-    <button class="close-menu" onclick="closeMenu()">×</button>
-  </div>
-  <div class="menu-label">MY ACCOUNT</div>
-  <a href="dashboard.html"><span>🏠</span> Dashboard</a>
-  <a href="wallet.html" class="current"><span>👛</span> My Wallet</a>
-  <a href="transactions.html"><span>📊</span> Transactions</a>
-  <a href="profile.html"><span>👤</span> My Profile</a>
-  <div class="menu-label">EARN REWARDS</div>
-  <a href="games.html"><span>🎮</span> Games</a>
-  <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
-  <a href="referrals.html"><span>👥</span> Refer Friends</a>
-  <a href="novels.html"><span>📚</span> Novels</a>
-  <div class="menu-label">SHOP AND BUSINESS</div>
-  <a href="marketplace.html"><span>🛍️</span> Marketplace</a>
-  <a href="storefront.html"><span>🏪</span> Storefront</a>
-  <a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
-  <a href="advertise.html"><span>📣</span> Advertise</a>
+<div class="menu-head">
+<a href="index.html" class="brand"><span class="crown">👑</span> Earn<span class="gig">Gig</span></a>
+<button class="close-menu" onclick="closeMenu()">×</button>
+</div>
+<div class="menu-label">MY ACCOUNT</div>
+<a href="dashboard.html"><span>🏠</span> Dashboard</a>
+<a href="wallet.html" class="current"><span>👛</span> My Wallet</a>
+<a href="transactions.html"><span>📊</span> Transactions</a>
+<a href="profile.html"><span>👤</span> My Profile</a>
+<div class="menu-label">EARN REWARDS</div>
+<a href="games.html"><span>🎮</span> Games</a>
+<a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
+<a href="referrals.html"><span>👥</span> Refer Friends</a>
+<a href="novels.html"><span>📚</span> Novels</a>
+<div class="menu-label">SHOP AND BUSINESS</div>
+<a href="marketplace.html"><span>🛍️</span> Marketplace</a>
+<a href="storefront.html"><span>🏪</span> Storefront</a>
+<a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
+<a href="advertise.html"><span>📣</span> Advertise</a>
 </aside>
 
 <main class="container">
 
-  <div class="page-heading">
-    <div>
-      <h1>👛 My Wallet</h1>
-      <p>Manage your EarnGig coins, withdrawals and transactions.</p>
-    </div>
-    <a href="dashboard.html" class="back-link">← Dashboard</a>
-  </div>
+<div class="page-heading">
+<div>
+<h1>👛 My Wallet</h1>
+<p>Manage your EarnGig coins, withdrawals and transactions.</p>
+</div>
+<a href="dashboard.html" class="back-link">← Dashboard</a>
+</div>
 
-  <section class="balance-card">
-    <div class="balance-label">TOTAL COIN BALANCE</div>
-    <div class="balance-number" id="totalBalance">0 Coins</div>
-    <div class="balance-subtitle">Your total displayed coin balance across EarnGig.</div>
-    <div class="balance-actions">
-      <a href="#withdraw" class="btn btn-lime">Withdraw Funds →</a>
-      <a href="#transactions" class="btn btn-outline">Transaction History</a>
-    </div>
-  </section>
+<section class="balance-card">
+<div class="balance-label">TOTAL COIN BALANCE</div>
+<div class="balance-number" id="totalBalance">0 Coins</div>
+<div class="balance-subtitle">Your total displayed coin balance across EarnGig.</div>
+<div class="balance-actions">
+<a href="#withdraw" class="btn btn-lime">Withdraw Funds →</a>
+<a href="#transactions" class="btn btn-outline">Transaction History</a>
+</div>
+</section>
 
-  <section class="available-card">
-    <div class="available-title">💰 AVAILABLE TO WITHDRAW</div>
-    <div class="available-main">
-      <div>
-        <div class="available-coins" id="eligibleCoins">0 Coins</div>
-        <div class="available-caption">Eligible coins</div>
-      </div>
-      <div>
-        <div class="available-naira" id="eligibleNaira">₦0.00</div>
-        <div class="available-caption">Equivalent withdrawal value</div>
-      </div>
-    </div>
-    <div class="conversion-note">
-      Only eligible coins count toward withdrawals. Pending or unqualified rewards are not included.
-      <br><strong>Conversion rate: 1,000 eligible coins = ₦100.</strong>
-    </div>
-  </section>
+<section class="available-card">
+<div class="available-title">💰 AVAILABLE TO WITHDRAW</div>
+<div class="available-main">
+<div>
+<div class="available-coins" id="eligibleCoins">0 Coins</div>
+<div class="available-caption">Eligible coins</div>
+</div>
+<div>
+<div class="available-naira" id="eligibleNaira">₦0.00</div>
+<div class="available-caption">Equivalent withdrawal value</div>
+</div>
+</div>
+<div class="conversion-note">
+Only eligible coins count toward withdrawals. Pending or unqualified rewards are not included.
+<br><strong>Conversion rate: 1,000 eligible coins = ₦100.</strong>
+</div>
+</section>
 
-  <section class="section" id="withdraw">
-    <h2 class="section-title">🏦 Request a Withdrawal</h2>
-    <div class="panel">
-      <p class="panel-description">
-        Enter the amount you want to withdraw in naira and provide your Nigerian bank account details.
-      </p>
+<!-- REFERRAL REWARDS -->
+<section class="referral-card">
+<div class="referral-heading">
+<h2>👥 Referral Rewards</h2>
+<span class="reward-tag">10,000 COINS PER REFERRAL</span>
+</div>
 
-      <form id="withdrawForm">
-        <div class="form-grid">
+<div class="referral-grid">
+<div class="referral-stat">
+<strong id="walletReferralCount">0</strong>
+<span>Successful referrals</span>
+</div>
+<div class="referral-stat">
+<strong id="walletReferralCoins">0</strong>
+<span>Referral coins earned</span>
+</div>
+<div class="referral-stat">
+<strong>10,000</strong>
+<span>Coins per successful referral</span>
+</div>
+</div>
 
-          <div class="field full">
-            <label for="amount">How much do you want to withdraw? (₦)</label>
-            <input id="amount" type="number" min="1" step="0.01" placeholder="Enter withdrawal amount" required>
-          </div>
+<p class="referral-description">
+Earn <strong>10,000 coins</strong> every time someone joins EarnGig using your referral link and completes the required verification.
+</p>
 
-          <div class="amount-preview">
-            <span>Coins required for this withdrawal</span>
-            <strong id="coinsRequired">0 Coins</strong>
-          </div>
+<a href="referrals.html" class="referral-link">View and share your referral link →</a>
 
-          <div class="field">
-            <label>Bank Name</label>
-            <div class="bank-picker">
-              <button type="button" class="bank-trigger" id="bankTrigger" aria-expanded="false">
-                <span id="bankSelected" class="placeholder">Search and select your bank</span>
-                <span>⌄</span>
-              </button>
-              <div class="bank-dropdown" id="bankDropdown">
-                <input class="bank-search" id="bankSearch" type="search" placeholder="Type your bank name...">
-                <div class="bank-list" id="bankList"></div>
-              </div>
-              <input type="hidden" id="bank" required>
-            </div>
-          </div>
+<p class="referral-note">
+This section currently displays a referral reward preview from locally saved referral records. Actual wallet crediting will only happen after secure server-side verification is connected. These preview coins are not yet included in your withdrawable balance.
+</p>
+</section>
 
-          <div class="field">
-            <label for="accountName">Account Name</label>
-            <input id="accountName" type="text" placeholder="Name on bank account" required>
-          </div>
+<section class="section" id="withdraw">
+<h2 class="section-title">🏦 Request a Withdrawal</h2>
+<div class="panel">
+<p class="panel-description">
+Enter the amount you want to withdraw in naira and provide your Nigerian bank account details.
+</p>
 
-          <div class="field full">
-            <label for="accountNumber">Account Number</label>
-            <input id="accountNumber" type="text" inputmode="numeric" maxlength="10" placeholder="Enter your 10-digit account number" required>
-          </div>
+<form id="withdrawForm">
+<div class="form-grid">
 
-        </div>
+<div class="field full">
+<label for="amount">How much do you want to withdraw? (₦)</label>
+<input id="amount" type="number" min="1" step="0.01" placeholder="Enter withdrawal amount" required>
+</div>
 
-        <div class="notice">
-          Withdrawal requests are subject to eligible balance, account verification and EarnGig withdrawal rules. This demonstration page does not yet process real bank transfers.
-        </div>
+<div class="amount-preview">
+<span>Coins required for this withdrawal</span>
+<strong id="coinsRequired">0 Coins</strong>
+</div>
 
-        <div class="form-actions">
-          <button type="submit" class="btn btn-lime">Withdraw Funds →</button>
-        </div>
-        <div class="form-message" id="formMessage"></div>
-      </form>
-    </div>
-  </section>
+<div class="field">
+<label>Bank Name</label>
+<div class="bank-picker">
+<button type="button" class="bank-trigger" id="bankTrigger" aria-expanded="false">
+<span id="bankSelected" class="placeholder">Search and select your bank</span>
+<span>⌄</span>
+</button>
+<div class="bank-dropdown" id="bankDropdown">
+<input class="bank-search" id="bankSearch" type="search" placeholder="Type your bank name...">
+<div class="bank-list" id="bankList"></div>
+</div>
+<input type="hidden" id="bank" required>
+</div>
+</div>
 
-  <section class="section" id="transactions">
-    <h2 class="section-title">📊 Recent Transactions</h2>
-    <div class="panel">
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Description</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
-          <tbody><tr><td colspan="4" class="empty">No transactions yet. Your activity will appear here.</td></tr></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+<div class="field">
+<label for="accountName">Account Name</label>
+<input id="accountName" type="text" placeholder="Name on bank account" required>
+</div>
 
-  <section class="section">
-    <h2 class="section-title">📋 Withdrawal History</h2>
-    <div class="panel"><div class="empty">You have not made any withdrawal requests yet.</div></div>
-  </section>
+<div class="field full">
+<label for="accountNumber">Account Number</label>
+<input id="accountNumber" type="text" inputmode="numeric" maxlength="10" placeholder="Enter your 10-digit account number" required>
+</div>
+
+</div>
+
+<div class="notice">
+Withdrawal requests are subject to eligible balance, account verification and EarnGig withdrawal rules. This demonstration page does not yet process real bank transfers.
+</div>
+
+<div class="form-actions">
+<button type="submit" class="btn btn-lime">Withdraw Funds →</button>
+</div>
+<div class="form-message" id="formMessage"></div>
+</form>
+</div>
+</section>
+
+<section class="section" id="transactions">
+<h2 class="section-title">📊 Recent Transactions</h2>
+<div class="panel">
+<div class="table-wrap">
+<table>
+<thead><tr><th>Description</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+<tbody><tr><td colspan="4" class="empty">No transactions yet. Your activity will appear here.</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="section">
+<h2 class="section-title">📋 Withdrawal History</h2>
+<div class="panel"><div class="empty">You have not made any withdrawal requests yet.</div></div>
+</section>
 
 </main>
 
@@ -331,206 +356,204 @@ footer{border-top:1px solid #8b35b855;padding:24px 4%;text-align:center;color:#b
 
 <script>
 /* DEMONSTRATION BALANCES - connect to secure backend later */
-const walletData = {
-  totalCoins: 0,
-  eligibleCoins: 0
+const walletData={
+totalCoins:0,
+eligibleCoins:0
 };
 
-const COINS_PER_NAIRA = 10;
+const COINS_PER_NAIRA=10;
 
-const banks = [
-  "Access Bank",
-  "Access Bank (Diamond)",
-  "Carbon",
-  "Citibank Nigeria",
-  "Ecobank Nigeria",
-  "Fidelity Bank",
-  "First Bank of Nigeria",
-  "First City Monument Bank (FCMB)",
-  "Globus Bank",
-  "GoMoney",
-  "Greenwich Merchant Bank",
-  "Guaranty Trust Bank (GTBank)",
-  "Heritage Bank",
-  "Jaiz Bank",
-  "Keystone Bank",
-  "Kuda Bank",
-  "Lotus Bank",
-  "Moniepoint",
-  "Mutual Trust Microfinance Bank",
-  "Nova Merchant Bank",
-  "Opay",
-  "Optimus Bank",
-  "Palmpay",
-  "Parallex Bank",
-  "Parkway Microfinance Bank",
-  "Polaris Bank",
-  "PremiumTrust Bank",
-  "Providus Bank",
-  "Rubies MFB",
-  "Safe Haven MFB",
-  "Signature Bank",
-  "Sparkle",
-  "Stanbic IBTC Bank",
-  "Standard Chartered Bank",
-  "Sterling Bank",
-  "SunTrust Bank",
-  "TajBank",
-  "Titan Trust Bank",
-  "Union Bank of Nigeria",
-  "United Bank for Africa (UBA)",
-  "Unity Bank",
-  "VFD Microfinance Bank",
-  "Wema Bank",
-  "Zenith Bank"
+const banks=[
+"Access Bank","Access Bank (Diamond)","Carbon","Citibank Nigeria",
+"Ecobank Nigeria","Fidelity Bank","First Bank of Nigeria",
+"First City Monument Bank (FCMB)","Globus Bank","GoMoney",
+"Greenwich Merchant Bank","Guaranty Trust Bank (GTBank)","Heritage Bank",
+"Jaiz Bank","Keystone Bank","Kuda Bank","Lotus Bank","Moniepoint",
+"Mutual Trust Microfinance Bank","Nova Merchant Bank","Opay","Optimus Bank",
+"Palmpay","Parallex Bank","Parkway Microfinance Bank","Polaris Bank",
+"PremiumTrust Bank","Providus Bank","Rubies MFB","Safe Haven MFB",
+"Signature Bank","Sparkle","Stanbic IBTC Bank","Standard Chartered Bank",
+"Sterling Bank","SunTrust Bank","TajBank","Titan Trust Bank",
+"Union Bank of Nigeria","United Bank for Africa (UBA)","Unity Bank",
+"VFD Microfinance Bank","Wema Bank","Zenith Bank"
 ];
 
-function formatNaira(amount) {
-  return "₦" + Number(amount).toLocaleString("en-NG", {
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+function formatNaira(amount){
+return "₦"+Number(amount).toLocaleString("en-NG",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
-function updateWalletDisplay() {
-  document.getElementById("totalBalance").textContent =
-    walletData.totalCoins.toLocaleString("en-NG") + " Coins";
+function updateWalletDisplay(){
+document.getElementById("totalBalance").textContent=
+walletData.totalCoins.toLocaleString("en-NG")+" Coins";
 
-  document.getElementById("eligibleCoins").textContent =
-    walletData.eligibleCoins.toLocaleString("en-NG") + " Coins";
+document.getElementById("eligibleCoins").textContent=
+walletData.eligibleCoins.toLocaleString("en-NG")+" Coins";
 
-  document.getElementById("eligibleNaira").textContent =
-    formatNaira(walletData.eligibleCoins / COINS_PER_NAIRA);
+document.getElementById("eligibleNaira").textContent=
+formatNaira(walletData.eligibleCoins/COINS_PER_NAIRA);
 }
 
-function updateWithdrawalPreview() {
-  const amount = Number(document.getElementById("amount").value || 0);
-  const coins = Math.ceil(amount * COINS_PER_NAIRA);
-  document.getElementById("coinsRequired").textContent =
-    coins.toLocaleString("en-NG") + " Coins";
+function updateWithdrawalPreview(){
+const amount=Number(document.getElementById("amount").value||0);
+const coins=Math.ceil(amount*COINS_PER_NAIRA);
+document.getElementById("coinsRequired").textContent=
+coins.toLocaleString("en-NG")+" Coins";
+}
+
+/* REFERRAL REWARD SUMMARY */
+function updateReferralWallet(){
+let referrals=[];
+
+try{
+referrals=JSON.parse(localStorage.getItem("earngig_referrals")||"[]");
+if(!Array.isArray(referrals))referrals=[];
+}catch(error){
+referrals=[];
+}
+
+const successful=referrals.filter(item=>
+item && item.status==="successful"
+);
+
+const earnedCoins=successful.length*10000;
+
+document.getElementById("walletReferralCount").textContent=
+successful.length.toLocaleString("en-NG");
+
+document.getElementById("walletReferralCoins").textContent=
+earnedCoins.toLocaleString("en-NG");
 }
 
 /* SEARCHABLE BANK SELECTION */
-const bankTrigger = document.getElementById("bankTrigger");
-const bankDropdown = document.getElementById("bankDropdown");
-const bankSearch = document.getElementById("bankSearch");
-const bankList = document.getElementById("bankList");
-const bankSelected = document.getElementById("bankSelected");
-const bankInput = document.getElementById("bank");
+const bankTrigger=document.getElementById("bankTrigger");
+const bankDropdown=document.getElementById("bankDropdown");
+const bankSearch=document.getElementById("bankSearch");
+const bankList=document.getElementById("bankList");
+const bankSelected=document.getElementById("bankSelected");
+const bankInput=document.getElementById("bank");
 
-function renderBanks(search = "") {
-  const filtered = banks.filter(bank =>
-    bank.toLowerCase().includes(search.trim().toLowerCase())
-  );
+function renderBanks(search=""){
+const filtered=banks.filter(bank=>
+bank.toLowerCase().includes(search.trim().toLowerCase())
+);
 
-  bankList.innerHTML = "";
+bankList.innerHTML="";
 
-  if (!filtered.length) {
-    const empty = document.createElement("div");
-    empty.className = "no-bank";
-    empty.textContent = "No matching bank found. Check the spelling or try another name.";
-    bankList.appendChild(empty);
-    return;
-  }
-
-  filtered.forEach(bank => {
-    const option = document.createElement("button");
-    option.type = "button";
-    option.className = "bank-option" + (bankInput.value === bank ? " selected" : "");
-    option.textContent = bank;
-
-    if (bankInput.value === bank) {
-      const check = document.createElement("span");
-      check.textContent = "✓";
-      option.appendChild(check);
-    }
-
-    option.addEventListener("click", () => selectBank(bank));
-    bankList.appendChild(option);
-  });
+if(!filtered.length){
+const empty=document.createElement("div");
+empty.className="no-bank";
+empty.textContent="No matching bank found. Check the spelling or try another name.";
+bankList.appendChild(empty);
+return;
 }
 
-function selectBank(bank) {
-  bankInput.value = bank;
-  bankSelected.textContent = bank;
-  bankSelected.classList.remove("placeholder");
-  bankDropdown.classList.remove("open");
-  bankTrigger.setAttribute("aria-expanded", "false");
-  bankSearch.value = "";
-  renderBanks();
+filtered.forEach(bank=>{
+const option=document.createElement("button");
+option.type="button";
+option.className="bank-option"+(bankInput.value===bank?" selected":"");
+option.textContent=bank;
+
+if(bankInput.value===bank){
+const check=document.createElement("span");
+check.textContent="✓";
+option.appendChild(check);
 }
 
-bankTrigger.addEventListener("click", () => {
-  const opening = !bankDropdown.classList.contains("open");
-  bankDropdown.classList.toggle("open", opening);
-  bankTrigger.setAttribute("aria-expanded", String(opening));
+option.addEventListener("click",()=>selectBank(bank));
+bankList.appendChild(option);
+});
+}
 
-  if (opening) {
-    bankSearch.value = "";
-    renderBanks();
-    bankSearch.focus();
-  }
+function selectBank(bank){
+bankInput.value=bank;
+bankSelected.textContent=bank;
+bankSelected.classList.remove("placeholder");
+bankDropdown.classList.remove("open");
+bankTrigger.setAttribute("aria-expanded","false");
+bankSearch.value="";
+renderBanks();
+}
+
+bankTrigger.addEventListener("click",()=>{
+const opening=!bankDropdown.classList.contains("open");
+bankDropdown.classList.toggle("open",opening);
+bankTrigger.setAttribute("aria-expanded",String(opening));
+
+if(opening){
+bankSearch.value="";
+renderBanks();
+bankSearch.focus();
+}
 });
 
-bankSearch.addEventListener("input", () => {
-  renderBanks(bankSearch.value);
+bankSearch.addEventListener("input",()=>{
+renderBanks(bankSearch.value);
 });
 
-document.addEventListener("click", event => {
-  if (!event.target.closest(".bank-picker")) {
-    bankDropdown.classList.remove("open");
-    bankTrigger.setAttribute("aria-expanded", "false");
-  }
+document.addEventListener("click",event=>{
+if(!event.target.closest(".bank-picker")){
+bankDropdown.classList.remove("open");
+bankTrigger.setAttribute("aria-expanded","false");
+}
 });
 
 /* MENU */
-function openMenu() {
-  document.getElementById("sideMenu").classList.add("open");
-  document.getElementById("overlay").classList.add("open");
+function openMenu(){
+document.getElementById("sideMenu").classList.add("open");
+document.getElementById("overlay").classList.add("open");
 }
-function closeMenu() {
-  document.getElementById("sideMenu").classList.remove("open");
-  document.getElementById("overlay").classList.remove("open");
+
+function closeMenu(){
+document.getElementById("sideMenu").classList.remove("open");
+document.getElementById("overlay").classList.remove("open");
 }
 
 /* WITHDRAWAL PREVIEW AND DEMONSTRATION FORM */
-document.getElementById("amount").addEventListener("input", updateWithdrawalPreview);
+document.getElementById("amount").addEventListener("input",updateWithdrawalPreview);
 
-document.getElementById("withdrawForm").addEventListener("submit", function(event) {
-  event.preventDefault();
+document.getElementById("withdrawForm").addEventListener("submit",function(event){
+event.preventDefault();
 
-  const amount = Number(document.getElementById("amount").value);
-  const bank = bankInput.value;
-  const accountName = document.getElementById("accountName").value.trim();
-  const accountNumber = document.getElementById("accountNumber").value.trim();
-  const message = document.getElementById("formMessage");
+const amount=Number(document.getElementById("amount").value);
+const bank=bankInput.value;
+const accountName=document.getElementById("accountName").value.trim();
+const accountNumber=document.getElementById("accountNumber").value.trim();
+const message=document.getElementById("formMessage");
 
-  message.className = "form-message show error";
+message.className="form-message show error";
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    message.textContent = "Please enter a valid withdrawal amount.";
-    return;
-  }
+if(!Number.isFinite(amount)||amount<=0){
+message.textContent="Please enter a valid withdrawal amount.";
+return;
+}
 
-  const coinsNeeded = Math.ceil(amount * COINS_PER_NAIRA);
+const coinsNeeded=Math.ceil(amount*COINS_PER_NAIRA);
 
-  if (coinsNeeded > walletData.eligibleCoins) {
-    message.textContent = "Your eligible balance is not enough for this withdrawal.";
-    return;
-  }
+if(coinsNeeded>walletData.eligibleCoins){
+message.textContent="Your eligible balance is not enough for this withdrawal.";
+return;
+}
 
-  if (!bank || !accountName || !/^\d{10}$/.test(accountNumber)) {
-    message.textContent = "Please complete your bank details correctly.";
-    return;
-  }
+if(!bank||!accountName||!/^\d{10}$/.test(accountNumber)){
+message.textContent="Please complete your bank details correctly.";
+return;
+}
 
-  message.className = "form-message show info";
-  message.textContent =
-    "Your details passed the basic form checks. Real withdrawal processing will be enabled when the secure EarnGig wallet backend is connected.";
+message.className="form-message show info";
+message.textContent=
+"Your details passed the basic form checks. Real withdrawal processing will be enabled when the secure EarnGig wallet backend is connected.";
 });
 
 renderBanks();
 updateWalletDisplay();
+updateReferralWallet();
+
+window.addEventListener("storage",function(event){
+if(event.key==="earngig_referrals")updateReferralWallet();
+});
 </script>
 
 </body>
