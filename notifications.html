@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#170329">
+<title>Notifications | EarnGig</title>
+
+<style>
+:root{
+  --purple:#210638;
+  --deep:#10021e;
+  --lime:#caff19;
+  --gold:#ffd12d;
+  --muted:#bda9ce;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%,#3b075d 0%,transparent 45%),
+    linear-gradient(135deg,#10021e,#19032c 60%,#10021e);
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+
+/* HEADER */
+.topbar{
+  min-height:72px;
+  padding:10px 4%;
+  background:#18032c;
+  border-bottom:1px solid #a32be655;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+.brand{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+.crown{color:var(--gold)}
+.gig{color:var(--lime)}
+.header-links{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.header-links a{
+  color:#eee2f6;
+  font-size:13px;
+  font-weight:700;
+}
+.header-links a:hover{color:var(--lime)}
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.header-button{
+  border:1px solid #7930a5;
+  background:#31094d;
+  color:white;
+  border-radius:9px;
+  padding:10px 13px;
+  font-size:13px;
+}
+.header-button:hover{
+  border-color:var(--lime);
+  color:var(--lime);
+}
+
+/* MAIN */
+.container{
+  width:92%;
+  max-width:1050px;
+  margin:35px auto 60px;
+}
+.page-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-bottom:25px;
+}
+.page-heading h1{
+  font-size:30px;
+  margin-bottom:8px;
+}
+.page-heading p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.heading-icon{
+  font-size:35px;
+  margin-right:8px;
+}
+.mark-read{
+  background:var(--lime);
+  color:#190a25;
+  border:0;
+  border-radius:9px;
+  padding:12px 17px;
+  font-size:12px;
+  font-weight:900;
+}
+.mark-read:hover{filter:brightness(1.08)}
+
+/* SUMMARY */
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+  margin-bottom:25px;
+}
+.summary-card{
+  background:linear-gradient(145deg,#351052,#1c0731);
+  border:1px solid #7836a2;
+  border-radius:14px;
+  padding:17px;
+}
+.summary-card span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:9px;
+}
+.summary-card strong{
+  font-size:25px;
+  color:var(--lime);
+}
+
+/* FILTERS */
+.filter-bar{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.filter-button{
+  background:#2a0a40;
+  color:#e8d9f1;
+  border:1px solid #74309b;
+  border-radius:25px;
+  padding:9px 16px;
+  font-size:12px;
+  font-weight:800;
+}
+.filter-button.active,
+.filter-button:hover{
+  background:var(--lime);
+  color:#190a25;
+  border-color:var(--lime);
+}
+
+/* NOTIFICATION LIST */
+.notification-panel{
+  background:#1d0630;
+  border:1px solid #7836a2;
+  border-radius:17px;
+  overflow:hidden;
+}
+.list-heading{
+  padding:17px 20px;
+  border-bottom:1px solid #ffffff18;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.list-heading h2{font-size:16px}
+.list-heading span{
+  color:var(--muted);
+  font-size:11px;
+}
+.notification-list{display:block}
+.notification{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:19px 20px;
+  border-bottom:1px solid #ffffff12;
+  transition:.2s;
+}
+.notification:last-child{border-bottom:0}
+.notification:hover{background:#2c0b43}
+.notification.unread{background:#32104b}
+.notification-icon{
+  width:46px;
+  height:46px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#ffffff12;
+  font-size:23px;
+}
+.notification-content{flex:1;min-width:0}
+.notification-title{
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+.notification-message{
+  color:#d1bfdc;
+  font-size:12px;
+  line-height:1.6;
+  margin-bottom:8px;
+}
+.notification-time{
+  color:#9e86b2;
+  font-size:10px;
+}
+.notification-side{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.unread-dot{
+  width:9px;
+  height:9px;
+  background:var(--lime);
+  border-radius:50%;
+  flex-shrink:0;
+}
+.notification-action{
+  background:transparent;
+  border:1px solid #8c42ae;
+  color:#e5c8f5;
+  padding:7px 10px;
+  border-radius:7px;
+  font-size:10px;
+}
+.notification-action:hover{
+  border-color:var(--lime);
+  color:var(--lime);
+}
+.empty-state{
+  padding:55px 20px;
+  text-align:center;
+  display:none;
+}
+.empty-state .empty-icon{
+  font-size:48px;
+  margin-bottom:15px;
+}
+.empty-state h3{margin-bottom:8px}
+.empty-state p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid #8b35b855;
+  padding:25px 4%;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  font-size:12px;
+}
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:17px;
+}
+footer a:hover{color:var(--lime)}
+
+/* MOBILE */
+@media(max-width:650px){
+  .header-links{display:none}
+  .brand{font-size:24px}
+  .container{margin-top:25px}
+  .page-heading h1{font-size:25px}
+  .summary-grid{gap:8px}
+  .summary-card{padding:13px 10px}
+  .summary-card strong{font-size:21px}
+  .summary-card span{font-size:10px}
+  .notification{padding:15px 12px;gap:10px}
+  .notification-icon{width:39px;height:39px;font-size:20px}
+  .notification-title{font-size:12px}
+  .notification-message{font-size:11px}
+  .notification-action{font-size:9px;padding:6px}
+  .notification-side{gap:5px}
+  .list-heading{padding:15px}
+  footer{justify-content:center;text-align:center}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <span class="crown">👑</span> Earn<span class="gig">Gig</span>
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="games.html">Games</a>
+    <a href="novels.html">Novels</a>
+    <a href="marketplace.html">Marketplace</a>
+  </nav>
+
+  <div class="header-actions">
+    <a href="dashboard.html" class="header-button">← Dashboard</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="page-heading">
+    <div>
+      <h1><span class="heading-icon">🔔</span>Notifications</h1>
+      <p>Stay updated with what's happening on your EarnGig account.</p>
+    </div>
+
+    <button class="mark-read" id="markAllRead">
+      Mark All as Read
+    </button>
+  </section>
+
+  <!-- SUMMARY -->
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Total Notifications</span>
+      <strong id="totalCount">5</strong>
+    </div>
+
+    <div class="summary-card">
+      <span>Unread Notifications</span>
+      <strong id="unreadCount">3</strong>
+    </div>
+
+    <div class="summary-card">
+      <span>Read Notifications</span>
+      <strong id="readCount">2</strong>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <button class="filter-button active" data-filter="all">All</button>
+    <button class="filter-button" data-filter="unread">Unread</button>
+    <button class="filter-button" data-filter="rewards">Rewards</button>
+    <button class="filter-button" data-filter="account">Account</button>
+    <button class="filter-button" data-filter="updates">Updates</button>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <section class="notification-panel">
+    <div class="list-heading">
+      <h2>Your Notifications</h2>
+      <span id="notificationLabel">5 notifications</span>
+    </div>
+
+    <div class="notification-list" id="notificationList">
+
+      <article class="notification unread" data-category="rewards" data-read="false">
+        <div class="notification-icon">🪙</div>
+        <div class="notification-content">
+          <div class="notification-title">Welcome to EarnGig!</div>
+          <p class="notification-message">
+            Welcome to the EarnGig community. Explore games, novels, shopping and other opportunities on the platform.
+          </p>
+          <span class="notification-time">Welcome message</span>
+        </div>
+        <div class="notification-side">
+          <span class="unread-dot"></span>
+          <button class="notification-action mark-one">Mark read</button>
+        </div>
+      </article>
+
+      <article class="notification unread" data-category="account" data-read="false">
+        <div class="notification-icon">👤</div>
+        <div class="notification-content">
+          <div class="notification-title">Complete Your Profile</div>
+          <p class="notification-message">
+            Add your account details to help keep your EarnGig profile up to date.
+          </p>
+          <span class="notification-time">Account reminder</span>
+        </div>
+        <div class="notification-side">
+          <span class="unread-dot"></span>
+          <button class="notification-action mark-one">Mark read</button>
+        </div>
+      </article>
+
+      <article class="notification unread" data-category="updates" data-read="false">
+        <div class="notification-icon">🎮</div>
+        <div class="notification-content">
+          <div class="notification-title">Explore EarnGig Games</div>
+          <p class="notification-message">
+            Discover the games available on EarnGig and explore the gaming section.
+          </p>
+          <span class="notification-time">Platform update</span>
+        </div>
+        <div class="notification-side">
+          <span class="unread-dot"></span>
+          <button class="notification-action mark-one">Mark read</button>
+        </div>
+      </article>
+
+      <article class="notification" data-category="updates" data-read="true">
+        <div class="notification-icon">📚</div>
+        <div class="notification-content">
+          <div class="notification-title">Discover EarnGig Novels</div>
+          <p class="notification-message">
+            Visit the novels section to explore stories and reading content.
+          </p>
+          <span class="notification-time">Platform update</span>
+        </div>
+        <div class="notification-side">
+          <button class="notification-action mark-one">Mark unread</button>
+        </div>
+      </article>
+
+      <article class="notification" data-category="account" data-read="true">
+        <div class="notification-icon">🔐</div>
+        <div class="notification-content">
+          <div class="notification-title">Keep Your Account Secure</div>
+          <p class="notification-message">
+            Keep your login details private and use a strong password for your account.
+          </p>
+          <span class="notification-time">Account reminder</span>
+        </div>
+        <div class="notification-side">
+          <button class="notification-action mark-one">Mark unread</button>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🔕</div>
+      <h3>No Notifications Here</h3>
+      <p>There are no notifications matching this filter.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <a href="index.html" class="brand">
+    <span class="crown">👑</span> Earn<span class="gig">Gig</span>
+  </a>
+
+  <div class="footer-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="games.html">Games</a>
+    <a href="wallet.html">Wallet</a>
+    <a href="help.html">Help</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <span>© 2026 EarnGig. All rights reserved.</span>
+</footer>
+
+<script>
+const notificationList=document.getElementById("notificationList");
+const emptyState=document.getElementById("emptyState");
+const filterButtons=document.querySelectorAll(".filter-button");
+
+let currentFilter="all";
+
+function getNotifications(){
+  return [...document.querySelectorAll(".notification")];
+}
+
+function updateCounts(){
+  const notifications=getNotifications();
+
+  const total=notifications.length;
+  const unread=notifications.filter(item=>item.dataset.read==="false").length;
+  const read=total-unread;
+
+  document.getElementById("totalCount").textContent=total;
+  document.getElementById("unreadCount").textContent=unread;
+  document.getElementById("readCount").textContent=read;
+
+  document.getElementById("notificationLabel").textContent=
+    total+" notification"+(total===1?"":"s");
+}
+
+function updateNotification(item){
+  const isRead=item.dataset.read==="true";
+
+  item.classList.toggle("unread",!isRead);
+
+  const side=item.querySelector(".notification-side");
+  let dot=side.querySelector(".unread-dot");
+  let button=item.querySelector(".mark-one");
+
+  if(!isRead && !dot){
+    dot=document.createElement("span");
+    dot.className="unread-dot";
+    side.prepend(dot);
+  }
+
+  if(isRead && dot){
+    dot.remove();
+  }
+
+  button.textContent=isRead?"Mark unread":"Mark read";
+}
+
+function applyFilter(){
+  const notifications=getNotifications();
+  let visible=0;
+
+  notifications.forEach(item=>{
+    const category=item.dataset.category;
+    const isRead=item.dataset.read==="true";
+
+    let show=true;
+
+    if(currentFilter==="unread") show=!isRead;
+    else if(currentFilter==="rewards") show=category==="rewards";
+    else if(currentFilter==="account") show=category==="account";
+    else if(currentFilter==="updates") show=category==="updates";
+
+    item.style.display=show?"flex":"none";
+
+    if(show) visible++;
+  });
+
+  emptyState.style.display=visible===0?"block":"none";
+  notificationList.style.display=visible===0?"none":"block";
+
+  updateCounts();
+}
+
+filterButtons.forEach(button=>{
+  button.addEventListener("click",()=>{
+    filterButtons.forEach(item=>item.classList.remove("active"));
+    button.classList.add("active");
+
+    currentFilter=button.dataset.filter;
+    applyFilter();
+  });
+});
+
+document.querySelectorAll(".mark-one").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const notification=button.closest(".notification");
+
+    notification.dataset.read=
+      notification.dataset.read==="true"?"false":"true";
+
+    updateNotification(notification);
+    applyFilter();
+  });
+});
+
+document.getElementById("markAllRead").addEventListener("click",()=>{
+  getNotifications().forEach(item=>{
+    item.dataset.read="true";
+    updateNotification(item);
+  });
+
+  applyFilter();
+});
+
+updateCounts();
+applyFilter();
+</script>
+
+</body>
+</html>
