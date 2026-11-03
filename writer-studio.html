@@ -32,6 +32,7 @@ button{font:inherit;cursor:pointer;border:0}
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:12px;
 }
 
 .brand{
@@ -55,7 +56,7 @@ button{font:inherit;cursor:pointer;border:0}
 .nav-links a:hover{color:#642bd1}
 
 .container{
-  max-width:1050px;
+  max-width:1100px;
   margin:28px auto;
   padding:0 18px;
 }
@@ -66,7 +67,7 @@ button{font:inherit;cursor:pointer;border:0}
   justify-content:space-between;
   gap:15px;
   flex-wrap:wrap;
-  margin-bottom:24px;
+  margin-bottom:23px;
 }
 
 .welcome h1{
@@ -110,7 +111,7 @@ button{font:inherit;cursor:pointer;border:0}
   font-size:13px;
   line-height:1.7;
   color:#eee5ff;
-  max-width:520px;
+  max-width:550px;
 }
 
 .create-btn{
@@ -129,7 +130,7 @@ button{font:inherit;cursor:pointer;border:0}
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:13px;
-  margin-bottom:25px;
+  margin-bottom:27px;
 }
 
 .stat-card{
@@ -150,33 +151,164 @@ button{font:inherit;cursor:pointer;border:0}
   color:#5424b8;
 }
 
-.section{
-  margin-top:25px;
-}
+.section{margin-top:25px}
 
 .section-heading{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:13px;
+  margin-bottom:14px;
 }
 
-.section-heading h2{
-  font-size:18px;
+.section-heading h2{font-size:19px}
+
+.filters{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:3px 1px 12px;
+  margin-bottom:12px;
 }
 
-.section-heading a{
-  color:#642bd1;
-  font-size:12px;
+.filter-btn{
+  flex-shrink:0;
+  padding:9px 13px;
+  border-radius:20px;
+  background:#f5f2f9;
+  color:#655b72;
+  font-size:11px;
   font-weight:bold;
+}
+
+.filter-btn.active{
+  background:#642bd1;
+  color:#fff;
+}
+
+.novel-list{
+  display:grid;
+  gap:13px;
+}
+
+.novel-card{
+  border:1px solid #eee7f5;
+  border-radius:13px;
+  padding:15px;
+  display:grid;
+  grid-template-columns:76px 1fr;
+  gap:15px;
+  min-width:0;
+}
+
+.novel-cover{
+  width:76px;
+  height:105px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#f0eaf7;
+}
+
+.novel-info{min-width:0}
+
+.novel-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.novel-info h3{
+  font-size:15px;
+  margin-bottom:6px;
+  overflow-wrap:anywhere;
+}
+
+.novel-meta{
+  color:#81798c;
+  font-size:11px;
+  line-height:1.7;
+}
+
+.status-badge{
+  display:inline-block;
+  padding:6px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:bold;
+  background:#f1ebff;
+  color:#642bd1;
+}
+
+.status-draft{background:#f1f0f3;color:#625b6d}
+.status-review{background:#fff5df;color:#9b700b}
+.status-approved{background:#eaf6ff;color:#2876a8}
+.status-payment{background:#fff5df;color:#9b700b}
+.status-published{background:#e9f8ef;color:#25804d}
+.status-rejected{background:#fff0f0;color:#c0392b}
+.status-completed{background:#e9f8ef;color:#25804d}
+
+.reader-progress{
+  margin-top:12px;
+}
+
+.reader-progress-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:10px;
+  color:#756d80;
+  margin-bottom:6px;
+}
+
+.reader-progress-track{
+  height:7px;
+  background:#eeeaf4;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.reader-progress-fill{
+  height:100%;
+  background:#642bd1;
+  border-radius:20px;
+}
+
+.novel-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:12px;
+}
+
+.action-btn{
+  padding:8px 11px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.view-btn{
+  background:#f1ebff;
+  color:#642bd1;
+}
+
+.edit-btn{
+  background:#eeeaff;
+  color:#5424b8;
+}
+
+.delete-btn{
+  background:#fff0f0;
+  color:#c0392b;
 }
 
 .empty{
   border:1px dashed #d9cce9;
   background:#fcfaff;
   border-radius:13px;
-  padding:30px 18px;
+  padding:35px 18px;
   text-align:center;
 }
 
@@ -208,60 +340,12 @@ button{font:inherit;cursor:pointer;border:0}
   font-weight:bold;
 }
 
-.purple-btn:hover{background:#5120b2}
-
-.draft-list{
-  display:grid;
-  gap:10px;
-}
-
-.draft-card{
-  border:1px solid #eee7f5;
-  border-radius:11px;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.draft-card h3{
-  font-size:14px;
-  margin-bottom:6px;
-}
-
-.draft-card p{
-  color:#81798c;
-  font-size:11px;
-}
-
-.draft-actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.small-btn{
-  padding:9px 12px;
-  border-radius:7px;
-  background:#f1ebff;
-  color:#642bd1;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.delete-btn{
-  background:#fff0f0;
-  color:#c0392b;
-}
-
 .info-panel{
   background:#faf8fd;
   border:1px solid #eee7f5;
   border-radius:12px;
   padding:18px;
-  margin-top:25px;
+  margin-top:27px;
 }
 
 .info-panel h3{
@@ -273,6 +357,85 @@ button{font:inherit;cursor:pointer;border:0}
   font-size:12px;
   color:#777080;
   line-height:1.8;
+}
+
+/* NOVEL VIEWER */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#171020a8;
+  z-index:100;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.modal-box{
+  background:#fff;
+  width:100%;
+  max-width:760px;
+  margin:25px auto;
+  border-radius:15px;
+  padding:22px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.modal-header h2{font-size:19px}
+
+.close-modal{
+  background:#f1ebff;
+  color:#642bd1;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  font-size:20px;
+}
+
+.preview-cover{
+  width:100px;
+  height:135px;
+  object-fit:cover;
+  border-radius:8px;
+  float:left;
+  margin:0 15px 12px 0;
+}
+
+.preview-description{
+  color:#777080;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:18px;
+}
+
+.preview-chapter{
+  clear:both;
+  border-top:1px solid #eee7f5;
+  padding-top:18px;
+  margin-top:18px;
+}
+
+.preview-chapter h3{
+  font-size:16px;
+  margin-bottom:12px;
+  color:#5424b8;
+}
+
+.preview-chapter p{
+  font-family:Georgia,serif;
+  font-size:14px;
+  line-height:1.9;
+  color:#40394d;
+  margin-bottom:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
 footer{
@@ -290,11 +453,22 @@ footer{
   .welcome h1{font-size:22px}
 }
 
-@media(max-width:380px){
-  .stats{gap:8px}
+@media(max-width:480px){
+  .novel-card{
+    grid-template-columns:62px 1fr;
+    gap:11px;
+    padding:11px;
+  }
+  .novel-cover{
+    width:62px;
+    height:90px;
+  }
+  .novel-info h3{font-size:13px}
   .stat-card{padding:12px}
   .stat-card strong{font-size:20px}
   .hero{padding:20px}
+  .modal{padding:9px}
+  .modal-box{padding:15px}
 }
 </style>
 </head>
@@ -335,7 +509,7 @@ footer{
   <section class="welcome">
     <div>
       <h1>Writer Studio ✍️</h1>
-      <p>Create, manage and publish your novels on EarnGig.</p>
+      <p>Manage your novels, submissions, readers and writing progress.</p>
     </div>
 
     <div class="status" id="writerStatus">Writer Studio</div>
@@ -343,15 +517,14 @@ footer{
 
   <section class="hero">
     <div>
-      <h2>Your next story starts here.</h2>
+      <h2>Your stories. Your readers. Your earnings.</h2>
       <p>
-        Write your novel chapter by chapter, save your work as a draft,
-        and return whenever you are ready. When your story is complete,
-        submit it to EarnGig for screening.
+        Create novels, submit them for review, track reader completion
+        and manage your published stories from one place.
       </p>
     </div>
 
-    <a href="write-novel.html" class="create-btn" id="createButton">
+    <a href="write-novel.html" class="create-btn">
       + Create New Novel
     </a>
   </section>
@@ -364,7 +537,7 @@ footer{
     </div>
 
     <div class="stat-card">
-      <small>Saved Drafts</small>
+      <small>Drafts</small>
       <strong id="totalDrafts">0</strong>
     </div>
 
@@ -383,56 +556,80 @@ footer{
   <section class="section">
 
     <div class="section-heading">
-      <h2>My Novels</h2>
-      <a href="write-novel.html">Create New +</a>
+      <h2>My Novel Library</h2>
     </div>
 
-    <div class="empty" id="emptyNovels">
+    <div class="filters" id="filters">
+
+      <button class="filter-btn active" data-filter="all">All Novels</button>
+      <button class="filter-btn" data-filter="draft">Drafts</button>
+      <button class="filter-btn" data-filter="submitted">Submitted</button>
+      <button class="filter-btn" data-filter="review">Under Review</button>
+      <button class="filter-btn" data-filter="approved">Approved</button>
+      <button class="filter-btn" data-filter="published">Published</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+
+    </div>
+
+    <div class="novel-list" id="novelList"></div>
+
+    <div class="empty" id="emptyNovels" style="display:none">
       <div class="icon">📚</div>
-      <h3>Your writing journey begins here</h3>
-      <p>
-        You haven't created a novel yet. Start writing your first story.
-        You can save it and continue later.
+      <h3 id="emptyTitle">No novels here yet</h3>
+      <p id="emptyDescription">
+        Your novels will appear here when you create them.
       </p>
-      <a href="write-novel.html" class="purple-btn">
-        Create Your First Novel
+      <a href="write-novel.html" class="purple-btn" id="emptyCreate">
+        Create a Novel
       </a>
     </div>
-
-    <div class="draft-list" id="novelList"></div>
 
   </section>
 
   <section class="info-panel">
-    <h3>How the Writer Programme Works</h3>
+    <h3>How Reader Completion Works</h3>
     <p>
-      1. Create your novel and write all its chapters.<br>
-      2. Save your work whenever you want.<br>
-      3. Submit your completed novel for admin screening.<br>
-      4. If approved, choose your reader quantity and pay the
-      applicable upload fee through Paystack.<br>
-      5. Once payment is verified, your novel can be published.<br>
-      6. Earn 250 coins for every reader who successfully completes
-      your novel.
+      Each published novel has a reader quantity selected by its writer.
+      The progress tracker shows how many readers have successfully
+      completed the novel compared with the selected quantity.
+      A reader only counts after successfully completing the reading
+      process and passing the novel's comprehension questions.
+      Writers earn 250 coins for each qualifying reader.
     </p>
   </section>
 
 </main>
 
+<!-- NOVEL PREVIEW MODAL -->
+
+<div class="modal" id="novelModal">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h2 id="previewTitle">Novel Preview</h2>
+      <button class="close-modal" onclick="closePreview()">×</button>
+    </div>
+
+    <div id="previewContent"></div>
+
+  </div>
+</div>
+
 <footer>© 2026 EarnGig. All rights reserved.</footer>
 
 <script>
 
-/*
-  FRONTEND WRITER STUDIO
-
-  Writer access and novel records are demo data in localStorage.
-  Admin approval and payments will be connected later.
-*/
-
 const NOVEL_KEY = "earngig_writer_novels";
 
+let currentFilter = "all";
+let currentNovels = [];
+
+function $(id){
+  return document.getElementById(id);
+}
+
 function getNovels(){
+
   try{
     const data = JSON.parse(localStorage.getItem(NOVEL_KEY) || "[]");
     return Array.isArray(data) ? data : [];
@@ -441,27 +638,155 @@ function getNovels(){
   }
 }
 
+function saveNovels(){
+  localStorage.setItem(NOVEL_KEY,JSON.stringify(currentNovels));
+}
+
+function getTarget(novel){
+  return Number(
+    novel.readerTarget ||
+    novel.selectedReaders ||
+    novel.readerCount ||
+    novel.targetReaders ||
+    0
+  );
+}
+
+function getCompletedReaders(novel){
+  return Number(
+    novel.completedReaders ||
+    novel.successfulReaders ||
+    novel.readersCompleted ||
+    0
+  );
+}
+
+function isCompleted(novel){
+
+  const target = getTarget(novel);
+  const completed = getCompletedReaders(novel);
+
+  return novel.status === "published" &&
+         target > 0 &&
+         completed >= target;
+}
+
+function getStatusLabel(novel){
+
+  if(isCompleted(novel)) return "Reader Target Completed";
+
+  const names = {
+    draft:"Saved Draft",
+    submitted:"Submitted",
+    review:"Under Review",
+    approved:"Approved",
+    payment:"Awaiting Upload Payment",
+    published:"Published",
+    rejected:"Needs Revision"
+  };
+
+  return names[novel.status] || "Draft";
+}
+
+function getStatusClass(novel){
+
+  if(isCompleted(novel)) return "status-completed";
+
+  const classes = {
+    draft:"status-draft",
+    submitted:"status-review",
+    review:"status-review",
+    approved:"status-approved",
+    payment:"status-payment",
+    published:"status-published",
+    rejected:"status-rejected"
+  };
+
+  return classes[novel.status] || "status-draft";
+}
+
+function getFilteredNovels(){
+
+  if(currentFilter === "all"){
+    return currentNovels;
+  }
+
+  if(currentFilter === "completed"){
+    return currentNovels.filter(isCompleted);
+  }
+
+  if(currentFilter === "submitted"){
+    return currentNovels.filter(n=>
+      ["submitted","review","approved","payment","published"].includes(n.status)
+    );
+  }
+
+  if(currentFilter === "published"){
+    return currentNovels.filter(n=>n.status === "published");
+  }
+
+  if(currentFilter === "review"){
+    return currentNovels.filter(n=>n.status === "review");
+  }
+
+  if(currentFilter === "approved"){
+    return currentNovels.filter(n=>
+      ["approved","payment"].includes(n.status)
+    );
+  }
+
+  return currentNovels.filter(n=>n.status === currentFilter);
+}
+
+function renderStats(){
+
+  const drafts = currentNovels.filter(n=>n.status === "draft");
+  const review = currentNovels.filter(n=>n.status === "review");
+  const published = currentNovels.filter(n=>n.status === "published");
+
+  $("totalNovels").textContent = currentNovels.length;
+  $("totalDrafts").textContent = drafts.length;
+  $("totalReview").textContent = review.length;
+  $("totalPublished").textContent = published.length;
+}
+
 function renderNovels(){
 
-  const novels = getNovels();
+  currentNovels = getNovels();
 
-  const drafts = novels.filter(n=>n.status === "draft");
-  const review = novels.filter(n=>n.status === "review");
-  const published = novels.filter(n=>n.status === "published");
+  renderStats();
 
-  $("totalNovels");
-  document.getElementById("totalNovels").textContent = novels.length;
-  document.getElementById("totalDrafts").textContent = drafts.length;
-  document.getElementById("totalReview").textContent = review.length;
-  document.getElementById("totalPublished").textContent = published.length;
-
-  const list = document.getElementById("novelList");
-  const empty = document.getElementById("emptyNovels");
+  const list = $("novelList");
+  const empty = $("emptyNovels");
 
   list.innerHTML = "";
 
+  const novels = getFilteredNovels();
+
   if(novels.length === 0){
+
     empty.style.display = "block";
+
+    const messages = {
+      all:["No novels yet","Create your first novel and it will appear here."],
+      draft:["No saved drafts","Your unfinished novels will appear here."],
+      submitted:["No submitted novels","Novels you submit will appear here."],
+      review:["No novels under review","Novels being screened by the admin will appear here."],
+      approved:["No approved novels","Approved novels waiting for payment will appear here."],
+      published:["No published novels","Your published novels will appear here."],
+      completed:["No completed novels yet","Novels that reach their selected reader target will appear here."]
+    };
+
+    const message = messages[currentFilter] || messages.all;
+
+    $("emptyTitle").textContent = message[0];
+    $("emptyDescription").textContent = message[1];
+
+    $("emptyCreate").style.display =
+      currentFilter === "all" || currentFilter === "draft"
+        ? "inline-block"
+        : "none";
+
     return;
   }
 
@@ -469,89 +794,301 @@ function renderNovels(){
 
   novels.forEach(novel=>{
 
-    const card = document.createElement("div");
-    card.className = "draft-card";
+    const card = document.createElement("article");
+    card.className = "novel-card";
 
-    const details = document.createElement("div");
+    const cover = document.createElement("img");
+    cover.className = "novel-cover";
+    cover.alt = "Novel cover";
+    cover.src = novel.cover || "";
+
+    if(!novel.cover){
+      cover.style.display = "none";
+    }
+
+    const info = document.createElement("div");
+    info.className = "novel-info";
+
+    const top = document.createElement("div");
+    top.className = "novel-top";
+
+    const titleArea = document.createElement("div");
 
     const title = document.createElement("h3");
     title.textContent = novel.title || "Untitled Novel";
 
-    const info = document.createElement("p");
+    const meta = document.createElement("div");
+    meta.className = "novel-meta";
 
-    const statusNames = {
-      draft:"Saved Draft",
-      review:"Submitted for Review",
-      approved:"Approved",
-      payment:"Awaiting Upload Fee",
-      published:"Published",
-      rejected:"Needs Revision"
-    };
+    const chapterCount = Array.isArray(novel.chapters)
+      ? novel.chapters.length
+      : 0;
 
-    info.textContent =
-      (statusNames[novel.status] || "Draft") +
-      " • " + (novel.chapters ? novel.chapters.length : 0) +
-      " chapters";
+    meta.textContent =
+      (novel.genre || "Genre not selected") +
+      " • " + chapterCount + " chapters";
 
-    details.appendChild(title);
-    details.appendChild(info);
+    titleArea.appendChild(title);
+    titleArea.appendChild(meta);
+
+    const badge = document.createElement("span");
+    badge.className = "status-badge " + getStatusClass(novel);
+    badge.textContent = getStatusLabel(novel);
+
+    top.appendChild(titleArea);
+    top.appendChild(badge);
+
+    info.appendChild(top);
+
+    if(novel.status === "published" || getTarget(novel) > 0){
+
+      const target = getTarget(novel);
+      const completed = getCompletedReaders(novel);
+
+      const safeTarget = target > 0 ? target : 0;
+      const safeCompleted = Math.min(completed, safeTarget);
+
+      const percentage = safeTarget > 0
+        ? Math.min(100,Math.round((safeCompleted / safeTarget) * 100))
+        : 0;
+
+      const progress = document.createElement("div");
+      progress.className = "reader-progress";
+
+      const progressTop = document.createElement("div");
+      progressTop.className = "reader-progress-top";
+
+      const left = document.createElement("span");
+      left.textContent = "Successful readers";
+
+      const right = document.createElement("strong");
+      right.textContent = safeTarget > 0
+        ? safeCompleted.toLocaleString() + " / " +
+          safeTarget.toLocaleString()
+        : "Reader target not set";
+
+      const track = document.createElement("div");
+      track.className = "reader-progress-track";
+
+      const fill = document.createElement("div");
+      fill.className = "reader-progress-fill";
+      fill.style.width = percentage + "%";
+
+      track.appendChild(fill);
+      progressTop.appendChild(left);
+      progressTop.appendChild(right);
+
+      progress.appendChild(progressTop);
+      progress.appendChild(track);
+
+      info.appendChild(progress);
+
+      if(isCompleted(novel)){
+        const completedLabel = document.createElement("div");
+        completedLabel.className = "novel-meta";
+        completedLabel.style.color = "#25804d";
+        completedLabel.style.marginTop = "7px";
+        completedLabel.textContent =
+          "✓ All selected reader slots completed";
+        info.appendChild(completedLabel);
+      }
+    }
 
     const actions = document.createElement("div");
-    actions.className = "draft-actions";
+    actions.className = "novel-actions";
 
-    if(novel.status === "draft" || novel.status === "rejected"){
+    const view = document.createElement("button");
+    view.className = "action-btn view-btn";
+    view.textContent = "View Novel";
+    view.onclick = ()=>viewNovel(novel.id);
+
+    actions.appendChild(view);
+
+    if(["draft","rejected"].includes(novel.status)){
 
       const edit = document.createElement("a");
+      edit.className = "action-btn edit-btn";
       edit.href = "write-novel.html?id=" + encodeURIComponent(novel.id);
-      edit.className = "small-btn";
       edit.textContent = "Continue Writing";
+
       actions.appendChild(edit);
     }
 
-    if(novel.status === "review"){
-      const label = document.createElement("span");
-      label.className = "small-btn";
-      label.textContent = "Under Review";
-      actions.appendChild(label);
-    }
+    const remove = document.createElement("button");
+    remove.className = "action-btn delete-btn";
+    remove.textContent = "Delete";
+    remove.onclick = ()=>deleteNovel(novel.id);
 
-    if(novel.status === "approved" || novel.status === "payment"){
-      const label = document.createElement("span");
-      label.className = "small-btn";
-      label.textContent = "Awaiting Payment Setup";
-      actions.appendChild(label);
-    }
+    actions.appendChild(remove);
 
-    if(novel.status === "published"){
-      const label = document.createElement("span");
-      label.className = "small-btn";
-      label.textContent = "Published";
-      actions.appendChild(label);
-    }
+    info.appendChild(actions);
 
-    card.appendChild(details);
-    card.appendChild(actions);
+    card.appendChild(cover);
+    card.appendChild(info);
 
     list.appendChild(card);
   });
 }
 
-function $(id){
-  return document.getElementById(id);
+function viewNovel(id){
+
+  const novel = currentNovels.find(n=>n.id === id);
+
+  if(!novel) return;
+
+  $("previewTitle").textContent = novel.title || "Untitled Novel";
+
+  const content = $("previewContent");
+  content.innerHTML = "";
+
+  if(novel.cover){
+
+    const cover = document.createElement("img");
+    cover.className = "preview-cover";
+    cover.src = novel.cover;
+    cover.alt = "Novel cover";
+
+    content.appendChild(cover);
+  }
+
+  const description = document.createElement("p");
+  description.className = "preview-description";
+
+  description.textContent =
+    (novel.genre || "Genre not selected") +
+    " • " +
+    (novel.chapters ? novel.chapters.length : 0) +
+    " chapters" +
+    (novel.description ? "\n\n" + novel.description : "");
+
+  content.appendChild(description);
+
+  if(novel.status){
+
+    const status = document.createElement("p");
+    status.className = "preview-description";
+    status.textContent = "Status: " + getStatusLabel(novel);
+    content.appendChild(status);
+  }
+
+  if(getTarget(novel) > 0){
+
+    const readers = document.createElement("p");
+    readers.className = "preview-description";
+
+    readers.textContent =
+      "Reader progress: " +
+      getCompletedReaders(novel).toLocaleString() +
+      " / " + getTarget(novel).toLocaleString() +
+      " successful readers";
+
+    content.appendChild(readers);
+  }
+
+  const chapters = Array.isArray(novel.chapters)
+    ? novel.chapters
+    : [];
+
+  chapters.forEach((chapter,index)=>{
+
+    const section = document.createElement("section");
+    section.className = "preview-chapter";
+
+    const heading = document.createElement("h3");
+    heading.textContent =
+      "Chapter " + (index + 1) +
+      ": " + (chapter.title || "Untitled Chapter");
+
+    section.appendChild(heading);
+
+    const text = chapter.content || "";
+
+    const paragraphs = text.split(/\n\s*\n/);
+
+    paragraphs.forEach(paragraph=>{
+
+      if(!paragraph.trim()) return;
+
+      const p = document.createElement("p");
+      p.textContent = paragraph;
+      section.appendChild(p);
+    });
+
+    content.appendChild(section);
+  });
+
+  if(chapters.length === 0){
+
+    const empty = document.createElement("p");
+    empty.className = "preview-description";
+    empty.textContent = "No chapters have been written yet.";
+    content.appendChild(empty);
+  }
+
+  $("novelModal").style.display = "block";
+  document.body.style.overflow = "hidden";
 }
 
-/*
-  Writer approval is represented by this frontend demo key.
-  The admin approval system will eventually control it.
-*/
+function closePreview(){
+  $("novelModal").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+function deleteNovel(id){
+
+  const novel = currentNovels.find(n=>n.id === id);
+
+  if(!novel) return;
+
+  const confirmed = confirm(
+    'Are you sure you want to permanently delete "' +
+    (novel.title || "Untitled Novel") +
+    '"? This will remove it from your Writer Studio.'
+  );
+
+  if(!confirmed) return;
+
+  currentNovels = currentNovels.filter(n=>n.id !== id);
+
+  saveNovels();
+  renderNovels();
+}
+
+$("filters").addEventListener("click",function(event){
+
+  const button = event.target.closest("[data-filter]");
+
+  if(!button) return;
+
+  currentFilter = button.dataset.filter;
+
+  document.querySelectorAll(".filter-btn").forEach(btn=>{
+    btn.classList.toggle("active",btn === button);
+  });
+
+  renderNovels();
+});
+
+$("novelModal").addEventListener("click",function(event){
+
+  if(event.target === this){
+    closePreview();
+  }
+});
+
+document.addEventListener("keydown",function(event){
+
+  if(event.key === "Escape"){
+    closePreview();
+  }
+});
 
 const writerStatus = localStorage.getItem("earngig_writer_status");
 
-if(writerStatus === "approved"){
-  $("writerStatus").textContent = "✓ Approved Writer";
-}else{
-  $("writerStatus").textContent = "Writer Access";
-}
+$("writerStatus").textContent =
+  writerStatus === "approved"
+    ? "✓ Approved Writer"
+    : "Writer Studio";
 
 renderNovels();
 
