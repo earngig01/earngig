@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writer Studio - EarnGig</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#29243a;
+}
+
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer;border:0}
+
+.topbar{
+  background:#fff;
+  border-bottom:1px solid #eee8f5;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.nav{
+  max-width:1100px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#5424b8;
+  font-size:24px;
+  font-weight:900;
+}
+
+.crown{width:27px;height:25px}
+
+.nav-links{
+  display:flex;
+  gap:18px;
+  font-size:13px;
+  color:#625b6d;
+}
+
+.nav-links a:hover{color:#642bd1}
+
+.container{
+  max-width:1050px;
+  margin:28px auto;
+  padding:0 18px;
+}
+
+.welcome{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.welcome h1{
+  font-size:25px;
+  margin-bottom:7px;
+}
+
+.welcome p{
+  color:#81798c;
+  font-size:13px;
+}
+
+.status{
+  background:#f1ebff;
+  color:#642bd1;
+  padding:9px 13px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.hero{
+  background:linear-gradient(120deg,#5424b8,#8652e5);
+  color:#fff;
+  padding:27px;
+  border-radius:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+}
+
+.hero h2{
+  font-size:23px;
+  margin-bottom:9px;
+}
+
+.hero p{
+  font-size:13px;
+  line-height:1.7;
+  color:#eee5ff;
+  max-width:520px;
+}
+
+.create-btn{
+  background:#fff;
+  color:#642bd1;
+  padding:14px 19px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.create-btn:hover{background:#f2ebff}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+  margin-bottom:25px;
+}
+
+.stat-card{
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:17px;
+}
+
+.stat-card small{
+  color:#81798c;
+  font-size:11px;
+}
+
+.stat-card strong{
+  display:block;
+  font-size:24px;
+  margin-top:9px;
+  color:#5424b8;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:13px;
+}
+
+.section-heading h2{
+  font-size:18px;
+}
+
+.section-heading a{
+  color:#642bd1;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.empty{
+  border:1px dashed #d9cce9;
+  background:#fcfaff;
+  border-radius:13px;
+  padding:30px 18px;
+  text-align:center;
+}
+
+.empty .icon{
+  font-size:36px;
+  margin-bottom:12px;
+}
+
+.empty h3{
+  font-size:16px;
+  margin-bottom:7px;
+}
+
+.empty p{
+  color:#81798c;
+  font-size:12px;
+  line-height:1.7;
+  max-width:430px;
+  margin:0 auto 15px;
+}
+
+.purple-btn{
+  display:inline-block;
+  background:#642bd1;
+  color:#fff;
+  padding:11px 17px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.purple-btn:hover{background:#5120b2}
+
+.draft-list{
+  display:grid;
+  gap:10px;
+}
+
+.draft-card{
+  border:1px solid #eee7f5;
+  border-radius:11px;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.draft-card h3{
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.draft-card p{
+  color:#81798c;
+  font-size:11px;
+}
+
+.draft-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.small-btn{
+  padding:9px 12px;
+  border-radius:7px;
+  background:#f1ebff;
+  color:#642bd1;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.delete-btn{
+  background:#fff0f0;
+  color:#c0392b;
+}
+
+.info-panel{
+  background:#faf8fd;
+  border:1px solid #eee7f5;
+  border-radius:12px;
+  padding:18px;
+  margin-top:25px;
+}
+
+.info-panel h3{
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+.info-panel p{
+  font-size:12px;
+  color:#777080;
+  line-height:1.8;
+}
+
+footer{
+  border-top:1px solid #eee8f5;
+  margin-top:40px;
+  padding:22px;
+  text-align:center;
+  color:#999;
+  font-size:11px;
+}
+
+@media(max-width:750px){
+  .nav-links{display:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .welcome h1{font-size:22px}
+}
+
+@media(max-width:380px){
+  .stats{gap:8px}
+  .stat-card{padding:12px}
+  .stat-card strong{font-size:20px}
+  .hero{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+
+    <a href="index.html" class="brand">
+      <svg class="crown" viewBox="0 0 32 29" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8L9 14L15.8 3L23 14L29 8L26 24H6L3 8Z"
+              fill="#E5B52E" stroke="#BD8914"
+              stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M6 26H26" stroke="#BD8914"
+              stroke-width="2" stroke-linecap="round"/>
+        <circle cx="3" cy="7" r="2" fill="#F6D978"/>
+        <circle cx="16" cy="3" r="2" fill="#F6D978"/>
+        <circle cx="29" cy="7" r="2" fill="#F6D978"/>
+      </svg>
+      EarnGig
+    </a>
+
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="novels.html">Read Novels</a>
+      <a href="profile.html">My Profile</a>
+    </div>
+
+    <a href="dashboard.html" class="nav-links">← Dashboard</a>
+
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="welcome">
+    <div>
+      <h1>Writer Studio ✍️</h1>
+      <p>Create, manage and publish your novels on EarnGig.</p>
+    </div>
+
+    <div class="status" id="writerStatus">Writer Studio</div>
+  </section>
+
+  <section class="hero">
+    <div>
+      <h2>Your next story starts here.</h2>
+      <p>
+        Write your novel chapter by chapter, save your work as a draft,
+        and return whenever you are ready. When your story is complete,
+        submit it to EarnGig for screening.
+      </p>
+    </div>
+
+    <a href="write-novel.html" class="create-btn" id="createButton">
+      + Create New Novel
+    </a>
+  </section>
+
+  <section class="stats">
+
+    <div class="stat-card">
+      <small>Total Novels</small>
+      <strong id="totalNovels">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <small>Saved Drafts</small>
+      <strong id="totalDrafts">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <small>Under Review</small>
+      <strong id="totalReview">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <small>Published Novels</small>
+      <strong id="totalPublished">0</strong>
+    </div>
+
+  </section>
+
+  <section class="section">
+
+    <div class="section-heading">
+      <h2>My Novels</h2>
+      <a href="write-novel.html">Create New +</a>
+    </div>
+
+    <div class="empty" id="emptyNovels">
+      <div class="icon">📚</div>
+      <h3>Your writing journey begins here</h3>
+      <p>
+        You haven't created a novel yet. Start writing your first story.
+        You can save it and continue later.
+      </p>
+      <a href="write-novel.html" class="purple-btn">
+        Create Your First Novel
+      </a>
+    </div>
+
+    <div class="draft-list" id="novelList"></div>
+
+  </section>
+
+  <section class="info-panel">
+    <h3>How the Writer Programme Works</h3>
+    <p>
+      1. Create your novel and write all its chapters.<br>
+      2. Save your work whenever you want.<br>
+      3. Submit your completed novel for admin screening.<br>
+      4. If approved, choose your reader quantity and pay the
+      applicable upload fee through Paystack.<br>
+      5. Once payment is verified, your novel can be published.<br>
+      6. Earn 250 coins for every reader who successfully completes
+      your novel.
+    </p>
+  </section>
+
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+
+/*
+  FRONTEND WRITER STUDIO
+
+  Writer access and novel records are demo data in localStorage.
+  Admin approval and payments will be connected later.
+*/
+
+const NOVEL_KEY = "earngig_writer_novels";
+
+function getNovels(){
+  try{
+    const data = JSON.parse(localStorage.getItem(NOVEL_KEY) || "[]");
+    return Array.isArray(data) ? data : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function renderNovels(){
+
+  const novels = getNovels();
+
+  const drafts = novels.filter(n=>n.status === "draft");
+  const review = novels.filter(n=>n.status === "review");
+  const published = novels.filter(n=>n.status === "published");
+
+  $("totalNovels");
+  document.getElementById("totalNovels").textContent = novels.length;
+  document.getElementById("totalDrafts").textContent = drafts.length;
+  document.getElementById("totalReview").textContent = review.length;
+  document.getElementById("totalPublished").textContent = published.length;
+
+  const list = document.getElementById("novelList");
+  const empty = document.getElementById("emptyNovels");
+
+  list.innerHTML = "";
+
+  if(novels.length === 0){
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+
+  novels.forEach(novel=>{
+
+    const card = document.createElement("div");
+    card.className = "draft-card";
+
+    const details = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.textContent = novel.title || "Untitled Novel";
+
+    const info = document.createElement("p");
+
+    const statusNames = {
+      draft:"Saved Draft",
+      review:"Submitted for Review",
+      approved:"Approved",
+      payment:"Awaiting Upload Fee",
+      published:"Published",
+      rejected:"Needs Revision"
+    };
+
+    info.textContent =
+      (statusNames[novel.status] || "Draft") +
+      " • " + (novel.chapters ? novel.chapters.length : 0) +
+      " chapters";
+
+    details.appendChild(title);
+    details.appendChild(info);
+
+    const actions = document.createElement("div");
+    actions.className = "draft-actions";
+
+    if(novel.status === "draft" || novel.status === "rejected"){
+
+      const edit = document.createElement("a");
+      edit.href = "write-novel.html?id=" + encodeURIComponent(novel.id);
+      edit.className = "small-btn";
+      edit.textContent = "Continue Writing";
+      actions.appendChild(edit);
+    }
+
+    if(novel.status === "review"){
+      const label = document.createElement("span");
+      label.className = "small-btn";
+      label.textContent = "Under Review";
+      actions.appendChild(label);
+    }
+
+    if(novel.status === "approved" || novel.status === "payment"){
+      const label = document.createElement("span");
+      label.className = "small-btn";
+      label.textContent = "Awaiting Payment Setup";
+      actions.appendChild(label);
+    }
+
+    if(novel.status === "published"){
+      const label = document.createElement("span");
+      label.className = "small-btn";
+      label.textContent = "Published";
+      actions.appendChild(label);
+    }
+
+    card.appendChild(details);
+    card.appendChild(actions);
+
+    list.appendChild(card);
+  });
+}
+
+function $(id){
+  return document.getElementById(id);
+}
+
+/*
+  Writer approval is represented by this frontend demo key.
+  The admin approval system will eventually control it.
+*/
+
+const writerStatus = localStorage.getItem("earngig_writer_status");
+
+if(writerStatus === "approved"){
+  $("writerStatus").textContent = "✓ Approved Writer";
+}else{
+  $("writerStatus").textContent = "Writer Access";
+}
+
+renderNovels();
+
+</script>
+
+</body>
+</html>
