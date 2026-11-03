@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile | EarnGig</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:#292333;min-height:100vh}
+header{padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;background:#fff;border-bottom:1px solid #eee8f5;box-shadow:0 2px 12px rgba(40,20,60,.04)}
+.logo{font-size:25px;font-weight:900;color:#302044;text-decoration:none}
+.logo span{color:#e5ad22}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{color:#554b60;text-decoration:none;font-size:14px}
+nav a:hover,nav a.active{color:#7138b8}
+.container{max-width:1050px;margin:35px auto;padding:0 18px}
+.heading{margin-bottom:25px}
+.heading h1{font-size:29px;color:#302044}
+.heading p{color:#81788b;font-size:14px;margin-top:7px}
+.profile-layout{display:grid;grid-template-columns:300px 1fr;gap:20px}
+.card{background:#fff;border:1px solid #e9e1f1;border-radius:15px;padding:23px;box-shadow:0 5px 20px rgba(40,20,60,.035)}
+.profile-card{text-align:center}
+.avatar{width:110px;height:110px;border-radius:50%;margin:5px auto 15px;background:linear-gradient(135deg,#eee4ff,#d9c3ff);display:grid;place-items:center;color:#7138b8;font-size:42px;font-weight:900;border:4px solid #eee5f7;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profile-card h2{font-size:21px;margin-bottom:6px;color:#302044}
+.profile-card p{font-size:13px;color:#81788b;margin-bottom:15px}
+.status{display:inline-block;background:#f0eafa;color:#7138b8;padding:7px 12px;border-radius:20px;font-size:11px;font-weight:bold}
+.avatar-upload{display:block;margin:17px auto 0;background:#f1eafa;color:#7138b8;padding:10px 14px;border-radius:8px;font-size:12px;cursor:pointer;width:max-content}
+.avatar-upload:hover{background:#e7d9f8}
+.avatar-upload input{display:none}
+.profile-links{margin-top:25px;text-align:left;border-top:1px solid #eee8f5;padding-top:15px}
+.profile-links a{display:block;padding:12px 5px;color:#554b60;text-decoration:none;font-size:13px;border-bottom:1px solid #f1edf5}
+.profile-links a:hover{color:#7138b8}
+.section-title{font-size:19px;margin-bottom:20px;color:#302044}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;color:#554b60;font-weight:bold}
+.field input,.field textarea,.field select{width:100%;padding:13px;background:#fff;border:1px solid #e5dcec;border-radius:9px;color:#302044;font-size:14px;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:#8752c5;box-shadow:0 0 0 3px rgba(113,56,184,.08)}
+.field textarea{resize:vertical;min-height:90px}
+.field input::placeholder,.field textarea::placeholder{color:#aaa1b2}
+.save-btn{margin-top:22px;background:#7138b8;color:#fff;padding:13px 22px;border:0;border-radius:9px;font-weight:bold;cursor:pointer}
+.save-btn:hover{background:#592a96}
+.account-card{margin-top:20px}
+.account-info{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.info-box{background:#faf8fc;border:1px solid #eee8f5;padding:15px;border-radius:10px}
+.info-box span{font-size:11px;color:#81788b;display:block;margin-bottom:7px}
+.info-box strong{font-size:14px;color:#302044;overflow-wrap:anywhere}
+.notice{display:none;margin-top:15px;padding:12px;border-radius:8px;background:#f0eafa;color:#7138b8;font-size:13px}
+footer{text-align:center;color:#93899c;font-size:12px;padding:35px 15px}
+@media(max-width:750px){
+.profile-layout{grid-template-columns:1fr}
+nav{gap:12px}
+nav a{font-size:12px}
+}
+@media(max-width:500px){
+.form-grid,.account-info{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.container{margin-top:25px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<a class="logo" href="index.html">♛ Earn<span>Gig</span></a>
+<nav>
+<a href="dashboard.html">Dashboard</a>
+<a href="games.html">Games</a>
+<a href="novels.html">Novels</a>
+<a href="marketplace.html">Marketplace</a>
+<a href="notifications.html">Notifications</a>
+</nav>
+</header>
+
+<main class="container">
+<div class="heading">
+<h1>My Profile 👤</h1>
+<p>Manage your personal information and account details.</p>
+</div>
+
+<div class="profile-layout">
+<aside>
+<div class="card profile-card">
+<div class="avatar" id="avatarDisplay">👤</div>
+<h2 id="displayName">Your Name</h2>
+<p id="displayEmail">your@email.com</p>
+<span class="status">EarnGig Member</span>
+
+<label class="avatar-upload">
+Change Photo
+<input type="file" id="photoInput" accept="image/*">
+</label>
+
+<div class="profile-links">
+<a href="dashboard.html">← Back to Dashboard</a>
+<a href="wallet.html">My Wallet</a>
+<a href="notifications.html">Notifications</a>
+<a href="help.html">Help & Support</a>
+</div>
+</div>
+</aside>
+
+<section>
+<div class="card">
+<h2 class="section-title">Personal Information</h2>
+
+<form id="profileForm">
+<div class="form-grid">
+<div class="field">
+<label for="firstName">First Name</label>
+<input type="text" id="firstName" placeholder="Enter first name">
+</div>
+
+<div class="field">
+<label for="lastName">Last Name</label>
+<input type="text" id="lastName" placeholder="Enter last name">
+</div>
+
+<div class="field">
+<label for="username">Username</label>
+<input type="text" id="username" placeholder="Choose a username">
+</div>
+
+<div class="field">
+<label for="email">Email Address</label>
+<input type="email" id="email" placeholder="Enter email address">
+</div>
+
+<div class="field">
+<label for="phone">Phone Number</label>
+<input type="tel" id="phone" placeholder="Enter phone number">
+</div>
+
+<div class="field">
+<label for="country">Country</label>
+<select id="country">
+<option value="">Select country</option>
+<option value="Nigeria">Nigeria</option>
+<option value="Ghana">Ghana</option>
+<option value="Kenya">Kenya</option>
+<option value="South Africa">South Africa</option>
+<option value="Other">Other</option>
+</select>
+</div>
+
+<div class="field full">
+<label for="bio">About Me</label>
+<textarea id="bio" placeholder="Tell us a little about yourself"></textarea>
+</div>
+</div>
+
+<button type="submit" class="save-btn">Save Changes</button>
+<div class="notice" id="successMessage">Your profile changes have been saved in this browser.</div>
+</form>
+</div>
+
+<div class="card account-card">
+<h2 class="section-title">Account Information</h2>
+<div class="account-info">
+<div class="info-box"><span>Account Status</span><strong>Active</strong></div>
+<div class="info-box"><span>Membership</span><strong>EarnGig Member</strong></div>
+<div class="info-box"><span>Country</span><strong id="accountCountry">Not provided</strong></div>
+<div class="info-box"><span>Username</span><strong id="accountUsername">Not provided</strong></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+const fields=["firstName","lastName","username","email","phone","country","bio"];
+
+function loadProfile(){
+fields.forEach(id=>{
+const value=localStorage.getItem("earngig_"+id);
+if(value!==null)document.getElementById(id).value=value;
+});
+
+const savedPhoto=localStorage.getItem("earngig_profile_photo");
+if(savedPhoto){
+document.getElementById("avatarDisplay").innerHTML=
+'<img src="'+savedPhoto+'" alt="Profile photo">';
+}
+updateProfileDisplay();
+}
+
+function updateProfileDisplay(){
+const first=document.getElementById("firstName").value.trim();
+const last=document.getElementById("lastName").value.trim();
+const email=document.getElementById("email").value.trim();
+const username=document.getElementById("username").value.trim();
+const country=document.getElementById("country").value;
+
+document.getElementById("displayName").textContent=
+(first+" "+last).trim()||"Your Name";
+document.getElementById("displayEmail").textContent=
+email||"your@email.com";
+document.getElementById("accountCountry").textContent=
+country||"Not provided";
+document.getElementById("accountUsername").textContent=
+username||"Not provided";
+}
+
+document.getElementById("profileForm").addEventListener("submit",function(event){
+event.preventDefault();
+fields.forEach(id=>{
+localStorage.setItem("earngig_"+id,document.getElementById(id).value.trim());
+});
+updateProfileDisplay();
+const notice=document.getElementById("successMessage");
+notice.style.display="block";
+setTimeout(()=>notice.style.display="none",3500);
+});
+
+document.getElementById("photoInput").addEventListener("change",function(event){
+const file=event.target.files[0];
+if(!file)return;
+if(!file.type.startsWith("image/")){
+alert("Please select a valid image.");
+return;
+}
+if(file.size>2*1024*1024){
+alert("Please choose an image smaller than 2MB.");
+return;
+}
+const reader=new FileReader();
+reader.onload=function(){
+try{
+localStorage.setItem("earngig_profile_photo",reader.result);
+document.getElementById("avatarDisplay").innerHTML=
+'<img src="'+reader.result+'" alt="Profile photo">';
+}catch(error){
+alert("This image could not be saved. Please choose a smaller image.");
+}
+};
+reader.readAsDataURL(file);
+});
+
+loadProfile();
+</script>
+</body>
+</html>
