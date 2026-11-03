@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Penalty Shoot | EarnGig</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:#fff;
+ font-family:Arial,sans-serif;
+ background:radial-gradient(ellipse at top,#28533e,#102b21 65%,#081810);
+}
+header{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px 18px;border-bottom:1px solid #ffffff20;
+}
+.brand{font-size:22px;font-weight:900}
+.brand span{color:#ffd66b}
+header a{color:#d5e9df;text-decoration:none;font-size:14px}
+main{max-width:580px;margin:auto;padding:16px 12px 30px}
+h1{text-align:center;margin:8px 0;font-size:27px}
+.subtitle{text-align:center;color:#c3d9ca;font-size:13px;margin-bottom:17px}
+.game-shell{
+ position:relative;overflow:hidden;border-radius:19px;
+ border:2px solid #73957b;
+ background:#154a31;
+ box-shadow:0 15px 40px #0007;
+}
+canvas{
+ display:block;width:100%;height:auto;
+ touch-action:none;
+}
+.overlay{
+ position:absolute;inset:0;z-index:5;
+ display:flex;align-items:center;justify-content:center;
+ padding:18px;text-align:center;
+ background:#071b16d9;backdrop-filter:blur(5px);
+}
+.overlay-card{
+ width:min(100%,350px);padding:25px 20px;
+ background:linear-gradient(145deg,#28543e,#142f25);
+ border:1px solid #ffffff35;border-radius:20px;
+ box-shadow:0 15px 45px #0008;
+}
+.emoji{font-size:55px}
+.overlay-card h2{font-size:26px;margin:12px 0}
+.overlay-card p{font-size:14px;line-height:1.65;color:#d0e4d5}
+button{
+ border:0;border-radius:12px;padding:14px 26px;
+ font-weight:900;font-size:15px;cursor:pointer;
+ background:linear-gradient(135deg,#ffeb95,#f2b936);
+ color:#253426;box-shadow:0 4px 0 #ad7a22;
+}
+button:active{transform:translateY(2px);box-shadow:0 2px 0 #ad7a22}
+.hint{
+ text-align:center;font-size:13px;color:#d1e7d7;
+ line-height:1.6;padding:13px 7px;
+}
+#resultOverlay{display:none}
+#resultTitle{color:#ffe28b}
+#resultMessage{color:#e2eee5}
+#returnMessage{font-size:11px;color:#b6d1bd;margin-top:16px}
+@media(max-width:420px){
+ header{padding:13px}
+ main{padding:12px 8px}
+ h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><span>♛</span> EarnGig</div>
+ <a href="games.html">← Back to Games</a>
+</header>
+
+<main>
+ <h1>⚽ Penalty Shoot</h1>
+ <div class="subtitle">One shot. Can you beat the goalkeeper?</div>
+
+ <div class="game-shell">
+  <canvas id="gameCanvas" width="720" height="900"></canvas>
+
+  <div class="overlay" id="startOverlay">
+   <div class="overlay-card">
+    <div class="emoji">⚽</div>
+    <h2>Take Your Shot!</h2>
+    <p>Drag the football towards the part of the net you want to hit. Release to shoot.</p>
+    <p>The goalkeeper will try to catch your shot or punch it away.</p>
+    <button id="startBtn">START GAME</button>
+   </div>
+  </div>
+
+  <div class="overlay" id="resultOverlay">
+   <div class="overlay-card">
+    <div class="emoji" id="resultIcon">🏆</div>
+    <h2 id="resultTitle">GOAL!</h2>
+    <p id="resultMessage"></p>
+    <div id="returnMessage">Returning to Games...</div>
+   </div>
+  </div>
+ </div>
+
+ <div class="hint" id="hint">
+  Drag the ball towards your chosen spot in the net and release to shoot.
+ </div>
+</main>
+
+<script>
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+
+const W=720,H=900;
+
+const goal={
+ left:75,
+ right:645,
+ top:105,
+ bottom:445
+};
+
+const keeperLine=350;
+
+const ball={
+ x:360,
+ y:755,
+ radius:27
+};
+
+let phase="intro";
+let dragging=false;
+let aim=null;
+let keeperX=360;
+let keeperIdleTime=0;
+let shot=null;
+let shotOutcome="";
+let resultShown=false;
+let resultSent=false;
+let resultTimerStarted=false;
+
+function clamp(v,min,max){
+ return Math.max(min,Math.min(max,v));
+}
+function lerp(a,b,t){
+ return a+(b-a)*t;
+}
+function smooth(t){
+ return t*t*(3-2*t);
+}
+
+/* BACKGROUND */
+
+function drawBackground(){
+ const grass=ctx.createLinearGradient(0,0,0,H);
+ grass.addColorStop(0,"#2c8b54");
+ grass.addColorStop(1,"#105331");
+
+ ctx.fillStyle=grass;
+ ctx.fillRect(0,0,W,H);
+
+ for(let i=0;i<9;i++){
+  ctx.fillStyle=i%2===0?"#ffffff08":"#00000006";
+  ctx.fillRect(0,480+i*55,W,55);
+ }
+
+ // Subtle stadium background behind the goal.
+ const stadium=ctx.createLinearGradient(0,0,0,150);
+ stadium.addColorStop(0,"#293b34");
+ stadium.addColorStop(1,"#172b23");
+ ctx.fillStyle=stadium;
+ ctx.fillRect(0,0,W,150);
+
+ for(let row=0;row<3;row++){
+  for(let i=0;i<27;i++){
+   const colours=["#d8c6a0","#b9d5c3","#d1a75a","#a9b8a9"];
+   ctx.fillStyle=colours[(i+row*3)%colours.length];
+   ctx.beginPath();
+   ctx.arc(13+i*27,28+row*37,4,0,Math.PI*2);
+   ctx.fill();
+  }
+ }
+
+ // Faint ground markings.
+ ctx.strokeStyle="#ffffff38";
+ ctx.lineWidth=3;
+ ctx.beginPath();
+ ctx.moveTo(20,485);
+ ctx.lineTo(700,485);
+ ctx.stroke();
+}
+
+/* GOAL AND NET */
+
+function drawGoal(){
+ // Goal shadow.
+ ctx.fillStyle="#06170d55";
+ ctx.beginPath();
+ ctx.moveTo(goal.left,goal.top);
+ ctx.lineTo(goal.right,goal.top);
+ ctx.lineTo(goal.right+22,goal.bottom+18);
+ ctx.lineTo(goal.left-22,goal.bottom+18);
+ ctx.closePath();
+ ctx.fill();
+
+ // Net background.
+ ctx.fillStyle="#e9eee3";
+ ctx.beginPath();
+ ctx.moveTo(goal.left+8,goal.top+12);
+ ctx.lineTo(goal.right-8,goal.top+12);
+ ctx.lineTo(goal.right-12,goal.bottom);
+ ctx.lineTo(goal.left+12,goal.bottom);
+ ctx.closePath();
+ ctx.fill();
+
+ ctx.save();
+ ctx.beginPath();
+ ctx.moveTo(goal.left+8,goal.top+12);
+ ctx.lineTo(goal.right-8,goal.top+12);
+ ctx.lineTo(goal.right-12,goal.bottom);
+ ctx.lineTo(goal.left+12,goal.bottom);
+ ctx.closePath();
+ ctx.clip();
+
+ ctx.strokeStyle="#a1b0a3";
+ ctx.lineWidth=2;
+
+ for(let x=goal.left;x<=goal.right;x+=27){
+  ctx.beginPath();
+  ctx.moveTo(x,goal.top);
+  ctx.lineTo(x,goal.bottom);
+  ctx.stroke();
+ }
+ for(let y=goal.top+15;y<=goal.bottom;y+=25){
+  ctx.beginPath();
+  ctx.moveTo(goal.left,y);
+  ctx.lineTo(goal.right,y);
+  ctx.stroke();
+ }
+
+ ctx.restore();
+
+ // Goal posts.
+ ctx.lineWidth=16;
+ ctx.lineCap="round";
+ ctx.strokeStyle="#f7f4e9";
+ ctx.beginPath();
+ ctx.moveTo(goal.left,goal.bottom);
+ ctx.lineTo(goal.left,goal.top);
+ ctx.lineTo(goal.right,goal.top);
+ ctx.lineTo(goal.right,goal.bottom);
+ ctx.stroke();
+
+ ctx.lineWidth=3;
+ ctx.strokeStyle="#b9b6a9";
+ ctx.stroke();
+}
+
+/* GOALKEEPER */
+
+function drawGoalkeeper(){
+ let dive=0;
+ let direction=0;
+
+ if(phase==="shot"&&shot){
+  const elapsed=performance.now()-shot.start;
+  const progress=clamp((elapsed-shot.reactionDelay)/shot.diveDuration,0,1);
+  dive=smooth(progress);
+  direction=Math.sign(shot.keeperTarget-shot.keeperStartX);
+ }
+
+ if(phase==="saved"&&shot){
+  dive=1;
+  direction=shot.diveDirection;
+ }
+
+ const feetY=438;
+
+ ctx.save();
+ ctx.translate(keeperX,feetY);
+
+ // Dive lean.
+ ctx.rotate(direction*dive*.32);
+
+ // Ground shadow.
+ ctx.fillStyle="#07180e66";
+ ctx.beginPath();
+ ctx.ellipse(0,5,88,13,0,0,Math.PI*2);
+ ctx.fill();
+
+ // Legs.
+ ctx.lineCap="round";
+ ctx.strokeStyle="#202c35";
+ ctx.lineWidth=25;
+
+ ctx.beginPath();
+ ctx.moveTo(-17,-35);
+ ctx.lineTo(-33,-2);
+ ctx.moveTo(17,-35);
+ ctx.lineTo(35,-2);
+ ctx.stroke();
+
+ // Boots.
+ ctx.strokeStyle="#171b20";
+ ctx.lineWidth=19;
+
+ ctx.beginPath();
+ ctx.moveTo(-33,-2);
+ ctx.lineTo(-51,0);
+ ctx.moveTo(35,-2);
+ ctx.lineTo(53,0);
+ ctx.stroke();
+
+ // Body.
+ const shirt=ctx.createLinearGradient(-38,0,38,0);
+ shirt.addColorStop(0,"#d7802f");
+ shirt.addColorStop(.5,"#ffc66a");
+ shirt.addColorStop(1,"#b96a27");
+
+ ctx.fillStyle=shirt;
+ ctx.beginPath();
+ ctx.roundRect(-36,-130,72,105,16);
+ ctx.fill();
+
+ // Shirt detail.
+ ctx.fillStyle="#fff3d8";
+ ctx.fillRect(-6,-123,12,76);
+
+ // Arms spread and diving.
+ const armReach=80+35*dive;
+ const armHeight=-115-30*dive;
+
+ ctx.strokeStyle="#d9955c";
+ ctx.lineWidth=22;
+ ctx.lineCap="round";
+
+ ctx.beginPath();
+ ctx.moveTo(-29,-112);
+ ctx.lineTo(-armReach,armHeight);
+ ctx.moveTo(29,-112);
+ ctx.lineTo(armReach,armHeight);
+ ctx.stroke();
+
+ // Gloves.
+ ctx.fillStyle="#f5f1df";
+ ctx.strokeStyle="#d9d4c5";
+ ctx.lineWidth=3;
+
+ for(const side of [-1,1]){
+  ctx.beginPath();
+  ctx.arc(side*armReach,armHeight,19,0,Math.PI*2);
+  ctx.fill();
+  ctx.stroke();
+ }
+
+ // Neck.
+ ctx.fillStyle="#b97852";
+ ctx.fillRect(-9,-148,18,23);
+
+ // Head.
+ ctx.fillStyle="#bd815e";
+ ctx.beginPath();
+ ctx.arc(0,-164,26,0,Math.PI*2);
+ ctx.fill();
+
+ // Hair.
+ ctx.fillStyle="#27201c";
+ ctx.beginPath();
+ ctx.arc(0,-173,26,Math.PI,Math.PI*2);
+ ctx.fill();
+
+ ctx.restore();
+}
+
+/* FOOTBALL */
+
+function drawBall(x,y,r){
+ ctx.save();
+
+ // Shadow.
+ ctx.fillStyle="#00170b66";
+ ctx.beginPath();
+ ctx.ellipse(x+6,y+r*.85,r*1.1,r*.32,0,0,Math.PI*2);
+ ctx.fill();
+
+ const gradient=ctx.createRadialGradient(
+  x-r*.35,y-r*.4,2,x,y,r
+ );
+ gradient.addColorStop(0,"#ffffff");
+ gradient.addColorStop(.72,"#e8e9e2");
+ gradient.addColorStop(1,"#abb3a9");
+
+ ctx.fillStyle=gradient;
+ ctx.beginPath();
+ ctx.arc(x,y,r,0,Math.PI*2);
+ ctx.fill();
+
+ // Football pattern.
+ ctx.save();
+ ctx.beginPath();
+ ctx.arc(x,y,r-1,0,Math.PI*2);
+ ctx.clip();
+
+ ctx.fillStyle="#263033";
+
+ ctx.beginPath();
+ for(let i=0;i<5;i++){
+  const a=-Math.PI/2+i*Math.PI*2/5;
+  const px=x+Math.cos(a)*r*.34;
+  const py=y+Math.sin(a)*r*.34;
+  if(i===0)ctx.moveTo(px,py);
+  else ctx.lineTo(px,py);
+ }
+ ctx.closePath();
+ ctx.fill();
+
+ for(let i=0;i<5;i++){
+  const a=i*Math.PI*2/5;
+  const px=x+Math.cos(a)*r*.69;
+  const py=y+Math.sin(a)*r*.69;
+
+  ctx.beginPath();
+  ctx.arc(px,py,r*.16,0,Math.PI*2);
+  ctx.fill();
+ }
+
+ ctx.restore();
+
+ ctx.strokeStyle="#ffffffa0";
+ ctx.lineWidth=2;
+ ctx.beginPath();
+ ctx.arc(x,y,r-1,0,Math.PI*2);
+ ctx.stroke();
+
+ ctx.restore();
+}
+
+/* AIMING */
+
+function getTarget(){
+ if(!aim)return null;
+
+ return {
+  x:clamp(aim.x,goal.left+25,goal.right-25),
+  y:clamp(aim.y,goal.top+30,goal.bottom-20)
+ };
+}
+
+function drawAim(){
+ if(!dragging||!aim)return;
+
+ const target=getTarget();
+ if(!target)return;
+
+ ctx.save();
+
+ ctx.setLineDash([11,10]);
+ ctx.strokeStyle="#fff1a7";
+ ctx.lineWidth=5;
+ ctx.beginPath();
+ ctx.moveTo(ball.x,ball.y);
+ ctx.lineTo(target.x,target.y);
+ ctx.stroke();
+ ctx.setLineDash([]);
+
+ // Target circle in the net.
+ ctx.strokeStyle="#ffffff";
+ ctx.lineWidth=4;
+ ctx.fillStyle="#ffe17099";
+ ctx.beginPath();
+ ctx.arc(target.x,target.y,17,0,Math.PI*2);
+ ctx.fill();
+ ctx.stroke();
+
+ ctx.fillStyle="#fff";
+ ctx.beginPath();
+ ctx.arc(target.x,target.y,5,0,Math.PI*2);
+ ctx.fill();
+
+ ctx.restore();
+}
+
+/* SHOT ANIMATION */
+
+function getShotBallPosition(progress){
+ const t=clamp(progress,0,1);
+ const eased=t*t*(3-2*t);
+
+ return {
+  x:lerp(ball.x,shot.targetX,eased),
+  y:lerp(ball.y,shot.targetY,eased)-Math.sin(t*Math.PI)*32,
+  radius:ball.radius*(1-.35*t)
+ };
+}
+
+function updateShot(){
+ if(phase==="shot"&&shot){
+  const elapsed=performance.now()-shot.start;
+
+  // Goalkeeper reacts, then dives towards the ball's path.
+  if(elapsed>shot.reactionDelay){
+   const p=clamp(
+    (elapsed-shot.reactionDelay)/shot.diveDuration,0,1
+   );
+   keeperX=lerp(
+    shot.keeperStartX,
+    shot.keeperTarget,
+    smooth(p)
+   );
+  }
+
+  if(!shot.crossingChecked&&elapsed>=shot.crossingTime){
+   shot.crossingChecked=true;
+   resolveGoalkeeper();
+  }
+
+  if(phase==="shot"&&elapsed>=shot.duration){
+   showResult("goal");
+  }
+ }
+
+ if(phase==="saved"&&shot){
+  const elapsed=performance.now()-shot.saveStart;
+  if(elapsed>650){
+   showResult(shot.saveType);
+  }
+ }
+}
+
+function resolveGoalkeeper(){
+ const distance=Math.abs(shot.crossingX-keeperX);
+
+ if(distance<55){
+  shot.saveType="caught";
+  shotOutcome="saved";
+ }else if(distance<112){
+  shot.saveType="punched";
+  shotOutcome="saved";
+ }else{
+  return;
+ }
+
+ phase="saved";
+ shot.saveStart=performance.now();
+ shot.diveDirection=Math.sign(shot.keeperTarget-shot.keeperStartX)||1;
+
+ if(shot.saveType==="caught"){
+  shot.savedBallX=keeperX;
+ }else{
+  shot.savedBallX=shot.crossingX+(shot.crossingX<keeperX?-1:1)*115;
+ }
+}
+
+function drawMovingBall(){
+ if(phase==="shot"&&shot){
+  const elapsed=performance.now()-shot.start;
+  const p=clamp(elapsed/shot.duration,0,1);
+  const position=getShotBallPosition(p);
+  drawBall(position.x,position.y,position.radius);
+ }
+
+ if(phase==="saved"&&shot){
+  const elapsed=performance.now()-shot.saveStart;
+  const p=clamp(elapsed/650,0,1);
+
+  if(shot.saveType==="caught"){
+   drawBall(keeperX,365,ball.radius*.8);
+  }else{
+   const x=lerp(shot.crossingX,shot.savedBallX,p);
+   const y=lerp(keeperLine,245,p)-Math.sin(p*Math.PI)*25;
+   drawBall(x,y,ball.radius*(1-p*.3));
+  }
+ }
+}
+
+/* MAIN DRAW LOOP */
+
+function animate(time){
+ ctx.clearRect(0,0,W,H);
+
+ drawBackground();
+ drawGoal();
+
+ if(phase==="intro"||phase==="ready"){
+  keeperIdleTime=time;
+  keeperX=360+Math.sin(time*.0013)*135;
+ }
+
+ if(phase==="shot"||phase==="saved"){
+  updateShot();
+ }
+
+ drawGoalkeeper();
+
+ if(phase==="shot"||phase==="saved"){
+  drawMovingBall();
+ }else{
+  drawBall(ball.x,ball.y,ball.radius);
+  drawAim();
+ }
+
+ requestAnimationFrame(animate);
+}
+
+/* INPUT */
+
+function canvasPoint(event){
+ const rect=canvas.getBoundingClientRect();
+ return {
+  x:(event.clientX-rect.left)*W/rect.width,
+  y:(event.clientY-rect.top)*H/rect.height
+ };
+}
+
+canvas.addEventListener("pointerdown",event=>{
+ if(phase!=="ready"||dragging)return;
+
+ const p=canvasPoint(event);
+ const distance=Math.hypot(p.x-ball.x,p.y-ball.y);
+
+ if(distance>85)return;
+
+ dragging=true;
+ aim=p;
+
+ canvas.setPointerCapture(event.pointerId);
+});
+
+canvas.addEventListener("pointermove",event=>{
+ if(!dragging)return;
+ aim=canvasPoint(event);
+});
+
+canvas.addEventListener("pointerup",event=>{
+ if(!dragging)return;
+
+ aim=canvasPoint(event);
+ dragging=false;
+ shoot();
+});
+
+canvas.addEventListener("pointercancel",()=>{
+ dragging=false;
+ aim=null;
+});
+
+/* SHOOT */
+
+function shoot(){
+ if(phase!=="ready"||!aim)return;
+
+ const target=getTarget();
+ if(!target)return;
+
+ const dx=target.x-ball.x;
+ const dy=target.y-ball.y;
+
+ if(dy>-100){
+  dragging=false;
+  aim=null;
+  document.getElementById("hint").textContent=
+   "Aim towards the goal, then release the ball.";
+  return;
+ }
+
+ const crossingT=(keeperLine-ball.y)/(target.y-ball.y);
+ const crossingX=ball.x+dx*crossingT;
+
+ shot={
+  start:performance.now(),
+  duration:1000,
+  targetX:target.x,
+  targetY:target.y,
+  crossingX,
+  crossingTime:crossingT*1000,
+  crossingChecked:false,
+  reactionDelay:150,
+  diveDuration:450,
+  keeperStartX:keeperX,
+  keeperTarget:clamp(crossingX,goal.left+65,goal.right-65)
+ };
+
+ phase="shot";
+ aim=null;
+
+ document.getElementById("hint").textContent=
+  "The goalkeeper is trying to stop your shot!";
+}
+
+/* RESULTS */
+
+function showResult(type){
+ if(resultShown)return;
+ resultShown=true;
+ phase="result";
+
+ let icon,title,message,won=false;
+
+ if(type==="goal"){
+  icon="⚽";
+  title="GOAL!";
+  message="You scored! The goalkeeper couldn't stop your shot.";
+  won=true;
+ }else if(type==="caught"){
+  icon="🧤";
+  title="CAUGHT!";
+  message="The goalkeeper caught your shot!";
+ }else{
+  icon="🧤";
+  title="SAVED!";
+  message="The goalkeeper punched the ball away!";
+ }
+
+ document.getElementById("resultIcon").textContent=icon;
+ document.getElementById("resultTitle").textContent=title;
+ document.getElementById("resultMessage").textContent=message;
+ document.getElementById("resultOverlay").style.display="flex";
+
+ document.getElementById("hint").textContent=
+  won?"You scored a goal!":"The goalkeeper stopped your shot.";
+
+ submitResult(won);
+}
+
+async function submitResult(won){
+ if(resultSent)return;
+ resultSent=true;
+
+ const status=document.getElementById("returnMessage");
+ status.textContent="Checking result...";
+
+ try{
+  const response=await fetch("/api/games/penalty-shoot/complete",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    game:"penalty-shoot",
+    completed:true,
+    result:won?"win":"loss",
+    score:won?1:0,
+    attempts:1
+   })
+  });
+
+  if(response.ok){
+   const data=await response.json();
+   status.textContent=data.rewardGranted?
+    "Result verified. Returning to Games...":
+    "Result submitted. Returning to Games...";
+  }else{
+   status.textContent="Returning to Games...";
+  }
+ }catch(error){
+  status.textContent="Returning to Games...";
+ }
+
+ if(!resultTimerStarted){
+  resultTimerStarted=true;
+  setTimeout(()=>location.href="games.html",3500);
+ }
+}
+
+/* START */
+
+document.getElementById("startBtn").addEventListener("click",()=>{
+ document.getElementById("startOverlay").style.display="none";
+ phase="ready";
+ document.getElementById("hint").textContent=
+  "Drag the football towards a spot in the net and release to shoot.";
+});
+
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
