@@ -7,17 +7,17 @@
 <title>EarnGig Survival</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#25352a;font-family:Arial,sans-serif;touch-action:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#24352a;font-family:Arial,sans-serif;touch-action:none}
 canvas{display:block;width:100%;height:100%}
 #hud{position:absolute;top:0;left:0;right:0;padding:10px;display:flex;justify-content:space-between;gap:5px;pointer-events:none;z-index:3}
 .stat{background:#17271fee;border:1px solid #8da77d;border-radius:11px;padding:8px 9px;box-shadow:0 4px 12px #0008;min-width:0}
-.stat small{display:block;color:#c5d1bd;font-size:9px;letter-spacing:.8px;white-space:nowrap}
+.stat small{display:block;color:#c5d1bd;font-size:9px;letter-spacing:.7px;white-space:nowrap}
 .stat strong{display:block;font-size:19px;color:#fff;margin-top:4px;white-space:nowrap}
 #remaining{color:#f5c66c}
 #health{color:#ff8178}
 #alarm{position:absolute;top:85px;left:50%;transform:translateX(-50%);display:none;color:#ff6258;font-weight:900;font-size:13px;text-shadow:0 2px 5px #000;z-index:4;white-space:nowrap}
 #controls{position:absolute;bottom:24px;left:0;right:0;padding:0 24px;display:flex;justify-content:flex-end;z-index:3;pointer-events:none}
-#stick{width:118px;height:118px;border-radius:50%;background:#172b26d9;border:3px solid #a4b89a99;position:relative;box-shadow:inset 0 4px 14px #0005;touch-action:none;pointer-events:auto}
+#stick{width:118px;height:118px;border-radius:50%;background:#172b26dc;border:3px solid #a4b89a99;position:relative;box-shadow:inset 0 4px 14px #0005;touch-action:none;pointer-events:auto}
 #nub{position:absolute;width:48px;height:48px;border-radius:50%;left:32px;top:32px;background:#dce6d2;border:4px solid #6a8867;box-shadow:0 4px 12px #0008}
 #screen{position:absolute;inset:0;background:#101a15ed;display:flex;align-items:center;justify-content:center;z-index:6;padding:20px;text-align:center;color:white}
 #screen.hide{display:none}
@@ -67,43 +67,35 @@ canvas{display:block;width:100%;height:100%}
 <script>
 "use strict";
 
-/* ==========================================
-   GAME SETTINGS
-========================================== */
+/* ======================================
+   SETTINGS
+====================================== */
 const CONFIG={
  duration:120,
  minAssassins:8,
  maxAssassins:12,
  playerSpeed:185,
- playerMaxHealth:3,
+ playerHealth:3,
  visionRange:310,
- visionAngle:.96,
- takedownDistance:39,
+ visionAngle:0.96,
+ takedownDistance:42,
  bulletSpeed:390,
  fireInterval:1.1,
- damageCooldown:1.0
+ damageCooldown:0.85,
+ cameraZoom:1.13
 };
 
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
 const $=id=>document.getElementById(id);
 
-let W,H,DPR,world,player,enemies,obstacles,bullets,particles;
-let running=false;
-let matchEnded=false;
-let ending=false;
-let last=0;
-let seconds=120;
-let alarmTime=0;
-let camera={x:0,y:0};
+let W,H,DPR;
+let world,player,enemies,obstacles,bullets,particles;
+let running=false,matchEnded=false,resultSubmitted=false;
+let last=0,seconds=120,alarmTime=0,damageCooldown=0;
+let camera={x:900,y:900};
 let moveX=0,moveY=0,joystickActive=false;
-let count=0,matchId=null,mapTheme=0;
-let damageCooldown=0;
-let resultSubmitted=false;
-
-const sprites=new Image();
-sprites.src="survival-sprites.png";
-sprites.onerror=()=>console.error("survival-sprites.png could not be loaded.");
+let count=0,matchId=null,mapTheme=0,walkClock=0;
 
 function resize(){
  DPR=Math.min(devicePixelRatio||1,2);
@@ -123,9 +115,50 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const angleDiff=(a,b)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
 
-/* ==========================================
-   MAP AND COLLISIONS
-========================================== */
+/* ======================================
+   LOAD THE REAL SPRITE SHEET
+   Actual image: 1199 x 1312
+   4 columns x 4 rows
+====================================== */
+const sprites=new Image();
+sprites.src="survival-sprites.png";
+
+let spriteReady=false;
+
+sprites.onload=()=>{
+ spriteReady=true;
+ console.log("Survival character artwork loaded.");
+ draw();
+};
+
+sprites.onerror=()=>{
+ spriteReady=false;
+ console.error("Cannot load survival-sprites.png. Check the filename and repository root.");
+};
+
+/* Grid positions based on the actual image dimensions. */
+const SPRITE_W=1199;
+const SPRITE_H=1312;
+const CELL_W=SPRITE_W/4;
+const CELL_H=SPRITE_H/4;
+
+/*
+ Row 0: four ninja front-view walking frames.
+ Row 1: four ninja back-view walking frames.
+ Rows 2 and 3: eight different armed assassins.
+*/
+function spriteCrop(row,col){
+ return {
+  x:col*CELL_W+5,
+  y:row*CELL_H+5,
+  w:CELL_W-10,
+  h:CELL_H-10
+ };
+}
+
+/* ======================================
+   COLLISION AND MOVEMENT
+====================================== */
 function collides(x,y,r=15){
  return obstacles.some(o=>
   x+r>o.x&&x-r<o.x+o.w&&
@@ -136,23 +169,30 @@ function collides(x,y,r=15){
 function moveEntity(obj,dx,dy,r=15){
  if(!collides(obj.x+dx,obj.y,r))obj.x+=dx;
  if(!collides(obj.x,obj.y+dy,r))obj.y+=dy;
+
  obj.x=clamp(obj.x,20,world.w-20);
  obj.y=clamp(obj.y,20,world.h-20);
 }
 
 function blockedSight(x1,y1,x2,y2){
  const steps=Math.ceil(Math.hypot(x2-x1,y2-y1)/7);
+
  for(let i=1;i<steps;i++){
   const t=i/steps;
   const x=x1+(x2-x1)*t;
   const y=y1+(y2-y1)*t;
+
   if(obstacles.some(o=>
-   x>o.x&&x<o.x+o.w&&y>o.y&&y<o.y+o.h
+   x>o.x&&x<o.x+o.w&&
+   y>o.y&&y<o.y+o.h
   ))return true;
  }
  return false;
 }
 
+/* ======================================
+   RANDOM, DENSE BATTLEFIELD
+====================================== */
 function createMap(){
  world={w:1800,h:1800};
  obstacles=[];
@@ -165,10 +205,10 @@ function createMap(){
    const x=35+col*cell;
    const y=35+row*cell;
 
-   // Keep the player starting area clear.
+   // Clear player starting area.
    if(Math.hypot(x+40-900,y+40-900)<190)continue;
 
-   // Leave connected walking passages.
+   // Leave connected walking routes.
    if(Math.random()<.24)continue;
 
    const roll=Math.random();
@@ -185,7 +225,7 @@ function createMap(){
   }
  }
 
- // Add extra cover without blocking every route.
+ // Add cover in open sections.
  for(let i=0;i<30;i++){
   const x=rnd(100,1680);
   const y=rnd(100,1680);
@@ -194,29 +234,34 @@ function createMap(){
   if(collides(x,y,35))continue;
 
   obstacles.push({
-   x,y,w:rnd(60,90),h:rnd(60,90),
+   x,y,
+   w:rnd(60,90),
+   h:rnd(60,90),
    type:Math.random()<.5?"crate":"container",
    variant:Math.floor(rnd(0,7))
   });
  }
 }
 
-/* ==========================================
-   START A NEW MATCH
-========================================== */
+/* ======================================
+   START MATCH
+====================================== */
 function startGame(){
  if(running)return;
 
  createMap();
 
- count=Math.floor(rnd(CONFIG.minAssassins,CONFIG.maxAssassins+1));
+ count=Math.floor(rnd(
+  CONFIG.minAssassins,
+  CONFIG.maxAssassins+1
+ ));
 
  seconds=CONFIG.duration;
  alarmTime=0;
  damageCooldown=0;
+ walkClock=0;
 
  matchEnded=false;
- ending=false;
  resultSubmitted=false;
 
  bullets=[];
@@ -227,7 +272,8 @@ function startGame(){
   y:900,
   a:-Math.PI/2,
   speed:CONFIG.playerSpeed,
-  health:CONFIG.playerMaxHealth
+  health:CONFIG.playerHealth,
+  walkFrame:0
  };
 
  enemies=[];
@@ -244,23 +290,25 @@ function startGame(){
   if(collides(x,y,23))continue;
   if(enemies.some(e=>Math.hypot(e.x-x,e.y-y)<115))continue;
 
+  // Assassin artwork index 0–7, from the bottom two rows.
+  const assassinIndex=Math.floor(rnd(0,8));
+
   enemies.push({
    x,y,
    a:rnd(0,6.28),
-   speed:rnd(42,55),
+   speed:rnd(43,56),
    state:"patrol",
    turn:rnd(1,3),
    alert:0,
    lastX:0,
    lastY:0,
    fireTimer:rnd(.4,1.2),
-   sprite:1+Math.floor(rnd(0,4)),
+   sprite:assassinIndex,
    dead:false
   });
  }
 
  camera={x:player.x,y:player.y};
-
  matchId=crypto.randomUUID?
   crypto.randomUUID():String(Date.now());
 
@@ -274,15 +322,14 @@ function startGame(){
  $("screen").classList.add("hide");
 
  running=true;
- matchEnded=false;
  last=performance.now();
 
  requestAnimationFrame(loop);
 }
 
-/* ==========================================
+/* ======================================
    ASSASSIN VISION
-========================================== */
+====================================== */
 function canSee(e){
  if(dist(e,player)>CONFIG.visionRange)return false;
 
@@ -293,27 +340,26 @@ function canSee(e){
  return !blockedSight(e.x,e.y,player.x,player.y);
 }
 
-/* ==========================================
-   AUTOMATIC KNIFE TAKEDOWNS
-========================================== */
+/* ======================================
+   AUTOMATIC KNIFE TAKEDOWN
+====================================== */
 function automaticTakedowns(){
  if(!running||matchEnded)return;
 
  for(const e of enemies){
   if(e.dead)continue;
 
-  const d=dist(player,e);
-  if(d>CONFIG.takedownDistance)continue;
+  if(dist(player,e)>CONFIG.takedownDistance)continue;
 
   const direction=Math.atan2(player.y-e.y,player.x-e.x);
   const behind=Math.abs(angleDiff(direction,e.a))>2.2;
   const visible=canSee(e);
 
-  // Automatic takedown: no button needed.
+  // Touch from behind OR touch outside the light.
   if(behind||!visible){
    e.dead=true;
 
-   for(let i=0;i<10;i++){
+   for(let i=0;i<12;i++){
     particles.push({
      x:e.x,y:e.y,
      vx:rnd(-35,35),
@@ -328,9 +374,9 @@ function automaticTakedowns(){
 }
 
 function updateCounter(){
- // The original enemy list is never recreated during a match.
  const remaining=enemies.filter(e=>!e.dead).length;
 
+ // The original match count never changes.
  $("remaining").textContent=remaining+" / "+count;
 
  if(remaining===0&&running&&!matchEnded){
@@ -338,9 +384,9 @@ function updateCounter(){
  }
 }
 
-/* ==========================================
-   ASSASSIN ALERT AND SHOOTING
-========================================== */
+/* ======================================
+   ALERT AND ASSASSIN SHOOTING
+====================================== */
 function alertAllAssassins(x,y){
  alarmTime=4;
 
@@ -398,7 +444,6 @@ function updateEnemies(dt){
 
   if(d>75){
    const a=Math.atan2(target.y-e.y,target.x-e.x);
-
    e.a=a;
 
    moveEntity(
@@ -409,7 +454,6 @@ function updateEnemies(dt){
    );
   }
 
-  // Shoot only when the player is visible.
   if(canSee(e)){
    e.state="hunt";
    e.lastX=player.x;
@@ -434,9 +478,9 @@ function updateEnemies(dt){
  }
 }
 
-/* ==========================================
+/* ======================================
    THREE-HIT HEALTH SYSTEM
-========================================== */
+====================================== */
 function updateBullets(dt){
  for(const b of bullets){
   if(b.life<=0)continue;
@@ -445,7 +489,7 @@ function updateBullets(dt){
   b.y+=b.vy*dt;
   b.life-=dt;
 
-  // Bullets stop at solid cover.
+  // Cover blocks bullets.
   if(obstacles.some(o=>
    b.x>o.x&&b.x<o.x+o.w&&
    b.y>o.y&&b.y<o.y+o.h
@@ -457,33 +501,19 @@ function updateBullets(dt){
   if(Math.hypot(b.x-player.x,b.y-player.y)<17){
    b.life=0;
 
-   // Brief protection lets the player escape after a hit.
+   // A short damage cooldown prevents one burst counting
+   // several times in the same instant.
    if(damageCooldown>0)continue;
 
    damageCooldown=CONFIG.damageCooldown;
-
    player.health=Math.max(0,player.health-1);
 
    $("health").textContent=
     "❤️".repeat(player.health)+
-    "🖤".repeat(CONFIG.playerMaxHealth-player.health);
-
-   for(let i=0;i<7;i++){
-    particles.push({
-     x:player.x,
-     y:player.y,
-     vx:rnd(-40,40),
-     vy:rnd(-40,40),
-     life:.35
-    });
-   }
+    "🖤".repeat(CONFIG.playerHealth-player.health);
 
    if(player.health===0){
-    finish(
-     false,
-     "YOU LOST",
-     "You were shot three times. Your match is over."
-    );
+    finish(false,"YOU LOST","You were shot three times. Your match is over.");
     return;
    }
   }
@@ -492,9 +522,9 @@ function updateBullets(dt){
  bullets=bullets.filter(b=>b.life>0);
 }
 
-/* ==========================================
-   GAME UPDATE
-========================================== */
+/* ======================================
+   MAIN UPDATE
+====================================== */
 function update(dt){
  if(!running||matchEnded)return;
 
@@ -526,6 +556,11 @@ function update(dt){
    dy*player.speed*dt,
    15
   );
+
+  walkClock+=dt;
+  player.walkFrame=Math.floor(walkClock*10)%4;
+ }else{
+  player.walkFrame=0;
  }
 
  automaticTakedowns();
@@ -552,16 +587,18 @@ function update(dt){
  }
 }
 
-/* ==========================================
-   GRAPHICS
-========================================== */
+/* ======================================
+   ENVIRONMENT ART
+====================================== */
 function drawFloor(){
- ctx.fillStyle=["#9ba995","#929c9c","#a0a28e"][mapTheme];
+ const floorColors=["#9ba995","#929c9c","#a0a28e"];
+ ctx.fillStyle=floorColors[mapTheme];
  ctx.fillRect(0,0,world.w,world.h);
 
  for(let y=0;y<world.h;y+=100){
   for(let x=0;x<world.w;x+=100){
-   ctx.fillStyle=((x/100+y/100)%2===0)?"#ffffff0b":"#14251b0b";
+   ctx.fillStyle=((x/100+y/100)%2===0)?
+    "#ffffff0b":"#14251b0b";
    ctx.fillRect(x,y,100,100);
   }
  }
@@ -583,7 +620,7 @@ function drawObstacle(o){
  ctx.shadowBlur=10;
  ctx.shadowOffsetY=8;
 
- if(sprites.complete&&sprites.naturalWidth){
+ if(spriteReady){
   let sx,sy,sw,sh;
 
   if(o.type==="crate"){
@@ -627,6 +664,9 @@ function drawObstacle(o){
  ctx.restore();
 }
 
+/* ======================================
+   DIRECTIONAL ASSASSIN LIGHTS
+====================================== */
 function drawVision(e){
  ctx.save();
  ctx.beginPath();
@@ -635,7 +675,9 @@ function drawVision(e){
  const rays=40;
 
  for(let i=0;i<=rays;i++){
-  const a=e.a-CONFIG.visionAngle/2+i/rays*CONFIG.visionAngle;
+  const a=e.a-CONFIG.visionAngle/2+
+   i/rays*CONFIG.visionAngle;
+
   let max=CONFIG.visionRange;
 
   for(let d=10;d<CONFIG.visionRange;d+=7){
@@ -643,19 +685,26 @@ function drawVision(e){
    const y=e.y+Math.sin(a)*d;
 
    if(obstacles.some(o=>
-    x>o.x&&x<o.x+o.w&&y>o.y&&y<o.y+o.h
+    x>o.x&&x<o.x+o.w&&
+    y>o.y&&y<o.y+o.h
    )){
     max=d;
     break;
    }
   }
 
-  ctx.lineTo(e.x+Math.cos(a)*max,e.y+Math.sin(a)*max);
+  ctx.lineTo(
+   e.x+Math.cos(a)*max,
+   e.y+Math.sin(a)*max
+  );
  }
 
  ctx.closePath();
 
- const g=ctx.createRadialGradient(e.x,e.y,4,e.x,e.y,CONFIG.visionRange);
+ const g=ctx.createRadialGradient(
+  e.x,e.y,4,e.x,e.y,CONFIG.visionRange
+ );
+
  g.addColorStop(0,"#fff6bb70");
  g.addColorStop(.7,"#fff2a526");
  g.addColorStop(1,"#fff2a500");
@@ -665,49 +714,86 @@ function drawVision(e){
  ctx.strokeStyle="#fff4bd55";
  ctx.lineWidth=1;
  ctx.stroke();
+
  ctx.restore();
 }
 
-/*
- Character sprite positions.
- The sprite sheet is loaded from the repository root.
-*/
-const characterSprites=[
- [35,10,320,335],
- [365,10,260,335],
- [635,5,275,335],
- [910,5,270,330],
- [1185,5,315,335]
-];
+/* ======================================
+   CHARACTER SPRITE DRAWING
+====================================== */
+function drawPlayer(){
+ if(!player)return;
 
-function drawCharacter(c,isPlayer){
- const index=isPlayer?0:c.sprite;
- const [sx,sy,sw,sh]=characterSprites[index];
+ const moving=Math.hypot(moveX,moveY)>.08;
+ const frame=moving?player.walkFrame:0;
+
+ // First two rows contain the ninja walking frames.
+ // Use front-view frames when moving down and back-view
+ // frames when moving up.
+ let row=player.a>0.35&&player.a<2.8?0:1;
+
+ const crop=spriteCrop(row,frame);
 
  ctx.save();
- ctx.translate(c.x,c.y);
- ctx.rotate(c.a+Math.PI/2);
+ ctx.translate(player.x,player.y);
+
+ // Source artwork faces upward.
+ ctx.rotate(player.a+Math.PI/2);
 
  ctx.fillStyle="#14231c66";
  ctx.beginPath();
- ctx.ellipse(0,10,22,13,0,0,Math.PI*2);
+ ctx.ellipse(0,11,23,13,0,0,Math.PI*2);
  ctx.fill();
 
- if(sprites.complete&&sprites.naturalWidth){
+ if(spriteReady){
   ctx.drawImage(
-   sprites,sx,sy,sw,sh,
-   -31,-35,62,70
+   sprites,
+   crop.x,crop.y,crop.w,crop.h,
+   -36,-43,72,86
   );
  }else{
-  ctx.fillStyle="#ff5555";
-  ctx.font="bold 12px Arial";
-  ctx.textAlign="center";
-  ctx.fillText("SPRITE?",0,5);
+  ctx.fillStyle="#d52e4a";
+  ctx.beginPath();
+  ctx.arc(0,0,16,0,Math.PI*2);
+  ctx.fill();
  }
 
  ctx.restore();
 }
 
+function drawAssassin(e){
+ const row=2+Math.floor(e.sprite/4);
+ const col=e.sprite%4;
+ const crop=spriteCrop(row,col);
+
+ ctx.save();
+ ctx.translate(e.x,e.y);
+ ctx.rotate(e.a+Math.PI/2);
+
+ ctx.fillStyle="#14231c66";
+ ctx.beginPath();
+ ctx.ellipse(0,11,23,13,0,0,Math.PI*2);
+ ctx.fill();
+
+ if(spriteReady){
+  ctx.drawImage(
+   sprites,
+   crop.x,crop.y,crop.w,crop.h,
+   -36,-43,72,86
+  );
+ }else{
+  ctx.fillStyle="#df702d";
+  ctx.beginPath();
+  ctx.arc(0,0,16,0,Math.PI*2);
+  ctx.fill();
+ }
+
+ ctx.restore();
+}
+
+/* ======================================
+   BULLET DRAWING
+====================================== */
 function drawBullets(){
  for(const b of bullets){
   ctx.save();
@@ -725,12 +811,18 @@ function drawBullets(){
  }
 }
 
+/* ======================================
+   RENDER GAME
+====================================== */
 function draw(){
  if(!world)return;
 
  ctx.clearRect(0,0,W,H);
 
- const zoom=clamp(Math.min(W/390,H/700)*1.12,.9,1.25);
+ const zoom=clamp(
+  Math.min(W/390,H/700)*CONFIG.cameraZoom,
+  .9,1.25
+ );
 
  ctx.save();
  ctx.translate(W/2,H/2);
@@ -740,11 +832,16 @@ function draw(){
  drawFloor();
 
  for(const o of obstacles)drawObstacle(o);
- for(const e of enemies)if(!e.dead)drawVision(e);
- for(const e of enemies)if(!e.dead)drawCharacter(e,false);
 
- if(player)drawCharacter(player,true);
+ for(const e of enemies){
+  if(!e.dead)drawVision(e);
+ }
 
+ for(const e of enemies){
+  if(!e.dead)drawAssassin(e);
+ }
+
+ drawPlayer();
  drawBullets();
 
  for(const p of particles){
@@ -759,15 +856,13 @@ function draw(){
  ctx.restore();
 }
 
-/* ==========================================
-   MATCH RESULT
-   NO AUTOMATIC RESTART
-========================================== */
+/* ======================================
+   MATCH END AND REWARD SUBMISSION
+   ====================================== */
 async function finish(won,title,message){
  if(matchEnded)return;
 
  matchEnded=true;
- ending=true;
  running=false;
 
  moveX=0;
@@ -782,6 +877,9 @@ async function finish(won,title,message){
  $("start").disabled=true;
  $("start").textContent="PLEASE WAIT";
 
+ if(resultSubmitted)return;
+ resultSubmitted=true;
+
  const result={
   matchId,
   game:"survival",
@@ -790,9 +888,6 @@ async function finish(won,title,message){
   assassinsEliminated:enemies.filter(e=>e.dead).length,
   durationSeconds:Math.round(CONFIG.duration-seconds)
  };
-
- if(resultSubmitted)return;
- resultSubmitted=true;
 
  try{
   const response=await fetch("/api/survival/complete",{
@@ -810,15 +905,18 @@ async function finish(won,title,message){
    $("status").textContent="Reward confirmed. Returning to Games...";
    $("start").textContent="RETURN TO GAMES";
    $("start").disabled=false;
-   $("start").onclick=()=>location.replace("games.html");
 
-   // Redirect happens only after server confirmation.
+   $("start").onclick=()=>{
+    location.replace("games.html");
+   };
+
+   // Redirect only after server confirmation.
    setTimeout(()=>{
     location.replace("games.html");
    },1800);
 
   }else{
-   throw new Error("Reward not confirmed by server.");
+   throw new Error("Reward was not confirmed.");
   }
 
  }catch(error){
@@ -829,13 +927,15 @@ async function finish(won,title,message){
 
   $("start").disabled=false;
   $("start").textContent="RETURN TO GAMES";
-  $("start").onclick=()=>location.href="games.html";
+  $("start").onclick=()=>{
+   location.href="games.html";
+  };
  }
 }
 
-/* ==========================================
+/* ======================================
    RIGHT-HAND JOYSTICK
-========================================== */
+====================================== */
 const stick=$("stick");
 const nub=$("nub");
 
@@ -904,9 +1004,9 @@ function readKeyboard(){
   (keys.s||keys.arrowdown?1:0);
 }
 
-/* ==========================================
-   GAME LOOP
-========================================== */
+/* ======================================
+   MAIN GAME LOOP
+====================================== */
 function loop(t){
  if(!running||matchEnded)return;
 
@@ -922,7 +1022,8 @@ function loop(t){
  }
 }
 
-/* Start button only starts a new match from the start screen. */
+/* The only automatic start is the first page setup.
+   A new match requires the player to press START GAME. */
 $("start").addEventListener("click",()=>{
  if(running||matchEnded)return;
  startGame();
