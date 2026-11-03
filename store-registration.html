@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Register Your Store | EarnGig</title>
+
+<style>
+:root{
+  --purple:#7028a8;
+  --deep:#4d167c;
+  --lavender:#f5effb;
+  --border:#eadff3;
+  --gold:#d6a52a;
+  --text:#241b2b;
+  --muted:#81768a;
+  --green:#16834a;
+  --red:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#fff;
+  color:var(--text);
+  min-height:100vh;
+}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.topbar{
+  min-height:68px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#fff;
+}
+.brand{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+.gig{color:var(--purple)}
+.crown{vertical-align:-2px}
+.top-links{
+  display:flex;
+  gap:17px;
+  align-items:center;
+}
+.top-links a{
+  font-size:12px;
+  font-weight:700;
+  color:var(--purple);
+}
+
+.container{
+  max-width:950px;
+  width:92%;
+  margin:30px auto 60px;
+}
+.back{
+  display:inline-block;
+  color:var(--purple);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+.hero{margin-bottom:25px}
+.hero h1{
+  font-size:29px;
+  margin-bottom:9px;
+}
+.hero p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  max-width:700px;
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin:24px 0;
+}
+.step{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  background:#fff;
+}
+.step-number{
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--lavender);
+  color:var(--purple);
+  font-weight:900;
+  font-size:12px;
+  margin-bottom:8px;
+}
+.step strong{
+  font-size:11px;
+  display:block;
+  margin-bottom:4px;
+}
+.step small{
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.notice{
+  background:#f8f3fc;
+  border:1px solid #e9dcf4;
+  border-radius:10px;
+  padding:14px;
+  font-size:11px;
+  color:#604276;
+  line-height:1.7;
+  margin-bottom:20px;
+}
+.notice strong{color:var(--deep)}
+
+.panel{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:22px;
+  margin-bottom:18px;
+}
+.panel-heading{
+  margin-bottom:18px;
+  padding-bottom:13px;
+  border-bottom:1px solid var(--border);
+}
+.panel-heading h2{
+  font-size:17px;
+  margin-bottom:6px;
+}
+.panel-heading p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+.section-number{
+  color:var(--purple);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.field{
+  display:grid;
+  gap:7px;
+}
+.field.full{grid-column:1/-1}
+.field label{
+  font-size:11px;
+  font-weight:800;
+}
+.field label .required{color:var(--red)}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  outline:none;
+  background:#fff;
+  color:var(--text);
+  font-size:12px;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 0 2px #7028a815;
+}
+.field textarea{
+  min-height:95px;
+  resize:vertical;
+}
+.field small{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.upload-box{
+  border:1px dashed #cbb4dc;
+  border-radius:10px;
+  padding:16px;
+  background:#fcfaff;
+}
+.upload-box input[type=file]{
+  width:100%;
+  font-size:11px;
+  margin-top:10px;
+}
+.upload-icon{
+  font-size:24px;
+  margin-bottom:7px;
+}
+.upload-box strong{
+  display:block;
+  font-size:12px;
+  margin-bottom:5px;
+}
+.upload-box p{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.preview{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:12px;
+}
+.preview-item{
+  width:90px;
+  height:90px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  position:relative;
+  background:var(--lavender);
+}
+.preview-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.preview-item button{
+  position:absolute;
+  top:4px;
+  right:4px;
+  width:22px;
+  height:22px;
+  border:0;
+  border-radius:50%;
+  background:#fff;
+  color:var(--red);
+  font-weight:900;
+}
+
+.checkbox-row{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  font-size:11px;
+  line-height:1.6;
+  margin-top:12px;
+}
+.checkbox-row input{
+  margin-top:3px;
+  accent-color:var(--purple);
+}
+
+.payment-info{
+  border:1px solid var(--border);
+  background:#fcfaff;
+  border-radius:11px;
+  padding:17px;
+}
+.payment-info h3{
+  font-size:14px;
+  margin-bottom:8px;
+}
+.payment-price{
+  font-size:27px;
+  font-weight:900;
+  color:var(--purple);
+  margin:9px 0;
+}
+.payment-info p{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.7;
+}
+.payment-info ul{
+  list-style:none;
+  margin-top:12px;
+}
+.payment-info li{
+  font-size:11px;
+  margin-bottom:7px;
+}
+.payment-info li:before{
+  content:"✓";
+  color:var(--green);
+  font-weight:900;
+  margin-right:8px;
+}
+
+.form-actions{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+.primary{
+  background:var(--purple);
+  color:#fff;
+  border:0;
+  border-radius:9px;
+  padding:13px 20px;
+  font-size:12px;
+  font-weight:800;
+}
+.primary:hover{background:var(--deep)}
+.secondary{
+  background:#fff;
+  border:1px solid var(--purple);
+  color:var(--purple);
+  border-radius:9px;
+  padding:12px 16px;
+  font-size:12px;
+  font-weight:700;
+}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.status-card{
+  display:none;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:25px;
+  text-align:center;
+  margin-top:20px;
+}
+.status-card.show{display:block}
+.status-icon{
+  font-size:38px;
+  margin-bottom:12px;
+}
+.status-card h2{
+  font-size:19px;
+  margin-bottom:9px;
+}
+.status-card p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  max-width:560px;
+  margin:0 auto 15px;
+}
+.reference{
+  background:var(--lavender);
+  padding:10px;
+  border-radius:8px;
+  font-weight:800;
+  color:var(--purple);
+  font-size:12px;
+  margin:15px auto;
+  max-width:300px;
+}
+.status-note{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+}
+
+footer{
+  border-top:1px solid var(--border);
+  padding:22px 5%;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:11px;
+}
+footer a{
+  color:var(--purple);
+  font-weight:700;
+}
+
+@media(max-width:650px){
+  .topbar{padding:0 4%}
+  .top-links{gap:10px}
+  .top-links a{font-size:10px}
+  .hero h1{font-size:24px}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .panel{padding:16px}
+  .container{margin-top:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg class="crown" width="23" height="20" viewBox="0 0 32 26" fill="none" aria-hidden="true">
+      <path d="M3 7L9 12L15.5 3L22 12L29 7L26 22H6L3 7Z" fill="#D6A52A"/>
+      <path d="M6 24H26" stroke="#B88619" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="3" cy="6" r="2" fill="#E9C45B"/>
+      <circle cx="15.5" cy="3" r="2" fill="#E9C45B"/>
+      <circle cx="29" cy="6" r="2" fill="#E9C45B"/>
+    </svg>
+    Earn<span class="gig">Gig</span>
+  </a>
+
+  <div class="top-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="my-shop.html">Seller Centre</a>
+  </div>
+</header>
+
+<main class="container">
+
+<a href="my-shop.html" class="back">← Back to Seller Dashboard</a>
+
+<section class="hero">
+  <h1>Register Your Store</h1>
+  <p>
+    Want to sell on EarnGig? Submit your business information and verification
+    documents. Our administration team will review your application before
+    you can pay the shop opening fee and create your store.
+  </p>
+</section>
+
+<section class="steps">
+  <div class="step">
+    <div class="step-number">1</div>
+    <strong>Complete Application</strong>
+    <small>Provide your personal and business information.</small>
+  </div>
+  <div class="step">
+    <div class="step-number">2</div>
+    <strong>Admin Verification</strong>
+    <small>EarnGig reviews your details and evidence.</small>
+  </div>
+  <div class="step">
+    <div class="step-number">3</div>
+    <strong>Pay Shop Fee</strong>
+    <small>Approved applicants pay ₦20,000.</small>
+  </div>
+  <div class="step">
+    <div class="step-number">4</div>
+    <strong>Set Up Your Shop</strong>
+    <small>Complete your storefront and list products.</small>
+  </div>
+</section>
+
+<div class="notice">
+  <strong>Important:</strong> Submitting this application does not automatically
+  open a store. EarnGig will review your information first. You will only be
+  asked to pay the ₦20,000 shop opening fee after your application is approved.
+  Please submit genuine and accurate information.
+</div>
+
+<form id="registrationForm">
+
+<!-- PERSONAL INFORMATION -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 01</div>
+    <h2>Personal Information</h2>
+    <p>Tell us who is applying to operate this store.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <div class="field">
+      <label for="fullName">Full Legal Name <span class="required">*</span></label>
+      <input id="fullName" name="fullName" required maxlength="120" autocomplete="name" placeholder="Enter your full name">
+    </div>
+
+    <div class="field">
+      <label for="email">Email Address <span class="required">*</span></label>
+      <input id="email" name="email" type="email" required maxlength="150" autocomplete="email" placeholder="you@example.com">
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone Number <span class="required">*</span></label>
+      <input id="phone" name="phone" type="tel" required maxlength="20" autocomplete="tel" placeholder="Your active phone number">
+    </div>
+
+    <div class="field">
+      <label for="dob">Date of Birth <span class="required">*</span></label>
+      <input id="dob" name="dob" type="date" required>
+    </div>
+
+    <div class="field full">
+      <label for="residentialAddress">Residential Address <span class="required">*</span></label>
+      <textarea id="residentialAddress" name="residentialAddress" required maxlength="350" placeholder="Enter your full residential address"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="state">State <span class="required">*</span></label>
+      <select id="state" name="state" required>
+        <option value="">Select state</option>
+        <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+        <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+        <option>Benue</option><option>Borno</option><option>Cross River</option>
+        <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+        <option>Ekiti</option><option>Enugu</option><option>Gombe</option>
+        <option>Imo</option><option>Jigawa</option><option>Kaduna</option>
+        <option>Kano</option><option>Katsina</option><option>Kebbi</option>
+        <option>Kogi</option><option>Kwara</option><option>Lagos</option>
+        <option>Nasarawa</option><option>Niger</option><option>Ogun</option>
+        <option>Ondo</option><option>Osun</option><option>Oyo</option>
+        <option>Plateau</option><option>Rivers</option><option>Sokoto</option>
+        <option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+        <option>FCT Abuja</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="city">City / Town <span class="required">*</span></label>
+      <input id="city" name="city" required maxlength="100" placeholder="Enter your city or town">
+    </div>
+
+  </div>
+</section>
+
+<!-- IDENTITY -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 02</div>
+    <h2>Identity Verification</h2>
+    <p>Provide identity information and a clear photograph of yourself.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <div class="field">
+      <label for="idType">Identity Document Type <span class="required">*</span></label>
+      <select id="idType" name="idType" required>
+        <option value="">Choose document type</option>
+        <option>National Identification Number (NIN) document</option>
+        <option>International Passport</option>
+        <option>Driver's Licence</option>
+        <option>Voter's Card</option>
+      </select>
+      <small>Only provide the document type and requested verification evidence through the secure upload system.</small>
+    </div>
+
+    <div class="field">
+      <label for="idNumber">Identification Number <span class="required">*</span></label>
+      <input id="idNumber" name="idNumber" required maxlength="40" autocomplete="off" placeholder="Enter identification number">
+    </div>
+
+    <div class="field full">
+      <label>Passport Photograph <span class="required">*</span></label>
+      <div class="upload-box">
+        <div class="upload-icon">🪪</div>
+        <strong>Upload a clear passport photograph</strong>
+        <p>Your face should be clearly visible. Do not upload an edited or misleading image.</p>
+        <input type="file" id="passportPhoto" accept="image/jpeg,image/png,image/webp" required>
+        <div class="preview" id="passportPreview"></div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Identity Document Photograph <span class="required">*</span></label>
+      <div class="upload-box">
+        <div class="upload-icon">📄</div>
+        <strong>Upload your identity document</strong>
+        <p>Upload a clear image of the selected document. All relevant details should be readable.</p>
+        <input type="file" id="identityDocument" accept="image/jpeg,image/png,image/webp,.pdf" required>
+        <div class="preview" id="identityPreview"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BUSINESS INFORMATION -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 03</div>
+    <h2>Business Information</h2>
+    <p>Provide details about the business you intend to operate on EarnGig.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <div class="field">
+      <label for="businessName">Business Name <span class="required">*</span></label>
+      <input id="businessName" name="businessName" required maxlength="120" placeholder="Your business name">
+    </div>
+
+    <div class="field">
+      <label for="proposedStoreName">Proposed Store Name <span class="required">*</span></label>
+      <input id="proposedStoreName" name="proposedStoreName" required maxlength="100" placeholder="Name customers will see">
+    </div>
+
+    <div class="field">
+      <label for="businessCategory">Business Category <span class="required">*</span></label>
+      <select id="businessCategory" name="businessCategory" required>
+        <option value="">Choose category</option>
+        <option>Fashion and Clothing</option>
+        <option>Footwear and Bags</option>
+        <option>Electronics and Gadgets</option>
+        <option>Beauty and Cosmetics</option>
+        <option>Food and Drinks</option>
+        <option>Home and Furniture</option>
+        <option>Books and Stationery</option>
+        <option>Health and Wellness</option>
+        <option>Sports and Fitness</option>
+        <option>Automobile Products</option>
+        <option>Digital Products</option>
+        <option>Professional Services</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="businessType">Business Ownership <span class="required">*</span></label>
+      <select id="businessType" name="businessType" required>
+        <option value="">Choose one</option>
+        <option>Sole proprietor</option>
+        <option>Partnership</option>
+        <option>Registered company</option>
+        <option>Family business</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field full">
+      <label for="businessDescription">Describe Your Business <span class="required">*</span></label>
+      <textarea id="businessDescription" name="businessDescription" required maxlength="1500" placeholder="Explain what your business does, what you sell and how long you have operated..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="businessPhone">Business Phone Number <span class="required">*</span></label>
+      <input id="businessPhone" name="businessPhone" type="tel" required maxlength="20" placeholder="Business contact number">
+    </div>
+
+    <div class="field">
+      <label for="businessEmail">Business Email</label>
+      <input id="businessEmail" name="businessEmail" type="email" maxlength="150" placeholder="Business email address">
+    </div>
+
+    <div class="field full">
+      <label for="businessAddress">Physical Business Address <span class="required">*</span></label>
+      <textarea id="businessAddress" name="businessAddress" required maxlength="350" placeholder="Enter the actual location where the business operates or stores its products"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="businessYears">How Long Have You Operated? <span class="required">*</span></label>
+      <select id="businessYears" name="businessYears" required>
+        <option value="">Select duration</option>
+        <option>Not yet started</option>
+        <option>Less than 6 months</option>
+        <option>6 months - 1 year</option>
+        <option>1 - 3 years</option>
+        <option>3 - 5 years</option>
+        <option>More than 5 years</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="businessSocial">Business Social Media Link</label>
+      <input id="businessSocial" name="businessSocial" type="url" placeholder="https://instagram.com/yourbusiness">
+    </div>
+
+  </div>
+</section>
+
+<!-- BUSINESS DOCUMENTS -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 04</div>
+    <h2>Business Documents and Evidence</h2>
+    <p>Help EarnGig establish that your business is genuine and that you are authorised to operate it.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <div class="field full">
+      <label>Business Registration Document</label>
+      <div class="upload-box">
+        <div class="upload-icon">📑</div>
+        <strong>Upload CAC or other registration evidence</strong>
+        <p>If your business is registered, upload the relevant certificate or document. If not, select the declaration below.</p>
+        <input type="file" id="businessDocument" accept="image/jpeg,image/png,image/webp,.pdf">
+        <div class="preview" id="businessDocumentPreview"></div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Business Address Evidence</label>
+      <div class="upload-box">
+        <div class="upload-icon">📍</div>
+        <strong>Upload evidence of your business location</strong>
+        <p>Examples include a business premises photograph, shop sign, relevant utility document or tenancy evidence. Avoid exposing unrelated sensitive information.</p>
+        <input type="file" id="addressEvidence" accept="image/jpeg,image/png,image/webp,.pdf">
+        <div class="preview" id="addressPreview"></div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <label for="registrationDeclaration">Business Registration Status <span class="required">*</span></label>
+      <select id="registrationDeclaration" name="registrationDeclaration" required>
+        <option value="">Choose one</option>
+        <option value="registered">My business is formally registered</option>
+        <option value="not_registered">My business is not formally registered</option>
+        <option value="in_process">My business registration is in progress</option>
+      </select>
+    </div>
+
+    <div class="field full">
+      <label for="businessEvidenceDescription">Additional Business Evidence</label>
+      <textarea id="businessEvidenceDescription" name="businessEvidenceDescription" maxlength="1000" placeholder="Explain any additional evidence you are submitting to establish that your business is genuine..."></textarea>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRODUCT PROOF -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 05</div>
+    <h2>Physical Product Verification</h2>
+    <p>Show the actual products you intend to sell. These photographs help our team verify that you have genuine products in your possession or control.</p>
+  </div>
+
+  <div class="form-grid">
+
+    <div class="field full">
+      <label>Photographs of Your Actual Products <span class="required">*</span></label>
+      <div class="upload-box">
+        <div class="upload-icon">📦</div>
+        <strong>Upload at least two product photographs</strong>
+        <p>Photograph the actual products you handle. Do not use downloaded catalogue images as proof of possession.</p>
+        <input type="file" id="productPhotos" accept="image/jpeg,image/png,image/webp" multiple required>
+        <div class="preview" id="productPreview"></div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <label>Photograph of You Holding Your Product <span class="required">*</span></label>
+      <div class="upload-box">
+        <div class="upload-icon">🤳</div>
+        <strong>Upload a photograph of yourself holding one of your products</strong>
+        <p>Your face and the product should both be clearly visible in the same photograph. The photograph must be genuine and recent.</p>
+        <input type="file" id="holdingPhoto" accept="image/jpeg,image/png,image/webp" required>
+        <div class="preview" id="holdingPreview"></div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <label for="productDescription">Describe the Products You Intend to Sell <span class="required">*</span></label>
+      <textarea id="productDescription" name="productDescription" required maxlength="1000" placeholder="List your main products, brands if applicable, and where you source them..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="productSource">Where Do You Get Your Products? <span class="required">*</span></label>
+      <select id="productSource" name="productSource" required>
+        <option value="">Choose one</option>
+        <option>I manufacture them</option>
+        <option>I buy from wholesalers</option>
+        <option>I buy from distributors</option>
+        <option>I import them</option>
+        <option>I source from local suppliers</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="stockLocation">Where Is Your Stock Kept? <span class="required">*</span></label>
+      <select id="stockLocation" name="stockLocation" required>
+        <option value="">Choose one</option>
+        <option>My physical shop</option>
+        <option>My home</option>
+        <option>Warehouse</option>
+        <option>Supplier or fulfilment location</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADDITIONAL INFORMATION -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 06</div>
+    <h2>Additional Information</h2>
+    <p>Provide any other information that will help our verification team assess your application.</p>
+  </div>
+
+  <div class="form-grid">
+    <div class="field full">
+      <label for="additionalInformation">Additional Information</label>
+      <textarea id="additionalInformation" name="additionalInformation" maxlength="1200" placeholder="Anything else you want the EarnGig verification team to know..."></textarea>
+    </div>
+
+    <div class="field full">
+      <label for="referralSource">How Did You Hear About EarnGig?</label>
+      <select id="referralSource" name="referralSource">
+        <option value="">Select an option</option>
+        <option>Social media</option>
+        <option>Friend or family</option>
+        <option>Online advertisement</option>
+        <option>EarnGig user</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT INFORMATION -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 07</div>
+    <h2>Shop Opening Payment</h2>
+    <p>Payment comes after admin approval, not at the application stage.</p>
+  </div>
+
+  <div class="payment-info">
+    <h3>Basic EarnGig Shop</h3>
+    <div class="payment-price">₦20,000</div>
+    <p>One-time shop opening payment, payable only after your store registration has been approved.</p>
+    <ul>
+      <li>Basic storefront setup</li>
+      <li>Business information and branding</li>
+      <li>Product listing access</li>
+      <li>Seller dashboard</li>
+      <li>Order management access</li>
+    </ul>
+  </div>
+
+  <div class="notice" style="margin-top:13px;margin-bottom:0">
+    <strong>Do not make any payment now.</strong>
+    If your application is approved, your Seller Dashboard will provide the next payment step. Premium customisation is an optional ₦10,000 upgrade after opening your shop.
+  </div>
+</section>
+
+<!-- DECLARATION -->
+<section class="panel">
+  <div class="panel-heading">
+    <div class="section-number">SECTION 08</div>
+    <h2>Applicant Declaration</h2>
+    <p>Confirm that the information you have supplied is accurate.</p>
+  </div>
+
+  <label class="checkbox-row">
+    <input type="checkbox" id="truthDeclaration" required>
+    <span>I confirm that the personal and business information I have provided is accurate and complete to the best of my knowledge.</span>
+  </label>
+
+  <label class="checkbox-row">
+    <input type="checkbox" id="ownershipDeclaration" required>
+    <span>I confirm that I own, operate or am authorised to represent the business and products described in this application.</span>
+  </label>
+
+  <label class="checkbox-row">
+    <input type="checkbox" id="photoDeclaration" required>
+    <span>I confirm that the photographs and documents submitted are genuine and have not been deliberately manipulated to mislead EarnGig.</span>
+  </label>
+
+  <label class="checkbox-row">
+    <input type="checkbox" id="reviewConsent" required>
+    <span>I understand that EarnGig may review my submitted information and request additional evidence before approving my store registration.</span>
+  </label>
+
+  <div class="form-actions">
+    <button type="button" class="secondary" onclick="location.href='my-shop.html'">Cancel</button>
+    <button type="submit" class="primary" id="submitButton">Submit Store Application</button>
+  </div>
+</section>
+
+</form>
+
+<section class="status-card" id="successCard">
+  <div class="status-icon">📋</div>
+  <h2>Application Prepared</h2>
+  <p id="successMessage">
+    Your application has been prepared. Secure submission is not yet connected.
+  </p>
+  <div class="reference" id="applicationReference"></div>
+  <p class="status-note">
+    Do not close this page until you have copied your reference number.
+    Your documents must be uploaded through EarnGig's secure application system
+    before the admin team can review them.
+  </p>
+  <br>
+  <a href="my-shop.html" class="primary" style="display:inline-block">Return to Seller Dashboard</a>
+</section>
+
+</main>
+
+<footer>
+  <a href="help.html">Help Centre</a>
+  <span>© 2026 EarnGig. All rights reserved.</span>
+</footer>
+
+<script>
+const FILE_LIMIT = 5 * 1024 * 1024;
+const IMAGE_TYPES = ["image/jpeg","image/png","image/webp"];
+
+const uploadRules = [
+  {id:"passportPhoto", preview:"passportPreview", multiple:false, required:true, imageOnly:true},
+  {id:"identityDocument", preview:"identityPreview", multiple:false, required:true, imageOnly:false},
+  {id:"businessDocument", preview:"businessDocumentPreview", multiple:false, required:false, imageOnly:false},
+  {id:"addressEvidence", preview:"addressPreview", multiple:false, required:false, imageOnly:false},
+  {id:"productPhotos", preview:"productPreview", multiple:true, required:true, imageOnly:true},
+  {id:"holdingPhoto", preview:"holdingPreview", multiple:false, required:true, imageOnly:true}
+];
+
+function showPreview(input, previewId, multiple, imageOnly){
+  const preview = document.getElementById(previewId);
+  preview.innerHTML = "";
+
+  const files = Array.from(input.files || []);
+
+  files.forEach(file => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "preview-item";
+
+    if(file.type.startsWith("image/")){
+      const image = document.createElement("img");
+      image.alt = "Selected evidence preview";
+
+      const reader = new FileReader();
+      reader.onload = event => image.src = event.target.result;
+      reader.readAsDataURL(file);
+
+      wrapper.appendChild(image);
+    }else{
+      wrapper.style.display = "grid";
+      wrapper.style.placeItems = "center";
+      wrapper.style.fontSize = "10px";
+      wrapper.style.padding = "5px";
+      wrapper.textContent = "PDF DOCUMENT";
+    }
+
+    preview.appendChild(wrapper);
+  });
+}
+
+uploadRules.forEach(rule => {
+  const input = document.getElementById(rule.id);
+
+  input.addEventListener("change", () => {
+    const files = Array.from(input.files || []);
+
+    if(rule.required && !files.length){
+      return;
+    }
+
+    if(rule.id === "productPhotos" && files.length < 2){
+      alert("Please upload at least two product photographs.");
+      input.value = "";
+      document.getElementById(rule.preview).innerHTML = "";
+      return;
+    }
+
+    for(const file of files){
+      if(file.size > FILE_LIMIT){
+        alert("Each file must be 5MB or smaller.");
+        input.value = "";
+        document.getElementById(rule.preview).innerHTML = "";
+        return;
+      }
+
+      if(rule.imageOnly && !IMAGE_TYPES.includes(file.type)){
+        alert("Please upload JPG, PNG or WEBP image files for this photograph.");
+        input.value = "";
+        document.getElementById(rule.preview).innerHTML = "";
+        return;
+      }
+
+      if(!rule.imageOnly &&
+         !IMAGE_TYPES.includes(file.type) &&
+         file.type !== "application/pdf"){
+        alert("Please upload a JPG, PNG, WEBP or PDF document.");
+        input.value = "";
+        document.getElementById(rule.preview).innerHTML = "";
+        return;
+      }
+    }
+
+    showPreview(input, rule.preview, rule.multiple, rule.imageOnly);
+  });
+});
+
+function validateUploads(){
+  for(const rule of uploadRules){
+    const input = document.getElementById(rule.id);
+    const files = Array.from(input.files || []);
+
+    if(rule.required && !files.length){
+      alert("Please complete all required document and photograph uploads.");
+      input.focus();
+      return false;
+    }
+
+    if(rule.id === "productPhotos" && files.length < 2){
+      alert("Please upload at least two product photographs.");
+      input.focus();
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function generateReference(){
+  const date = new Date();
+  const stamp =
+    date.getFullYear().toString() +
+    String(date.getMonth()+1).padStart(2,"0") +
+    String(date.getDate()).padStart(2,"0");
+
+  const random = Math.random().toString(36).substring(2,8).toUpperCase();
+
+  return "EG-STORE-" + stamp + "-" + random;
+}
+
+document.getElementById("dob").max =
+  new Date().toISOString().split("T")[0];
+
+document.getElementById("registrationForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  if(!event.target.reportValidity()){
+    return;
+  }
+
+  if(!validateUploads()){
+    return;
+  }
+
+  const declarationIds = [
+    "truthDeclaration",
+    "ownershipDeclaration",
+    "photoDeclaration",
+    "reviewConsent"
+  ];
+
+  for(const id of declarationIds){
+    if(!document.getElementById(id).checked){
+      alert("Please accept all applicant declarations before submitting.");
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+
+  /*
+    IMPORTANT:
+    This frontend intentionally does not save passport photos,
+    identity documents or other sensitive evidence in localStorage.
+
+    Secure file upload and admin submission must be implemented
+    through an authenticated backend before this form is live.
+  */
+
+  const reference = generateReference();
+
+  document.getElementById("successMessage").textContent =
+    "Your form has passed the browser-side checks, but your application has NOT been sent to EarnGig. Secure document upload and admin submission must be connected before an application can enter review.";
+
+  document.getElementById("applicationReference").textContent =
+    "Reference: " + reference;
+
+  document.getElementById("successCard").classList.add("show");
+  document.getElementById("successCard").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+});
+</script>
+
+</body>
+</html>
