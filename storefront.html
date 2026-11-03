@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Store | EarnGig</title>
+
+<style>
+:root {
+    --purple:#6d35c7;
+    --purple-dark:#4c2097;
+    --lavender:#f4efff;
+    --gold:#e7b94f;
+    --text:#292438;
+    --muted:#777286;
+    --border:#e8e1f1;
+    --green:#16834a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:var(--text)}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+header{
+    min-height:70px;padding:12px 5%;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--border);background:#fff;
+}
+.brand{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:800;color:var(--purple-dark)}
+.brand svg{width:25px;height:25px}
+.header-links{display:flex;gap:20px;font-size:13px;font-weight:600}
+.header-links a:hover{color:var(--purple)}
+.menu-btn{display:none;border:0;background:var(--lavender);color:var(--purple);padding:9px 12px;border-radius:8px;font-size:19px}
+.layout{display:grid;grid-template-columns:235px 1fr;min-height:calc(100vh - 70px)}
+.sidebar{border-right:1px solid var(--border);padding:24px 15px}
+.sidebar h3{font-size:11px;color:#9991a6;letter-spacing:1px;margin:17px 10px 10px}
+.sidebar a{display:block;padding:12px;border-radius:9px;font-size:13px;font-weight:600;color:#575164;margin-bottom:5px}
+.sidebar a:hover,.sidebar a.active{background:var(--lavender);color:var(--purple)}
+main{padding:28px;max-width:1400px;width:100%}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap;margin-bottom:23px}
+.heading h1{font-size:27px;margin-bottom:7px}
+.heading p{font-size:13px;color:var(--muted);line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:11px 16px;background:var(--purple);color:#fff;font-size:12px;font-weight:700}
+.btn:hover{background:var(--purple-dark)}
+.btn-outline{background:#fff;color:var(--purple);border:1px solid var(--purple)}
+.btn-gold{background:var(--gold);color:#382600}
+.card{border:1px solid var(--border);border-radius:14px;padding:21px;margin-bottom:20px}
+.card h2{font-size:17px;margin-bottom:8px}
+.card>p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:17px}
+.notice{padding:13px 15px;border:1px solid #eadcfb;background:#faf7ff;color:#594574;border-radius:9px;font-size:12px;line-height:1.6;margin-bottom:17px}
+.notice.warning{background:#fff9eb;border-color:#f1dfb7;color:#805b17}
+.notice.success{background:#f0fbf4;border-color:#c9ecd7;color:#17683e}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.group{display:flex;flex-direction:column;gap:7px}
+.group.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;color:var(--text);background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--purple)}
+textarea{min-height:95px;resize:vertical}
+small{font-size:11px;color:var(--muted);line-height:1.5}
+.banner-preview{
+    height:190px;border-radius:13px;overflow:hidden;
+    background:linear-gradient(120deg,#4c2097,#8752d8);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;text-align:center;padding:20px;
+    background-size:cover;background-position:center;
+}
+.banner-preview h2{font-size:26px;margin-bottom:8px}
+.banner-preview p{font-size:13px}
+.logo-preview{width:90px;height:90px;border-radius:50%;border:3px solid #fff;background:var(--lavender);object-fit:cover}
+.brand-row{display:flex;align-items:center;gap:17px;margin:20px 0}
+.brand-row h3{font-size:18px;margin-bottom:5px}
+.brand-row p{font-size:12px;color:var(--muted)}
+.preview-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.products-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.product-card img{width:100%;height:155px;object-fit:cover;background:var(--lavender)}
+.product-card .product-info{padding:12px}
+.product-card h3{font-size:13px;margin-bottom:7px}
+.product-card strong{color:var(--purple-dark);font-size:15px}
+.product-card p{font-size:11px;color:var(--muted);margin-top:6px}
+.empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+.status{display:inline-block;padding:6px 10px;border-radius:30px;font-size:10px;font-weight:800}
+.status.open{background:#e6f8ed;color:var(--green)}
+.status.closed{background:#fff0f1;color:#c52e40}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:0}
+.toggle-row p{font-size:13px;font-weight:600}
+.toggle-row small{display:block;margin-top:4px}
+.toggle{width:44px;height:24px;appearance:none;background:#d5d0dc;border-radius:30px;position:relative;cursor:pointer;flex-shrink:0}
+.toggle:checked{background:var(--purple)}
+.toggle:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s}
+.toggle:checked:before{transform:translateX(20px)}
+footer{text-align:center;padding:22px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.hidden{display:none!important}
+@media(max-width:850px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:none;border-bottom:1px solid var(--border)}
+.sidebar.show{display:block}
+.menu-btn{display:block}
+.header-links{display:none}
+main{padding:20px 14px}
+.products-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:550px){
+.form-grid{grid-template-columns:1fr}
+.group.full{grid-column:auto}
+.products-grid{grid-template-columns:1fr 1fr}
+.banner-preview{height:150px}
+.banner-preview h2{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a href="index.html" class="brand">
+<svg viewBox="0 0 40 32" fill="none" aria-hidden="true">
+<path d="M5 8L12 15L20 3L28 15L35 8L32 26H8L5 8Z" fill="#E7B94F" stroke="#C18B24" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M9 29H31" stroke="#C18B24" stroke-width="2" stroke-linecap="round"/>
+<circle cx="5" cy="7" r="2" fill="#E7B94F"/>
+<circle cx="20" cy="3" r="2" fill="#E7B94F"/>
+<circle cx="35" cy="7" r="2" fill="#E7B94F"/>
+</svg>
+EarnGig
+</a>
+
+<nav class="header-links">
+<a href="dashboard.html">Dashboard</a>
+<a href="marketplace.html">Marketplace</a>
+<a href="my-shop.html">Seller Centre</a>
+</nav>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+<h3>SELLER CENTRE</h3>
+<a href="my-shop.html">📊 Overview</a>
+<a href="storefront.html" class="active">🏪 My Store</a>
+<a href="store-customisation.html">🎨 Store Customisation</a>
+<a href="my-products.html">📦 My Products</a>
+<a href="my-orders.html">🛍️ Orders</a>
+<a href="sales-earnings.html">💰 Sales & Earnings</a>
+<a href="promote-store.html">🚀 Promote My Store</a>
+<a href="shop-payments.html">💳 Shop Payments</a>
+<a href="withdrawals.html">🏦 Withdrawals</a>
+<a href="store-settings.html">⚙️ Store Settings</a>
+
+<h3>MAIN PLATFORM</h3>
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="marketplace.html">🛒 Marketplace</a>
+<a href="wallet.html">👛 My Wallet</a>
+</aside>
+
+<main>
+
+<div class="heading">
+<div>
+<h1>My Store</h1>
+<p>Manage your business information and how customers see your storefront.</p>
+</div>
+<a href="marketplace.html" class="btn btn-outline">View Marketplace</a>
+</div>
+
+<div class="notice">
+Your storefront information is saved in this browser demo. Your store opening approval and verified payment are still required before your store can be activated for customers.
+</div>
+
+<section class="card">
+<h2>Storefront Preview</h2>
+<p>This is how your store branding and business information will appear to visitors.</p>
+
+<div class="banner-preview" id="banner-preview">
+<div>
+<h2 id="preview-banner-title">Welcome to Our Store</h2>
+<p id="preview-banner-text">Discover products you will love.</p>
+</div>
+</div>
+
+<div class="brand-row">
+<img id="preview-logo" class="logo-preview" alt="Store logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f4efff'/%3E%3Ctext x='50' y='61' text-anchor='middle' font-size='40' fill='%236d35c7'%3E%2B%3C/text%3E%3C/svg%3E">
+<div>
+<h3 id="preview-store-name">Your Store Name</h3>
+<p id="preview-store-category">Your business category</p>
+<span class="status closed" id="preview-store-status">Store Closed</span>
+</div>
+</div>
+
+<p id="preview-description">Your business description will appear here.</p>
+
+<div class="preview-actions">
+<button class="btn btn-outline" type="button" onclick="showSection('business-information')">Edit Store Information</button>
+<a href="store-customisation.html" class="btn btn-gold">Customise Storefront</a>
+</div>
+</section>
+
+<section class="card" id="business-information">
+<h2>Business Information</h2>
+<p>Keep your store information accurate so customers know who you are and how to contact you.</p>
+
+<form id="store-form" class="form-grid">
+
+<div class="group">
+<label for="store-name">Store Name *</label>
+<input id="store-name" required placeholder="Enter your store name">
+</div>
+
+<div class="group">
+<label for="store-category">Business Category *</label>
+<select id="store-category" required>
+<option value="">Choose category</option>
+<option>Fashion</option>
+<option>Electronics</option>
+<option>Food and Drinks</option>
+<option>Beauty and Personal Care</option>
+<option>Home and Living</option>
+<option>Books and Education</option>
+<option>Services</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="group full">
+<label for="store-description">Business Description *</label>
+<textarea id="store-description" required placeholder="Tell customers about your business, what you sell and what makes your business special."></textarea>
+</div>
+
+<div class="group">
+<label for="store-phone">Business Phone</label>
+<input id="store-phone" type="tel" placeholder="Business phone number">
+</div>
+
+<div class="group">
+<label for="store-email">Business Email</label>
+<input id="store-email" type="email" placeholder="Business email address">
+</div>
+
+<div class="group">
+<label for="store-location">Business Location</label>
+<input id="store-location" placeholder="City, State">
+</div>
+
+<div class="group">
+<label for="store-address">Full Business Address</label>
+<input id="store-address" placeholder="Business address">
+</div>
+
+<div class="group">
+<label for="store-social">Social Media Link</label>
+<input id="store-social" type="url" placeholder="https://">
+</div>
+
+<div class="group">
+<label for="store-website">Business Website</label>
+<input id="store-website" type="url" placeholder="https://">
+</div>
+
+<div class="group full">
+<label for="store-logo">Store Logo URL</label>
+<input id="store-logo" type="url" placeholder="https://example.com/logo.png">
+<small>Enter a public image URL for your store logo.</small>
+</div>
+
+<div class="group full">
+<label for="store-banner">Store Banner Image URL</label>
+<input id="store-banner" type="url" placeholder="https://example.com/banner.jpg">
+<small>Enter a public image URL for your welcome banner.</small>
+</div>
+
+<div class="group full">
+<label for="banner-title">Welcome Banner Heading</label>
+<input id="banner-title" placeholder="Welcome to our store">
+</div>
+
+<div class="group full">
+<label for="banner-text">Welcome Banner Message</label>
+<input id="banner-text" placeholder="Discover products you will love.">
+</div>
+
+<div class="group full">
+<button type="submit" class="btn">Save Store Information</button>
+</div>
+
+</form>
+
+<div id="save-message"></div>
+</section>
+
+<section class="card">
+<h2>Store Availability</h2>
+<p>Control whether customers can see your store as open or temporarily closed.</p>
+
+<div class="toggle-row">
+<div>
+<p>Store Open</p>
+<small>Allow customers to browse your storefront.</small>
+</div>
+<input class="toggle" type="checkbox" id="store-open">
+</div>
+<div id="availability-message"></div>
+</section>
+
+<section class="card">
+<h2>Products in My Store</h2>
+<p>These products are loaded from your Seller Dashboard product list.</p>
+
+<div class="products-grid" id="products-grid"></div>
+<div id="products-empty" class="empty">You have not added products yet. Add products from your Seller Centre.</div>
+
+<br>
+<a href="my-products.html" class="btn btn-outline">Manage My Products</a>
+</section>
+
+<section class="card">
+<h2>Store Management Shortcuts</h2>
+<div class="form-grid">
+<a href="store-customisation.html" class="btn btn-outline">🎨 Store Customisation</a>
+<a href="my-products.html" class="btn btn-outline">📦 Manage Products</a>
+<a href="my-orders.html" class="btn btn-outline">🛍️ View Orders</a>
+<a href="store-settings.html" class="btn btn-outline">⚙️ Store Settings</a>
+</div>
+</section>
+
+</main>
+</div>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
+
+<script>
+const STORE_KEY = "earngig_seller_store";
+const PRODUCTS_KEY = "earngig_seller_products";
+const AVAILABILITY_KEY = "earngig_store_open";
+
+function readStorage(key, fallback) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value === null ? fallback : value;
+    } catch {
+        return fallback;
+    }
+}
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("show");
+}
+
+function showSection(id) {
+    const section = document.getElementById(id);
+    if (section) {
+        section.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+}
+
+function loadStore() {
+    const store = readStorage(STORE_KEY, {});
+
+    document.getElementById("store-name").value = store.name || "";
+    document.getElementById("store-category").value = store.category || "";
+    document.getElementById("store-description").value = store.description || "";
+    document.getElementById("store-phone").value = store.phone || "";
+    document.getElementById("store-email").value = store.email || "";
+    document.getElementById("store-location").value = store.location || "";
+    document.getElementById("store-address").value = store.address || "";
+    document.getElementById("store-social").value = store.social || "";
+    document.getElementById("store-website").value = store.website || "";
+    document.getElementById("store-logo").value = store.logo || "";
+    document.getElementById("store-banner").value = store.banner || "";
+    document.getElementById("banner-title").value = store.bannerTitle || "";
+    document.getElementById("banner-text").value = store.bannerText || "";
+
+    document.getElementById("store-open").checked =
+        localStorage.getItem(AVAILABILITY_KEY) === "true";
+
+    updatePreview();
+    renderProducts();
+    updateAvailability();
+}
+
+function updatePreview() {
+    const name = document.getElementById("store-name").value.trim();
+    const category = document.getElementById("store-category").value;
+    const description = document.getElementById("store-description").value.trim();
+    const logo = document.getElementById("store-logo").value.trim();
+    const banner = document.getElementById("store-banner").value.trim();
+    const title = document.getElementById("banner-title").value.trim();
+    const text = document.getElementById("banner-text").value.trim();
+
+    document.getElementById("preview-store-name").textContent = name || "Your Store Name";
+    document.getElementById("preview-store-category").textContent = category || "Your business category";
+    document.getElementById("preview-description").textContent = description || "Your business description will appear here.";
+    document.getElementById("preview-banner-title").textContent = title || "Welcome to Our Store";
+    document.getElementById("preview-banner-text").textContent = text || "Discover products you will love.";
+
+    const logoPreview = document.getElementById("preview-logo");
+    logoPreview.src = logo || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f4efff'/%3E%3Ctext x='50' y='61' text-anchor='middle' font-size='40' fill='%236d35c7'%3E%2B%3C/text%3E%3C/svg%3E";
+
+    const bannerPreview = document.getElementById("banner-preview");
+    bannerPreview.style.backgroundImage = banner
+        ? "url(" + JSON.stringify(banner).slice(1,-1) + ")"
+        : "linear-gradient(120deg,#4c2097,#8752d8)";
+}
+
+document.querySelectorAll("#store-form input, #store-form textarea, #store-form select")
+.forEach(input => input.addEventListener("input", updatePreview));
+
+document.getElementById("store-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const store = {
+        name:document.getElementById("store-name").value.trim(),
+        category:document.getElementById("store-category").value,
+        description:document.getElementById("store-description").value.trim(),
+        phone:document.getElementById("store-phone").value.trim(),
+        email:document.getElementById("store-email").value.trim(),
+        location:document.getElementById("store-location").value.trim(),
+        address:document.getElementById("store-address").value.trim(),
+        social:document.getElementById("store-social").value.trim(),
+        website:document.getElementById("store-website").value.trim(),
+        logo:document.getElementById("store-logo").value.trim(),
+        banner:document.getElementById("store-banner").value.trim(),
+        bannerTitle:document.getElementById("banner-title").value.trim(),
+        bannerText:document.getElementById("banner-text").value.trim(),
+        updatedAt:new Date().toISOString()
+    };
+
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    updatePreview();
+
+    document.getElementById("save-message").innerHTML =
+        '<div class="notice success">Your store information has been saved in this browser.</div>';
+});
+
+document.getElementById("store-open").addEventListener("change", function() {
+    localStorage.setItem(AVAILABILITY_KEY, String(this.checked));
+    updateAvailability();
+});
+
+function updateAvailability() {
+    const isOpen = localStorage.getItem(AVAILABILITY_KEY) === "true";
+    const badge = document.getElementById("preview-store-status");
+    const message = document.getElementById("availability-message");
+
+    badge.textContent = isOpen ? "Store Open" : "Store Closed";
+    badge.className = "status " + (isOpen ? "open" : "closed");
+
+    message.innerHTML = isOpen
+        ? '<div class="notice success">Your store is marked as open in this browser demo.</div>'
+        : '<div class="notice warning">Your store is currently marked as closed.</div>';
+}
+
+function renderProducts() {
+    const products = readStorage(PRODUCTS_KEY, []);
+    const grid = document.getElementById("products-grid");
+    const empty = document.getElementById("products-empty");
+
+    grid.innerHTML = "";
+
+    const activeProducts = Array.isArray(products)
+        ? products.filter(product => product.status !== "paused")
+        : [];
+
+    if (!activeProducts.length) {
+        empty.style.display = "block";
+        return;
+    }
+
+    empty.style.display = "none";
+
+    activeProducts.forEach(product => {
+        const card = document.createElement("article");
+        card.className = "product-card";
+
+        const image = document.createElement("img");
+        image.src = product.image || "https://placehold.co/400x300/f4efff/6d35c7?text=Product";
+        image.alt = product.name || "Product image";
+        image.onerror = () => {
+            image.src = "https://placehold.co/400x300/f4efff/6d35c7?text=Product";
+        };
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+
+        const title = document.createElement("h3");
+        title.textContent = product.name || "Unnamed product";
+
+        const price = document.createElement("strong");
+        price.textContent = "₦" + Number(product.price || 0).toLocaleString("en-NG");
+
+        const category = document.createElement("p");
+        category.textContent = product.category || "Uncategorised";
+
+        info.append(title, price, category);
+        card.append(image, info);
+        grid.appendChild(card);
+    });
+}
+
+loadStore();
+</script>
+
+</body>
+</html>
