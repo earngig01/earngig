@@ -7,212 +7,72 @@
 <title>EarnGig - Memory Showdown</title>
 <style>
 *{box-sizing:border-box}
-:root{
- --gold:#f6d477;
- --gold2:#ffe9a5;
- --navy:#090e20;
- --panel:#141e39;
- --muted:#aab6d2;
-}
+:root{--gold:#f6d477;--gold2:#ffe9a5;--muted:#aab6d2}
 body{
  margin:0;min-height:100vh;padding:20px 14px 30px;
  display:flex;justify-content:center;align-items:center;
  color:#fff;font-family:Arial,sans-serif;
- background:
- radial-gradient(ellipse at 50% -10%,#66502b80,transparent 45%),
- radial-gradient(ellipse at 100% 70%,#283b6855,transparent 45%),
- linear-gradient(145deg,#080d1d,#101a34 55%,#080d1d);
+ background:radial-gradient(ellipse at 50% -10%,#66502b80,transparent 45%),radial-gradient(ellipse at 100% 70%,#283b6855,transparent 45%),linear-gradient(145deg,#080d1d,#101a34 55%,#080d1d);
 }
 .game{width:100%;max-width:470px;text-align:center}
-.brand{
- font-size:18px;font-weight:900;letter-spacing:1px;
- color:var(--gold2);margin-bottom:8px;
-}
-.brand span{color:#fff}
-.crown{color:var(--gold);font-size:21px}
-h1{
- margin:8px 0 5px;font-size:34px;letter-spacing:-1px;
- background:linear-gradient(90deg,#fff1bd,#f3ce6d,#fff4cb);
- -webkit-background-clip:text;background-clip:text;color:transparent;
-}
+.brand{font-size:18px;font-weight:900;letter-spacing:1px;color:var(--gold2);margin-bottom:8px}
+.brand span{color:#fff}.crown{color:var(--gold);font-size:21px}
+h1{margin:8px 0 5px;font-size:34px;letter-spacing:-1px;background:linear-gradient(90deg,#fff1bd,#f3ce6d,#fff4cb);-webkit-background-clip:text;background-clip:text;color:transparent}
 .subtitle{font-size:13px;color:var(--muted);margin-bottom:19px}
-.topline{
- display:flex;justify-content:space-between;align-items:center;
- gap:8px;margin-bottom:13px;
-}
-.pill{
- padding:9px 12px;border-radius:30px;
- background:#ffffff0c;border:1px solid #ffffff1a;
- color:#e9e1c8;font-size:11px;font-weight:800;
- letter-spacing:.5px;
-}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}
+.pill{padding:9px 12px;border-radius:30px;background:#ffffff0c;border:1px solid #ffffff1a;color:#e9e1c8;font-size:11px;font-weight:800;letter-spacing:.5px}
 .pill.gold{color:var(--gold2);border-color:#f6d47766;background:#f6d47712}
-.players{
- display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;
-}
-.player{
- position:relative;overflow:hidden;
- padding:13px 10px;border-radius:17px;
- background:linear-gradient(145deg,#202d4b,#121c35);
- border:1px solid #ffffff1b;
- transition:.2s;
-}
-.player.active{
- border:1px solid var(--gold);
- box-shadow:0 0 22px #f6d4771c,inset 0 0 20px #f6d4770b;
-}
-.player.active:after{
- content:"YOUR TURN";
- display:block;color:var(--gold);font-size:9px;
- font-weight:900;letter-spacing:1px;margin-top:7px;
-}
-.player:not(.active):after{
- content:"WAITING";
- display:block;color:#8593b2;font-size:9px;
- font-weight:900;letter-spacing:1px;margin-top:7px;
-}
-.avatar{
- width:36px;height:36px;border-radius:50%;
- display:flex;align-items:center;justify-content:center;
- margin:0 auto 6px;font-size:20px;
- background:linear-gradient(145deg,#f6d477,#9c702a);
- box-shadow:0 3px 12px #0005;
-}
-.computer .avatar{background:linear-gradient(145deg,#91caff,#325b9d)}
-.player-name{font-size:12px;font-weight:900;color:#e9edfa}
+.players{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
+.player{position:relative;overflow:hidden;padding:13px 10px;border-radius:17px;background:linear-gradient(145deg,#202d4b,#121c35);border:1px solid #ffffff1b;transition:.2s}
+.player.active{border:1px solid var(--gold);box-shadow:0 0 22px #f6d4771c,inset 0 0 20px #f6d4770b}
+.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:20px;background:linear-gradient(145deg,#f6d477,#9c702a);box-shadow:0 3px 12px #0005}
+.computer .avatar,.opponent .avatar{background:linear-gradient(145deg,#91caff,#325b9d)}
+.player-name{font-size:12px;font-weight:900;color:#e9edfa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .player-score{font-size:29px;font-weight:900;margin-top:5px;color:var(--gold2)}
-.computer .player-score{color:#91d9ff}
-.status{
- min-height:43px;display:flex;align-items:center;justify-content:center;
- padding:10px;border-radius:12px;margin-bottom:14px;
- background:linear-gradient(90deg,#f6d47710,#ffffff09,#f6d47710);
- border:1px solid #f6d47724;
- color:#f7e8bd;font-size:13px;font-weight:bold;
-}
-.board-wrap{
- padding:10px;border-radius:23px;
- background:linear-gradient(145deg,#263553,#101b34);
- border:1px solid #d5b45b55;
- box-shadow:0 18px 45px #0006,inset 0 1px 0 #ffffff18;
-}
-.board{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:9px;
-}
-.card{
- position:relative;aspect-ratio:1;
- min-width:0;padding:0;border:0;background:none;
- perspective:700px;cursor:pointer;
-}
-.card-inner{
- position:absolute;inset:0;
- transform-style:preserve-3d;
- transition:transform .42s cubic-bezier(.2,.75,.25,1);
-}
-.card.flipped .card-inner,.card.matched .card-inner{
- transform:rotateY(180deg);
-}
-.face{
- position:absolute;inset:0;backface-visibility:hidden;
- border-radius:13px;display:flex;align-items:center;
- justify-content:center;overflow:hidden;
-}
-.back{
- background:
- radial-gradient(circle at 30% 20%,#ffffff30,transparent 38%),
- linear-gradient(145deg,#394a70,#182849 65%,#101c36);
- border:1px solid #c6a95e99;
- box-shadow:inset 0 1px 0 #ffffff35,inset 0 -5px 12px #0004,0 5px 10px #0004;
-}
-.back:before{
- content:"";position:absolute;inset:6px;border:1px solid #e6c97877;
- border-radius:9px;
-}
-.back:after{
- content:"";position:absolute;width:34px;height:34px;
- border:1px solid #f7d98d88;transform:rotate(45deg);
- border-radius:7px;
-}
-.pattern{
- position:relative;z-index:1;font-size:23px;color:#f7d98d;
- text-shadow:0 0 12px #f7d98d77;
-}
-.front{
- transform:rotateY(180deg);
- background:linear-gradient(145deg,#fff4d6,#e6c77e);
- border:2px solid #fff1c4;
- box-shadow:0 0 16px #f6d47733,inset 0 0 12px #ffffff99;
- font-size:clamp(26px,8vw,42px);
- text-shadow:0 3px 4px #73501c33;
-}
-.card.matched .front{
- background:linear-gradient(145deg,#d8f5d5,#82c68c);
- border-color:#d8ffbd;
- box-shadow:0 0 17px #a8f0a855;
-}
+.computer .player-score,.opponent .player-score{color:#91d9ff}
+.player-label{font-size:9px;color:#9caac7;margin-top:6px;font-weight:900;letter-spacing:1px;min-height:11px}
+.status{min-height:43px;display:flex;align-items:center;justify-content:center;padding:10px;border-radius:12px;margin-bottom:14px;background:linear-gradient(90deg,#f6d47710,#ffffff09,#f6d47710);border:1px solid #f6d47724;color:#f7e8bd;font-size:13px;font-weight:bold}
+.board-wrap{padding:10px;border-radius:23px;background:linear-gradient(145deg,#263553,#101b34);border:1px solid #d5b45b55;box-shadow:0 18px 45px #0006,inset 0 1px 0 #ffffff18}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.card{position:relative;aspect-ratio:1;min-width:0;padding:0;border:0;background:none;perspective:700px;cursor:pointer}
+.card-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.2,.75,.25,1)}
+.card.flipped .card-inner,.card.matched .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:13px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.back{background:radial-gradient(circle at 30% 20%,#ffffff30,transparent 38%),linear-gradient(145deg,#394a70,#182849 65%,#101c36);border:1px solid #c6a95e99;box-shadow:inset 0 1px 0 #ffffff35,inset 0 -5px 12px #0004,0 5px 10px #0004}
+.back:before{content:"";position:absolute;inset:6px;border:1px solid #e6c97877;border-radius:9px}
+.back:after{content:"";position:absolute;width:34px;height:34px;border:1px solid #f7d98d88;transform:rotate(45deg);border-radius:7px}
+.pattern{position:relative;z-index:1;font-size:23px;color:#f7d98d;text-shadow:0 0 12px #f7d98d77}
+.front{transform:rotateY(180deg);background:linear-gradient(145deg,#fff4d6,#e6c77e);border:2px solid #fff1c4;box-shadow:0 0 16px #f6d47733,inset 0 0 12px #ffffff99;font-size:clamp(26px,8vw,42px);text-shadow:0 3px 4px #73501c33}
+.card.matched .front{background:linear-gradient(145deg,#d8f5d5,#82c68c);border-color:#d8ffbd;box-shadow:0 0 17px #a8f0a855}
 .card:disabled{cursor:default}
-.card:not(:disabled):active{transform:scale(.96)}
 .progress-area{margin-top:15px}
-.progress-label{
- display:flex;justify-content:space-between;
- color:#c2cbe1;font-size:11px;font-weight:bold;margin-bottom:7px;
-}
-.progress{
- height:7px;background:#ffffff13;border-radius:10px;overflow:hidden;
-}
-.progress-fill{
- height:100%;width:0%;
- background:linear-gradient(90deg,#b78935,#ffe6a0);
- border-radius:10px;transition:width .3s;
-}
-.bottom-info{
- display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;
-}
-.info{
- background:#ffffff09;border:1px solid #ffffff13;
- border-radius:12px;padding:11px;
-}
+.progress-label{display:flex;justify-content:space-between;color:#c2cbe1;font-size:11px;font-weight:bold;margin-bottom:7px}
+.progress{height:7px;background:#ffffff13;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#b78935,#ffe6a0);border-radius:10px;transition:width .3s}
+.bottom-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.info{background:#ffffff09;border:1px solid #ffffff13;border-radius:12px;padding:11px}
 .info small{display:block;color:#9eacc9;font-size:10px;font-weight:bold}
 .info strong{display:block;color:#f7df9f;font-size:20px;margin-top:5px}
-.hint{
- color:#9eabc7;font-size:11px;line-height:1.6;margin-top:14px;
-}
-.back-button{
- margin-top:17px;padding:11px 19px;border-radius:11px;
- border:1px solid #ffffff30;background:transparent;color:#fff;
- font-weight:bold;cursor:pointer;
-}
-#result{
- display:none;position:fixed;inset:0;z-index:10;
- align-items:center;justify-content:center;padding:20px;
- background:#070c1bec;
-}
-.result-panel{
- width:min(380px,100%);padding:29px 23px;text-align:center;
- border-radius:25px;
- background:linear-gradient(145deg,#293957,#111b33);
- border:1px solid #e3c57588;
- box-shadow:0 25px 80px #0009;
-}
-.result-icon{font-size:55px;margin-bottom:9px}
-.result-panel h2{
- font-size:31px;margin:0 0 10px;color:var(--gold2);
-}
-.result-panel p{font-size:13px;color:#d1daed;line-height:1.6}
+.hint{color:#9eabc7;font-size:11px;line-height:1.6;margin-top:14px}
+.back-button{margin-top:17px;padding:11px 19px;border-radius:11px;border:1px solid #ffffff30;background:transparent;color:#fff;font-weight:bold;cursor:pointer}
+#matchScreen,#result{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:#070c1bee}
+#result{display:none;z-index:12}
+.dialog{width:min(390px,100%);padding:28px 23px;text-align:center;border-radius:25px;background:linear-gradient(145deg,#293957,#111b33);border:1px solid #e3c57588;box-shadow:0 25px 80px #0009}
+.dialog h2{font-size:28px;margin:0 0 12px;color:var(--gold2)}
+.dialog p{font-size:13px;color:#d1daed;line-height:1.6}
+.dialog .big{font-size:48px;margin-bottom:12px}
+.dialog button{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(100deg,#f2cf76,#ffe9a9);color:#30220b;font-size:15px;font-weight:900;cursor:pointer;margin-top:10px}
+.dialog button.secondary{background:transparent;border:1px solid #ffffff40;color:#fff}
+.searching{width:65px;height:65px;margin:20px auto;border:4px solid #ffffff20;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.match-meta{font-size:11px!important;color:#9cabc8!important}
 .final-score{font-size:30px;font-weight:900;color:#fff;margin:19px 0}
 .refund{font-size:12px;min-height:20px;color:#d8e99a;margin:12px 0}
-.result-panel button{
- width:100%;padding:15px;border:0;border-radius:12px;
- background:linear-gradient(100deg,#f2cf76,#ffe9a9);
- color:#30220b;font-size:15px;font-weight:900;
-}
-@media(max-width:360px){
- .board{gap:6px}.board-wrap{padding:7px}
- .players{gap:7px}.player{padding:10px 5px}
-}
+@media(max-width:360px){.board{gap:6px}.board-wrap{padding:7px}.players{gap:7px}.player{padding:10px 5px}}
 </style>
 </head>
 <body>
+
 <main class="game">
  <div class="brand"><span class="crown">♛</span> EarnGig <span>• GAMES</span></div>
  <h1>Memory Showdown</h1>
@@ -220,7 +80,7 @@ h1{
 
  <div class="topline">
   <div class="pill gold" id="roundLabel">ROUND 1 OF 3</div>
-  <div class="pill">BEST OF 3</div>
+  <div class="pill" id="modeLabel">FINDING OPPONENT</div>
  </div>
 
  <div class="players">
@@ -228,15 +88,17 @@ h1{
    <div class="avatar">👑</div>
    <div class="player-name">YOU</div>
    <div class="player-score" id="humanScore">0</div>
+   <div class="player-label" id="humanLabel">YOUR TURN</div>
   </div>
-  <div class="player computer" id="computerPanel">
-   <div class="avatar">🤖</div>
-   <div class="player-name">COMPUTER</div>
+  <div class="player opponent" id="opponentPanel">
+   <div class="avatar" id="opponentAvatar">⌛</div>
+   <div class="player-name" id="opponentName">WAITING...</div>
    <div class="player-score" id="computerScore">0</div>
+   <div class="player-label" id="opponentLabel">SEARCHING</div>
   </div>
  </div>
 
- <div class="status" id="status">Your turn! Find two matching cards.</div>
+ <div class="status" id="status">Finding an opponent...</div>
 
  <div class="board-wrap">
   <div class="board" id="board"></div>
@@ -252,20 +114,27 @@ h1{
 
  <div class="bottom-info">
   <div class="info"><small>YOUR PAIRS THIS ROUND</small><strong id="humanPairs">0</strong></div>
-  <div class="info"><small>COMPUTER PAIRS THIS ROUND</small><strong id="computerPairs">0</strong></div>
+  <div class="info"><small>OPPONENT PAIRS THIS ROUND</small><strong id="computerPairs">0</strong></div>
  </div>
 
- <div class="hint">
-  Match two identical cards to score a pair and earn another turn.
-  A mismatch passes the turn to your opponent.
- </div>
-
- <button class="back-button" onclick="location.href='games.html'">← Back to Games</button>
+ <div class="hint">Match two identical cards to score a pair and earn another turn. A mismatch passes the turn to your opponent.</div>
+ <button class="back-button" onclick="leaveGame()">← Back to Games</button>
 </main>
 
+<div id="matchScreen">
+ <div class="dialog">
+  <div class="big">♛</div>
+  <h2>MEMORY SHOWDOWN</h2>
+  <p id="matchMessage">Looking for another player to challenge...</p>
+  <div class="searching" id="spinner"></div>
+  <p class="match-meta" id="matchMeta">Searching for 10 seconds</p>
+  <button id="cancelButton" class="secondary" onclick="leaveGame()">CANCEL</button>
+ </div>
+</div>
+
 <div id="result">
- <div class="result-panel">
-  <div class="result-icon" id="resultIcon">🏆</div>
+ <div class="dialog">
+  <div class="big" id="resultIcon">🏆</div>
   <h2 id="resultTitle">YOU WON!</h2>
   <p id="resultMessage"></p>
   <div class="final-score" id="finalScore">2 - 0</div>
@@ -279,35 +148,103 @@ h1{
 (()=>{
 'use strict';
 
-const boardElement=document.getElementById('board');
-const statusElement=document.getElementById('status');
+/*
+ BACKEND API CONTRACT
 
-const symbols=[
- '💎','👑','🦁','🚀','🎯','💰','⚡','🌟'
-];
+ POST /api/games/memory-showdown/matchmake
+ Body: {game:"memory-showdown"}
+ Response:
+ {
+   matchId:"...",
+   playerId:"...",
+   opponentType:"human" | "computer",
+   opponentName:"...",
+   state:{
+     round:1,
+     humanRoundWins:0,
+     opponentRoundWins:0,
+     cards:[{id:0,symbol:"💎",matched:false,open:false},...],
+     humanPairs:0,
+     opponentPairs:0,
+     matchedCount:0,
+     turnPlayerId:"...",
+     status:"playing"
+   }
+ }
 
-const winsNeeded=2;
-let cards=[];
-let round=1;
-let humanRoundWins=0;
-let computerRoundWins=0;
-let humanPairs=0;
-let computerPairs=0;
-let matchedCount=0;
-let turn='human';
-let firstCard=null;
-let secondCard=null;
-let locked=false;
-let finished=false;
-let roundHistory=[];
-let matchId=makeMatchId();
+ The server must wait up to 10 seconds for a human opponent.
+ If none is found, it must create a computer match and return opponentType:"computer".
 
-// The computer remembers cards it has seen during the round.
-let computerMemory={};
+ GET /api/games/memory-showdown/state?matchId=...
+ Returns the authoritative current match state.
 
-function makeMatchId(){
+ POST /api/games/memory-showdown/move
+ Body: {matchId,cardId}
+ The server validates the player turn, reveals cards, resolves matches,
+ updates scores and returns the latest state.
+
+ POST /api/games/memory-showdown/complete
+ The server verifies the complete match and processes any permitted
+ winner reward or full tie refund exactly once.
+
+ For a human match, the server must own the deck, turns, scores,
+ card reveal timing, match result and disconnect handling.
+*/
+
+const API={
+ matchmake:'/api/games/memory-showdown/matchmake',
+ state:'/api/games/memory-showdown/state',
+ move:'/api/games/memory-showdown/move',
+ complete:'/api/games/memory-showdown/complete',
+ cancel:'/api/games/memory-showdown/cancel'
+};
+
+const $=id=>document.getElementById(id);
+const boardElement=$('board');
+
+let mode=null;
+let matchId=null;
+let playerId=null;
+let opponentName='Opponent';
+let localCards=[];
+let localMemory={};
+let localTurn='human';
+let localFirst=null;
+let localSecond=null;
+let localLocked=false;
+let localHumanPairs=0;
+let localOpponentPairs=0;
+let localMatched=0;
+let localRound=1;
+let localHumanWins=0;
+let localOpponentWins=0;
+let localRoundHistory=[];
+let localFinished=false;
+let localMoveLog=[];
+let resultSent=false;
+let pollHandle=null;
+let pollBusy=false;
+let matchState=null;
+let matchEnded=false;
+let resultTimer=null;
+let computerTimer=null;
+let searchTimer=null;
+let searchStarted=0;
+let matchRequestStarted=false;
+let isLeaving=false;
+
+const symbols=['💎','👑','🦁','🚀','🎯','💰','⚡','🌟'];
+
+function makeId(){
  if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
  return 'memory-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+}
+
+function setStatus(message){$('status').textContent=message}
+
+function showSearch(message,meta){
+ $('matchMessage').textContent=message;
+ $('matchMeta').textContent=meta||'';
 }
 
 function shuffle(array){
@@ -319,283 +256,493 @@ function shuffle(array){
  return a;
 }
 
-function createCards(){
+function createLocalDeck(){
  const deck=shuffle([...symbols,...symbols]);
- cards=deck.map((symbol,index)=>({
-  id:index,
-  symbol,
-  matched:false,
-  open:false
+ localCards=deck.map((symbol,index)=>({
+  id:index,symbol,matched:false,open:false
  }));
 }
 
-function updateScoreboard(){
- document.getElementById('humanScore').textContent=humanRoundWins;
- document.getElementById('computerScore').textContent=computerRoundWins;
- document.getElementById('humanPairs').textContent=humanPairs;
- document.getElementById('computerPairs').textContent=computerPairs;
- document.getElementById('pairCount').textContent=matchedCount+' / 8';
- document.getElementById('progressFill').style.width=(matchedCount/8*100)+'%';
- document.getElementById('roundLabel').textContent='ROUND '+round+' OF 3';
- document.getElementById('humanPanel').classList.toggle('active',turn==='human');
- document.getElementById('computerPanel').classList.toggle('active',turn==='computer');
+function updateHeader(){
+ $('roundLabel').textContent='ROUND '+localRound+' OF 3';
+ $('humanScore').textContent=localHumanWins;
+ $('computerScore').textContent=localOpponentWins;
+ $('humanPairs').textContent=localHumanPairs;
+ $('computerPairs').textContent=localOpponentPairs;
+ $('pairCount').textContent=localMatched+' / 8';
+ $('progressFill').style.width=(localMatched/8*100)+'%';
+ $('humanPanel').classList.toggle('active',mode==='computer'&&localTurn==='human');
+ $('opponentPanel').classList.toggle('active',mode==='computer'&&localTurn==='computer');
 }
 
-function renderBoard(){
+function makeCardElement(card,canClick){
+ const button=document.createElement('button');
+ button.type='button';
+ button.className='card';
+ if(card.open)button.classList.add('flipped');
+ if(card.matched)button.classList.add('matched');
+ button.disabled=!canClick||card.matched||card.open;
+
+ const inner=document.createElement('div');
+ inner.className='card-inner';
+ const back=document.createElement('div');
+ back.className='face back';
+
+ const pattern=document.createElement('span');
+ pattern.className='pattern';
+ pattern.textContent='✦';
+ back.appendChild(pattern);
+
+ const front=document.createElement('div');
+ front.className='face front';
+ front.textContent=card.symbol;
+
+ inner.append(back,front);
+ button.appendChild(inner);
+ return button;
+}
+
+function renderLocal(){
  boardElement.innerHTML='';
+ localCards.forEach(card=>{
+  const button=makeCardElement(card,mode==='computer'&&localTurn==='human'&&!localLocked&&!localFinished);
+  button.addEventListener('click',()=>localPick(card.id));
+  boardElement.appendChild(button);
+ });
+ updateHeader();
+}
 
- cards.forEach(card=>{
-  const button=document.createElement('button');
-  button.className='card';
-  button.type='button';
-  button.setAttribute('aria-label','Memory card');
+function renderHuman(){
+ if(!matchState||!Array.isArray(matchState.cards))return;
 
-  if(card.open)button.classList.add('flipped');
-  if(card.matched)button.classList.add('matched');
+ boardElement.innerHTML='';
+ const isMyTurn=matchState.turnPlayerId===playerId&&matchState.status==='playing';
 
-  button.disabled=card.matched||locked||turn!=='human'||finished||card.open;
-
-  const inner=document.createElement('div');
-  inner.className='card-inner';
-
-  const back=document.createElement('div');
-  back.className='face back';
-
-  const pattern=document.createElement('span');
-  pattern.className='pattern';
-  pattern.textContent='✦';
-  back.appendChild(pattern);
-
-  const front=document.createElement('div');
-  front.className='face front';
-  front.textContent=card.symbol;
-
-  inner.append(back,front);
-  button.appendChild(inner);
-
-  button.addEventListener('click',()=>humanPick(card.id));
+ matchState.cards.forEach(card=>{
+  const button=makeCardElement(card,mode==='human'&&isMyTurn&&!matchEnded);
+  button.addEventListener('click',()=>humanOnlinePick(card.id));
   boardElement.appendChild(button);
  });
 
- updateScoreboard();
-}
+ const myPairs=Number(matchState.humanPairs??matchState.playerPairs??0);
+ const otherPairs=Number(matchState.opponentPairs??matchState.computerPairs??0);
+ const matched=Number(matchState.matchedCount??matchState.cards.filter(c=>c.matched).length);
 
-function setStatus(message){
- statusElement.textContent=message;
-}
+ $('roundLabel').textContent='ROUND '+(matchState.round||1)+' OF 3';
+ $('humanScore').textContent=matchState.humanRoundWins??matchState.playerRoundWins??0;
+ $('computerScore').textContent=matchState.opponentRoundWins??0;
+ $('humanPairs').textContent=myPairs;
+ $('computerPairs').textContent=otherPairs;
+ $('pairCount').textContent=matched+' / 8';
+ $('progressFill').style.width=(matched/8*100)+'%';
 
-function recordMemory(index){
- const card=cards[index];
- if(!computerMemory[card.symbol])computerMemory[card.symbol]=[];
- if(!computerMemory[card.symbol].includes(index)){
-  computerMemory[card.symbol].push(index);
+ $('humanPanel').classList.toggle('active',isMyTurn);
+ $('opponentPanel').classList.toggle('active',!isMyTurn&&matchState.status==='playing');
+ $('humanLabel').textContent=isMyTurn?'YOUR TURN':'WAITING';
+ $('opponentLabel').textContent=isMyTurn?'WAITING':'OPPONENT TURN';
+
+ if(matchState.status==='playing'){
+  setStatus(isMyTurn?'Your turn! Find two matching cards.':opponentName+' is playing...');
  }
 }
 
-function humanPick(index){
- if(locked||finished||turn!=='human')return;
+function setOpponent(type,name){
+ mode=type;
+ opponentName=name|| (type==='computer'?'EarnGig Computer':'Opponent');
+ $('opponentName').textContent=opponentName;
+ $('opponentAvatar').textContent=type==='computer'?'🤖':'👤';
+ $('opponentLabel').textContent=type==='computer'?'COMPUTER':'HUMAN PLAYER';
+ $('modeLabel').textContent=type==='computer'?'VS COMPUTER':'LIVE MULTIPLAYER';
+}
 
- const card=cards[index];
+async function requestMatch(){
+ if(matchRequestStarted)return;
+ matchRequestStarted=true;
+ searchStarted=Date.now();
+ showSearch('Looking for another player to challenge...','If no player is available, you will play against the computer.');
+ searchTimer=setInterval(()=>{
+  const remaining=Math.max(0,10-Math.floor((Date.now()-searchStarted)/1000));
+  $('matchMeta').textContent=remaining>0?'Searching for a player · '+remaining+' seconds remaining':'Finding your opponent...';
+ },250);
+
+ try{
+  const response=await fetch(API.matchmake,{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   credentials:'same-origin',
+   body:JSON.stringify({game:'memory-showdown',waitSeconds:10})
+  });
+
+  if(!response.ok)throw new Error('Matchmaking service unavailable.');
+
+  const data=await response.json();
+
+  if(!data.matchId||!data.playerId||!['human','computer'].includes(data.opponentType)){
+   throw new Error('The matchmaking server returned an incomplete match.');
+  }
+
+  matchId=data.matchId;
+  playerId=data.playerId;
+  setOpponent(data.opponentType,data.opponentName);
+
+  clearInterval(searchTimer);
+  $('matchScreen').style.display='none';
+
+  if(data.opponentType==='human'){
+   if(!data.state)throw new Error('The multiplayer match has no initial game state.');
+   matchState=data.state;
+   mode='human';
+   matchEnded=false;
+   renderHuman();
+   startPolling();
+  }else{
+   mode='computer';
+   startComputerGame(data.state||null);
+  }
+
+ }catch(error){
+  clearInterval(searchTimer);
+  showSearch('Could not find a match.',error.message+' Please try again later.');
+  $('spinner').style.display='none';
+  $('cancelButton').textContent='RETURN TO GAMES';
+  $('cancelButton').onclick=()=>location.href='games.html';
+ }
+}
+
+function startComputerGame(serverState){
+ // The server has explicitly assigned a computer opponent.
+ // The local game remains playable, but results are submitted
+ // to the server for independent verification.
+ localRound=1;
+ localHumanWins=0;
+ localOpponentWins=0;
+ localRoundHistory=[];
+ localFinished=false;
+ $('matchScreen').style.display='none';
+
+ if(serverState&&Array.isArray(serverState.cards)){
+  localRound=serverState.round||1;
+  localHumanWins=serverState.humanRoundWins||0;
+  localOpponentWins=serverState.opponentRoundWins||0;
+  loadLocalRound(serverState);
+ }else{
+  startLocalRound();
+ }
+}
+
+function loadLocalRound(s){
+ localCards=s.cards.map(c=>({...c}));
+ localHumanPairs=s.humanPairs||0;
+ localOpponentPairs=s.opponentPairs||0;
+ localMatched=s.matchedCount||0;
+ localTurn=s.turnPlayerId===playerId?'human':'computer';
+ localFirst=null;
+ localSecond=null;
+ localLocked=false;
+ localMemory={};
+ renderLocal();
+ if(localTurn==='computer')setTimeout(localComputerTurn,600);
+}
+
+function startLocalRound(){
+ localHumanPairs=0;
+ localOpponentPairs=0;
+ localMatched=0;
+ localTurn='human';
+ localFirst=null;
+ localSecond=null;
+ localLocked=false;
+ localMemory={};
+ createLocalDeck();
+ renderLocal();
+ setStatus('Your turn! Find two matching cards.');
+}
+
+function rememberLocal(index){
+ const card=localCards[index];
+ if(!localMemory[card.symbol])localMemory[card.symbol]=[];
+ if(!localMemory[card.symbol].includes(index))localMemory[card.symbol].push(index);
+}
+
+function localPick(index){
+ if(mode!=='computer'||localFinished||localLocked||localTurn!=='human')return;
+ const card=localCards[index];
  if(!card||card.matched||card.open)return;
 
  card.open=true;
- recordMemory(index);
+ rememberLocal(index);
 
- if(firstCard===null){
-  firstCard=index;
+ if(localFirst===null){
+  localFirst=index;
   setStatus('Good! Now find its matching card.');
-  renderBoard();
+  renderLocal();
   return;
  }
 
- secondCard=index;
- renderBoard();
- locked=true;
-
- setTimeout(resolvePair,650);
+ localSecond=index;
+ localLocked=true;
+ renderLocal();
+ setTimeout(resolveLocalPair,650);
 }
 
-function resolvePair(){
- if(firstCard===null||secondCard===null)return;
-
- const a=cards[firstCard];
- const b=cards[secondCard];
-
- if(a.symbol===b.symbol){
-  a.matched=true;
-  b.matched=true;
-  matchedCount++;
-
-  if(turn==='human'){
-   humanPairs++;
-   setStatus('Beautiful match! You found a pair. Play again!');
-  }else{
-   computerPairs++;
-   setStatus('Computer found a matching pair.');
-  }
-
-  firstCard=null;
-  secondCard=null;
-  locked=false;
-  renderBoard();
-
-  if(matchedCount===8){
-   finishRound();
-   return;
-  }
-
-  if(turn==='computer'){
-   setTimeout(computerTurn,800);
-  }
- }else{
-  setStatus(turn==='human'?'No match! Computer’s turn.':'No match! Your turn.');
-
-  setTimeout(()=>{
-   a.open=false;
-   b.open=false;
-   firstCard=null;
-   secondCard=null;
-   locked=false;
-
-   turn=turn==='human'?'computer':'human';
-   renderBoard();
-
-   if(turn==='computer'){
-    setTimeout(computerTurn,650);
-   }else{
-    setStatus('Your turn! Find two matching cards.');
-   }
-  },850);
- }
-}
-
-// Computer strategy:
-// 1. If it knows both cards of a pair, it takes them.
-// 2. If it knows one unmatched card, it searches for its mate.
-// 3. Otherwise it explores unknown cards.
 function chooseComputerCard(excluded){
- const available=cards.filter(c=>!c.matched&&!c.open&&!excluded.includes(c.id));
+ const available=localCards.filter(c=>!c.matched&&!c.open&&!excluded.includes(c.id));
  if(!available.length)return null;
 
- // Known complete pairs.
- for(const symbol of Object.keys(computerMemory)){
-  const known=computerMemory[symbol].filter(id=>
-   !cards[id].matched&&!cards[id].open&&!excluded.includes(id)
+ for(const symbol of Object.keys(localMemory)){
+  const known=localMemory[symbol].filter(id=>
+   !localCards[id].matched&&!localCards[id].open&&!excluded.includes(id)
   );
-
   if(known.length>=2)return known[0];
  }
 
- // Find a remembered partner for an exposed card.
- for(const symbol of Object.keys(computerMemory)){
-  const known=computerMemory[symbol].filter(id=>
-   !cards[id].matched&&!cards[id].open&&!excluded.includes(id)
+ for(const symbol of Object.keys(localMemory)){
+  const known=localMemory[symbol].filter(id=>
+   !localCards[id].matched&&!localCards[id].open&&!excluded.includes(id)
   );
-
   if(known.length===1){
    const other=available.find(c=>c.symbol===symbol&&c.id!==known[0]);
    if(other)return other.id;
   }
  }
 
- // Discover a new card, prioritising cards not yet remembered.
- const unknown=available.filter(c=>!computerMemory[c.symbol]||
-  !computerMemory[c.symbol].includes(c.id));
-
+ const unknown=available.filter(c=>
+  !localMemory[c.symbol]||!localMemory[c.symbol].includes(c.id)
+ );
  const pool=unknown.length?unknown:available;
  return pool[Math.floor(Math.random()*pool.length)].id;
 }
 
-function computerTurn(){
- if(finished||turn!=='computer'||locked)return;
+function localComputerTurn(){
+ if(mode!=='computer'||localFinished||localTurn!=='computer'||localLocked)return;
 
  const first=chooseComputerCard([]);
  if(first===null)return;
 
- cards[first].open=true;
- recordMemory(first);
- firstCard=first;
- renderBoard();
+ localCards[first].open=true;
+ rememberLocal(first);
+ localFirst=first;
+ renderLocal();
+ setStatus(opponentName+' is remembering the cards...');
 
- setStatus('Computer is studying the cards...');
-
- setTimeout(()=>{
-  if(finished||turn!=='computer')return;
-
+ computerTimer=setTimeout(()=>{
+  if(localFinished||localTurn!=='computer')return;
   const second=chooseComputerCard([first]);
   if(second===null)return;
 
-  cards[second].open=true;
-  recordMemory(second);
-  secondCard=second;
-  renderBoard();
-
-  locked=true;
-  setTimeout(resolvePair,750);
+  localCards[second].open=true;
+  rememberLocal(second);
+  localSecond=second;
+  localLocked=true;
+  renderLocal();
+  setTimeout(resolveLocalPair,750);
  },700);
 }
 
-function finishRound(){
- locked=true;
+function resolveLocalPair(){
+ if(localFirst===null||localSecond===null)return;
 
- let roundWinner='draw';
+ const a=localCards[localFirst];
+ const b=localCards[localSecond];
 
- if(humanPairs>computerPairs){
-  humanRoundWins++;
-  roundWinner='human';
+ if(a.symbol===b.symbol){
+  a.matched=true;
+  b.matched=true;
+  localMatched++;
+
+  if(localTurn==='human'){
+   localHumanPairs++;
+   setStatus('Beautiful match! You found a pair. Play again!');
+  }else{
+   localOpponentPairs++;
+   setStatus(opponentName+' found a matching pair.');
+  }
+
+  localFirst=null;
+  localSecond=null;
+  localLocked=false;
+  renderLocal();
+
+  if(localMatched===8){finishLocalRound();return}
+  if(localTurn==='computer')setTimeout(localComputerTurn,800);
+ }else{
+  setStatus(localTurn==='human'?'No match! Opponent’s turn.':'No match! Your turn.');
+
+  setTimeout(()=>{
+   a.open=false;
+   b.open=false;
+   localFirst=null;
+   localSecond=null;
+   localLocked=false;
+   localTurn=localTurn==='human'?'computer':'human';
+   renderLocal();
+
+   if(localTurn==='computer')setTimeout(localComputerTurn,650);
+   else setStatus('Your turn! Find two matching cards.');
+  },850);
+ }
+}
+
+function finishLocalRound(){
+ localLocked=true;
+ let winner='draw';
+
+ if(localHumanPairs>localOpponentPairs){
+  localHumanWins++;
+  winner='human';
   setStatus('You won this round!');
- }else if(computerPairs>humanPairs){
-  computerRoundWins++;
-  roundWinner='computer';
-  setStatus('Computer won this round.');
+ }else if(localOpponentPairs>localHumanPairs){
+  localOpponentWins++;
+  winner='opponent';
+  setStatus(opponentName+' won this round.');
  }else{
   setStatus('This round ended in a draw.');
  }
 
- roundHistory.push({
-  round,
-  humanPairs,
-  computerPairs,
-  winner:roundWinner
+ localRoundHistory.push({
+  round:localRound,
+  humanPairs:localHumanPairs,
+  opponentPairs:localOpponentPairs,
+  winner
  });
 
- renderBoard();
+ renderLocal();
 
- if(humanRoundWins>=winsNeeded||computerRoundWins>=winsNeeded||round>=3){
-  setTimeout(finishMatch,1300);
+ if(localHumanWins>=2||localOpponentWins>=2||localRound>=3){
+  setTimeout(()=>finishMatch(localHumanWins>localOpponentWins?'win':localOpponentWins>localHumanWins?'loss':'draw'),1200);
   return;
  }
 
  setTimeout(()=>{
-  round++;
-  startRound();
- },1700);
+  localRound++;
+  startLocalRound();
+ },1600);
 }
 
-function startRound(){
- humanPairs=0;
- computerPairs=0;
- matchedCount=0;
- firstCard=null;
- secondCard=null;
- locked=false;
- turn='human';
- computerMemory={};
+async function humanOnlinePick(cardId){
+ if(mode!=='human'||matchEnded||!matchState)return;
+ if(matchState.turnPlayerId!==playerId)return;
 
- createCards();
- renderBoard();
- setStatus('Round '+round+'! Your turn. Find a matching pair.');
-}
+ const card=matchState.cards.find(c=>c.id===cardId);
+ if(!card||card.matched||card.open)return;
 
-async function reportMatch(outcome){
- const status=document.getElementById('refundStatus');
-
- status.textContent=outcome==='draw'
-  ?'Checking your entry-fee refund...'
-  :'Submitting match result...';
+ const buttons=[...boardElement.querySelectorAll('button')];
+ buttons.forEach(b=>b.disabled=true);
+ setStatus('Sending your move...');
 
  try{
-  const response=await fetch('/api/games/memory-showdown/complete',{
+  const response=await fetch(API.move,{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   credentials:'same-origin',
+   body:JSON.stringify({matchId,cardId})
+  });
+
+  if(!response.ok)throw new Error('Your move could not be accepted.');
+  const data=await response.json();
+
+  if(data.state){
+   matchState=data.state;
+   renderHuman();
+   if(matchState.status==='finished')handleServerFinish();
+  }else{
+   await refreshHumanState();
+  }
+ }catch(error){
+  setStatus(error.message);
+  await refreshHumanState();
+ }
+}
+
+async function refreshHumanState(){
+ if(mode!=='human'||!matchId||matchEnded)return;
+
+ try{
+  const response=await fetch(API.state+'?matchId='+encodeURIComponent(matchId),{
+   credentials:'same-origin',
+   cache:'no-store'
+  });
+  if(!response.ok)throw new Error('Unable to update match.');
+  const data=await response.json();
+  matchState=data.state||data;
+  renderHuman();
+
+  if(matchState.status==='finished')handleServerFinish();
+ }catch(error){
+  setStatus('Reconnecting to your opponent...');
+ }
+}
+
+function startPolling(){
+ if(pollHandle)clearInterval(pollHandle);
+ refreshHumanState();
+ pollHandle=setInterval(()=>{
+  if(!pollBusy&&mode==='human'&&!matchEnded){
+   pollBusy=true;
+   refreshHumanState().finally(()=>pollBusy=false);
+  }
+ },850);
+}
+
+function handleServerFinish(){
+ if(matchEnded)return;
+ matchEnded=true;
+ if(pollHandle)clearInterval(pollHandle);
+
+ const outcome=matchState.outcome||
+  (Number(matchState.humanRoundWins)>Number(matchState.opponentRoundWins)?'win':
+   Number(matchState.humanRoundWins)<Number(matchState.opponentRoundWins)?'loss':'draw');
+
+ finishMatch(outcome,true);
+}
+
+async function finishMatch(outcome,serverAlreadyFinished=false){
+ if(resultSent)return;
+ resultSent=true;
+ localFinished=true;
+ matchEnded=true;
+
+ if(pollHandle)clearInterval(pollHandle);
+ if(computerTimer)clearTimeout(computerTimer);
+
+ let title,icon,message,score;
+
+ if(outcome==='win'){
+  title='YOU ARE THE CHAMPION!';
+  icon='🏆';
+  message='Outstanding memory! You won the showdown.';
+ }else if(outcome==='loss'){
+  title='MATCH LOST';
+  icon='🤝';
+  message='Your opponent won this showdown. Better luck next time.';
+ }else{
+  title='MATCH DRAW';
+  icon='🤝';
+  message='The match ended level. Your full entry fee is eligible for a refund.';
+ }
+
+ if(mode==='human'&&matchState){
+  score=(matchState.humanRoundWins??0)+' - '+(matchState.opponentRoundWins??0);
+ }else{
+  score=localHumanWins+' - '+localOpponentWins;
+ }
+
+ $('resultIcon').textContent=icon;
+ $('resultTitle').textContent=title;
+ $('resultMessage').textContent=message;
+ $('finalScore').textContent=score;
+ $('result').style.display='flex';
+
+ await submitResult(outcome,serverAlreadyFinished);
+ resultTimer=setTimeout(()=>location.href='games.html',8000);
+}
+
+async function submitResult(outcome,serverAlreadyFinished){
+ const status=$('refundStatus');
+ status.textContent=outcome==='draw'?'Checking your entry-fee refund...':'Submitting match result...';
+
+ try{
+  const response=await fetch(API.complete,{
    method:'POST',
    headers:{'Content-Type':'application/json'},
    credentials:'same-origin',
@@ -603,15 +750,15 @@ async function reportMatch(outcome){
     matchId,
     game:'memory-showdown',
     outcome,
-    humanRoundWins,
-    computerRoundWins,
-    rounds:roundHistory,
+    serverAlreadyFinished,
+    humanRoundWins:mode==='human'?matchState?.humanRoundWins:localHumanWins,
+    opponentRoundWins:mode==='human'?matchState?.opponentRoundWins:localOpponentWins,
+    rounds:mode==='computer'?localRoundHistory:undefined,
     refundRequested:outcome==='draw'
    })
   });
 
-  if(!response.ok)throw new Error('Could not verify result');
-
+  if(!response.ok)throw new Error('Result could not be verified.');
   const data=await response.json();
 
   if(outcome==='draw'){
@@ -632,41 +779,32 @@ async function reportMatch(outcome){
  }
 }
 
-function finishMatch(){
- if(finished)return;
- finished=true;
- locked=true;
+async function leaveGame(){
+ if(isLeaving)return;
+ isLeaving=true;
 
- let outcome,title,icon,message;
+ if(searchTimer)clearInterval(searchTimer);
+ if(pollHandle)clearInterval(pollHandle);
+ if(computerTimer)clearTimeout(computerTimer);
+ if(resultTimer)clearTimeout(resultTimer);
 
- if(humanRoundWins>computerRoundWins){
-  outcome='win';
-  title='YOU ARE THE CHAMPION!';
-  icon='🏆';
-  message='Outstanding memory! You defeated the computer and won the showdown.';
- }else if(computerRoundWins>humanRoundWins){
-  outcome='loss';
-  title='COMPUTER WINS';
-  icon='🤖';
-  message='The computer won this showdown. Sharpen your memory for the next challenge.';
- }else{
-  outcome='draw';
-  title='MATCH DRAW';
-  icon='🤝';
-  message='Both players finished level. Your full entry fee is eligible for a refund.';
+ if(matchId){
+  try{
+   await fetch(API.cancel,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    credentials:'same-origin',
+    keepalive:true,
+    body:JSON.stringify({matchId,playerId})
+   });
+  }catch(e){}
  }
 
- document.getElementById('resultIcon').textContent=icon;
- document.getElementById('resultTitle').textContent=title;
- document.getElementById('resultMessage').textContent=message;
- document.getElementById('finalScore').textContent=humanRoundWins+' - '+computerRoundWins;
- document.getElementById('result').style.display='flex';
-
- reportMatch(outcome);
- setTimeout(()=>location.href='games.html',8000);
+ location.href='games.html';
 }
 
-startRound();
+// Start matchmaking as soon as the game opens.
+requestMatch();
 })();
 </script>
 </body>
