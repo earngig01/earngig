@@ -1,0 +1,1037 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EarnGig Community</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --gold: #e7ad32;
+      --text: #292438;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --surface: #fff;
+      --background: #faf9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 13px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .header-links a {
+      text-decoration: none;
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .layout {
+      max-width: 1150px;
+      margin: 25px auto;
+      padding: 0 16px 45px;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr) 230px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .sidebar, .right-sidebar {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 17px;
+      position: sticky;
+      top: 82px;
+    }
+
+    .sidebar h3, .right-sidebar h3 {
+      margin: 0 0 15px;
+      font-size: 15px;
+    }
+
+    .side-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 9px;
+      border-radius: 9px;
+      text-decoration: none;
+      color: #514a60;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .side-link:hover, .side-link.active {
+      background: var(--lavender);
+      color: var(--purple);
+      font-weight: 700;
+    }
+
+    .side-icon { font-size: 17px; }
+
+    .main-content { min-width: 0; }
+
+    .page-heading {
+      margin-bottom: 18px;
+    }
+
+    .page-heading h1 {
+      margin: 0 0 7px;
+      font-size: 26px;
+    }
+
+    .page-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 17px;
+      margin-bottom: 16px;
+    }
+
+    .announcement {
+      background: linear-gradient(110deg, #7138c8, #9561dc);
+      color: white;
+      border: 0;
+    }
+
+    .announcement h2 {
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+
+    .announcement p {
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0;
+      opacity: .92;
+    }
+
+    .composer-top {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #e9defb;
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 85px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea:focus, input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    .composer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .upload-label {
+      color: var(--purple);
+      background: var(--lavender);
+      padding: 10px 13px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .upload-label input { display: none; }
+
+    .primary-button {
+      background: var(--purple);
+      color: white;
+      border: 0;
+      padding: 11px 18px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary-button:hover { background: var(--purple-dark); }
+
+    .primary-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .preview {
+      display: none;
+      margin-top: 12px;
+      position: relative;
+    }
+
+    .preview img, .preview video {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      background: #f3f0f7;
+      border-radius: 10px;
+    }
+
+    .remove-preview {
+      border: 0;
+      background: #292438;
+      color: white;
+      border-radius: 7px;
+      padding: 7px 10px;
+      margin-top: 7px;
+      cursor: pointer;
+    }
+
+    .feed-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 20px 0 12px;
+    }
+
+    .feed-toolbar h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    select, input {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px;
+      color: var(--text);
+      background: white;
+      outline: none;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-author {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .post-author strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .post-author small {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .post-menu {
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .post-text {
+      font-size: 14px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin: 15px 0;
+    }
+
+    .post-media {
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      background: #f4f1f7;
+      border-radius: 11px;
+    }
+
+    .post-stats {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 5px;
+      padding-top: 10px;
+    }
+
+    .action-button {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: #696174;
+      padding: 10px 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .action-button:hover {
+      background: var(--lavender);
+      color: var(--purple);
+    }
+
+    .action-button.liked {
+      color: var(--purple);
+    }
+
+    .comments {
+      display: none;
+      margin-top: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .comment-list {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .comment {
+      background: #f8f6fb;
+      border-radius: 9px;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .comment strong { color: var(--purple); }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment-form input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .comment-form button {
+      background: var(--purple);
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 13px;
+      cursor: pointer;
+    }
+
+    .right-sidebar p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .quick-link {
+      display: block;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .quick-link:last-child { border-bottom: 0; }
+
+    .empty-state {
+      text-align: center;
+      padding: 35px 15px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty-state span {
+      display: block;
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .status-message {
+      display: none;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-message.error {
+      display: block;
+      color: #9b2929;
+      background: #fff0f0;
+    }
+
+    .status-message.success {
+      display: block;
+      color: #176b43;
+      background: #eaf8f0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: white;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 900px) {
+      .layout {
+        grid-template-columns: 190px minmax(0, 1fr);
+      }
+      .right-sidebar { display: none; }
+    }
+
+    @media(max-width: 620px) {
+      header { padding: 12px 15px; }
+      .header-links { gap: 10px; }
+      .header-links a { font-size: 11px; }
+      .layout {
+        display: block;
+        margin-top: 18px;
+      }
+      .sidebar { display: none; }
+      .page-heading h1 { font-size: 23px; }
+      .card { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="messages.html">Messages</a>
+    <a href="notifications.html">Notifications</a>
+  </nav>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h3>Community Menu</h3>
+
+    <a class="side-link active" href="earngig-community.html">
+      <span class="side-icon">🏠</span> Community Feed
+    </a>
+    <a class="side-link" href="interest-groups.html">
+      <span class="side-icon">👥</span> Interest Groups
+    </a>
+    <a class="side-link" href="messages.html">
+      <span class="side-icon">💬</span> Private Messages
+    </a>
+    <a class="side-link" href="meeting-rooms.html">
+      <span class="side-icon">🎥</span> Meeting Rooms
+    </a>
+    <a class="side-link" href="virtual-gifts.html">
+      <span class="side-icon">🎁</span> Virtual Gifts
+    </a>
+    <a class="side-link" href="profile.html">
+      <span class="side-icon">👤</span> My Profile
+    </a>
+    <a class="side-link" href="dashboard.html">
+      <span class="side-icon">↩️</span> Back to Dashboard
+    </a>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="page-heading">
+      <h1>EarnGig Community</h1>
+      <p>Connect with members, share your moments, exchange ideas and discover new people.</p>
+    </div>
+
+    <section class="card announcement">
+      <h2>Welcome to the EarnGig Community! 👑</h2>
+      <p>
+        This is your space to connect with other members. Share useful ideas,
+        celebrate achievements, ask questions and build meaningful connections.
+        Please treat everyone with respect.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="composer-top">
+        <div class="avatar" id="composerAvatar">E</div>
+        <div>
+          <strong id="composerName">EarnGig Member</strong>
+          <div style="font-size:12px;color:#777184;margin-top:4px;">
+            Share something with the community
+          </div>
+        </div>
+      </div>
+
+      <textarea id="postText" maxlength="3000"
+        placeholder="What's on your mind? Share something with the community..."></textarea>
+
+      <div class="preview" id="mediaPreview">
+        <div id="previewContent"></div>
+        <button type="button" class="remove-preview" id="removeMedia">
+          Remove attachment
+        </button>
+      </div>
+
+      <div class="composer-actions">
+        <label class="upload-label">
+          📷 Add photo or video
+          <input type="file" id="mediaInput" accept="image/*,video/*">
+        </label>
+
+        <button class="primary-button" id="publishButton" type="button">
+          Publish Post
+        </button>
+      </div>
+
+      <div id="composerMessage" class="status-message"></div>
+    </section>
+
+    <div class="feed-toolbar">
+      <h2>Community Feed</h2>
+      <select id="feedFilter" aria-label="Feed order">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
+    </div>
+
+    <section id="feed">
+      <div class="empty-state">
+        <span>🌍</span>
+        Loading community posts...
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="right-sidebar">
+    <h3>Explore EarnGig</h3>
+    <a class="quick-link" href="interest-groups.html">👥 Find Interest Groups</a>
+    <a class="quick-link" href="messages.html">💬 Send a Message</a>
+    <a class="quick-link" href="meeting-rooms.html">🎥 Join a Meeting</a>
+    <a class="quick-link" href="virtual-gifts.html">🎁 Send Virtual Gifts</a>
+    <a class="quick-link" href="leaderboard.html">🏆 Leaderboard</a>
+
+    <div style="border-top:1px solid #e9e2f3;margin-top:15px;padding-top:14px;">
+      <h3>Community Guidelines</h3>
+      <p>
+        Be respectful. Do not harass members, post harmful content,
+        impersonate others or share another person's private information.
+        Report content that violates community rules.
+      </p>
+    </div>
+  </aside>
+
+</div>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    EARNGIG COMMUNITY FRONTEND DEMO
+
+    This version stores text posts and interactions in this browser.
+    Media previews work locally, but uploaded files are not shared
+    with other users or administrators.
+
+    A production backend is required for:
+    - Member authentication and verified identities.
+    - Shared posts, photos and videos.
+    - Likes, comments, shares and follow relationships.
+    - Community announcements.
+    - Reporting, moderation and account restrictions.
+    - Pagination and content discovery.
+    - Secure media storage and access permissions.
+
+    Do not treat localStorage as a secure social network database.
+  */
+
+  const STORAGE_KEY = "earngig_community_posts";
+  const PROFILE_KEY = "earngig_profile";
+
+  const postText = document.getElementById("postText");
+  const mediaInput = document.getElementById("mediaInput");
+  const mediaPreview = document.getElementById("mediaPreview");
+  const previewContent = document.getElementById("previewContent");
+  const publishButton = document.getElementById("publishButton");
+  const feed = document.getElementById("feed");
+  const feedFilter = document.getElementById("feedFilter");
+  const composerMessage = document.getElementById("composerMessage");
+
+  let selectedMedia = null;
+  let selectedMediaUrl = null;
+  let posts = [];
+
+  function getCurrentMember() {
+    let profile = {};
+
+    try {
+      profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    } catch (error) {
+      profile = {};
+    }
+
+    const name =
+      profile.fullName ||
+      profile.name ||
+      profile.username ||
+      "EarnGig Member";
+
+    const username =
+      profile.username ||
+      profile.handle ||
+      "member";
+
+    return { name, username };
+  }
+
+  const currentMember = getCurrentMember();
+
+  document.getElementById("composerName").textContent = currentMember.name;
+  document.getElementById("composerAvatar").textContent =
+    currentMember.name.charAt(0).toUpperCase() || "E";
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function loadPosts() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      posts = Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      posts = [];
+    }
+  }
+
+  function savePosts() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      return true;
+    } catch (error) {
+      showComposerMessage(
+        "Your browser storage is full. Remove some posts or use a smaller attachment.",
+        "error"
+      );
+      return false;
+    }
+  }
+
+  function showComposerMessage(text, type) {
+    composerMessage.textContent = text;
+    composerMessage.className = "status-message " + type;
+  }
+
+  mediaInput.addEventListener("change", () => {
+    const file = mediaInput.files[0];
+
+    if (!file) return;
+
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+
+    if (!isImage && !isVideo) {
+      showComposerMessage("Please select an image or video file.", "error");
+      mediaInput.value = "";
+      return;
+    }
+
+    if (file.size > 8 * 1024 * 1024) {
+      showComposerMessage(
+        "For this browser demo, attachments must be 8MB or smaller.",
+        "error"
+      );
+      mediaInput.value = "";
+      return;
+    }
+
+    if (selectedMediaUrl) URL.revokeObjectURL(selectedMediaUrl);
+
+    selectedMedia = file;
+    selectedMediaUrl = URL.createObjectURL(file);
+
+    previewContent.innerHTML = "";
+
+    const element = document.createElement(isImage ? "img" : "video");
+    element.src = selectedMediaUrl;
+
+    if (isVideo) {
+      element.controls = true;
+    }
+
+    element.className = "post-media";
+    previewContent.appendChild(element);
+    mediaPreview.style.display = "block";
+  });
+
+  document.getElementById("removeMedia").addEventListener("click", () => {
+    clearMedia();
+  });
+
+  function clearMedia() {
+    if (selectedMediaUrl) URL.revokeObjectURL(selectedMediaUrl);
+
+    selectedMedia = null;
+    selectedMediaUrl = null;
+    mediaInput.value = "";
+    previewContent.innerHTML = "";
+    mediaPreview.style.display = "none";
+  }
+
+  publishButton.addEventListener("click", () => {
+    const text = postText.value.trim();
+
+    if (!text && !selectedMedia) {
+      showComposerMessage("Write something or attach a photo or video first.", "error");
+      return;
+    }
+
+    if (text.length > 3000) {
+      showComposerMessage("Your post is too long.", "error");
+      return;
+    }
+
+    if (selectedMedia) {
+      showComposerMessage(
+        "Media publishing is only a local preview in this demo. Shared photo and video uploads require online storage. You can publish a text-only post here.",
+        "error"
+      );
+      return;
+    }
+
+    const post = {
+      id: Date.now().toString(),
+      author: currentMember.name,
+      username: currentMember.username,
+      text,
+      createdAt: new Date().toISOString(),
+      likes: [],
+      comments: [],
+      mediaType: null,
+      mediaData: null
+    };
+
+    posts.unshift(post);
+
+    if (!savePosts()) {
+      posts.shift();
+      return;
+    }
+
+    postText.value = "";
+    showComposerMessage("Your post has been added to this browser's demo feed.", "success");
+    renderFeed();
+  });
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    if (Number.isNaN(date.getTime())) return "Recently";
+
+    return date.toLocaleString("en-NG", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    });
+  }
+
+  function renderFeed() {
+    const sortedPosts = [...posts];
+
+    if (feedFilter.value === "oldest") {
+      sortedPosts.reverse();
+    }
+
+    if (!sortedPosts.length) {
+      feed.innerHTML = `
+        <div class="card empty-state">
+          <span>💬</span>
+          <strong>No community posts yet.</strong>
+          <p>Be the first member to share something!</p>
+        </div>
+      `;
+      return;
+    }
+
+    feed.innerHTML = "";
+
+    sortedPosts.forEach(post => {
+      const liked = Array.isArray(post.likes) &&
+        post.likes.includes(currentMember.username);
+
+      const comments = Array.isArray(post.comments) ? post.comments : [];
+
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const header = document.createElement("div");
+      header.className = "post-header";
+      header.innerHTML = `
+        <div class="avatar">${escapeHTML((post.author || "E").charAt(0).toUpperCase())}</div>
+        <div class="post-author">
+          <strong>${escapeHTML(post.author || "EarnGig Member")}</strong>
+          <small>@${escapeHTML(post.username || "member")} · ${escapeHTML(formatDate(post.createdAt))}</small>
+        </div>
+        <span class="post-menu" aria-hidden="true">⋯</span>
+      `;
+
+      const text = document.createElement("div");
+      text.className = "post-text";
+      text.textContent = post.text || "";
+
+      const stats = document.createElement("div");
+      stats.className = "post-stats";
+      stats.innerHTML = `
+        <span>${(post.likes || []).length} likes</span>
+        <span>${comments.length} comments</span>
+      `;
+
+      const actions = document.createElement("div");
+      actions.className = "post-actions";
+
+      const likeButton = document.createElement("button");
+      likeButton.className = "action-button" + (liked ? " liked" : "");
+      likeButton.textContent = liked ? "♥ Liked" : "♡ Like";
+      likeButton.addEventListener("click", () => toggleLike(post.id));
+
+      const commentButton = document.createElement("button");
+      commentButton.className = "action-button";
+      commentButton.textContent = "💬 Comment";
+      commentButton.addEventListener("click", () => {
+        const section = card.querySelector(".comments");
+        section.style.display =
+          section.style.display === "block" ? "none" : "block";
+      });
+
+      const shareButton = document.createElement("button");
+      shareButton.className = "action-button";
+      shareButton.textContent = "↗ Share";
+      shareButton.addEventListener("click", () => sharePost(post));
+
+      actions.append(likeButton, commentButton, shareButton);
+
+      const commentsSection = document.createElement("div");
+      commentsSection.className = "comments";
+
+      const commentList = document.createElement("div");
+      commentList.className = "comment-list";
+
+      comments.forEach(comment => {
+        const item = document.createElement("div");
+        item.className = "comment";
+
+        const author = document.createElement("strong");
+        author.textContent = comment.author || "Member";
+
+        const content = document.createElement("span");
+        content.textContent = " " + (comment.text || "");
+
+        item.append(author, content);
+        commentList.appendChild(item);
+      });
+
+      const form = document.createElement("form");
+      form.className = "comment-form";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Write a comment...";
+      input.maxLength = 500;
+      input.required = true;
+
+      const submit = document.createElement("button");
+      submit.type = "submit";
+      submit.textContent = "Send";
+
+      form.append(input, submit);
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        addComment(post.id, input.value);
+      });
+
+      commentsSection.append(commentList, form);
+
+      card.append(header, text, stats, actions, commentsSection);
+      feed.appendChild(card);
+    });
+  }
+
+  function toggleLike(postId) {
+    const post = posts.find(item => item.id === postId);
+    if (!post) return;
+
+    if (!Array.isArray(post.likes)) post.likes = [];
+
+    const index = post.likes.indexOf(currentMember.username);
+
+    if (index >= 0) {
+      post.likes.splice(index, 1);
+    } else {
+      post.likes.push(currentMember.username);
+    }
+
+    savePosts();
+    renderFeed();
+  }
+
+  function addComment(postId, value) {
+    const text = value.trim();
+
+    if (!text) return;
+
+    const post = posts.find(item => item.id === postId);
+    if (!post) return;
+
+    if (!Array.isArray(post.comments)) post.comments = [];
+
+    post.comments.push({
+      author: currentMember.name,
+      username: currentMember.username,
+      text,
+      createdAt: new Date().toISOString()
+    });
+
+    savePosts();
+    renderFeed();
+  }
+
+  async function sharePost(post) {
+    const shareText = `${post.author} shared on EarnGig Community:\n\n${post.text}\n\n${location.href}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "EarnGig Community",
+          text: shareText
+        });
+      } catch (error) {
+        // User may cancel the share sheet.
+      }
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        showComposerMessage("Post text copied. You can now share it.", "success");
+      } catch (error) {
+        showComposerMessage("Sharing is not available in this browser.", "error");
+      }
+    } else {
+      showComposerMessage("Sharing is not available in this browser.", "error");
+    }
+  }
+
+  feedFilter.addEventListener("change", renderFeed);
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  loadPosts();
+  renderFeed();
+</script>
+
+</body>
+</html>
