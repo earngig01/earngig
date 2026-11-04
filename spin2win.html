@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin2Win | EarnGig</title>
+<style>
+:root{--purple:#6827c9;--deep:#48149a;--lavender:#f3edff;--gold:#e7b83f;--ink:#211b2b;--muted:#756d80;--border:#e8e0f1;--green:#16834a;--red:#c53b3b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 5%;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);text-decoration:none;font-size:23px;font-weight:900}
+.brand svg{width:26px;height:23px}
+header a.back{color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
+main{width:min(620px,92%);margin:28px auto 55px}
+.heading{text-align:center}
+.heading h1{margin:0 0 8px;font-size:32px}
+.heading p{color:var(--muted);font-size:13px;line-height:1.6}
+.panel{margin-top:22px;padding:22px;border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 30px #32105d0b}
+.demo{display:inline-block;padding:7px 11px;border-radius:20px;background:#fff5dc;color:#805600;font-size:10px;font-weight:900;letter-spacing:.7px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.stat{padding:14px;background:var(--lavender);border-radius:12px;text-align:center}
+.stat span{display:block;color:var(--muted);font-size:11px}
+.stat strong{display:block;color:var(--purple);font-size:22px;margin-top:5px}
+.wheel-wrap{display:flex;justify-content:center;align-items:center;position:relative;margin:25px auto;width:280px;height:280px}
+.pointer{position:absolute;top:-8px;z-index:2;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:28px solid #2d174b;filter:drop-shadow(0 2px 2px #0003)}
+.wheel{width:260px;height:260px;border-radius:50%;border:8px solid #fff;outline:2px solid #e4d8f2;background:conic-gradient(#6827c9 0deg 45deg,#f0c65c 45deg 90deg,#8b5cf6 90deg 135deg,#f5d88d 135deg 180deg,#6827c9 180deg 225deg,#f0c65c 225deg 270deg,#8b5cf6 270deg 315deg,#f5d88d 315deg 360deg);position:relative;transition:transform 4s cubic-bezier(.12,.72,.15,1);box-shadow:0 7px 18px #32105d22}
+.wheel-label{position:absolute;left:50%;top:50%;width:100px;margin-left:-50px;margin-top:-9px;text-align:right;font-size:13px;font-weight:900;color:#fff;transform-origin:50px 9px}
+.wheel-label:nth-child(1){transform:rotate(22.5deg) translateX(48px)}
+.wheel-label:nth-child(2){transform:rotate(67.5deg) translateX(48px);color:#321b05}
+.wheel-label:nth-child(3){transform:rotate(112.5deg) translateX(48px)}
+.wheel-label:nth-child(4){transform:rotate(157.5deg) translateX(48px);color:#321b05}
+.wheel-label:nth-child(5){transform:rotate(202.5deg) translateX(48px)}
+.wheel-label:nth-child(6){transform:rotate(247.5deg) translateX(48px);color:#321b05}
+.wheel-label:nth-child(7){transform:rotate(292.5deg) translateX(48px)}
+.wheel-label:nth-child(8){transform:rotate(337.5deg) translateX(48px);color:#321b05}
+.field{margin:16px 0}
+.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
+input{width:100%;padding:13px;border:1px solid #ddd3e9;border-radius:9px;font-size:14px;outline:none}
+input:focus{border-color:var(--purple)}
+.payout{background:#f8f4ff;border:1px solid #e5d7fa;border-radius:12px;padding:14px;line-height:1.7;font-size:12px}
+.payout strong{color:var(--purple)}
+button{padding:14px 12px;border:0;border-radius:10px;font-weight:800;cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:var(--purple);color:#fff}
+.secondary{background:var(--lavender);color:var(--purple)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
+.result{display:none;margin-top:17px;padding:15px;border-radius:11px;text-align:center;font-size:13px;line-height:1.6}
+.result.win{display:block;background:#e8f8ed;color:#176c36}
+.result.lose{display:block;background:#fff0f0;color:#a32929}
+.result.info{display:block;background:#f3edff;color:var(--purple)}
+.rules{margin-top:18px;border-top:1px solid var(--border);padding-top:15px;font-size:12px;line-height:1.8;color:var(--muted)}
+.rules h2{font-size:15px;color:var(--ink)}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:11px}
+@media(max-width:420px){.panel{padding:15px}.wheel-wrap{width:250px;height:250px}.wheel{width:230px;height:230px}}
+</style>
+</head>
+<body>
+<header>
+<a class="brand" href="index.html">
+<svg viewBox="0 0 40 32" fill="none">
+<path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+<path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+<circle cx="4" cy="8" r="2.5" fill="#E7B83F"/><circle cx="20" cy="3" r="2.5" fill="#E7B83F"/><circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+</svg>EarnGig
+</a>
+<a class="back" href="games.html">← All Games</a>
+</header>
+
+<main>
+<div class="heading">
+<h1>🎡 Spin2Win</h1>
+<p>Choose your stake, spin the wheel and see if you land on the winning segment.</p>
+</div>
+
+<section class="panel">
+<div class="demo">DEMO MODE · SIMULATED COINS</div>
+<div class="stats">
+<div class="stat"><span>Demo balance</span><strong id="balance">1,000</strong></div>
+<div class="stat"><span>Winning prize</span><strong id="prize">500</strong></div>
+</div>
+
+<div class="wheel-wrap">
+<div class="pointer"></div>
+<div class="wheel" id="wheel">
+<span class="wheel-label">WIN</span>
+<span class="wheel-label">TRY</span>
+<span class="wheel-label">WIN</span>
+<span class="wheel-label">TRY</span>
+<span class="wheel-label">WIN</span>
+<span class="wheel-label">TRY</span>
+<span class="wheel-label">WIN</span>
+<span class="wheel-label">TRY</span>
+</div>
+</div>
+
+<div class="field">
+<label for="stake">Your stake (demo coins)</label>
+<input id="stake" type="number" min="10" step="10" value="100">
+</div>
+
+<div class="payout">
+Winning multiplier: <strong>5×</strong><br>
+Example: 100-coin stake = <strong>500 coins total prize</strong>.<br>
+The original stake is NOT added again.
+</div>
+
+<div class="actions">
+<button class="primary" id="spinButton" onclick="spin()">SPIN THE WHEEL</button>
+<button class="secondary" onclick="resetDemo()">RESET DEMO</button>
+</div>
+<div class="result" id="result"></div>
+
+<div class="rules">
+<h2>How to play</h2>
+1. Choose your demo coin stake.<br>
+2. Press Spin the Wheel.<br>
+3. The wheel lands on a WIN or TRY segment.<br>
+4. WIN credits exactly 5× your stake as the total prize.<br>
+5. TRY means your stake is forfeited.<br>
+6. The wheel's result is simulated in this demo. Production results must be generated and verified securely on the server.
+</div>
+</section>
+</main>
+
+<footer>© <span id="year"></span> EarnGig. All rights reserved.</footer>
+
+<script>
+const MULTIPLIER=5;
+const STARTING_BALANCE=1000;
+const WIN_SEGMENTS=[0,2,4,6];
+
+let balance=STARTING_BALANCE;
+let spinning=false;
+let rotation=0;
+
+const wheel=document.getElementById("wheel");
+const spinButton=document.getElementById("spinButton");
+const result=document.getElementById("result");
+const stakeInput=document.getElementById("stake");
+
+function updateDisplay(){
+  const stake=Number(stakeInput.value)||0;
+  document.getElementById("balance").textContent=balance.toLocaleString();
+  document.getElementById("prize").textContent=Math.floor(stake*MULTIPLIER).toLocaleString();
+}
+
+function showResult(message,type){
+  result.textContent=message;
+  result.className="result "+type;
+}
+
+function spin(){
+  if(spinning)return;
+
+  const stake=Number(stakeInput.value);
+  if(!Number.isInteger(stake)||stake<10){
+    showResult("Enter a valid stake of at least 10 demo coins.","info");
+    return;
+  }
+  if(stake>balance){
+    showResult("Your demo balance is too low for this stake.","info");
+    return;
+  }
+
+  balance-=stake;
+  updateDisplay();
+  spinning=true;
+  spinButton.disabled=true;
+  stakeInput.disabled=true;
+  result.className="result";
+
+  // Demo-only random result. Production outcome must be server-authoritative.
+  const segment=Math.floor(Math.random()*8);
+  const segmentAngle=segment*45+22.5;
+  const desiredRotation=360-segmentAngle;
+  const currentNormalized=((rotation%360)+360)%360;
+  const extra=(desiredRotation-currentNormalized+360)%360;
+
+  rotation+=360*5+extra;
+  wheel.style.transform=`rotate(${rotation}deg)`;
+
+  setTimeout(()=>{
+    const won=WIN_SEGMENTS.includes(segment);
+
+    if(won){
+      const totalPrize=stake*MULTIPLIER;
+      balance+=totalPrize;
+      showResult(
+        "YOU WIN! Your total demo prize is "+totalPrize.toLocaleString()+
+        " coins. Your stake is not added separately.",
+        "win"
+      );
+    }else{
+      showResult(
+        "Not this time. Your "+stake.toLocaleString()+
+        " demo coins have been forfeited.",
+        "lose"
+      );
+    }
+
+    updateDisplay();
+    spinning=false;
+    spinButton.disabled=false;
+    stakeInput.disabled=false;
+  },4100);
+}
+
+function resetDemo(){
+  if(spinning)return;
+  balance=STARTING_BALANCE;
+  rotation=0;
+  wheel.style.transition="none";
+  wheel.style.transform="rotate(0deg)";
+  void wheel.offsetWidth;
+  wheel.style.transition="transform 4s cubic-bezier(.12,.72,.15,1)";
+  stakeInput.value=100;
+  updateDisplay();
+  showResult("Demo balance reset to 1,000 coins.","info");
+}
+
+stakeInput.addEventListener("input",updateDisplay);
+document.getElementById("year").textContent=new Date().getFullYear();
+updateDisplay();
+</script>
+</body>
+</html>
