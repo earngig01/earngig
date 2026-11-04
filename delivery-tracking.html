@@ -7,437 +7,809 @@
 <title>Track Delivery | EarnGig</title>
 <style>
 :root{
-  --purple:#6827c9;
-  --deep:#48149a;
-  --lavender:#f3edff;
-  --gold:#e7b83f;
-  --ink:#211b2b;
-  --muted:#756d80;
-  --border:#e8e0f1;
-  --green:#16834a;
-  --orange:#a66a00;
+  --purple:#6427c7;
+  --deep:#48159b;
+  --light:#f2ebff;
+  --gold:#d6a62e;
+  --text:#29243a;
+  --muted:#777286;
+  --border:#ece8f3;
+  --bg:#faf9fc;
+  --green:#168653;
+  --orange:#bd7415;
+  --red:#c43e3e;
 }
 *{box-sizing:border-box}
-body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
-header{
-  padding:15px 5%;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--border)
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
-.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
-.brand svg{width:25px;height:22px}
-header a.back{color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
-main{max-width:850px;margin:35px auto;padding:0 17px 60px}
-.hero{text-align:center;margin-bottom:25px}
-h1{font-size:29px;margin:0 0 9px}
-.subtitle{font-size:13px;line-height:1.7;color:var(--muted)}
-.panel{border:1px solid var(--border);border-radius:15px;padding:20px;margin:18px 0}
-.panel h2{font-size:17px;margin:0 0 13px}
-.field{display:flex;flex-direction:column;gap:7px;margin:12px 0}
-label{font-size:12px;font-weight:800}
-input,textarea,select{
-  width:100%;padding:13px;border:1px solid #ddd3e9;
-  border-radius:9px;background:white;font:inherit;font-size:13px
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+.topbar{
+  height:68px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
 }
-button{border:0;border-radius:9px;padding:13px 17px;font-weight:800;cursor:pointer}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--purple);
+  font-size:22px;
+  font-weight:800;
+}
+.brand svg{width:25px;height:25px}
+.nav{
+  display:flex;
+  gap:18px;
+  font-size:11px;
+  font-weight:700;
+  color:#625d71;
+}
+.nav a:hover{color:var(--purple)}
+.container{
+  max-width:850px;
+  margin:auto;
+  padding:30px 18px 55px;
+}
+.heading{margin-bottom:22px}
+.heading h1{font-size:27px;margin:0 0 7px}
+.heading p{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
+  margin:0;
+}
+.search-card,.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:19px;
+  margin-bottom:15px;
+}
+.search-card label{
+  display:block;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+.search-row{display:flex;gap:9px}
+.search-row input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  font-size:12px;
+}
+.btn{
+  border:0;
+  border-radius:8px;
+  padding:12px 15px;
+  font-size:11px;
+  font-weight:800;
+}
 .primary{background:var(--purple);color:white}
-.secondary{background:var(--lavender);color:var(--purple)}
-.full{width:100%}
+.light{background:var(--light);color:var(--purple)}
+.muted{color:var(--muted)}
+.message{
+  display:none;
+  background:#fff8e8;
+  border:1px solid #f1e3c2;
+  color:#785b1c;
+  border-radius:9px;
+  padding:13px;
+  font-size:11px;
+  line-height:1.7;
+  margin-bottom:15px;
+}
+.message.show{display:block}
 .result{display:none}
-.order-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.order-head h2{margin:0 0 6px}
-.status{display:inline-block;padding:7px 11px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:11px;font-weight:800}
-.status.green{background:#e0f5e6;color:#176c36}
-.status.orange{background:#fff0cf;color:#875c00}
-.status.red{background:#ffe4e4;color:#a32929}
-.details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0}
-.detail{padding:13px;border:1px solid var(--border);border-radius:10px}
-.detail small{display:block;font-size:10px;color:var(--muted);margin-bottom:6px}
-.detail strong{font-size:13px;overflow-wrap:anywhere}
-.timeline{margin:25px 0 10px}
-.step{display:flex;gap:13px;position:relative;padding-bottom:23px}
-.step:not(:last-child):before{
-  content:"";position:absolute;left:12px;top:25px;bottom:0;
-  width:2px;background:#e7deef
+.result.show{display:block}
+.order-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
 }
-.dot{
-  width:25px;height:25px;border-radius:50%;
-  border:2px solid #d9cce9;background:white;flex-shrink:0;z-index:1
+.order-top h2{font-size:17px;margin:0 0 6px}
+.reference{font-size:11px;color:var(--muted)}
+.status{
+  padding:8px 12px;
+  border-radius:20px;
+  background:var(--light);
+  color:var(--purple);
+  font-size:9px;
+  font-weight:800;
 }
-.step.done .dot{background:var(--green);border-color:var(--green)}
-.step.current .dot{background:var(--gold);border-color:var(--gold)}
-.step h3{font-size:13px;margin:3px 0 5px}
-.step p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
-.code-box{background:var(--lavender);border:1px solid #dfd0fa;border-radius:12px;padding:18px;text-align:center;margin:15px 0}
-.code-box strong{display:block;color:var(--purple);font-size:28px;letter-spacing:5px;margin:8px 0}
-.code-box small{font-size:11px;color:var(--muted);line-height:1.6}
-.warning{background:#fff8e9;border:1px solid #f0d69a;border-radius:10px;padding:13px;font-size:12px;line-height:1.7;margin:13px 0}
-.success{background:#eaf8ee;border:1px solid #c8e9d1;border-radius:10px;padding:13px;font-size:12px;line-height:1.7;margin:13px 0}
-.error{background:#fff0f0;border:1px solid #f2caca;border-radius:10px;padding:13px;color:#a32929;font-size:12px}
-.hidden{display:none}
-.empty{text-align:center;padding:20px;color:var(--muted);font-size:13px}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+.status.dispatched{background:#fff4e5;color:var(--orange)}
+.status.completed{background:#e8f7ef;color:var(--green)}
+.status.cancelled,.status.rejected,.status.disputed{background:#fff0f0;color:var(--red)}
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+.summary-item{
+  background:#fcfbfe;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:12px;
+  min-width:0;
+}
+.summary-item span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-bottom:6px;
+}
+.summary-item strong{
+  display:block;
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+.card h3{font-size:14px;margin:0 0 15px}
+.progress{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  position:relative;
+  gap:5px;
+  margin:25px 0 18px;
+}
+.progress:before{
+  content:"";
+  position:absolute;
+  height:3px;
+  background:#e8e2ef;
+  top:13px;
+  left:9%;
+  right:9%;
+}
+.step{
+  position:relative;
+  z-index:1;
+  flex:1;
+  text-align:center;
+}
+.step-circle{
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  background:#e9e5ee;
+  color:#777286;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  font-weight:800;
+  margin:0 auto 8px;
+}
+.step.done .step-circle{
+  background:var(--purple);
+  color:white;
+}
+.step span{
+  display:block;
+  font-size:9px;
+  color:var(--muted);
+  line-height:1.4;
+}
+.step.done span{color:var(--purple);font-weight:800}
+.timeline{
+  border-left:2px solid #e6ddf4;
+  margin:15px 0 5px 6px;
+  padding-left:18px;
+}
+.event{
+  position:relative;
+  padding-bottom:20px;
+  font-size:11px;
+  line-height:1.6;
+}
+.event:last-child{padding-bottom:0}
+.event:before{
+  content:"";
+  position:absolute;
+  left:-24px;
+  top:3px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--purple);
+  border:3px solid white;
+  box-shadow:0 0 0 1px #d8c9ed;
+}
+.event strong{display:block;margin-bottom:3px}
+.event small{color:var(--muted);font-size:9px}
+.product-list{display:flex;flex-direction:column;gap:10px}
+.product{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  border-bottom:1px solid #f0edf4;
+  padding-bottom:10px;
+}
+.product:last-child{border:0;padding-bottom:0}
+.product img{
+  width:52px;
+  height:52px;
+  border-radius:8px;
+  object-fit:cover;
+  background:#f0edf5;
+}
+.product-info{flex:1;min-width:0}
+.product-info strong{display:block;font-size:11px;margin-bottom:5px}
+.product-info span{font-size:9px;color:var(--muted)}
+.photo{
+  width:100%;
+  max-height:280px;
+  object-fit:contain;
+  border:1px solid var(--border);
+  border-radius:9px;
+  margin-top:10px;
+  background:#faf9fc;
+}
+.empty-photo{
+  background:#fcfbfe;
+  border:1px dashed #d9d1e4;
+  border-radius:9px;
+  padding:25px;
+  text-align:center;
+  font-size:10px;
+  color:var(--muted);
+}
+.footer{
+  text-align:center;
+  padding:22px;
+  color:var(--muted);
+  font-size:10px;
+}
+.footer a{color:var(--purple);margin:0 8px}
 @media(max-width:600px){
-  h1{font-size:24px}
-  .panel{padding:15px}
-  .details{grid-template-columns:1fr 1fr}
+  .topbar{height:62px;padding:0 14px}
+  .brand{font-size:20px}
+  .nav{gap:9px}
+  .nav a:not(:last-child){display:none}
+  .container{padding:22px 13px 40px}
+  .heading h1{font-size:23px}
+  .search-row{flex-direction:column}
+  .search-row button{width:100%}
+  .summary-grid{grid-template-columns:1fr 1fr}
+  .step span{font-size:8px}
+  .card{padding:15px}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <a class="brand" href="index.html">
-    <svg viewBox="0 0 40 32" fill="none">
-      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
-      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
-      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
-      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
-      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
     </svg>
     EarnGig
   </a>
-  <a class="back" href="marketplace.html">Back to Marketplace</a>
+  <nav class="nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="buyer-orders.html">My Purchases</a>
+  </nav>
 </header>
 
-<main>
-  <div class="hero">
+<main class="container">
+  <div class="heading">
     <h1>Track Your Delivery</h1>
-    <p class="subtitle">Follow your order from the vendor to your doorstep or designated collection point.</p>
+    <p>Follow the progress of your EarnGig marketplace order.</p>
   </div>
 
-  <section class="panel">
-    <h2>Find your order</h2>
-    <form id="trackForm">
-      <div class="field">
-        <label for="orderReference">Order reference</label>
-        <input id="orderReference" placeholder="Enter your order reference" required>
-      </div>
-      <button class="primary full" type="submit">Track my delivery</button>
-    </form>
-    <p class="subtitle">Each vendor order has its own tracking reference. If you purchased from multiple vendors, track each vendor order separately.</p>
-    <div id="searchError" class="hidden error"></div>
-  </section>
-
-  <section id="trackingResult" class="result">
-    <div class="panel">
-      <div class="order-head">
-        <div>
-          <h2 id="orderTitle">Order details</h2>
-          <div class="subtitle" id="orderDate"></div>
-        </div>
-        <span id="orderStatus" class="status">Status</span>
-      </div>
-
-      <div class="details">
-        <div class="detail">
-          <small>Vendor</small>
-          <strong id="vendorName">Not available</strong>
-        </div>
-        <div class="detail">
-          <small>Destination</small>
-          <strong id="destination">Not available</strong>
-        </div>
-        <div class="detail">
-          <small>Assigned rider</small>
-          <strong id="riderName">Not assigned</strong>
-        </div>
-        <div class="detail">
-          <small>Delivery method</small>
-          <strong id="deliveryMethod">Not available</strong>
-        </div>
-        <div class="detail">
-          <small>Expected delivery deadline</small>
-          <strong id="deadline">Not available</strong>
-        </div>
-        <div class="detail">
-          <small>Last update</small>
-          <strong id="lastUpdate">Not available</strong>
-        </div>
-      </div>
+  <div class="search-card">
+    <label for="orderReference">Order reference</label>
+    <div class="search-row">
+      <input id="orderReference" type="text" placeholder="Enter your order reference">
+      <button class="btn primary" id="trackButton">Track Order</button>
     </div>
+  </div>
 
-    <section class="panel">
-      <h2>Delivery progress</h2>
+  <div class="message" id="message"></div>
+
+  <div class="result" id="result">
+
+    <section class="card">
+      <div class="order-top">
+        <div>
+          <h2>Delivery Information</h2>
+          <div class="reference" id="referenceText"></div>
+        </div>
+        <span class="status" id="statusBadge">Awaiting Update</span>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>Seller</span>
+          <strong id="sellerName">Not available</strong>
+        </div>
+        <div class="summary-item">
+          <span>Order Date</span>
+          <strong id="orderDate">Not available</strong>
+        </div>
+        <div class="summary-item">
+          <span>Recipient</span>
+          <strong id="recipient">Not available</strong>
+        </div>
+        <div class="summary-item">
+          <span>Delivery Phone</span>
+          <strong id="phone">Not available</strong>
+        </div>
+        <div class="summary-item">
+          <span>Delivery Address</span>
+          <strong id="address">Not available</strong>
+        </div>
+        <div class="summary-item">
+          <span>Delivery Location</span>
+          <strong id="location">Not available</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Delivery Progress</h3>
+      <div class="progress" id="progress">
+        <div class="step" data-step="0">
+          <div class="step-circle">1</div>
+          <span>Order<br>Placed</span>
+        </div>
+        <div class="step" data-step="1">
+          <div class="step-circle">2</div>
+          <span>Accepted</span>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step-circle">3</div>
+          <span>Preparing</span>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">4</div>
+          <span>Dispatched</span>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">5</div>
+          <span>Received</span>
+        </div>
+      </div>
+      <p class="muted" id="progressMessage" style="font-size:10px;line-height:1.7;margin:0"></p>
+    </section>
+
+    <section class="card">
+      <h3>Order Items</h3>
+      <div class="product-list" id="productList"></div>
+    </section>
+
+    <section class="card">
+      <h3>Tracking History</h3>
       <div class="timeline" id="timeline"></div>
     </section>
 
-    <section class="panel hidden" id="pickupPanel">
-      <h2>Collection point information</h2>
-      <div class="details">
-        <div class="detail">
-          <small>Storekeeper</small>
-          <strong id="storekeeperName">Not assigned yet</strong>
+    <section class="card">
+      <h3>Package Dispatch Photo</h3>
+      <div id="packagePhotoArea"></div>
+    </section>
+
+    <section class="card">
+      <h3>Delivery Information</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>Dispatch Date</span>
+          <strong id="dispatchDate">Not dispatched</strong>
         </div>
-        <div class="detail">
-          <small>Collection location</small>
-          <strong id="pickupLocation">Not available</strong>
+        <div class="summary-item">
+          <span>Delivery Note</span>
+          <strong id="dispatchNote">No note available</strong>
         </div>
-      </div>
-      <div class="warning">
-        Wait for confirmation that your parcel has physically arrived before travelling to the collection point. Bring your private pickup code when collecting.
+        <div class="summary-item">
+          <span>Seller Confirmation</span>
+          <strong id="sellerConfirmation">Awaiting seller</strong>
+        </div>
+        <div class="summary-item">
+          <span>Your Receipt Confirmation</span>
+          <strong id="buyerConfirmation">Awaiting receipt</strong>
+        </div>
       </div>
     </section>
 
-    <section class="panel hidden" id="pickupCodePanel">
-      <h2>Your private pickup code</h2>
-      <div class="code-box">
-        <small>Show this code to the storekeeper when collecting your parcel.</small>
-        <strong id="pickupCode">••••••</strong>
-        <small>Keep this code private. The storekeeper must not be able to view or retrieve it from their dashboard.</small>
-      </div>
-    </section>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px">
+      <a class="btn light" href="buyer-orders.html">Back to My Purchases</a>
+      <button class="btn primary" id="refreshButton">Refresh Tracking</button>
+    </div>
 
-    <section class="panel">
-      <h2>Report a delivery problem</h2>
-      <p class="subtitle">Report an unauthorized charge, missing parcel, damaged parcel or other delivery complaint.</p>
-      <div class="field">
-        <label for="complaintType">Complaint type</label>
-        <select id="complaintType">
-          <option value="">Choose complaint type</option>
-          <option>Unauthorized extra charge</option>
-          <option>Missing parcel</option>
-          <option>Damaged parcel</option>
-          <option>Rider misconduct</option>
-          <option>Storekeeper misconduct</option>
-          <option>Delivery delay</option>
-          <option>Other complaint</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="complaintText">Describe the problem</label>
-        <textarea id="complaintText" rows="3" placeholder="Explain what happened..."></textarea>
-      </div>
-      <button class="secondary full" onclick="submitComplaint()">Submit complaint</button>
-      <div id="complaintMessage"></div>
-    </section>
-  </section>
+  </div>
 </main>
 
-<footer>© <span id="year"></span> EarnGig Delivery Network</footer>
+<footer class="footer">
+  <p>EarnGig Marketplace</p>
+  <a href="help.html">Help</a>
+  <a href="support.html">Support</a>
+  <a href="contact.html">Contact</a>
+</footer>
 
 <script>
-const ORDER_KEY="earngig_delivery_orders";
-const COMPLAINT_KEY="earngig_delivery_complaints";
+const BUYER_KEY="earngig_buyer_orders";
+const SELLER_KEY="earngig_seller_orders";
+const DELIVERY_KEY="earngig_delivery_orders";
 
-let currentOrder=null;
+let activeOrderReference="";
 
-function readJSON(key,fallback){
-  try{return JSON.parse(localStorage.getItem(key))??fallback}
-  catch(e){return fallback}
+function readArray(key){
+  try{
+    const data=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(data)?data:[];
+  }catch(error){
+    return [];
+  }
+}
+
+function getReference(order){
+  return String(
+    order.reference||
+    order.orderReference||
+    order.orderId||
+    order.id||
+    ""
+  );
+}
+
+function findByReference(key,reference){
+  return readArray(key).find(order=>
+    getReference(order)===String(reference)
+  );
 }
 
 function escapeHTML(value){
   return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
 }
 
 function dateText(value){
   if(!value)return "Not available";
   const date=new Date(value);
-  return isNaN(date.getTime())?"Not available":date.toLocaleString();
+  return Number.isNaN(date.getTime())
+    ?"Not available"
+    :date.toLocaleString("en-NG");
 }
 
-function statusOf(order){
-  return String(order.status||"pending").toLowerCase();
-}
-
-function statusDescription(status){
-  const descriptions={
-    pending:"Your order is waiting for delivery assignment.",
-    available:"Your order is available for an approved rider to accept.",
-    rider_accepted:"A rider has accepted your order and should collect it before the end of the pickup day.",
-    accepted:"A rider has accepted your order and should collect it before the end of the pickup day.",
-    rider_coming:"Your assigned rider is coming to the vendor.",
-    coming_for_pickup:"Your assigned rider is coming to the vendor.",
-    pickup_requested:"Your assigned rider has requested pickup.",
-    awaiting_vendor_handover:"Your vendor is preparing to hand over the parcel.",
-    vendor_handover_confirmed:"The vendor has confirmed that the parcel was handed to the rider.",
-    pickup_proof_submitted:"Pickup proof has been submitted and is awaiting confirmation.",
-    picked_up:"Your parcel has been collected from the vendor.",
-    pickup_confirmed:"The pickup has been confirmed.",
-    in_transit:"Your parcel is travelling to its destination.",
-    awaiting_storekeeper:"Your parcel is waiting for the destination storekeeper to confirm receipt.",
-    receipt_confirmation_submitted:"The storekeeper has submitted a receipt confirmation.",
-    at_storekeeper:"Your parcel has arrived at the collection point.",
-    ready_for_collection:"Your parcel is ready for collection.",
-    delivered:"Your parcel has been delivered successfully.",
-    completed:"Your delivery has been completed.",
-    overdue:"Your delivery requires attention because the expected deadline has passed.",
-    cancelled:"This delivery has been cancelled."
-  };
-  return descriptions[status]||"Your order is being processed.";
-}
-
-const steps=[
-  {title:"Order created",statuses:["pending","available"]},
-  {title:"Rider assigned",statuses:["rider_accepted","accepted","rider_coming","coming_for_pickup","pickup_requested","awaiting_vendor_handover"]},
-  {title:"Collected from vendor",statuses:["vendor_handover_confirmed","pickup_proof_submitted","picked_up","pickup_confirmed"]},
-  {title:"In transit",statuses:["in_transit","awaiting_storekeeper","receipt_confirmation_submitted"]},
-  {title:"Arrived at collection point",statuses:["at_storekeeper","ready_for_collection"]},
-  {title:"Delivered / collected",statuses:["delivered","completed"]}
-];
-
-function stepIndex(status){
-  for(let i=steps.length-1;i>=0;i--){
-    if(steps[i].statuses.includes(status))return i;
-  }
-  return 0;
-}
-
-function renderTimeline(order){
-  const status=statusOf(order);
-  const current=stepIndex(status);
-  const timeline=document.getElementById("timeline");
-
-  timeline.innerHTML=steps.map((step,index)=>{
-    const done=index<current||(index===current&&["delivered","completed"].includes(status));
-    const active=index===current&&!done;
-    return `
-      <div class="step ${done?"done":""} ${active?"current":""}">
-        <div class="dot"></div>
-        <div>
-          <h3>${escapeHTML(step.title)}</h3>
-          <p>${index===current?escapeHTML(statusDescription(status)):done?"Stage completed or passed.":"Waiting for previous stage to finish."}</p>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function showOrder(order){
-  currentOrder=order;
-  const status=statusOf(order);
-
-  document.getElementById("trackingResult").style.display="block";
-  document.getElementById("orderTitle").textContent=
-    "Order "+(order.orderId||order.id||"");
-  document.getElementById("orderDate").textContent=
-    "Created: "+dateText(order.createdAt);
-
-  const statusElement=document.getElementById("orderStatus");
-  statusElement.textContent=status.replace(/_/g," ");
-  statusElement.className="status";
-
-  if(["delivered","completed","ready_for_collection","at_storekeeper"].includes(status)){
-    statusElement.classList.add("green");
-  }else if(status==="overdue"){
-    statusElement.classList.add("red");
-  }else{
-    statusElement.classList.add("orange");
-  }
-
-  document.getElementById("vendorName").textContent=
-    order.vendorName||order.storeName||"Not available";
-
-  document.getElementById("destination").textContent=[
-    order.destinationTown||order.customerTown||"",
-    order.destinationState||order.customerState||""
-  ].filter(Boolean).join(", ")||"Not available";
-
-  document.getElementById("riderName").textContent=
-    order.riderName||order.assignedRider||"Not assigned";
-
-  document.getElementById("deliveryMethod").textContent=
-    order.deliveryMethod||order.deliveryType||"Not specified";
-
-  document.getElementById("deadline").textContent=
-    dateText(order.deliveryDeadline||order.deadline);
-
-  document.getElementById("lastUpdate").textContent=
-    dateText(order.updatedAt||order.lastUpdated||order.createdAt);
-
-  renderTimeline(order);
-
-  const pickupStatuses=["at_storekeeper","ready_for_collection"];
-  const pickupPanel=document.getElementById("pickupPanel");
-  pickupPanel.classList.toggle("hidden",
-    !pickupStatuses.includes(status)&&!order.storekeeperName&&!order.pickupLocation
-  );
-
-  document.getElementById("storekeeperName").textContent=
-    order.storekeeperName||"Not assigned yet";
-
-  document.getElementById("pickupLocation").textContent=
-    order.pickupLocation||order.storekeeperAddress||"Not available";
-
-  const codePanel=document.getElementById("pickupCodePanel");
-  const code=order.customerPickupCode||order.pickupCode||"";
-
-  // Never reveal a pickup code unless the record explicitly says
-  // that this is the customer's own authenticated order.
-  const customerOwnsOrder=order.customerAuthenticated===true||
-    order.currentCustomerOwnsOrder===true;
-
-  codePanel.classList.toggle("hidden",
-    !customerOwnsOrder||!code||!pickupStatuses.includes(status)
-  );
-
-  if(customerOwnsOrder&&code){
-    document.getElementById("pickupCode").textContent=code;
-  }
-
-  document.getElementById("complaintMessage").innerHTML="";
-}
-
-document.getElementById("trackForm").addEventListener("submit",function(event){
-  event.preventDefault();
-
-  const reference=document.getElementById("orderReference").value.trim().toLowerCase();
-  const error=document.getElementById("searchError");
-  error.classList.add("hidden");
-
-  const orders=readJSON(ORDER_KEY,[]);
-  const order=orders.find(item=>{
-    const id=String(item.orderId||item.id||"").toLowerCase();
-    return id===reference;
+function money(value){
+  return "₦"+(Number(value)||0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
   });
+}
 
-  if(!order){
-    document.getElementById("trackingResult").style.display="none";
-    error.textContent="We couldn't find that order in this browser's demo records. Check your reference or sign in to your EarnGig account.";
-    error.classList.remove("hidden");
+function normalStatus(order){
+  const status=String(
+    order.status||order.orderStatus||"pending"
+  ).toLowerCase();
+
+  if(["new","awaiting_acceptance","awaiting_vendor","awaiting_seller","pending"].includes(status))return "pending";
+  if(["accepted","confirmed"].includes(status))return "accepted";
+  if(["preparing","processing","packed"].includes(status))return "processing";
+  if(["dispatched","out_for_delivery","shipped"].includes(status))return "dispatched";
+  if(["delivered","received","buyer_received","completed"].includes(status))return "completed";
+  if(["cancelled","canceled"].includes(status))return "cancelled";
+  if(status==="rejected")return "rejected";
+  if(status==="disputed")return "disputed";
+
+  return status;
+}
+
+function getOrderItems(order){
+  if(Array.isArray(order.items))return order.items;
+  if(order.product)return [order.product];
+  return [];
+}
+
+function showMessage(text){
+  const message=document.getElementById("message");
+  message.textContent=text;
+  message.classList.add("show");
+}
+
+function hideMessage(){
+  document.getElementById("message").classList.remove("show");
+}
+
+function loadOrder(reference){
+  hideMessage();
+
+  if(!reference){
+    showMessage("Enter your order reference to view its delivery information.");
+    document.getElementById("result").classList.remove("show");
     return;
   }
 
-  showOrder(order);
-  document.getElementById("trackingResult").scrollIntoView({behavior:"smooth"});
+  const buyerOrder=findByReference(BUYER_KEY,reference);
+  const sellerOrder=findByReference(SELLER_KEY,reference);
+  const deliveryOrder=findByReference(DELIVERY_KEY,reference);
+
+  if(!buyerOrder&&!sellerOrder&&!deliveryOrder){
+    document.getElementById("result").classList.remove("show");
+    showMessage("We could not find this order in the available browser records. Please check the reference or return to My Purchases.");
+    return;
+  }
+
+  // Combine matching records so that available seller and delivery
+  // updates can be displayed alongside the buyer's order information.
+  const order={
+    ...(buyerOrder||{}),
+    ...(sellerOrder||{}),
+    ...(deliveryOrder||{})
+  };
+
+  // Preserve buyer-facing order information when a secondary
+  // record does not contain those details.
+  const buyer=buyerOrder||{};
+  const seller=sellerOrder||{};
+  const delivery=deliveryOrder||{};
+
+  order.items=buyer.items||seller.items||delivery.items||(
+    buyer.product?[buyer.product]:seller.product?[seller.product]:[]
+  );
+
+  order.delivery={
+    ...(buyer.delivery||{}),
+    ...(seller.delivery||{}),
+    ...(delivery.delivery||{})
+  };
+
+  activeOrderReference=reference;
+  renderOrder(order,reference);
+  document.getElementById("result").classList.add("show");
+}
+
+function renderOrder(order,reference){
+  const delivery=order.delivery||{};
+  const status=normalStatus(order);
+
+  document.getElementById("referenceText").textContent=
+    "Order reference: "+reference;
+
+  const badge=document.getElementById("statusBadge");
+  badge.textContent=statusLabel(status);
+  badge.className="status "+status;
+
+  document.getElementById("sellerName").textContent=
+    order.sellerName||order.vendorName||"EarnGig Seller";
+
+  document.getElementById("orderDate").textContent=
+    dateText(order.createdAt||order.date);
+
+  document.getElementById("recipient").textContent=
+    delivery.fullName||delivery.name||order.buyerName||"Not available";
+
+  document.getElementById("phone").textContent=
+    delivery.phone||order.buyerPhone||"Not available";
+
+  document.getElementById("address").textContent=
+    delivery.address||delivery.fullAddress||order.deliveryAddress||"Not available";
+
+  document.getElementById("location").textContent=
+    [delivery.city||order.city,delivery.state||order.state]
+      .filter(Boolean).join(", ")||"Not available";
+
+  renderProgress(order,status);
+  renderItems(order);
+  renderTimeline(order,status);
+  renderPhoto(order);
+
+  document.getElementById("dispatchDate").textContent=
+    dateText(order.dispatchedAt);
+
+  document.getElementById("dispatchNote").textContent=
+    order.dispatchNote||"No note available";
+
+  document.getElementById("sellerConfirmation").textContent=
+    order.sellerDelivered||order.sellerConfirmationStatus==="confirmed"
+      ?"Confirmed"
+      :"Awaiting seller";
+
+  document.getElementById("buyerConfirmation").textContent=
+    order.buyerReceived||order.buyerConfirmationStatus==="confirmed"
+      ?"Confirmed"
+      :"Awaiting your confirmation";
+}
+
+function statusLabel(status){
+  const labels={
+    pending:"Awaiting Vendor Acceptance",
+    accepted:"Order Accepted",
+    processing:"Being Prepared",
+    dispatched:"Out for Delivery",
+    completed:"Delivery Completed",
+    cancelled:"Order Cancelled",
+    rejected:"Order Rejected",
+    disputed:"Under Dispute"
+  };
+  return labels[status]||status.replace(/_/g," ");
+}
+
+function renderProgress(order,status){
+  let current=0;
+
+  if(["accepted","processing","dispatched","completed"].includes(status))current=1;
+  if(["processing","dispatched","completed"].includes(status))current=2;
+  if(["dispatched","completed"].includes(status))current=3;
+  if(status==="completed")current=4;
+
+  document.querySelectorAll(".step").forEach(step=>{
+    const index=Number(step.dataset.step);
+    step.classList.toggle("done",index<=current);
+  });
+
+  const messages={
+    pending:"Your order has been placed and is awaiting seller acceptance.",
+    accepted:"The seller has accepted your order.",
+    processing:"The seller is preparing your package.",
+    dispatched:"Your package has been marked as out for delivery.",
+    completed:"The order has been marked as received or completed.",
+    cancelled:"This order has been cancelled.",
+    rejected:"The seller has rejected this order.",
+    disputed:"This order has an open dispute."
+  };
+
+  document.getElementById("progressMessage").textContent=
+    messages[status]||"Delivery updates will appear here when available.";
+}
+
+function renderItems(order){
+  const container=document.getElementById("productList");
+  const items=getOrderItems(order);
+  container.innerHTML="";
+
+  if(!items.length){
+    container.innerHTML="<p class='muted' style='font-size:10px'>No product details are available.</p>";
+    return;
+  }
+
+  items.forEach(item=>{
+    const row=document.createElement("div");
+    row.className="product";
+
+    const img=document.createElement("img");
+    img.src=item.image||item.imageUrl||"";
+    img.alt=item.name||item.title||"Product";
+    img.onerror=()=>img.style.visibility="hidden";
+
+    const info=document.createElement("div");
+    info.className="product-info";
+
+    const name=document.createElement("strong");
+    name.textContent=item.name||item.title||"Product";
+
+    const quantity=document.createElement("span");
+    quantity.textContent="Quantity: "+Math.max(1,Number(item.quantity)||1);
+
+    info.append(name,quantity);
+
+    const price=document.createElement("strong");
+    price.style.fontSize="10px";
+    price.textContent=money((Number(item.price)||0)*Math.max(1,Number(item.quantity)||1));
+
+    row.append(img,info,price);
+    container.appendChild(row);
+  });
+}
+
+function renderTimeline(order,status){
+  const events=[];
+
+  function add(title,date){
+    if(date)events.push({title,date});
+  }
+
+  add("Order placed",order.createdAt||order.date);
+  add("Seller accepted the order",order.sellerAcceptedAt);
+  add("Preparation started",order.preparationStartedAt);
+  add("Package dispatched",order.dispatchedAt);
+  add("Buyer confirmed receipt",order.buyerConfirmedAt||order.buyerConfirmedAt);
+  add("Seller confirmed delivery",order.sellerConfirmedAt);
+
+  if(order.deliveryEvents&&Array.isArray(order.deliveryEvents)){
+    order.deliveryEvents.forEach(event=>{
+      if(event.title||event.status){
+        events.push({
+          title:event.title||event.status,
+          date:event.createdAt||event.date
+        });
+      }
+    });
+  }
+
+  events.sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  const container=document.getElementById("timeline");
+  container.innerHTML="";
+
+  if(!events.length){
+    container.innerHTML="<div class='event'><strong>Waiting for tracking updates</strong><small>No delivery events have been recorded yet.</small></div>";
+    return;
+  }
+
+  events.forEach(event=>{
+    const row=document.createElement("div");
+    row.className="event";
+
+    const title=document.createElement("strong");
+    title.textContent=event.title;
+
+    const date=document.createElement("small");
+    date.textContent=dateText(event.date);
+
+    row.append(title,date);
+    container.appendChild(row);
+  });
+}
+
+function renderPhoto(order){
+  const area=document.getElementById("packagePhotoArea");
+  const photo=order.dispatchPhoto||order.packagePhoto||"";
+
+  area.innerHTML="";
+
+  if(!photo){
+    const empty=document.createElement("div");
+    empty.className="empty-photo";
+    empty.textContent="The seller has not uploaded a package dispatch photo yet.";
+    area.appendChild(empty);
+    return;
+  }
+
+  const img=document.createElement("img");
+  img.className="photo";
+  img.src=photo;
+  img.alt="Package dispatch photo";
+  area.appendChild(img);
+}
+
+document.getElementById("trackButton").addEventListener("click",()=>{
+  const reference=document.getElementById("orderReference").value.trim();
+  loadOrder(reference);
 });
 
-function submitComplaint(){
-  const type=document.getElementById("complaintType").value;
-  const description=document.getElementById("complaintText").value.trim();
-  const message=document.getElementById("complaintMessage");
+document.getElementById("refreshButton").addEventListener("click",()=>{
+  if(activeOrderReference)loadOrder(activeOrderReference);
+});
 
-  if(!currentOrder){
-    message.innerHTML='<div class="error">Track an order first.</div>';
-    return;
+document.getElementById("orderReference").addEventListener("keydown",event=>{
+  if(event.key==="Enter"){
+    loadOrder(document.getElementById("orderReference").value.trim());
   }
+});
 
-  if(!type||!description){
-    message.innerHTML='<div class="error">Select a complaint type and describe the problem.</div>';
-    return;
-  }
+// Automatically load the order reference passed from buyer-orders.html
+const params=new URLSearchParams(window.location.search);
+const urlReference=params.get("order");
 
-  const complaints=readJSON(COMPLAINT_KEY,[]);
-  complaints.push({
-    id:"CMP-"+Date.now(),
-    orderId:currentOrder.orderId||currentOrder.id||"",
-    complaintType:type,
-    description:description,
-    createdAt:new Date().toISOString(),
-    status:"submitted"
-  });
-
-  localStorage.setItem(COMPLAINT_KEY,JSON.stringify(complaints));
-
-  message.innerHTML='<div class="success">Your complaint has been recorded in this browser demo. A live platform will need a secure support system to send it to EarnGig administration.</div>';
-
-  document.getElementById("complaintType").value="";
-  document.getElementById("complaintText").value="";
+if(urlReference){
+  document.getElementById("orderReference").value=urlReference;
+  loadOrder(urlReference);
 }
-
-document.getElementById("year").textContent=new Date().getFullYear();
 </script>
+
 </body>
 </html>
