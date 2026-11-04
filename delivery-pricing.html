@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Delivery Pricing</title>
+<style>
+:root{
+  --purple:#6827c9;
+  --deep:#48149a;
+  --lavender:#f3edff;
+  --gold:#e7b83f;
+  --ink:#211b2b;
+  --muted:#756d80;
+  --border:#e8e0f1;
+  --green:#16834a;
+  --yellow:#a87900;
+  --red:#c53b3b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{
+  padding:15px 5%;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border)
+}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+header a.back{color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
+main{max-width:1150px;margin:35px auto;padding:0 18px 60px}
+.hero{text-align:center;margin-bottom:28px}
+h1{font-size:30px;margin:0 0 9px}
+.subtitle{color:var(--muted);line-height:1.6;font-size:14px}
+.panel{border:1px solid var(--border);border-radius:15px;padding:20px;margin:18px 0}
+.panel h2{font-size:18px;margin:0 0 14px}
+.calculator{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:13px;font-weight:800}
+select,input{
+  padding:13px;border:1px solid #dcd3e7;border-radius:9px;
+  background:white;color:var(--ink);font:inherit;width:100%
+}
+select:focus,input:focus{outline:2px solid #c9b1f4}
+.result{background:var(--lavender);border:1px solid #dfd0fa;border-radius:13px;padding:20px;margin-top:16px}
+.result small{color:var(--muted)}
+.result strong{display:block;color:var(--purple);font-size:30px;margin:8px 0}
+.result p{font-size:12px;line-height:1.6;color:var(--muted)}
+.result .breakdown{font-size:13px;line-height:1.9;color:var(--ink)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin:15px 0}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
+.swatch{width:17px;height:17px;border-radius:4px}
+.green{background:#d9f3df}
+.yellow{background:#fff0b9}
+.red{background:#ffdada}
+.zone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.zone-card{border:1px solid var(--border);border-radius:10px;padding:13px}
+.zone-card strong{display:block;color:var(--purple);margin-bottom:5px}
+.zone-card span{font-size:12px;color:var(--muted);line-height:1.5}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:730px;font-size:12px}
+th,td{padding:11px 9px;text-align:center;border:1px solid var(--border)}
+th{background:var(--lavender);color:var(--deep);font-size:11px}
+th:first-child,td:first-child{text-align:left;font-weight:800}
+td.green-cell{background:#d9f3df;color:#176c36;font-weight:900}
+td.yellow-cell{background:#fff0b9;color:#765300;font-weight:900}
+td.red-cell{background:#ffdada;color:#9c2525;font-weight:900}
+.search-row{margin-bottom:13px}
+.note{background:#fff8e9;border:1px solid #f0d69a;border-radius:10px;padding:14px;font-size:12px;line-height:1.7;margin:15px 0}
+.tag{display:inline-block;border-radius:20px;padding:6px 11px;font-size:11px;font-weight:bold}
+.tag.green{background:#d9f3df;color:#176c36}
+.tag.yellow{background:#fff0b9;color:#765300}
+.tag.red{background:#ffdada;color:#9c2525}
+.fee-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fee-card{border:1px solid var(--border);border-radius:12px;padding:15px}
+.fee-card h3{font-size:14px;margin:0 0 8px}
+.fee-card strong{font-size:22px;color:var(--purple)}
+.fee-card p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:0}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+@media(max-width:650px){
+ .calculator{grid-template-columns:1fr}
+ .zone-grid,.fee-list{grid-template-columns:1fr}
+ .hero h1{font-size:25px}
+ .panel{padding:15px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <a class="back" href="marketplace.html">Back to Marketplace</a>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>EarnGig Delivery Pricing</h1>
+    <p class="subtitle">Transparent delivery fees for local riders, collection riders and destination storekeepers across Nigeria.</p>
+  </div>
+
+  <section class="panel">
+    <h2>Delivery fee calculator</h2>
+    <div class="calculator">
+      <div class="field">
+        <label for="origin">Vendor's sending state</label>
+        <select id="origin">
+          <option value="">Select sending state</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="destination">Customer's destination state</label>
+        <select id="destination">
+          <option value="">Select destination state</option>
+        </select>
+      </div>
+    </div>
+    <div class="result" id="result">
+      <small>Estimated delivery fees</small>
+      <strong>Select your route</strong>
+      <p>Choose both states to see the applicable rider, collection and storekeeper charges.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Delivery service fees</h2>
+    <div class="fee-list">
+      <div class="fee-card">
+        <h3>Local rider — Lagos and Abuja</h3>
+        <strong>₦2,000</strong>
+        <p>Per delivery within the same state. Local rider delivers directly to the customer.</p>
+      </div>
+      <div class="fee-card">
+        <h3>Collection rider</h3>
+        <strong>₦1,000</strong>
+        <p>Per order where collection service is required. Collects vendor orders and arranges dispatch to the destination storekeeper.</p>
+      </div>
+      <div class="fee-card">
+        <h3>Same-state storekeeper</h3>
+        <strong>Maximum ₦1,000</strong>
+        <p>Per order for same-state community-to-community delivery using a collection rider and storekeeper.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Abuja (FCT) to other geopolitical zones</h2>
+    <p class="subtitle">These rates apply to deliveries sent from Abuja to the destination zone. All states within a zone use the same rate.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Destination zone</th><th>Distance category</th><th>Storekeeper fee</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>North Central</td><td><span class="tag green">Short</span></td><td>₦1,000</td></tr>
+          <tr><td>North West</td><td><span class="tag yellow">Medium</span></td><td>₦2,000</td></tr>
+          <tr><td>North East</td><td><span class="tag red">Long</span></td><td>₦3,000</td></tr>
+          <tr><td>South East</td><td><span class="tag yellow">Medium</span></td><td>₦2,000</td></tr>
+          <tr><td>South South</td><td><span class="tag red">Long</span></td><td>₦3,000</td></tr>
+          <tr><td>South West</td><td><span class="tag yellow">Medium</span></td><td>₦2,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      Abuja distance categories: short = 4 hours or less; medium = 5–8 hours; long = 9 hours or more. Abuja-to-Abuja uses the ₦2,000 local rider fee.
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Original interstate storekeeper price matrix</h2>
+    <p class="subtitle">For routes originating outside Abuja, this preserves the original rates supplied for the six geopolitical zones. Same-state storekeeper routes are capped at ₦1,000 per order.</p>
+    <div class="legend">
+      <div class="legend-item"><span class="swatch green"></span> Green — ₦1,000</div>
+      <div class="legend-item"><span class="swatch yellow"></span> Yellow — ₦2,000</div>
+      <div class="legend-item"><span class="swatch red"></span> Red — ₦3,000</div>
+    </div>
+    <div class="table-wrap">
+      <table id="priceTable">
+        <thead>
+          <tr>
+            <th>Sending state</th>
+            <th>NC</th><th>NE</th><th>NW</th>
+            <th>SE</th><th>SS</th><th>SW</th>
+          </tr>
+        </thead>
+        <tbody id="priceTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Nigeria's geopolitical zones</h2>
+    <div class="zone-grid">
+      <div class="zone-card"><strong>North Central</strong><span>Benue, Kogi, Kwara, Nasarawa, Niger, Plateau and FCT.</span></div>
+      <div class="zone-card"><strong>North East</strong><span>Adamawa, Bauchi, Borno, Gombe, Taraba and Yobe.</span></div>
+      <div class="zone-card"><strong>North West</strong><span>Jigawa, Kaduna, Kano, Katsina, Kebbi, Sokoto and Zamfara.</span></div>
+      <div class="zone-card"><strong>South East</strong><span>Abia, Anambra, Ebonyi, Enugu and Imo.</span></div>
+      <div class="zone-card"><strong>South South</strong><span>Akwa Ibom, Bayelsa, Cross River, Delta, Edo and Rivers.</span></div>
+      <div class="zone-card"><strong>South West</strong><span>Ekiti, Lagos, Ogun, Ondo, Osun and Oyo.</span></div>
+    </div>
+  </section>
+
+  <div class="note">
+    <strong>Important pricing notes:</strong>
+    <ul>
+      <li>Local rider pricing is ₦2,000 per delivery in Lagos and Abuja.</li>
+      <li>Where collection service is required, the collection rider fee is ₦1,000 per order.</li>
+      <li>Same-state storekeeper fees must not exceed ₦1,000 per order.</li>
+      <li>Abuja-to-other-zone rates use the separate Abuja zone allocation above.</li>
+      <li>The original chart does not specify rates for other states sending to Abuja. Those routes are marked as awaiting an approved rate rather than being assigned an invented price.</li>
+      <li>Transport-driver charges and collection rider earnings must be handled separately from the storekeeper fee.</li>
+    </ul>
+  </div>
+</main>
+
+<footer>© <span id="year"></span> EarnGig Delivery Network</footer>
+
+<script>
+const statesByZone = {
+  NC:["Benue","Kogi","Kwara","Nasarawa","Niger","Plateau"],
+  NE:["Adamawa","Bauchi","Borno","Gombe","Taraba","Yobe"],
+  NW:["Jigawa","Kaduna","Kano","Katsina","Kebbi","Sokoto","Zamfara"],
+  SE:["Abia","Anambra","Ebonyi","Enugu","Imo"],
+  SS:["Akwa Ibom","Bayelsa","Cross River","Delta","Edo","Rivers"],
+  SW:["Ekiti","Lagos","Ogun","Ondo","Osun","Oyo"]
+};
+
+const zones = {
+  NC:"North Central",
+  NE:"North East",
+  NW:"North West",
+  SE:"South East",
+  SS:"South South",
+  SW:"South West"
+};
+
+const rates = {
+  "Benue":["G","R","R","Y","Y","Y"],
+  "Kogi":["G","R","R","Y","Y","Y"],
+  "Kwara":["Y","R","R","R","R","G"],
+  "Nasarawa":["G","R","R","Y","R","R"],
+  "Niger":["G","R","R","R","R","R"],
+  "Plateau":["G","R","Y","R","R","R"],
+
+  "Adamawa":["R","Y","R","R","R","R"],
+  "Bauchi":["Y","Y","Y","R","R","R"],
+  "Borno":["R","G","R","R","R","R"],
+  "Gombe":["Y","G","Y","R","R","R"],
+  "Taraba":["R","Y","R","R","R","R"],
+  "Yobe":["R","G","Y","R","R","R"],
+
+  "Jigawa":["Y","R","G","R","R","R"],
+  "Kaduna":["G","R","G","R","R","R"],
+  "Kano":["R","R","G","R","R","R"],
+  "Katsina":["R","R","G","R","R","R"],
+  "Kebbi":["R","R","Y","R","R","R"],
+  "Sokoto":["R","R","Y","R","R","R"],
+  "Zamfara":["R","R","G","R","R","R"],
+
+  "Abia":["Y","R","R","G","G","R"],
+  "Anambra":["Y","R","R","G","G","Y"],
+  "Ebonyi":["Y","R","R","G","Y","R"],
+  "Enugu":["Y","R","R","G","G","Y"],
+  "Imo":["R","R","R","G","G","R"],
+
+  "Akwa Ibom":["R","R","R","Y","G","R"],
+  "Bayelsa":["R","R","R","Y","G","R"],
+  "Cross River":["R","R","R","Y","Y","R"],
+  "Delta":["Y","R","R","G","Y","Y"],
+  "Edo":["Y","R","R","Y","Y","Y"],
+  "Rivers":["R","R","R","G","G","R"],
+
+  "Ekiti":["Y","R","R","R","R","Y"],
+  "Lagos":["R","R","R","Y","R","G"],
+  "Ogun":["R","R","R","Y","R","G"],
+  "Ondo":["Y","R","R","Y","R","Y"],
+  "Osun":["Y","R","R","Y","R","G"],
+  "Oyo":["Y","R","R","Y","R","G"]
+};
+
+const zoneForState={};
+Object.entries(statesByZone).forEach(([zone,states])=>{
+  states.forEach(state=>zoneForState[state]=zone);
+});
+zoneForState["Abuja"]="NC";
+
+const prices={G:1000,Y:2000,R:3000};
+const zoneCodes=["NC","NE","NW","SE","SS","SW"];
+
+const abujaRates={
+  NC:{price:1000,distance:"Short"},
+  NW:{price:2000,distance:"Medium"},
+  NE:{price:3000,distance:"Long"},
+  SE:{price:2000,distance:"Medium"},
+  SS:{price:3000,distance:"Long"},
+  SW:{price:2000,distance:"Medium"}
+};
+
+const originSelect=document.getElementById("origin");
+const destinationSelect=document.getElementById("destination");
+
+const allStates=Object.keys(zoneForState)
+  .filter(state=>state!=="Abuja")
+  .sort((a,b)=>a.localeCompare(b));
+
+["Abuja",...allStates].forEach(state=>{
+  const option=document.createElement("option");
+  option.value=state;
+  option.textContent=state==="Abuja"?"Abuja (FCT)":state;
+  originSelect.appendChild(option.cloneNode(true));
+  destinationSelect.appendChild(option);
+});
+
+function renderTable(){
+  const body=document.getElementById("priceTableBody");
+  body.innerHTML="";
+
+  Object.entries(rates).forEach(([state,values])=>{
+    const tr=document.createElement("tr");
+    let html=`<td>${state}</td>`;
+    values.forEach(value=>{
+      const cls=value==="G"?"green-cell":value==="Y"?"yellow-cell":"red-cell";
+      html+=`<td class="${cls}">₦${prices[value].toLocaleString("en-NG")}</td>`;
+    });
+    tr.innerHTML=html;
+    body.appendChild(tr);
+  });
+}
+
+function showResult(title,main,details){
+  document.getElementById("result").innerHTML=`
+    <small>${title}</small>
+    <strong>${main}</strong>
+    <div class="breakdown">${details}</div>
+  `;
+}
+
+function calculate(){
+  const from=originSelect.value;
+  const to=destinationSelect.value;
+
+  if(!from||!to){
+    showResult("Estimated delivery fees","Select your route",
+      "Choose both the sending state and destination state.");
+    return;
+  }
+
+  if(from===to){
+    if(from==="Lagos"||from==="Abuja"){
+      showResult("Same-state local delivery","₦2,000",
+        "<strong>Local rider fee:</strong> ₦2,000 per delivery<br><strong>Collection rider:</strong> Not required<br><strong>Storekeeper:</strong> Not required");
+    }else{
+      showResult("Same-state community-to-community delivery","₦2,000",
+        "<strong>Collection rider:</strong> ₦1,000 per order<br><strong>Storekeeper:</strong> Maximum ₦1,000 per order<br><strong>Total delivery service fees:</strong> ₦2,000 per order");
+    }
+    return;
+  }
+
+  const destinationZone=zoneForState[to];
+
+  if(from==="Abuja"){
+    const item=abujaRates[destinationZone];
+    showResult("Abuja to "+zones[destinationZone],
+      "₦"+item.price.toLocaleString("en-NG")+" storekeeper fee",
+      "<strong>Distance category:</strong> "+item.distance+
+      "<br><strong>Storekeeper fee:</strong> ₦"+item.price.toLocaleString("en-NG")+" per order"+
+      "<br><strong>Collection rider:</strong> Confirmed separately if collection service is required.");
+    return;
+  }
+
+  if(to==="Abuja"){
+    showResult("Route awaiting approved rate",
+      "Rate not yet configured",
+      "The original state-to-zone chart did not include Abuja as a destination. An approved rate is needed for "+from+" to Abuja before this route can be priced automatically.");
+    return;
+  }
+
+  const originZone=zoneForState[from];
+
+  if(originZone===destinationZone){
+    showResult("Same-zone, different-state delivery",
+      "Use the original chart rate",
+      "The selected route is between two different states in the same geopolitical zone. The original matrix provides the rate for this zone. The same-state ₦1,000 cap does not automatically apply to this route.");
+    return;
+  }
+
+  const index=zoneCodes.indexOf(destinationZone);
+  const colour=rates[from][index];
+  const storekeeperFee=prices[colour];
+
+  showResult(from+" to "+zones[destinationZone],
+    "₦"+storekeeperFee.toLocaleString("en-NG")+" storekeeper fee",
+    "<strong>Storekeeper fee:</strong> ₦"+storekeeperFee.toLocaleString("en-NG")+" per order"+
+    "<br><strong>Collection rider fee:</strong> ₦1,000 per order where collection service is required"+
+    "<br><strong>Delivery total:</strong> ₦"+(storekeeperFee+1000).toLocaleString("en-NG")+" per order, excluding any separately approved transport charge.");
+}
+
+originSelect.addEventListener("change",calculate);
+destinationSelect.addEventListener("change",calculate);
+
+renderTable();
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
