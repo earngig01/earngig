@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Advertise on EarnGig</title>
+
+<style>
+:root{
+  --purple:#6427c7;
+  --deep:#48159b;
+  --light:#f3edff;
+  --gold:#d6a62e;
+  --text:#29243a;
+  --muted:#777286;
+  --border:#e9e3f1;
+  --bg:#faf9fc;
+  --green:#168653;
+  --red:#c63c54;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif
+}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+header{
+  height:72px;
+  padding:0 5%;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:30
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:23px;
+  font-weight:900;
+  color:var(--purple)
+}
+.brand svg{width:27px;height:27px}
+nav{display:flex;align-items:center;gap:19px}
+nav a{
+  font-size:12px;
+  font-weight:700;
+  color:#615a70
+}
+nav a:hover,nav a.active{color:var(--purple)}
+.menu-toggle{
+  display:none;
+  border:1px solid var(--border);
+  background:white;
+  color:var(--purple);
+  padding:9px 12px;
+  border-radius:8px
+}
+
+.hero{
+  background:linear-gradient(115deg,#4e1b9e,#773bd2);
+  color:white;
+  padding:58px 5%;
+  position:relative;
+  overflow:hidden
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  border:1px solid #ffffff25;
+  border-radius:50%;
+  right:8%;
+  top:-150px;
+  box-shadow:0 0 0 40px #ffffff09,0 0 0 85px #ffffff08
+}
+.hero-inner{
+  max-width:1200px;
+  margin:auto;
+  position:relative;
+  z-index:1
+}
+.hero-tag{
+  display:inline-block;
+  background:#ffffff20;
+  border:1px solid #ffffff40;
+  padding:8px 12px;
+  border-radius:30px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.8px;
+  margin-bottom:15px
+}
+.hero h1{
+  font-size:clamp(30px,5vw,45px);
+  margin:0 0 13px;
+  max-width:650px;
+  line-height:1.15
+}
+.hero p{
+  color:#e9ddff;
+  font-size:14px;
+  line-height:1.8;
+  max-width:620px;
+  margin:0
+}
+.hero-stats{
+  display:flex;
+  gap:28px;
+  flex-wrap:wrap;
+  margin-top:27px
+}
+.hero-stat strong{
+  display:block;
+  font-size:21px;
+  color:#ffe08a
+}
+.hero-stat span{
+  display:block;
+  font-size:10px;
+  color:#e7dafa;
+  margin-top:5px
+}
+
+.container{
+  max-width:1200px;
+  padding:35px 22px 60px;
+  margin:auto
+}
+.intro{
+  text-align:center;
+  max-width:720px;
+  margin:0 auto 27px
+}
+.intro h2{font-size:25px;margin:0 0 9px}
+.intro p{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--muted);
+  margin:0
+}
+
+.type-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+  margin-bottom:38px
+}
+.type-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+  cursor:pointer;
+  transition:.2s;
+  text-align:left;
+  color:var(--text)
+}
+.type-card:hover{
+  transform:translateY(-3px);
+  border-color:#c7a8ef;
+  box-shadow:0 9px 25px #39205b10
+}
+.type-card.selected{
+  border:2px solid var(--purple);
+  background:#fcfaff;
+  box-shadow:0 0 0 4px #6427c711
+}
+.type-icon{
+  width:48px;
+  height:48px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:var(--light);
+  color:var(--purple);
+  font-size:23px;
+  margin-bottom:16px
+}
+.type-card h3{font-size:16px;margin:0 0 8px}
+.type-card p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  margin:0 0 14px
+}
+.type-card .starting{
+  color:var(--purple);
+  font-size:14px;
+  font-weight:900
+}
+.type-card .choose{
+  display:block;
+  color:var(--purple);
+  font-size:10px;
+  font-weight:800;
+  margin-top:16px
+}
+
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin:28px 0 15px
+}
+.section-heading h2{font-size:20px;margin:0}
+.section-heading p{
+  font-size:11px;
+  color:var(--muted);
+  margin:5px 0 0
+}
+
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:27px
+}
+.hidden{display:none!important}
+
+.package-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px
+}
+.package-option{
+  border:1px solid var(--border);
+  background:white;
+  border-radius:12px;
+  padding:17px;
+  text-align:left;
+  transition:.18s;
+  color:var(--text)
+}
+.package-option:hover{
+  border-color:#b998e5;
+  background:#fcfaff
+}
+.package-option.selected{
+  border:2px solid var(--purple);
+  background:#f8f3ff
+}
+.package-option strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:8px
+}
+.package-option .price{
+  color:var(--purple);
+  font-size:19px;
+  font-weight:900
+}
+.package-option small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:7px;
+  line-height:1.5
+}
+.selection-check{
+  color:var(--green);
+  font-size:11px;
+  font-weight:800;
+  display:none;
+  margin-top:10px
+}
+.package-option.selected .selection-check{display:block}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+.field.full{grid-column:1/-1}
+.field label{
+  font-size:12px;
+  font-weight:800;
+  color:#41384f
+}
+.field input,.field select,.field textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #ded6e9;
+  border-radius:9px;
+  background:white;
+  color:var(--text);
+  outline:none;
+  font-size:12px
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px #6427c711
+}
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+  line-height:1.6
+}
+.field small{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5
+}
+
+.billboard-intro{
+  background:linear-gradient(120deg,#32105f,#6529b6);
+  color:white;
+  padding:23px;
+  border-radius:13px;
+  margin-bottom:20px
+}
+.billboard-intro h3{font-size:20px;margin:0 0 8px}
+.billboard-intro p{
+  color:#e7dafa;
+  font-size:12px;
+  line-height:1.7;
+  margin:0
+}
+.billboard-price{
+  font-size:25px;
+  font-weight:900;
+  color:#ffe08a;
+  margin-top:12px
+}
+.window-banner{
+  padding:15px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:18px
+}
+.window-banner.open{
+  background:#e8f8ee;
+  color:#126b39;
+  border:1px solid #b5e4c5
+}
+.window-banner.closed{
+  background:#fff3e5;
+  color:#8c510c;
+  border:1px solid #efd3a7
+}
+.window-banner.full{
+  background:#fff0f0;
+  color:#a42d40;
+  border:1px solid #efc2ca
+}
+.slot-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px
+}
+.slot{
+  border:1px solid #ded6e9;
+  background:white;
+  border-radius:11px;
+  padding:17px 10px;
+  text-align:center;
+  color:var(--text);
+  transition:.15s
+}
+.slot strong{
+  display:block;
+  font-size:19px;
+  margin-bottom:7px
+}
+.slot span{font-size:10px;font-weight:800}
+.slot.available:hover{
+  border-color:var(--purple);
+  background:#f8f3ff
+}
+.slot.selected{
+  border:2px solid var(--purple);
+  background:#f2eaff;
+  color:var(--purple)
+}
+.slot.booked{
+  background:#f3f1f5;
+  color:#9992a2;
+  cursor:not-allowed;
+  border-color:#e8e4eb
+}
+.slot.booked span{color:#a19aa8}
+.slot-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  margin:16px 0;
+  font-size:10px;
+  color:var(--muted)
+}
+.legend-dot{
+  width:9px;height:9px;
+  display:inline-block;
+  border-radius:3px;
+  margin-right:5px
+}
+.dot-available{background:#fff;border:1px solid #c9b7e0}
+.dot-selected{background:var(--purple)}
+.dot-booked{background:#c9c4cf}
+
+.billboard-total{
+  background:#f7f3fc;
+  border:1px solid #e6d9f6;
+  border-radius:11px;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:18px
+}
+.billboard-total span{
+  font-size:12px;
+  color:var(--muted)
+}
+.billboard-total strong{
+  font-size:22px;
+  color:var(--purple)
+}
+
+.summary{
+  background:#f8f5fc;
+  border:1px solid #e8dff3;
+  padding:20px;
+  border-radius:12px;
+  margin-top:20px
+}
+.summary h3{font-size:14px;margin:0 0 14px}
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  font-size:12px;
+  margin:10px 0;
+  color:#655c70
+}
+.summary-row strong{color:var(--text)}
+.summary-total{
+  border-top:1px solid #ded4eb;
+  padding-top:14px;
+  margin-top:14px;
+  font-size:15px;
+  font-weight:900
+}
+.summary-total strong{color:var(--purple);font-size:20px}
+
+.notice{
+  background:#fff7e5;
+  border:1px solid #f0dca7;
+  color:#795719;
+  border-radius:10px;
+  padding:14px;
+  font-size:11px;
+  line-height:1.7;
+  margin:17px 0
+}
+.checkbox-row{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:11px;
+  color:#655c70;
+  line-height:1.6;
+  margin-top:17px
+}
+.checkbox-row input{margin-top:3px;accent-color:var(--purple)}
+
+.primary-btn{
+  border:0;
+  background:var(--purple);
+  color:white;
+  padding:14px 21px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:900
+}
+.primary-btn:hover{background:var(--deep)}
+.primary-btn:disabled{opacity:.45;cursor:not-allowed}
+.secondary-btn{
+  border:1px solid var(--border);
+  background:white;
+  color:var(--purple);
+  padding:13px 18px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:800
+}
+.form-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:19px
+}
+.message{
+  display:none;
+  padding:14px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.6;
+  margin-top:15px
+}
+.message.show{display:block}
+.message.error{
+  color:#a42d40;
+  background:#fff0f0;
+  border:1px solid #efc2ca
+}
+.message.success{
+  color:#126b39;
+  background:#e8f8ee;
+  border:1px solid #b5e4c5
+}
+
+.how-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px
+}
+.how-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:19px
+}
+.how-number{
+  width:30px;height:30px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--light);
+  color:var(--purple);
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:12px
+}
+.how-card h3{font-size:13px;margin:0 0 7px}
+.how-card p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  margin:0
+}
+footer{
+  background:white;
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:26px 5%;
+  font-size:10px;
+  color:var(--muted)
+}
+footer a{color:var(--purple);margin:0 8px}
+
+@media(max-width:850px){
+  .type-grid{grid-template-columns:1fr}
+  .package-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .slot-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:650px){
+  header{height:64px;padding:0 15px}
+  .brand{font-size:20px}
+  .menu-toggle{display:block}
+  nav{
+    display:none;
+    position:absolute;
+    top:64px;
+    left:0;right:0;
+    background:white;
+    padding:15px;
+    border-bottom:1px solid var(--border);
+    flex-direction:column;
+    align-items:flex-start
+  }
+  nav.open{display:flex}
+  .hero{padding:40px 20px}
+  .container{padding:25px 13px 45px}
+  .panel{padding:17px}
+  .package-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .how-grid{grid-template-columns:1fr}
+  .section-heading h2{font-size:17px}
+  .billboard-total{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:360px){
+  .package-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z"
+      fill="#D6A62E" stroke="#B98716" stroke-width="2.5"
+      stroke-linejoin="round"/>
+      <path d="M14 51H50" stroke="#D6A62E"
+      stroke-width="5" stroke-linecap="round"/>
+      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <button class="menu-toggle" id="menuToggle" type="button">☰ Menu</button>
+
+  <nav id="mainNav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="advertise.html" class="active">Advertise</a>
+    <a href="my-advertisements.html">My Advertisements</a>
+    <a href="help.html">Help</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">EARNGIG ADVERTISING PLATFORM</span>
+    <h1>Put your business in front of more people.</h1>
+    <p>
+      Promote your brand, products, services and campaigns across EarnGig.
+      Choose a duration-based advert, a view-based campaign or a premium
+      homepage billboard slot.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>3</strong>
+        <span>Advertising options</span>
+      </div>
+      <div class="hero-stat">
+        <strong>10</strong>
+        <span>Weekly billboard slots</span>
+      </div>
+      <div class="hero-stat">
+        <strong>₦1,500</strong>
+        <span>Starting advertising package</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <div class="intro">
+    <h2>Choose your advertising package</h2>
+    <p>
+      Select the advertising option that suits your campaign.
+      You can review your package and submit your advert details below.
+    </p>
+  </div>
+
+  <div class="type-grid">
+
+    <button class="type-card selected" type="button" data-type="time">
+      <div class="type-icon">⏱️</div>
+      <h3>Time-Based Advertising</h3>
+      <p>
+        Keep your advertisement running for a selected period.
+        Choose from 24 hours up to 30 days.
+      </p>
+      <div class="starting">From ₦10,000</div>
+      <span class="choose">SELECT THIS OPTION →</span>
+    </button>
+
+    <button class="type-card" type="button" data-type="views">
+      <div class="type-icon">👁️</div>
+      <h3>Views-Based Advertising</h3>
+      <p>
+        Select a target number of advert views.
+        Your campaign is measured against the selected view package.
+      </p>
+      <div class="starting">From ₦1,500</div>
+      <span class="choose">SELECT THIS OPTION →</span>
+    </button>
+
+    <button class="type-card" type="button" data-type="billboard">
+      <div class="type-icon">🏆</div>
+      <h3>Homepage Billboard</h3>
+      <p>
+        Reserve premium homepage advertising placement.
+        Select available slots for the next weekly advertising period.
+      </p>
+      <div class="starting">₦100,000 per slot</div>
+      <span class="choose">SELECT THIS OPTION →</span>
+    </button>
+
+  </div>
+
+  <!-- TIME BASED -->
+
+  <section id="timeSection">
+    <div class="section-heading">
+      <div>
+        <h2>⏱️ Time-Based Packages</h2>
+        <p>Choose how long your advertisement should run.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="package-grid" id="timePackages"></div>
+    </div>
+  </section>
+
+  <!-- VIEWS BASED -->
+
+  <section id="viewsSection" class="hidden">
+    <div class="section-heading">
+      <div>
+        <h2>👁️ Views-Based Packages</h2>
+        <p>Select the number of advertisement views you want to purchase.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="package-grid" id="viewsPackages"></div>
+    </div>
+  </section>
+
+  <!-- BILLBOARD -->
+
+  <section id="billboardSection" class="hidden">
+    <div class="section-heading">
+      <div>
+        <h2>🏆 Homepage Billboard Booking</h2>
+        <p>Reserve available advertising slots for the next week.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+
+      <div class="billboard-intro">
+        <h3>Premium EarnGig Homepage Billboard</h3>
+        <p>
+          Each billboard slot runs for seven days, from Monday through Sunday.
+          Select one or more available slots for the upcoming advertising week.
+        </p>
+        <div class="billboard-price">₦100,000 per slot</div>
+      </div>
+
+      <div id="billboardWindow" class="window-banner"></div>
+
+      <div class="section-heading">
+        <div>
+          <h2>Choose your slots</h2>
+          <p id="billboardWeek">Next advertising week</p>
+        </div>
+      </div>
+
+      <div class="slot-grid" id="slotGrid"></div>
+
+      <div class="slot-legend">
+        <span><i class="legend-dot dot-available"></i> Available</span>
+        <span><i class="legend-dot dot-selected"></i> Selected by you</span>
+        <span><i class="legend-dot dot-booked"></i> Already booked</span>
+      </div>
+
+      <div class="billboard-total">
+        <span id="slotCount">0 slots selected</span>
+        <strong id="billboardTotal">₦0</strong>
+      </div>
+
+      <div class="notice">
+        Billboard booking opens on Saturday and Sunday for the following
+        Monday-to-Sunday period. If the booking window is closed, you can
+        review the advertising information but cannot submit a new booking.
+        A slot is not confirmed until payment has been verified by EarnGig.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ADVERT DETAILS -->
+
+  <section id="detailsSection" class="hidden">
+    <div class="section-heading">
+      <div>
+        <h2>📝 Your Advertisement Details</h2>
+        <p>Provide the information and creative material for your campaign.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+
+      <form id="advertForm">
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="businessName">Business / Advertiser Name *</label>
+            <input id="businessName" type="text" required
+            placeholder="Enter your business name">
+          </div>
+
+          <div class="field">
+            <label for="contactName">Contact Person *</label>
+            <input id="contactName" type="text" required
+            placeholder="Full name">
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address *</label>
+            <input id="email" type="email" required
+            placeholder="you@example.com">
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone Number *</label>
+            <input id="phone" type="tel" required
+            placeholder="Your contact number">
+          </div>
+
+          <div class="field full">
+            <label for="advertTitle">Advertisement Title *</label>
+            <input id="advertTitle" type="text" required
+            placeholder="Give your advertisement a title">
+          </div>
+
+          <div class="field full">
+            <label for="description">Advertisement Description *</label>
+            <textarea id="description" required
+            placeholder="Describe your product, service, offer or campaign"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="category">Advertising Category *</label>
+            <select id="category" required>
+              <option value="">Select category</option>
+              <option>Fashion and Beauty</option>
+              <option>Electronics and Technology</option>
+              <option>Food and Groceries</option>
+              <option>Education</option>
+              <option>Entertainment</option>
+              <option>Financial Services</option>
+              <option>Real Estate</option>
+              <option>Health and Wellness</option>
+              <option>Business and Professional Services</option>
+              <option>Events</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="destination">Website / Destination Link</label>
+            <input id="destination" type="url"
+            placeholder="https://example.com">
+            <small>Optional. Where should interested customers go?</small>
+          </div>
+
+          <div class="field full">
+            <label for="creativeUrl">Advertisement Image / Video URL</label>
+            <input id="creativeUrl" type="url"
+            placeholder="Paste a link to your advert image or video">
+            <small>
+              You can provide a link to your creative material.
+              EarnGig will review and manually upload approved billboard
+              advertisements.
+            </small>
+          </div>
+
+          <div class="field full">
+            <label for="advertNotes">Additional Instructions</label>
+            <textarea id="advertNotes"
+            placeholder="Any special instructions for the EarnGig advertising team?"></textarea>
+          </div>
+
+        </div>
+
+        <div class="summary">
+          <h3>Your Advertising Order Summary</h3>
+
+          <div class="summary-row">
+            <span>Advertising type</span>
+            <strong id="summaryType">Time-Based</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Selected package</span>
+            <strong id="summaryPackage">Not selected</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Billboard slots</span>
+            <strong id="summarySlots">None</strong>
+          </div>
+
+          <div class="summary-row summary-total">
+            <span>Total advertising cost</span>
+            <strong id="summaryTotal">₦0</strong>
+          </div>
+        </div>
+
+        <div class="notice">
+          Submitting this form creates an advertising request. It does not
+          mean your advertisement has been approved, paid for or published.
+          Your request will be reviewed by EarnGig.
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="agree" required>
+          <span>
+            I confirm that the information supplied is accurate, I have the
+            right to use the submitted advertising material, and my
+            advertisement will comply with EarnGig advertising rules.
+          </span>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="submitButton">
+            Submit Advertising Request →
+          </button>
+          <button type="button" class="secondary-btn" id="resetButton">
+            Reset Form
+          </button>
+        </div>
+
+        <div class="message" id="formMessage"></div>
+
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <div>
+        <h2>How Advertising Works</h2>
+        <p>Simple steps from selecting a package to publishing your advert.</p>
+      </div>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-number">1</div>
+        <h3>Choose a package</h3>
+        <p>Select time-based, views-based or homepage billboard advertising.</p>
+      </div>
+
+      <div class="how-card">
+        <div class="how-number">2</div>
+        <h3>Submit your advertisement</h3>
+        <p>Provide your business details, campaign information and creative material.</p>
+      </div>
+
+      <div class="how-card">
+        <div class="how-number">3</div>
+        <h3>Payment and review</h3>
+        <p>EarnGig reviews the request and verifies payment before approving publication.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 EarnGig Advertising. All rights reserved.</p>
+  <p style="margin-top:10px">
+    <a href="about.html">About</a>
+    <a href="help.html">Help</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+  </p>
+</footer>
+
+<script>
+const REQUESTS_KEY = "earngig_advertising_requests";
+const BILLBOARD_KEY = "earngig_billboard_bookings";
+
+const SLOT_PRICE = 100000;
+
+const timePackages = [
+  {id:"time-24h",name:"24 Hours",duration:"24 hours",price:10000},
+  {id:"time-72h",name:"72 Hours",duration:"72 hours",price:25000},
+  {id:"time-7d",name:"7 Days",duration:"7 days",price:50000},
+  {id:"time-14d",name:"14 Days",duration:"14 days",price:85000},
+  {id:"time-30d",name:"30 Days",duration:"30 days",price:150000}
+];
+
+const viewsPackages = [
+  {id:"views-100",name:"100 Views",views:100,price:1500},
+  {id:"views-500",name:"500 Views",views:500,price:6500},
+  {id:"views-1000",name:"1,000 Views",views:1000,price:12000},
+  {id:"views-2500",name:"2,500 Views",views:2500,price:27500},
+  {id:"views-5000",name:"5,000 Views",views:5000,price:50000},
+  {id:"views-10000",name:"10,000 Views",views:10000,price:90000}
+];
+
+let selectedType = "time";
+let selectedPackage = null;
+let selectedSlots = new Set();
+
+function readJSON(key,fallback){
+  try{
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  }catch(error){
+    return fallback;
+  }
+}
+
+function money(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG");
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+function nigeriaDateParts(date=new Date()){
+  const parts = new Intl.DateTimeFormat("en-GB",{
+    timeZone:"Africa/Lagos",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    weekday:"long"
+  }).formatToParts(date);
+
+  const result={};
+  parts.forEach(part=>result[part.type]=part.value);
+  return result;
+}
+
+function getNigeriaToday(){
+  const p=nigeriaDateParts();
+  return new Date(Number(p.year),Number(p.month)-1,Number(p.day));
+}
+
+function getNextMonday(){
+  const today=getNigeriaToday();
+  const day=today.getDay();
+
+  let days=(8-day)%7;
+  if(days===0) days=7;
+
+  const monday=new Date(today);
+  monday.setDate(today.getDate()+days);
+  return monday;
+}
+
+function formatDate(date){
+  return date.toLocaleDateString("en-NG",{
+    day:"numeric",
+    month:"short",
+    year:"numeric"
+  });
+}
+
+function getBillboardWeek(){
+  const monday=getNextMonday();
+  const sunday=new Date(monday);
+  sunday.setDate(monday.getDate()+6);
+
+  return {
+    monday,
+    sunday,
+    start:monday.toISOString().slice(0,10),
+    end:sunday.toISOString().slice(0,10)
+  };
+}
+
+function isBookingWindowOpen(){
+  const weekday=nigeriaDateParts().weekday;
+  return weekday==="Saturday" || weekday==="Sunday";
+}
+
+function getBookings(){
+  const bookings=readJSON(BILLBOARD_KEY,[]);
+  return Array.isArray(bookings)?bookings:[];
+}
+
+function isSlotBooked(slot,weekStart){
+  return getBookings().some(booking=>{
+    const sameWeek=booking.weekStart===weekStart;
+    const sameSlot=Array.isArray(booking.slots) &&
+      booking.slots.map(Number).includes(Number(slot));
+
+    const status=String(booking.status || "").toLowerCase();
+
+    const confirmed=[
+      "paid",
+      "approved",
+      "scheduled",
+      "running",
+      "active"
+    ].includes(status);
+
+    return sameWeek && sameSlot && confirmed;
+  });
+}
+
+function setType(type){
+  selectedType=type;
+  selectedPackage=null;
+  selectedSlots.clear();
+
+  document.querySelectorAll(".type-card").forEach(card=>{
+    card.classList.toggle("selected",card.dataset.type===type);
+  });
+
+  document.getElementById("timeSection").classList.toggle("hidden",type!=="time");
+  document.getElementById("viewsSection").classList.toggle("hidden",type!=="views");
+  document.getElementById("billboardSection").classList.toggle("hidden",type!=="billboard");
+
+  document.getElementById("detailsSection").classList.remove("hidden");
+
+  if(type==="time"){
+    renderPackages("time");
+  }else if(type==="views"){
+    renderPackages("views");
+  }else{
+    renderBillboard();
+  }
+
+  updateSummary();
+}
+
+document.querySelectorAll(".type-card").forEach(card=>{
+  card.addEventListener("click",()=>{
+    setType(card.dataset.type);
+    document.getElementById("detailsSection").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  });
+});
+
+function renderPackages(type){
+  const packages=type==="time"?timePackages:viewsPackages;
+  const container=document.getElementById(
+    type==="time"?"timePackages":"viewsPackages"
+  );
+
+  container.innerHTML="";
+
+  packages.forEach(item=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="package-option";
+    button.dataset.package=item.id;
+
+    const duration=type==="time"
+      ? item.duration
+      : "Target: "+item.views.toLocaleString("en-NG")+" views";
+
+    button.innerHTML=`
+      <strong>${escapeHTML(item.name)}</strong>
+      <span class="price">${money(item.price)}</span>
+      <small>${escapeHTML(duration)}</small>
+      <span class="selection-check">✓ Selected</span>
+    `;
+
+    button.addEventListener("click",()=>{
+      selectedPackage=item;
+
+      container.querySelectorAll(".package-option").forEach(option=>{
+        option.classList.toggle(
+          "selected",
+          option.dataset.package===item.id
+        );
+      });
+
+      updateSummary();
+    });
+
+    container.appendChild(button);
+  });
+}
+
+function renderBillboard(){
+  const week=getBillboardWeek();
+  const windowOpen=isBookingWindowOpen();
+
+  const windowBox=document.getElementById("billboardWindow");
+
+  document.getElementById("billboardWeek").textContent=
+    formatDate(week.monday)+" – "+formatDate(week.sunday);
+
+  const confirmedCount=getBookings().filter(booking=>{
+    const status=String(booking.status || "").toLowerCase();
+
+    return booking.weekStart===week.start &&
+      ["paid","approved","scheduled","running","active"].includes(status);
+  }).reduce((sum,booking)=>{
+    return sum+(Array.isArray(booking.slots)?booking.slots.length:0);
+  },0);
+
+  const remaining=Math.max(0,10-confirmedCount);
+
+  if(remaining===0){
+    windowBox.className="window-banner full";
+    windowBox.innerHTML=
+      "<strong>All billboard slots are booked.</strong><br>"+
+      "Please hold on for the next booking window.";
+  }else if(windowOpen){
+    windowBox.className="window-banner open";
+    windowBox.innerHTML=
+      "<strong>Billboard booking is open!</strong><br>"+
+      remaining+" of 10 slots are currently available for "+
+      escapeHTML(formatDate(week.monday))+" – "+escapeHTML(formatDate(week.sunday))+".";
+  }else{
+    windowBox.className="window-banner closed";
+    windowBox.innerHTML=
+      "<strong>Billboard booking is currently closed.</strong><br>"+
+      "Booking opens every Saturday and Sunday for the following week's "+
+      "advertising period. Please return during the next booking window.";
+  }
+
+  const grid=document.getElementById("slotGrid");
+  grid.innerHTML="";
+
+  for(let slot=1;slot<=10;slot++){
+    const booked=isSlotBooked(slot,week.start);
+
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="slot";
+
+    if(booked){
+      button.classList.add("booked");
+      button.disabled=true;
+      button.innerHTML=
+        `<strong>${slot}</strong><span>BOOKED</span>`;
+    }else{
+      button.classList.add("available");
+
+      if(selectedSlots.has(slot)){
+        button.classList.add("selected");
+      }
+
+      button.innerHTML=
+        `<strong>${slot}</strong><span>${selectedSlots.has(slot)?"SELECTED":"AVAILABLE"}</span>`;
+
+      button.disabled=!windowOpen;
+
+      button.addEventListener("click",()=>{
+        if(selectedSlots.has(slot)){
+          selectedSlots.delete(slot);
+        }else{
+          selectedSlots.add(slot);
+        }
+
+        renderBillboard();
+        updateSummary();
+      });
+    }
+
+    grid.appendChild(button);
+  }
+
+  document.getElementById("slotCount").textContent=
+    selectedSlots.size+" slot"+(selectedSlots.size===1?"":"s")+" selected";
+
+  document.getElementById("billboardTotal").textContent=
+    money(selectedSlots.size*SLOT_PRICE);
+}
+
+function getTotal(){
+  if(selectedType==="billboard"){
+    return selectedSlots.size*SLOT_PRICE;
+  }
+
+  return selectedPackage?selectedPackage.price:0;
+}
+
+function updateSummary(){
+  const typeNames={
+    time:"Time-Based",
+    views:"Views-Based",
+    billboard:"Homepage Billboard"
+  };
+
+  document.getElementById("summaryType").textContent=
+    typeNames[selectedType];
+
+  let packageName="Not selected";
+  let slots="None";
+
+  if(selectedType==="time" && selectedPackage){
+    packageName=selectedPackage.name;
+  }
+
+  if(selectedType==="views" && selectedPackage){
+    packageName=selectedPackage.name;
+  }
+
+  if(selectedType==="billboard"){
+    packageName="Weekly billboard placement";
+    slots=selectedSlots.size
+      ?Array.from(selectedSlots).sort((a,b)=>a-b).join(", ")
+      :"None selected";
+  }
+
+  document.getElementById("summaryPackage").textContent=packageName;
+  document.getElementById("summarySlots").textContent=slots;
+  document.getElementById("summaryTotal").textContent=money(getTotal());
+
+  document.getElementById("submitButton").disabled=
+    getTotal()<=0 ||
+    (selectedType==="billboard" &&
+      (!isBookingWindowOpen() || selectedSlots.size===0));
+}
+
+function showMessage(type,text){
+  const message=document.getElementById("formMessage");
+  message.className="message show "+type;
+  message.textContent=text;
+}
+
+/* SUBMIT ADVERTISING REQUEST */
+
+document.getElementById("advertForm").addEventListener("submit",event=>{
+  event.preventDefault();
+
+  const message=document.getElementById("formMessage");
+
+  if(!selectedType){
+    showMessage("error","Please choose an advertising type.");
+    return;
+  }
+
+  if(getTotal()<=0){
+    showMessage("error","Please select an advertising package before submitting.");
+    return;
+  }
+
+  if(selectedType==="billboard"){
+    if(!isBookingWindowOpen()){
+      showMessage("error","Billboard bookings can only be submitted on Saturdays and Sundays.");
+      return;
+    }
+
+    if(!selectedSlots.size){
+      showMessage("error","Please select at least one available billboard slot.");
+      return;
+    }
+
+    const week=getBillboardWeek();
+
+    const unavailable=Array.from(selectedSlots).some(slot=>
+      isSlotBooked(slot,week.start)
+    );
+
+    if(unavailable){
+      showMessage("error","One or more selected slots are no longer available. Please refresh your selection.");
+      renderBillboard();
+      return;
+    }
+  }
+
+  const businessName=document.getElementById("businessName").value.trim();
+  const contactName=document.getElementById("contactName").value.trim();
+  const email=document.getElementById("email").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+
+  const title=document.getElementById("advertTitle").value.trim();
+  const description=document.getElementById("description").value.trim();
+  const category=document.getElementById("category").value;
+
+  if(!businessName||!contactName||!email||!phone||!title||!description||!category){
+    showMessage("error","Please complete all required advertisement details.");
+    return;
+  }
+
+  const packageDetails=selectedPackage?{
+    id:selectedPackage.id,
+    name:selectedPackage.name,
+    price:selectedPackage.price,
+    duration:selectedPackage.duration||null,
+    views:selectedPackage.views||null
+  }:null;
+
+  const week=selectedType==="billboard"?getBillboardWeek():null;
+
+  const request={
+    id:"EG-AD-"+Date.now(),
+    reference:"EGAD"+Date.now().toString().slice(-8),
+    type:selectedType,
+    package:packageDetails,
+    slots:selectedType==="billboard"
+      ?Array.from(selectedSlots).sort((a,b)=>a-b)
+      :[],
+    weekStart:week?week.start:null,
+    weekEnd:week?week.end:null,
+    amount:getTotal(),
+    currency:"NGN",
+
+    advertiser:{
+      businessName,
+      contactName,
+      email,
+      phone
+    },
+
+    advertisement:{
+      title,
+      description,
+      category,
+      destination:document.getElementById("destination").value.trim(),
+      creativeUrl:document.getElementById("creativeUrl").value.trim(),
+      notes:document.getElementById("advertNotes").value.trim()
+    },
+
+    paymentStatus:"not_paid",
+    reviewStatus:"pending",
+    publicationStatus:"not_published",
+    status:"pending_payment",
+    createdAt:new Date().toISOString()
+  };
+
+  const requests=readJSON(REQUESTS_KEY,[]);
+  const list=Array.isArray(requests)?requests:[];
+
+  list.push(request);
+
+  localStorage.setItem(REQUESTS_KEY,JSON.stringify(list));
+
+  showMessage(
+    "success",
+    "Your advertising request has been saved. Reference: "+
+    request.reference+
+    ". Total: "+money(request.amount)+
+    ". Payment has not been taken and your advert is not yet approved or published. EarnGig will review your request."
+  );
+
+  if(selectedType==="billboard"){
+    selectedSlots.clear();
+    renderBillboard();
+  }
+
+  updateSummary();
+
+  document.getElementById("advertForm").reset();
+  document.getElementById("agree").checked=false;
+});
+
+/* RESET */
+
+document.getElementById("resetButton").addEventListener("click",()=>{
+  document.getElementById("advertForm").reset();
+  document.getElementById("formMessage").className="message";
+  selectedPackage=null;
+  selectedSlots.clear();
+
+  document.querySelectorAll(".package-option").forEach(option=>{
+    option.classList.remove("selected");
+  });
+
+  renderBillboard();
+  updateSummary();
+});
+
+/* MOBILE MENU */
+
+document.getElementById("menuToggle").addEventListener("click",()=>{
+  document.getElementById("mainNav").classList.toggle("open");
+});
+
+/* INITIALISE */
+
+renderPackages("time");
+renderPackages("views");
+renderBillboard();
+updateSummary();
+</script>
+
+</body>
+</html>
