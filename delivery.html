@@ -4,948 +4,494 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnGig Delivery Service</title>
+<title>EarnGig Delivery Network</title>
 <style>
-:root{
-  --purple:#6427c7;
-  --deep:#48159b;
-  --light:#f3edff;
-  --gold:#d6a62e;
-  --text:#282337;
-  --muted:#777286;
-  --border:#eae5f1;
-  --bg:#ffffff;
-  --green:#16834b;
+:root {
+  --purple:#6827c9;
+  --purple-dark:#48149a;
+  --lavender:#f3edff;
+  --gold:#e7b83f;
+  --ink:#211b2b;
+  --muted:#756d80;
+  --border:#e8e0f1;
+  --bg:#fff;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:#fff;
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-a{text-decoration:none;color:inherit}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.topbar{
-  height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 5%;
-  border-bottom:1px solid var(--border);
-  background:white;
-  position:sticky;
-  top:0;
-  z-index:20;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  color:var(--purple);
-  font-size:23px;
-  font-weight:800;
-}
-.brand svg{width:29px;height:29px}
-.nav{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  font-size:12px;
-  font-weight:700;
-  color:#625d71;
-}
-.nav a:hover{color:var(--purple)}
-.hero{
-  background:linear-gradient(135deg,#f7f2ff,#fff 65%,#fff9e9);
-  padding:65px 20px 55px;
-  text-align:center;
-}
-.hero-inner{max-width:850px;margin:auto}
-.eyebrow{
-  display:inline-block;
-  background:#eee5ff;
-  color:var(--purple);
-  padding:8px 13px;
-  border-radius:30px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-.hero h1{
-  font-size:clamp(30px,5vw,48px);
-  line-height:1.15;
-  margin:20px 0 13px;
-}
-.hero h1 span{color:var(--purple)}
-.hero p{
-  max-width:680px;
-  margin:0 auto;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.9;
-}
-.hero-actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:26px;
-}
-.btn{
-  border:0;
-  border-radius:9px;
-  padding:14px 20px;
-  font-size:12px;
-  font-weight:800;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-}
-.btn-primary{background:var(--purple);color:white}
-.btn-primary:hover{background:var(--deep)}
-.btn-outline{
-  background:white;
-  border:1px solid #d8c9ef;
-  color:var(--purple);
-}
-.container{max-width:1120px;margin:auto;padding:48px 20px}
-.section-heading{text-align:center;margin-bottom:28px}
-.section-heading h2{font-size:25px;margin:0 0 9px}
-.section-heading p{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.8;
-  max-width:680px;
-  margin:auto;
-}
-.role-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:17px;
-}
-.role-card{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:23px;
-  background:white;
-  display:flex;
-  flex-direction:column;
-  min-height:285px;
-  transition:.2s;
-}
-.role-card:hover{
-  border-color:#c9b4eb;
-  box-shadow:0 8px 28px rgba(65,35,110,.07);
-  transform:translateY(-2px);
-}
-.role-icon{
-  width:49px;height:49px;
-  display:grid;place-items:center;
-  background:var(--light);
-  color:var(--purple);
-  border-radius:13px;
-  font-size:24px;
-  margin-bottom:16px;
-}
-.role-card h3{font-size:16px;margin:0 0 9px}
-.role-card p{
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.8;
-  margin:0 0 18px;
-}
-.role-card .btn{margin-top:auto;width:100%}
-.workflow{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;
-}
-.step{
-  padding:19px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:12px;
-}
-.step-number{
-  width:29px;height:29px;
-  border-radius:50%;
-  display:grid;place-items:center;
-  background:var(--light);
-  color:var(--purple);
-  font-size:12px;
-  font-weight:800;
-  margin-bottom:12px;
-}
-.step h3{font-size:13px;margin:0 0 7px}
-.step p{
-  font-size:10px;
-  line-height:1.8;
-  color:var(--muted);
-  margin:0;
-}
-.rules{
-  background:#fbfaff;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:24px;
-  margin-top:35px;
-}
-.rules h3{font-size:16px;margin:0 0 15px}
-.rule-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.rule{
-  display:flex;
-  gap:10px;
-  font-size:11px;
-  line-height:1.7;
-  color:#514b60;
-}
-.rule-icon{color:var(--green);font-weight:900}
-.form-section{
-  background:#faf9fc;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-}
-.form-card{
-  max-width:760px;
-  margin:auto;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:27px;
-  box-shadow:0 8px 30px rgba(45,25,80,.04);
-}
-.form-card h2{font-size:22px;margin:0 0 8px}
-.form-intro{
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.8;
-  margin:0 0 23px;
-}
-.field-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
-.field{margin-bottom:15px}
-.field label{
-  display:block;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:7px;
-}
-.field input,.field select,.field textarea{
-  width:100%;
-  border:1px solid #e5dfed;
-  border-radius:8px;
-  padding:12px;
-  font-size:12px;
-  background:white;
-  color:var(--text);
-  outline:none;
-}
-.field input:focus,.field select:focus,.field textarea:focus{
-  border-color:var(--purple);
-  box-shadow:0 0 0 3px #6427c714;
-}
-.field textarea{resize:vertical;min-height:80px}
-.field small{
-  display:block;
-  font-size:9px;
-  color:var(--muted);
-  line-height:1.6;
-  margin-top:5px;
-}
-.full{grid-column:1/-1}
-.role-info{
-  display:none;
-  background:#f7f3ff;
-  border:1px solid #e6dcf6;
-  border-radius:10px;
-  padding:15px;
-  margin:4px 0 18px;
-  font-size:11px;
-  color:#51416f;
-  line-height:1.8;
-}
-.role-info.show{display:block}
-.checkbox-row{
-  display:flex;
-  align-items:flex-start;
-  gap:9px;
-  font-size:10px;
-  color:#625d71;
-  line-height:1.7;
-  margin:12px 0 18px;
-}
-.checkbox-row input{margin-top:2px}
-.form-message{
-  display:none;
-  padding:13px;
-  border-radius:8px;
-  font-size:11px;
-  line-height:1.7;
-  margin-bottom:15px;
-}
-.form-message.success{
-  display:block;
-  background:#edfff4;
-  border:1px solid #c5efd5;
-  color:#176b3e;
-}
-.form-message.error{
-  display:block;
-  background:#fff0f0;
-  border:1px solid #f3caca;
-  color:#a52c2c;
-}
-.submit-btn{width:100%;padding:15px}
-.fee-note{
-  padding:16px;
-  background:#fff9ec;
-  border:1px solid #f0e2bd;
-  border-radius:10px;
-  color:#73551b;
-  font-size:10px;
-  line-height:1.8;
-  margin-top:18px;
-}
-.demo-note{
-  max-width:760px;
-  margin:16px auto 0;
-  text-align:center;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.7;
-}
-.footer{
-  background:white;
-  border-top:1px solid var(--border);
-  padding:25px 5%;
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-}
-.footer a{color:var(--purple);margin:0 8px}
-@media(max-width:850px){
-  .role-grid{grid-template-columns:1fr 1fr}
-  .workflow{grid-template-columns:1fr 1fr}
-}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
+header{padding:17px 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:5}
+.brand{font-size:25px;font-weight:900;color:var(--purple);text-decoration:none;display:flex;align-items:center;gap:7px}
+.brand svg{width:25px;height:22px}
+header a.back{color:var(--purple);text-decoration:none;font-weight:700}
+main{max-width:850px;margin:35px auto;padding:0 18px 60px}
+.hero{text-align:center;margin-bottom:30px}
+.hero h1{font-size:32px;margin:0 0 10px}
+.hero p{color:var(--muted);line-height:1.6;margin:0}
+.notice{background:var(--lavender);border:1px solid #dfd0fa;border-radius:14px;padding:16px;margin:22px 0;line-height:1.6;font-size:14px}
+.section{background:white;border:1px solid var(--border);border-radius:17px;padding:23px;margin:18px 0;box-shadow:0 5px 22px #30105b08}
+.section h2{font-size:19px;margin:0 0 17px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.choice{border:1.5px solid var(--border);border-radius:13px;padding:17px;cursor:pointer;display:block}
+.choice:has(input:checked){border-color:var(--purple);background:var(--lavender)}
+.choice input{accent-color:var(--purple);margin-right:8px}
+.choice strong{display:block;margin:8px 0 5px}
+.choice small{color:var(--muted);line-height:1.5}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700}
+input,select,textarea{width:100%;padding:12px;border:1px solid #dcd3e7;border-radius:9px;font:inherit;background:white;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid #c9b1f4;border-color:var(--purple)}
+input[type=file]{padding:9px;font-size:13px}
+.hint{font-size:12px;color:var(--muted);line-height:1.5}
+.subheading{font-size:15px;font-weight:800;margin:22px 0 13px;color:var(--purple-dark)}
+.hidden{display:none!important}
+.checkline{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;margin:13px 0}
+.checkline input{width:auto;margin-top:3px;accent-color:var(--purple)}
+button{border:0;border-radius:10px;padding:14px 20px;background:var(--purple);color:white;font-weight:800;font-size:15px;cursor:pointer}
+button:hover{background:var(--purple-dark)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.submit{width:100%;margin-top:10px}
+.status-box{display:none;padding:25px;border-radius:15px;background:#f2fff6;border:1px solid #b9e5c6;line-height:1.7}
+.status-box h2{color:#16713a;margin-top:0}
+.error{display:none;background:#fff0f0;border:1px solid #f0c1c1;padding:12px;border-radius:9px;color:#a32626;margin:12px 0}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
 @media(max-width:600px){
-  .topbar{height:62px;padding:0 14px}
-  .brand{font-size:20px}
-  .nav{gap:10px;font-size:10px}
-  .nav a:not(:last-child){display:none}
-  .hero{padding:48px 17px}
-  .container{padding:37px 14px}
-  .role-grid,.workflow,.rule-list,.field-grid{grid-template-columns:1fr}
-  .role-card{min-height:unset}
-  .form-card{padding:20px 15px}
-  .full{grid-column:auto}
+ .fields,.choice-grid{grid-template-columns:1fr}
+ .section{padding:17px}
+ .hero h1{font-size:26px}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a href="dashboard.html" class="brand">
-    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z"
-        fill="#D6A62E" stroke="#B98716" stroke-width="2.5"
-        stroke-linejoin="round"/>
-      <path d="M14 51H50" stroke="#D6A62E"
-        stroke-width="5" stroke-linecap="round"/>
-      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
-      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
-      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none" aria-label="Gold crown">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
     </svg>
     EarnGig
   </a>
-  <nav class="nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="marketplace.html">Marketplace</a>
-    <a href="my-orders.html">My Orders</a>
-    <a href="help.html">Help</a>
-  </nav>
+  <a class="back" href="index.html">← Back Home</a>
 </header>
 
-<section class="hero">
-  <div class="hero-inner">
-    <span class="eyebrow">EARN WITH EARNGIG</span>
-    <h1>Deliver more.<br><span>Earn more.</span></h1>
-    <p>
-      Join the EarnGig delivery network. Deliver orders within your state,
-      coordinate interstate shipments or become a collection-point
-      storekeeper. Build your delivery business with every successful handover.
-    </p>
-    <div class="hero-actions">
-      <a href="#register" class="btn btn-primary">Join the Delivery Network →</a>
-      <a href="#how-it-works" class="btn btn-outline">How it works</a>
-    </div>
-  </div>
-</section>
-
 <main>
-<section class="container">
-  <div class="section-heading">
-    <h2>Choose how you want to work</h2>
-    <p>
-      EarnGig has three delivery roles. Choose the role that matches
-      the service you want to provide.
-    </p>
+  <div class="hero">
+    <h1>Join the EarnGig Delivery Network</h1>
+    <p>Apply to become a delivery rider, collection rider or an EarnGig collection-point storekeeper.</p>
   </div>
 
-  <div class="role-grid">
-    <article class="role-card">
-      <div class="role-icon">🏍️</div>
-      <h3>Delivery Rider</h3>
-      <p>
-        Collect orders from vendors and deliver them directly to customers.
-        Work within your registered service area and earn for every
-        successfully completed delivery.
-      </p>
-      <button class="btn btn-outline choose-role" data-role="delivery">
-        Register as Delivery Rider
-      </button>
-    </article>
-
-    <article class="role-card">
-      <div class="role-icon">📦</div>
-      <h3>Collection Rider</h3>
-      <p>
-        Collect multiple orders from vendors, organize parcels by
-        destination and arrange consolidated shipments to registered
-        storekeepers in other locations.
-      </p>
-      <button class="btn btn-outline choose-role" data-role="collection">
-        Register as Collection Rider
-      </button>
-    </article>
-
-    <article class="role-card">
-      <div class="role-icon">🏪</div>
-      <h3>Storekeeper</h3>
-      <p>
-        Receive interstate shipments, organize individual customer
-        parcels, keep them securely and release each parcel after
-        verifying the customer's private pickup code.
-      </p>
-      <button class="btn btn-outline choose-role" data-role="storekeeper">
-        Register as Storekeeper
-      </button>
-    </article>
+  <div class="notice">
+    <strong>Important verification notice</strong><br>
+    Every applicant must pass EarnGig's verification process. This may include a phone call, a short interview and requests for additional information. You cannot accept deliveries, receive parcels or operate as an EarnGig collection point until your application has been approved.
   </div>
 
-  <div class="fee-note">
-    <strong>Separate earnings:</strong> Delivery riders, collection riders
-    and storekeepers have separate Delivery Wallets. Each role earns
-    according to its verified delivery or handover responsibilities.
-    Delivery wallet withdrawals carry a 2% service charge.
-  </div>
-</section>
-
-<section class="container" id="how-it-works">
-  <div class="section-heading">
-    <h2>How EarnGig Delivery works</h2>
-    <p>
-      Every order is tracked separately, and responsibility transfers
-      to the next participant after a verified handover.
-    </p>
-  </div>
-
-  <div class="workflow">
-    <article class="step">
-      <div class="step-number">1</div>
-      <h3>Vendor prepares order</h3>
-      <p>
-        Vendor confirms the order, packages it and uploads a photograph
-        before releasing it for collection.
-      </p>
-    </article>
-
-    <article class="step">
-      <div class="step-number">2</div>
-      <h3>Rider collects</h3>
-      <p>
-        An eligible rider accepts the pickup, visits the vendor that
-        same day and uploads collection evidence.
-      </p>
-    </article>
-
-    <article class="step">
-      <div class="step-number">3</div>
-      <h3>Delivery or shipment</h3>
-      <p>
-        A normal rider delivers directly. A collection rider groups
-        interstate orders and sends them to their assigned storekeepers.
-      </p>
-    </article>
-
-    <article class="step">
-      <div class="step-number">4</div>
-      <h3>Customer confirms</h3>
-      <p>
-        Customer gives the private confirmation code. The responsible
-        participant verifies the handover and earns the applicable fee.
-      </p>
-    </article>
-  </div>
-
-  <div class="rules">
-    <h3>Important delivery rules</h3>
-    <div class="rule-list">
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Once a rider accepts a pickup, collection must take place that same calendar day.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Every order must be completed within a maximum of five calendar days from its original release.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Riders can accept nearby orders from different vendors. Each vendor order remains separately tracked.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Photographic evidence is required at the applicable collection and dispatch stages.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Storekeepers must verify the customer's private pickup code before releasing a parcel.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Delivery earnings are credited to the appropriate separate Delivery Wallet after verified completion.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>Delivery participants must not demand extra unapproved payments from customers.</span>
-      </div>
-      <div class="rule">
-        <span class="rule-icon">✓</span>
-        <span>All delivery wallet withdrawals carry a 2% service charge.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="form-section" id="register">
-  <div class="container">
-    <div class="section-heading">
-      <h2>Join the EarnGig Delivery Network</h2>
-      <p>
-        Register your preferred delivery role. Your application
-        information will be submitted for review.
-      </p>
-    </div>
-
-    <div class="form-card">
-      <h2>Delivery registration</h2>
-      <p class="form-intro">
-        Enter your details accurately. Your selected role determines
-        the additional information required.
-      </p>
-
-      <div id="formMessage" class="form-message"></div>
-
-      <form id="deliveryForm">
-        <div class="field-grid">
-
-          <div class="field full">
-            <label for="role">Which role are you registering for?</label>
-            <select id="role" name="role" required>
-              <option value="">Choose a delivery role</option>
-              <option value="delivery">Normal Delivery Rider</option>
-              <option value="collection">Collection Rider</option>
-              <option value="storekeeper">Storekeeper</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="fullName">Full name</label>
-            <input id="fullName" name="fullName" type="text"
-              placeholder="Enter your full name" required>
-          </div>
-
-          <div class="field">
-            <label for="username">EarnGig username</label>
-            <input id="username" name="username" type="text"
-              placeholder="Your EarnGig username" required>
-          </div>
-
-          <div class="field">
-            <label for="phone">Phone number</label>
-            <input id="phone" name="phone" type="tel"
-              placeholder="e.g. 08012345678" required>
-          </div>
-
-          <div class="field">
-            <label for="email">Email address</label>
-            <input id="email" name="email" type="email"
-              placeholder="Enter your email" required>
-          </div>
-
-          <div class="field">
-            <label for="state">State of operation</label>
-            <select id="state" name="state" required>
-              <option value="">Select state</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="town">Town or city</label>
-            <input id="town" name="town" type="text"
-              placeholder="e.g. Ikeja, Lagos" required>
-          </div>
-
-          <div class="field full">
-            <label for="address">Residential or business address</label>
-            <input id="address" name="address" type="text"
-              placeholder="Enter your address" required>
-          </div>
-
-          <div class="field full">
-            <label for="experience">Delivery experience (optional)</label>
-            <textarea id="experience" name="experience"
-              placeholder="Tell us briefly about your delivery or logistics experience"></textarea>
-          </div>
-        </div>
-
-        <div id="roleInfo" class="role-info"></div>
-
-        <div id="deliveryFields" class="field-grid" style="display:none">
-          <div class="field">
-            <label for="vehicle">Vehicle type</label>
-            <select id="vehicle" name="vehicle">
-              <option value="">Select vehicle</option>
-              <option value="Motorcycle">Motorcycle</option>
-              <option value="Bicycle">Bicycle</option>
-              <option value="Car">Car</option>
-              <option value="Van">Van</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="deliveryArea">Main delivery area</label>
-            <input id="deliveryArea" name="deliveryArea"
-              type="text" placeholder="e.g. Ikeja and nearby areas">
-          </div>
-        </div>
-
-        <div id="collectionFields" class="field-grid" style="display:none">
-          <div class="field full">
-            <label for="routeStates">States you can regularly serve</label>
-            <select id="routeStates" name="routeStates" multiple size="5">
-            </select>
-            <small>
-              Select the states you regularly travel to or can arrange
-              shipments for. On a computer, hold Ctrl or Command to
-              select multiple states.
-            </small>
-          </div>
-          <div class="field">
-            <label for="collectionVehicle">Vehicle type</label>
-            <select id="collectionVehicle" name="collectionVehicle">
-              <option value="">Select vehicle</option>
-              <option value="Motorcycle">Motorcycle</option>
-              <option value="Car">Car</option>
-              <option value="Van">Van</option>
-              <option value="Truck">Truck</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="collectionCapacity">Approximate parcel capacity</label>
-            <input id="collectionCapacity" name="collectionCapacity"
-              type="number" min="1" placeholder="Number of parcels">
-          </div>
-        </div>
-
-        <div id="storekeeperFields" class="field-grid" style="display:none">
-          <div class="field">
-            <label for="storeName">Collection point name</label>
-            <input id="storeName" name="storeName" type="text"
-              placeholder="Name of your collection point">
-          </div>
-          <div class="field">
-            <label for="storeCapacity">Storage capacity</label>
-            <input id="storeCapacity" name="storeCapacity" type="number"
-              min="1" placeholder="Approximate parcel capacity">
-          </div>
-          <div class="field">
-            <label for="storeFee">Proposed fee per parcel</label>
-            <select id="storeFee" name="storeFee">
-              <option value="">Select proposed fee</option>
-              <option value="1000">₦1,000</option>
-              <option value="2000">₦2,000</option>
-            </select>
-            <small>Subject to EarnGig review and approval.</small>
-          </div>
-          <div class="field">
-            <label for="openingHours">Opening hours</label>
-            <input id="openingHours" name="openingHours" type="text"
-              placeholder="e.g. 8am – 6pm">
-          </div>
-          <div class="field full">
-            <label for="storeAddress">Exact collection point address</label>
-            <textarea id="storeAddress" name="storeAddress"
-              placeholder="Enter the full address customers will visit"></textarea>
-          </div>
-        </div>
-
-        <label class="checkbox-row">
-          <input type="checkbox" id="agreeRules" required>
-          <span>
-            I confirm that the information provided is accurate. I agree
-            to follow EarnGig delivery procedures, provide genuine
-            collection and handover evidence, protect customer parcels
-            and never demand unauthorized payments.
-          </span>
+  <form id="applicationForm">
+    <div class="section">
+      <h2>1. Choose your application type</h2>
+      <div class="choice-grid">
+        <label class="choice">
+          <input type="radio" name="applicationType" value="rider" required>
+          <strong>Delivery Rider</strong>
+          <small>Collect parcels from vendors and deliver them, or collect multiple parcels for onward shipment.</small>
         </label>
+        <label class="choice">
+          <input type="radio" name="applicationType" value="storekeeper" required>
+          <strong>Storekeeper</strong>
+          <small>Operate a collection point where customers receive their interstate parcels.</small>
+        </label>
+      </div>
 
-        <button class="btn btn-primary submit-btn" type="submit">
-          Submit Registration →
-        </button>
-      </form>
-
-      <div class="fee-note">
-        <strong>Important:</strong> Submitting this form does not
-        automatically activate a delivery account. Applications must
-        be reviewed and approved before access to delivery operations
-        is granted.
+      <div id="riderTypes" class="hidden">
+        <div class="subheading">Choose your rider category</div>
+        <div class="choice-grid">
+          <label class="choice">
+            <input type="radio" name="riderType" value="normal">
+            <strong>Normal Delivery Rider</strong>
+            <small>Collect an order from a vendor and deliver it directly to the customer.</small>
+          </label>
+          <label class="choice">
+            <input type="radio" name="riderType" value="collection">
+            <strong>Collection Rider</strong>
+            <small>Collect multiple vendor parcels, group them by destination and dispatch them to registered storekeepers.</small>
+          </label>
+        </div>
       </div>
     </div>
 
-    <p class="demo-note">
-      Registration demo: this page saves an application in this browser.
-      Shared applications, identity verification, approval, live delivery
-      assignments, secure payments and wallet credits require the
-      EarnGig backend.
-    </p>
+    <div id="personalSection" class="section hidden">
+      <h2>2. Personal information</h2>
+      <div class="fields">
+        <div class="field">
+          <label for="fullName">Full legal name *</label>
+          <input id="fullName" name="fullName" required>
+        </div>
+        <div class="field">
+          <label for="username">EarnGig username *</label>
+          <input id="username" name="username" required>
+        </div>
+        <div class="field">
+          <label for="phone">Active phone number *</label>
+          <input id="phone" name="phone" type="tel" placeholder="080..." required>
+        </div>
+        <div class="field">
+          <label for="email">Email address *</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div class="field full">
+          <label for="address">Residential address *</label>
+          <input id="address" name="address" required>
+        </div>
+        <div class="field">
+          <label for="state">State *</label>
+          <select id="state" name="state" required>
+            <option value="">Select state</option>
+            <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+            <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+            <option>Benue</option><option>Borno</option><option>Cross River</option>
+            <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+            <option>Ekiti</option><option>Enugu</option><option>Gombe</option>
+            <option>Imo</option><option>Jigawa</option><option>Kaduna</option>
+            <option>Kano</option><option>Katsina</option><option>Kebbi</option>
+            <option>Kogi</option><option>Kwara</option><option>Lagos</option>
+            <option>Nasarawa</option><option>Niger</option><option>Ogun</option>
+            <option>Ondo</option><option>Osun</option><option>Oyo</option>
+            <option>Plateau</option><option>Rivers</option><option>Sokoto</option>
+            <option>Taraba</option><option>Yobe</option><option>Zamfara</option>
+            <option>FCT</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="town">Town / city *</label>
+          <input id="town" name="town" required>
+        </div>
+        <div class="field full">
+          <label for="passport">Passport photograph *</label>
+          <input id="passport" name="passport" type="file" accept="image/*" required>
+          <span class="hint">Use a recent, clear photograph of yourself.</span>
+        </div>
+      </div>
+
+      <div class="subheading">Identity verification</div>
+      <div class="fields">
+        <div class="field">
+          <label for="idType">Valid identification type *</label>
+          <select id="idType" name="idType" required>
+            <option value="">Select ID type</option>
+            <option>National ID / NIN slip</option>
+            <option>International passport</option>
+            <option>Driver's licence</option>
+            <option>Voter's card</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="idNumber">ID number *</label>
+          <input id="idNumber" name="idNumber" required>
+        </div>
+        <div class="field full">
+          <label for="idDocument">Upload identification document *</label>
+          <input id="idDocument" name="idDocument" type="file" accept="image/*,.pdf" required>
+        </div>
+      </div>
+    </div>
+
+    <div id="riderSection" class="section hidden">
+      <h2>3. Rider information</h2>
+      <div class="fields">
+        <div class="field">
+          <label for="vehicleType">Vehicle type *</label>
+          <select id="vehicleType" name="vehicleType">
+            <option value="">Select vehicle</option>
+            <option>Motorcycle</option>
+            <option>Tricycle</option>
+            <option>Car</option>
+            <option>Van</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="vehicleNumber">Vehicle registration number</label>
+          <input id="vehicleNumber" name="vehicleNumber">
+        </div>
+        <div class="field">
+          <label for="licenceNumber">Driver's licence number</label>
+          <input id="licenceNumber" name="licenceNumber">
+        </div>
+        <div class="field">
+          <label for="serviceArea">Preferred operating area *</label>
+          <input id="serviceArea" name="serviceArea" placeholder="Town, city or state">
+        </div>
+        <div class="field full">
+          <label for="vehiclePhoto">Vehicle photograph *</label>
+          <input id="vehiclePhoto" name="vehiclePhoto" type="file" accept="image/*">
+        </div>
+        <div class="field full">
+          <label for="licenceDocument">Upload driver's licence (if applicable)</label>
+          <input id="licenceDocument" name="licenceDocument" type="file" accept="image/*,.pdf">
+        </div>
+      </div>
+    </div>
+
+    <div id="storeSection" class="section hidden">
+      <h2>3. Storekeeper / collection point information</h2>
+      <div class="fields">
+        <div class="field">
+          <label for="storeName">Collection point name *</label>
+          <input id="storeName" name="storeName">
+        </div>
+        <div class="field">
+          <label for="storeCapacity">Approximate parcel capacity *</label>
+          <input id="storeCapacity" name="storeCapacity" placeholder="e.g. 100 parcels">
+        </div>
+        <div class="field full">
+          <label for="storeAddress">Exact collection point address *</label>
+          <input id="storeAddress" name="storeAddress">
+        </div>
+        <div class="field">
+          <label for="openingHours">Opening days and hours *</label>
+          <input id="openingHours" name="openingHours" placeholder="e.g. Mon–Sat, 8am–6pm">
+        </div>
+        <div class="field">
+          <label for="premisesType">Premises type *</label>
+          <select id="premisesType" name="premisesType">
+            <option value="">Select type</option>
+            <option>Shop</option>
+            <option>Warehouse</option>
+            <option>Office</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="premisesPhotos">Upload photos of your collection point *</label>
+          <input id="premisesPhotos" name="premisesPhotos" type="file" accept="image/*" multiple>
+          <span class="hint">Include the entrance, interior and parcel storage area.</span>
+        </div>
+        <div class="field full">
+          <label for="ownershipProof">Proof of right to use the premises (if available)</label>
+          <input id="ownershipProof" name="ownershipProof" type="file" accept="image/*,.pdf">
+        </div>
+      </div>
+    </div>
+
+    <div id="paymentSection" class="section hidden">
+      <h2>4. Payment information</h2>
+      <p class="hint">Provide the account where approved EarnGig delivery earnings may be paid. In a live system, these details must be submitted through secure, access-controlled storage.</p>
+      <div class="fields">
+        <div class="field">
+          <label for="bankName">Bank name *</label>
+          <input id="bankName" name="bankName">
+        </div>
+        <div class="field">
+          <label for="accountNumber">Account number *</label>
+          <input id="accountNumber" name="accountNumber" inputmode="numeric" maxlength="10">
+        </div>
+        <div class="field full">
+          <label for="accountName">Account name *</label>
+          <input id="accountName" name="accountName">
+        </div>
+      </div>
+    </div>
+
+    <div id="declarationSection" class="section hidden">
+      <h2>5. Verification and declaration</h2>
+      <div class="notice">
+        After submitting your application:
+        <ul>
+          <li>EarnGig will review your information and documents.</li>
+          <li>You should expect a phone call from the verification team.</li>
+          <li>A short phone interview may be conducted.</li>
+          <li>EarnGig may request extra information or documents.</li>
+          <li>You must wait for approval before accepting or handling parcels.</li>
+        </ul>
+      </div>
+      <label class="checkline">
+        <input type="checkbox" id="truthDeclaration" required>
+        I confirm that the information and documents I submit are accurate and belong to me.
+      </label>
+      <label class="checkline">
+        <input type="checkbox" id="verificationConsent" required>
+        I agree to be contacted by EarnGig for application verification, phone interviews and additional information.
+      </label>
+      <label class="checkline">
+        <input type="checkbox" id="rulesDeclaration" required>
+        I understand that I cannot work as an EarnGig rider or storekeeper until my application is approved.
+      </label>
+      <div id="errorBox" class="error"></div>
+      <button class="submit" id="submitButton" type="submit">Submit Application</button>
+    </div>
+  </form>
+
+  <div class="status-box" id="successBox">
+    <h2>Application submitted successfully!</h2>
+    <p>Thank you for applying to join the EarnGig Delivery Network.</p>
+    <p>Your application has been submitted and is awaiting review. Please expect a phone call from the EarnGig verification team. We may contact you to confirm your information, request additional details or conduct a short interview.</p>
+    <p>Please keep your registered phone number active and accessible.</p>
+    <p><strong>You cannot begin accepting deliveries or handling customer parcels until your application has been approved.</strong></p>
+    <p id="applicationReference"></p>
+    <a href="index.html" style="color:#6827c9;font-weight:bold">Return to EarnGig Home</a>
   </div>
-</section>
 </main>
 
-<footer class="footer">
-  <p>EarnGig Delivery Network</p>
-  <a href="about.html">About</a>
-  <a href="help.html">Help</a>
-  <a href="terms.html">Terms</a>
-  <a href="privacy.html">Privacy</a>
-  <a href="contact.html">Contact</a>
-</footer>
+<footer>© <span id="year"></span> EarnGig. Delivery Network Registration.</footer>
 
 <script>
-const STATES = [
-  "Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa",
-  "Benue","Borno","Cross River","Delta","Ebonyi","Edo",
-  "Ekiti","Enugu","Gombe","Imo","Jigawa","Kaduna","Kano",
-  "Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa",
-  "Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers",
-  "Sokoto","Taraba","Yobe","Zamfara","Federal Capital Territory"
-];
+const form = document.getElementById("applicationForm");
+const riderTypes = document.getElementById("riderTypes");
+const personalSection = document.getElementById("personalSection");
+const riderSection = document.getElementById("riderSection");
+const storeSection = document.getElementById("storeSection");
+const paymentSection = document.getElementById("paymentSection");
+const declarationSection = document.getElementById("declarationSection");
+const successBox = document.getElementById("successBox");
+const errorBox = document.getElementById("errorBox");
 
-const STORAGE_KEY = "earngig_delivery_applications";
+document.getElementById("year").textContent = new Date().getFullYear();
 
-const stateSelect = document.getElementById("state");
-const routeStates = document.getElementById("routeStates");
-
-STATES.forEach(state=>{
-  const option = document.createElement("option");
-  option.value = state;
-  option.textContent = state;
-  stateSelect.appendChild(option);
-
-  const routeOption = document.createElement("option");
-  routeOption.value = state;
-  routeOption.textContent = state;
-  routeStates.appendChild(routeOption);
-});
-
-const roleSelect = document.getElementById("role");
-const roleInfo = document.getElementById("roleInfo");
-
-const deliveryFields = document.getElementById("deliveryFields");
-const collectionFields = document.getElementById("collectionFields");
-const storekeeperFields = document.getElementById("storekeeperFields");
-
-const vehicle = document.getElementById("vehicle");
-const deliveryArea = document.getElementById("deliveryArea");
-
-const collectionVehicle = document.getElementById("collectionVehicle");
-const collectionCapacity = document.getElementById("collectionCapacity");
-
-const storeName = document.getElementById("storeName");
-const storeCapacity = document.getElementById("storeCapacity");
-const storeFee = document.getElementById("storeFee");
-const openingHours = document.getElementById("openingHours");
-const storeAddress = document.getElementById("storeAddress");
-
-function setRole(role){
-  roleSelect.value = role;
-  updateRoleFields();
-  document.getElementById("register").scrollIntoView({
-    behavior:"smooth"
+function setRequired(section, selectors, required) {
+  selectors.forEach(selector => {
+    const element = section.querySelector(selector);
+    if (element) element.required = required;
   });
 }
 
-document.querySelectorAll(".choose-role").forEach(button=>{
-  button.addEventListener("click",()=>{
-    setRole(button.dataset.role);
+function updateApplicationType() {
+  const selected = form.querySelector('input[name="applicationType"]:checked')?.value;
+  const isRider = selected === "rider";
+  const isStorekeeper = selected === "storekeeper";
+
+  riderTypes.classList.toggle("hidden", !isRider);
+  personalSection.classList.toggle("hidden", !selected);
+  riderSection.classList.toggle("hidden", !isRider);
+  storeSection.classList.toggle("hidden", !isStorekeeper);
+  paymentSection.classList.toggle("hidden", !selected);
+  declarationSection.classList.toggle("hidden", !selected);
+
+  setRequired(personalSection, [
+    "#fullName","#username","#phone","#email","#address",
+    "#state","#town","#passport","#idType","#idNumber","#idDocument"
+  ], !!selected);
+
+  setRequired(riderSection, [
+    "#vehicleType","#serviceArea","#vehiclePhoto"
+  ], isRider);
+
+  setRequired(storeSection, [
+    "#storeName","#storeCapacity","#storeAddress",
+    "#openingHours","#premisesType","#premisesPhotos"
+  ], isStorekeeper);
+
+  setRequired(paymentSection, [
+    "#bankName","#accountNumber","#accountName"
+  ], !!selected);
+
+  form.querySelectorAll('input[name="riderType"]').forEach(input => {
+    input.required = isRider;
   });
+
+  updateRiderRequirements();
+}
+
+function updateRiderRequirements() {
+  const subtype = form.querySelector('input[name="riderType"]:checked')?.value;
+  const isRider = form.querySelector('input[name="applicationType"]:checked')?.value === "rider";
+  document.getElementById("vehicleType").required = isRider;
+  document.getElementById("serviceArea").required = isRider;
+  document.getElementById("vehiclePhoto").required = isRider;
+}
+
+form.querySelectorAll('input[name="applicationType"]').forEach(input => {
+  input.addEventListener("change", updateApplicationType);
+});
+form.querySelectorAll('input[name="riderType"]').forEach(input => {
+  input.addEventListener("change", updateRiderRequirements);
 });
 
-function updateRoleFields(){
-  const role = roleSelect.value;
-
-  deliveryFields.style.display =
-    role === "delivery" ? "grid" : "none";
-
-  collectionFields.style.display =
-    role === "collection" ? "grid" : "none";
-
-  storekeeperFields.style.display =
-    role === "storekeeper" ? "grid" : "none";
-
-  roleInfo.className = "role-info";
-
-  vehicle.required = role === "delivery";
-  deliveryArea.required = role === "delivery";
-
-  collectionVehicle.required = role === "collection";
-  collectionCapacity.required = role === "collection";
-
-  storeName.required = role === "storekeeper";
-  storeCapacity.required = role === "storekeeper";
-  storeFee.required = role === "storekeeper";
-  openingHours.required = role === "storekeeper";
-  storeAddress.required = role === "storekeeper";
-
-  if(role === "delivery"){
-    roleInfo.innerHTML =
-      "<strong>Delivery Rider:</strong> You will collect orders from vendors, upload collection evidence and deliver directly to customers. Accepted pickups must be collected on the same calendar day. Orders must be completed within five calendar days of their original release.";
-    roleInfo.classList.add("show");
-  }
-
-  if(role === "collection"){
-    roleInfo.innerHTML =
-      "<strong>Collection Rider:</strong> You will gather multiple orders, group them by destination, find registered storekeepers and coordinate consolidated shipments. The receiving storekeeper must confirm the shipment before your agreed shipment earnings are credited.";
-    roleInfo.classList.add("show");
-  }
-
-  if(role === "storekeeper"){
-    roleInfo.innerHTML =
-      "<strong>Storekeeper:</strong> You will receive interstate shipments, confirm the number of parcels received, organize individual customer orders and release parcels only after verifying each customer's private pickup code. Your proposed per-parcel fee is subject to approval.";
-    roleInfo.classList.add("show");
-  }
+function getFileNames(name) {
+  const input = form.elements[name];
+  return input ? Array.from(input.files || []).map(file => file.name) : [];
 }
 
-roleSelect.addEventListener("change",updateRoleFields);
-
-function readApplications(){
-  try{
-    const records = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return Array.isArray(records) ? records : [];
-  }catch(error){
-    return [];
-  }
-}
-
-function showMessage(type,message){
-  const box = document.getElementById("formMessage");
-  box.className = "form-message " + type;
-  box.textContent = message;
-  box.scrollIntoView({behavior:"smooth",block:"center"});
-}
-
-document.getElementById("deliveryForm").addEventListener("submit",event=>{
+form.addEventListener("submit", function(event) {
   event.preventDefault();
+  errorBox.style.display = "none";
 
-  const form = event.currentTarget;
+  if (!form.reportValidity()) return;
 
-  if(!form.reportValidity())return;
+  const applicationType = form.querySelector('input[name="applicationType"]:checked')?.value;
+  const riderType = form.querySelector('input[name="riderType"]:checked')?.value;
 
-  const role = roleSelect.value;
-
-  if(!role){
-    showMessage("error","Please choose a delivery role.");
+  if (applicationType === "rider" && !riderType) {
+    errorBox.textContent = "Please choose Normal Delivery Rider or Collection Rider.";
+    errorBox.style.display = "block";
     return;
   }
 
-  const selectedRoutes = Array.from(routeStates.selectedOptions)
-    .map(option=>option.value);
-
-  if(role === "collection" && selectedRoutes.length === 0){
-    showMessage("error","Please select at least one state you can serve.");
-    return;
-  }
-
+  const reference = "EGD-" + Date.now().toString().slice(-9);
   const application = {
-    id:"EGD-" + Date.now(),
-    role:role,
-    fullName:document.getElementById("fullName").value.trim(),
-    username:document.getElementById("username").value.trim(),
-    phone:document.getElementById("phone").value.trim(),
-    email:document.getElementById("email").value.trim(),
-    state:stateSelect.value,
-    town:document.getElementById("town").value.trim(),
-    address:document.getElementById("address").value.trim(),
-    experience:document.getElementById("experience").value.trim(),
-    submittedAt:new Date().toISOString(),
-    status:"pending_review"
+    reference,
+    applicationType,
+    riderType: applicationType === "rider" ? riderType : null,
+    fullName: form.elements.fullName.value.trim(),
+    username: form.elements.username.value.trim(),
+    phone: form.elements.phone.value.trim(),
+    email: form.elements.email.value.trim(),
+    address: form.elements.address.value.trim(),
+    state: form.elements.state.value,
+    town: form.elements.town.value.trim(),
+    idType: form.elements.idType.value,
+    idNumber: form.elements.idNumber.value.trim(),
+    vehicleType: form.elements.vehicleType.value,
+    vehicleNumber: form.elements.vehicleNumber.value.trim(),
+    licenceNumber: form.elements.licenceNumber.value.trim(),
+    serviceArea: form.elements.serviceArea.value.trim(),
+    storeName: form.elements.storeName.value.trim(),
+    storeCapacity: form.elements.storeCapacity.value.trim(),
+    storeAddress: form.elements.storeAddress.value.trim(),
+    openingHours: form.elements.openingHours.value.trim(),
+    premisesType: form.elements.premisesType.value,
+    bankName: form.elements.bankName.value.trim(),
+    accountNumber: form.elements.accountNumber.value.trim(),
+    accountName: form.elements.accountName.value.trim(),
+    uploadedFileNames: {
+      passport: getFileNames("passport"),
+      identity: getFileNames("idDocument"),
+      vehicle: getFileNames("vehiclePhoto"),
+      licence: getFileNames("licenceDocument"),
+      premises: getFileNames("premisesPhotos"),
+      premisesProof: getFileNames("ownershipProof")
+    },
+    status: "pending_review",
+    verificationStage: "awaiting_review",
+    submittedAt: new Date().toISOString()
   };
 
-  if(role === "delivery"){
-    application.vehicle = vehicle.value;
-    application.deliveryArea = deliveryArea.value.trim();
-  }
+  /*
+    DEMO ONLY:
+    This saves application text in this browser.
+    File contents are NOT uploaded.
+    A production system must send this application to a secure backend,
+    store documents privately, and restrict access to authorised admins.
+  */
 
-  if(role === "collection"){
-    application.routeStates = selectedRoutes;
-    application.vehicle = collectionVehicle.value;
-    application.capacity = Number(collectionCapacity.value);
-  }
-
-  if(role === "storekeeper"){
-    application.storeName = storeName.value.trim();
-    application.capacity = Number(storeCapacity.value);
-    application.proposedFee = Number(storeFee.value);
-    application.openingHours = openingHours.value.trim();
-    application.storeAddress = storeAddress.value.trim();
-  }
-
-  try{
-    const applications = readApplications();
+  try {
+    const key = "earngig_delivery_applications";
+    const applications = JSON.parse(localStorage.getItem(key) || "[]");
     applications.push(application);
+    localStorage.setItem(key, JSON.stringify(applications));
 
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(applications)
-    );
-
-    showMessage(
-      "success",
-      "Your registration has been saved in this browser. Application reference: " +
-      application.id +
-      ". Your application is awaiting review. This demo does not yet send the application to EarnGig's central admin system."
-    );
-
-    form.reset();
-    updateRoleFields();
-
-  }catch(error){
-    showMessage(
-      "error",
-      "Your application could not be saved. Please check your browser storage and try again."
-    );
+    form.style.display = "none";
+    successBox.style.display = "block";
+    document.getElementById("applicationReference").textContent =
+      "Your application reference: " + reference;
+    window.scrollTo({top:0,behavior:"smooth"});
+  } catch (error) {
+    errorBox.textContent = "Your application could not be saved in this browser. Please try again.";
+    errorBox.style.display = "block";
   }
 });
-
-updateRoleFields();
 </script>
-
 </body>
 </html>
