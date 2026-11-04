@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Rider Dashboard</title>
+<style>
+:root{
+  --purple:#6827c9;
+  --purple-dark:#48149a;
+  --lavender:#f3edff;
+  --gold:#e7b83f;
+  --ink:#211b2b;
+  --muted:#756d80;
+  --border:#e8e0f1;
+  --green:#16834a;
+  --red:#c53b3b;
+  --orange:#b66a00;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{
+  padding:15px 5%;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:#fff;z-index:10
+}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+.header-right{display:flex;gap:15px;align-items:center}
+.header-right a{color:var(--purple);font-weight:700;text-decoration:none;font-size:13px}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100vh - 60px)}
+aside{border-right:1px solid var(--border);padding:22px 14px}
+.profile-mini{padding:15px;background:var(--lavender);border-radius:13px;margin-bottom:22px}
+.avatar{width:43px;height:43px;background:var(--purple);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;margin-bottom:10px}
+.profile-mini strong{display:block;font-size:14px}
+.profile-mini small{color:var(--muted);font-size:12px}
+nav button{
+  width:100%;display:flex;align-items:center;gap:10px;
+  background:transparent;color:var(--ink);text-align:left;
+  padding:12px;border-radius:9px;margin:3px 0;font-size:13px
+}
+nav button.active,nav button:hover{background:var(--lavender);color:var(--purple)}
+main{padding:28px 4%;max-width:1400px;width:100%;margin:auto}
+h1{font-size:27px;margin:0 0 7px}
+.subtitle{color:var(--muted);font-size:14px;line-height:1.5}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:23px}
+.topline button{width:auto}
+button{border:0;border-radius:9px;padding:11px 15px;background:var(--purple);color:#fff;font-weight:800;cursor:pointer}
+button:hover{background:var(--purple-dark)}
+button.secondary{background:#eee7f8;color:var(--purple)}
+button.danger{background:#fff0f0;color:var(--red)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:20px 0}
+.stat{border:1px solid var(--border);border-radius:13px;padding:17px}
+.stat small{color:var(--muted);font-size:12px}
+.stat strong{display:block;font-size:24px;margin-top:8px}
+.panel{border:1px solid var(--border);border-radius:15px;padding:19px;margin:17px 0}
+.panel h2{font-size:18px;margin:0 0 14px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}
+.tabs button{background:#f2eef7;color:var(--muted);font-size:12px}
+.tabs button.active{background:var(--purple);color:#fff}
+.order-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.order{border:1px solid var(--border);border-radius:12px;padding:15px}
+.order h3{font-size:15px;margin:0 0 8px}
+.order p{font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0}
+.order .fee{font-size:19px;font-weight:900;color:var(--purple);margin:12px 0}
+.order-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.order-actions button{font-size:12px}
+.tag{display:inline-block;padding:5px 8px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:11px;font-weight:800}
+.tag.green{background:#e7f8ed;color:var(--green)}
+.tag.red{background:#fff0f0;color:var(--red)}
+.tag.orange{background:#fff5e5;color:var(--orange)}
+.empty{padding:30px;text-align:center;color:var(--muted);background:#faf8fc;border-radius:12px;font-size:13px}
+.group-title{font-weight:900;color:var(--purple-dark);margin:22px 0 10px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--muted);font-size:11px}
+input,select{width:100%;padding:11px;border:1px solid #dcd3e7;border-radius:8px;font:inherit;margin:5px 0 12px}
+label{font-size:12px;font-weight:700}
+.modal{display:none;position:fixed;inset:0;background:#1b102d88;z-index:30;align-items:center;justify-content:center;padding:15px}
+.modal-box{background:#fff;border-radius:15px;padding:22px;width:100%;max-width:490px;max-height:90vh;overflow:auto}
+.modal-box h2{margin-top:0;font-size:19px}
+.modal-actions{display:flex;gap:8px;margin-top:12px}
+.modal-actions button{flex:1}
+.note{background:var(--lavender);padding:12px;border-radius:10px;font-size:12px;line-height:1.6;margin:12px 0}
+.hidden{display:none!important}
+.notice{padding:22px;background:#fff8e9;border:1px solid #f0d69a;border-radius:13px;line-height:1.6}
+.notice h2{margin-top:0}
+.wallet-total{font-size:32px;font-weight:900;color:var(--purple);margin:8px 0}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ aside{border-right:0;border-bottom:1px solid var(--border);padding:10px}
+ .profile-mini{display:none}
+ nav{display:flex;overflow:auto;gap:5px}
+ nav button{white-space:nowrap;width:auto;flex-shrink:0}
+ main{padding:22px 15px}
+}
+@media(max-width:600px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .order-grid{grid-template-columns:1fr}
+ .topline{align-items:flex-start;flex-direction:column}
+ .topline button{width:100%}
+ .panel{padding:14px;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <div class="header-right">
+    <a href="notifications.html">Notifications</a>
+    <a href="profile.html">Profile</a>
+  </div>
+</header>
+
+<div class="layout">
+<aside>
+  <div class="profile-mini">
+    <div class="avatar" id="avatar">R</div>
+    <strong id="riderName">Rider</strong>
+    <small id="riderTypeLabel">Delivery Rider</small>
+  </div>
+  <nav>
+    <button class="active" data-page="overview">▦ Overview</button>
+    <button data-page="available">＋ Available Orders</button>
+    <button data-page="active">▣ My Deliveries</button>
+    <button data-page="completed">✓ Completed</button>
+    <button data-page="wallet">₦ Delivery Wallet</button>
+    <button data-page="account">♙ My Account</button>
+  </nav>
+</aside>
+
+<main>
+  <section id="approvalNotice" class="notice hidden">
+    <h2>Application approval required</h2>
+    <p id="approvalMessage">Your rider application must be approved before you can access delivery jobs.</p>
+    <p>Check your application status or contact EarnGig support if you need assistance.</p>
+    <a href="delivery.html" style="color:#6827c9;font-weight:bold">Return to delivery registration</a>
+  </section>
+
+  <div id="dashboardContent" class="hidden">
+    <section id="page-overview">
+      <div class="topline">
+        <div>
+          <h1>Rider Dashboard</h1>
+          <div class="subtitle">Manage your pickups, deliveries and earnings.</div>
+        </div>
+        <button onclick="showPage('available')">Find Deliveries</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><small>Available Orders</small><strong id="availableCount">0</strong></div>
+        <div class="stat"><small>Active Deliveries</small><strong id="activeCount">0</strong></div>
+        <div class="stat"><small>Completed Deliveries</small><strong id="completedCount">0</strong></div>
+        <div class="stat"><small>Delivery Wallet</small><strong id="overviewWallet">₦0</strong></div>
+      </div>
+
+      <div class="panel">
+        <h2>Important delivery rules</h2>
+        <div class="note">
+          <strong>Pickup deadline:</strong> After accepting a vendor order, collect it before the end of that same calendar day.
+          <br><br>
+          <strong>Delivery deadline:</strong> Every order must be completed within five calendar days from its original release date. Handovers do not reset this deadline.
+          <br><br>
+          <strong>Customer confirmation:</strong> A delivery is completed only after the customer's private confirmation code is verified.
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Your active work</h2>
+        <div id="overviewActive" class="empty">You have no active deliveries yet.</div>
+      </div>
+    </section>
+
+    <section id="page-available" class="hidden">
+      <div class="topline">
+        <div>
+          <h1>Available Vendor Orders</h1>
+          <div class="subtitle">Orders are grouped by vendor pickup location. Each vendor order is handled separately.</div>
+        </div>
+      </div>
+      <div class="note">When you accept an order, the vendor is notified. You must collect the parcel before the end of that same calendar day. You may accept more nearby orders while completing other deliveries.</div>
+      <div id="availableOrders"></div>
+    </section>
+
+    <section id="page-active" class="hidden">
+      <h1>My Deliveries</h1>
+      <p class="subtitle">Track each order and complete its required handover steps.</p>
+      <div id="activeOrders"></div>
+    </section>
+
+    <section id="page-completed" class="hidden">
+      <h1>Completed Deliveries</h1>
+      <p class="subtitle">Your completed delivery history.</p>
+      <div id="completedOrders"></div>
+    </section>
+
+    <section id="page-wallet" class="hidden">
+      <h1>Delivery Wallet</h1>
+      <p class="subtitle">This is your separate EarnGig delivery earnings wallet, not your coin wallet.</p>
+      <div class="panel">
+        <small class="subtitle">Available demo balance</small>
+        <div class="wallet-total" id="walletBalance">₦0.00</div>
+        <div class="note">Withdrawal service charge: 2%. Actual withdrawals require a secure payment and wallet backend.</div>
+        <button onclick="requestWithdrawal()">Request Withdrawal</button>
+      </div>
+      <div class="panel">
+        <h2>Wallet transactions</h2>
+        <div id="walletTransactions"></div>
+      </div>
+    </section>
+
+    <section id="page-account" class="hidden">
+      <h1>My Rider Account</h1>
+      <div class="panel" id="accountDetails"></div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div class="modal" id="pickupModal">
+  <div class="modal-box">
+    <h2>Confirm parcel pickup</h2>
+    <p class="subtitle">Upload a clear photo showing the parcel you collected from the vendor.</p>
+    <label>Pickup proof photograph *</label>
+    <input type="file" id="pickupPhoto" accept="image/*">
+    <div class="note">The vendor must also confirm the handover. A photo alone does not complete the handover verification.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('pickupModal')">Cancel</button>
+      <button onclick="submitPickup()">Submit Pickup Proof</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deliveryModal">
+  <div class="modal-box">
+    <h2>Confirm customer delivery</h2>
+    <p class="subtitle">After physically handing the parcel to the customer, enter the private confirmation code provided by the customer.</p>
+    <label>Customer confirmation code *</label>
+    <input id="customerCode" placeholder="Enter customer code" autocomplete="off">
+    <label>Delivery photograph *</label>
+    <input type="file" id="deliveryPhoto" accept="image/*">
+    <div class="note">The code must be verified by EarnGig's secure backend before the order can be marked delivered or earnings released.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('deliveryModal')">Cancel</button>
+      <button onclick="submitDelivery()">Submit Delivery</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="withdrawModal">
+  <div class="modal-box">
+    <h2>Delivery wallet withdrawal</h2>
+    <p class="subtitle">Demo withdrawal request. The real platform must validate your balance and process payment securely.</p>
+    <label>Amount to withdraw (₦)</label>
+    <input id="withdrawAmount" type="number" min="1" placeholder="Enter amount">
+    <div id="withdrawCalculation" class="note">Service charge: 2%</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('withdrawModal')">Cancel</button>
+      <button onclick="submitWithdrawal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> EarnGig Delivery Network</footer>
+
+<script>
+const APPLICATION_KEY = "earngig_delivery_applications";
+const ORDER_KEY = "earngig_delivery_orders";
+const PROFILE_KEY = "earngig_rider_profile";
+const WALLET_KEY = "earngig_rider_delivery_wallet";
+
+let rider = null;
+let applications = [];
+let orders = [];
+let wallet = {balance:0,transactions:[]};
+let selectedOrderId = null;
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function readJSON(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveData() {
+  localStorage.setItem(ORDER_KEY, JSON.stringify(orders));
+  localStorage.setItem(WALLET_KEY, JSON.stringify(wallet));
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function startDashboard() {
+  applications = readJSON(APPLICATION_KEY, []);
+  orders = readJSON(ORDER_KEY, []);
+  wallet = readJSON(WALLET_KEY, {balance:0,transactions:[]});
+
+  const savedProfile = readJSON(PROFILE_KEY, null);
+  const username = savedProfile?.username;
+
+  if (username) {
+    rider = applications.find(app =>
+      String(app.username).toLowerCase() === String(username).toLowerCase()
+    );
+  } else {
+    rider = applications.find(app =>
+      app.applicationType === "rider" &&
+      app.status === "approved"
+    );
+  }
+
+  if (!rider || rider.applicationType !== "rider" || rider.status !== "approved") {
+    document.getElementById("approvalNotice").classList.remove("hidden");
+    document.getElementById("dashboardContent").classList.add("hidden");
+
+    let message = "Your rider application must be approved before you can access delivery jobs.";
+    if (rider?.status === "pending_review") {
+      message = "Your application is awaiting review. Please keep your phone available for the EarnGig verification team.";
+    } else if (rider?.status === "interview_required") {
+      message = "Your application requires a phone interview. Please wait for the verification team to contact you.";
+    } else if (rider?.status === "additional_info_requested") {
+      message = "EarnGig has requested additional information. Please contact the verification team for instructions.";
+    } else if (rider?.status === "rejected") {
+      message = "Your application was not approved. Please contact EarnGig support for further information.";
+    }
+    document.getElementById("approvalMessage").textContent = message;
+    return;
+  }
+
+  document.getElementById("approvalNotice").classList.add("hidden");
+  document.getElementById("dashboardContent").classList.remove("hidden");
+
+  const displayName = rider.fullName || rider.username || "Rider";
+  document.getElementById("riderName").textContent = displayName;
+  document.getElementById("avatar").textContent = displayName.charAt(0).toUpperCase();
+  document.getElementById("riderTypeLabel").textContent =
+    rider.riderType === "collection" ? "Collection Rider" : "Normal Delivery Rider";
+
+  renderAll();
+}
+
+function showPage(page) {
+  document.querySelectorAll("main section[id^='page-']").forEach(section => section.classList.add("hidden"));
+  document.getElementById("page-" + page).classList.remove("hidden");
+
+  document.querySelectorAll("nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  renderAll();
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function money(value) {
+  return "₦" + Number(value || 0).toLocaleString("en-NG", {minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function dateText(value) {
+  if (!value) return "Not recorded";
+  return new Date(value).toLocaleString("en-NG", {
+    day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"
+  });
+}
+
+function endOfDay(date) {
+  const result = new Date(date);
+  result.setHours(23,59,59,999);
+  return result;
+}
+
+function pickupDeadline(order) {
+  const source = order.acceptedAt || order.createdAt || new Date().toISOString();
+  return endOfDay(new Date(source));
+}
+
+function deliveryDeadline(order) {
+  const source = new Date(order.originalReleaseAt || order.createdAt || new Date());
+  source.setDate(source.getDate() + 5);
+  source.setHours(23,59,59,999);
+  return source;
+}
+
+function isOverduePickup(order) {
+  return order.status === "accepted" && Date.now() > pickupDeadline(order).getTime();
+}
+
+function isOverdueDelivery(order) {
+  return !["delivered","cancelled"].includes(order.status) &&
+    order.status !== "available" &&
+    Date.now() > deliveryDeadline(order).getTime();
+}
+
+function renderAll() {
+  if (!rider) return;
+  const available = orders.filter(order => order.status === "available");
+  const active = orders.filter(order =>
+    order.riderUsername === rider.username &&
+    !["delivered","cancelled"].includes(order.status)
+  );
+  const completed = orders.filter(order =>
+    order.riderUsername === rider.username && order.status === "delivered"
+  );
+
+  document.getElementById("availableCount").textContent = available.length;
+  document.getElementById("activeCount").textContent = active.length;
+  document.getElementById("completedCount").textContent = completed.length;
+  document.getElementById("overviewWallet").textContent = money(wallet.balance);
+  document.getElementById("walletBalance").textContent = money(wallet.balance);
+
+  renderAvailable();
+  renderActive();
+  renderCompleted();
+  renderOverviewActive();
+  renderWallet();
+  renderAccount();
+}
+
+function renderAvailable() {
+  const container = document.getElementById("availableOrders");
+  const available = orders.filter(order => order.status === "available");
+
+  if (!available.length) {
+    container.innerHTML = '<div class="empty">No vendor orders are available right now. Check again later.</div>';
+    return;
+  }
+
+  const groups = {};
+  available.forEach(order => {
+    const location = order.pickupTown || order.pickupLocation || "Other locations";
+    if (!groups[location]) groups[location] = [];
+    groups[location].push(order);
+  });
+
+  container.innerHTML = Object.entries(groups).map(([location, items]) => `
+    <div class="group-title">Pickup location: ${escapeHTML(location)}</div>
+    <div class="order-grid">
+      ${items.map(order => `
+        <div class="order">
+          <span class="tag">Available</span>
+          <h3>${escapeHTML(order.reference || order.id)}</h3>
+          <p><strong>Vendor:</strong> ${escapeHTML(order.vendorName || "Vendor")}</p>
+          <p><strong>Pickup:</strong> ${escapeHTML(order.pickupAddress || location)}</p>
+          <p><strong>Destination:</strong> ${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}</p>
+          <p><strong>Customer:</strong> ${escapeHTML(order.customerName || "Customer")}</p>
+          <p><strong>Items:</strong> ${escapeHTML(order.itemSummary || "Vendor order parcel")}</p>
+          <div class="fee">${money(order.riderFee || 0)}</div>
+          <p>Pickup must be completed today after acceptance.</p>
+          <div class="order-actions">
+            <button onclick="acceptOrder('${escapeHTML(order.id)}')">Accept Pickup</button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `).join("");
+}
+
+function acceptOrder(id) {
+  const order = orders.find(item => String(item.id) === String(id));
+  if (!order || order.status !== "available") return alert("This order is no longer available.");
+
+  const acceptedAt = new Date().toISOString();
+  order.status = "accepted";
+  order.riderUsername = rider.username;
+  order.riderName = rider.fullName;
+  order.acceptedAt = acceptedAt;
+  order.pickupDeadline = pickupDeadline(order).toISOString();
+  order.deliveryDeadline = deliveryDeadline(order).toISOString();
+  order.handoverHistory = order.handoverHistory || [];
+  order.handoverHistory.push({
+    stage:"rider_accepted",
+    actor:rider.username,
+    time:acceptedAt
+  });
+
+  saveData();
+  alert("Order accepted. The vendor should be notified by the live EarnGig backend. You must collect this parcel before the end of today.");
+  renderAll();
+  showPage("active");
+}
+
+function renderActive() {
+  const container = document.getElementById("activeOrders");
+  const active = orders.filter(order =>
+    order.riderUsername === rider.username &&
+    !["delivered","cancelled"].includes(order.status)
+  );
+
+  if (!active.length) {
+    container.innerHTML = '<div class="empty">You have no active deliveries.</div>';
+    return;
+  }
+
+  container.innerHTML = active.map(order => {
+    const overduePickup = isOverduePickup(order);
+    const overdueDelivery = isOverdueDelivery(order);
+    let status = order.status.replaceAll("_"," ");
+
+    return `
+      <div class="panel">
+        <div class="topline">
+          <div>
+            <h2>${escapeHTML(order.reference || order.id)}</h2>
+            <span class="tag ${overduePickup || overdueDelivery ? "red" : "green"}">${escapeHTML(status)}</span>
+          </div>
+          <strong>${money(order.riderFee || 0)}</strong>
+        </div>
+        ${overduePickup ? '<p class="tag red">Pickup deadline missed — admin review required</p>' : ""}
+        ${overdueDelivery ? '<p class="tag red">Five-day delivery deadline missed — admin intervention required</p>' : ""}
+        <p class="subtitle">
+          Vendor: ${escapeHTML(order.vendorName || "Vendor")}<br>
+          Pickup: ${escapeHTML(order.pickupAddress || order.pickupTown || "")}<br>
+          Customer: ${escapeHTML(order.customerName || "Customer")}<br>
+          Destination: ${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}
+        </p>
+        <p class="subtitle">Accepted: ${dateText(order.acceptedAt)}</p>
+        <p class="subtitle">Pickup deadline: ${dateText(order.pickupDeadline)}</p>
+        <p class="subtitle">Original five-day deadline: ${dateText(order.deliveryDeadline)}</p>
+        ${renderOrderAction(order)}
+      </div>
+    `;
+  }).join("");
+}
+
+function renderOrderAction(order) {
+  if (order.status === "accepted") {
+    return `<button onclick="openPickup('${escapeHTML(order.id)}')">Upload Pickup Proof</button>`;
+  }
+  if (order.status === "pickup_proof_submitted") {
+    return `<div class="note">Pickup proof submitted. Waiting for vendor handover confirmation.</div>`;
+  }
+  if (order.status === "picked_up") {
+    return `<button onclick="openDelivery('${escapeHTML(order.id)}')">Confirm Customer Delivery</button>`;
+  }
+  if (order.status === "delivery_proof_submitted") {
+    return `<div class="note">Delivery confirmation submitted. Waiting for secure customer-code verification.</div>`;
+  }
+  return `<div class="note">Current stage: ${escapeHTML(order.status)}</div>`;
+}
+
+function openPickup(id) {
+  selectedOrderId = id;
+  document.getElementById("pickupPhoto").value = "";
+  document.getElementById("pickupModal").style.display = "flex";
+}
+
+function openDelivery(id) {
+  selectedOrderId = id;
+  document.getElementById("customerCode").value = "";
+  document.getElementById("deliveryPhoto").value = "";
+  document.getElementById("deliveryModal").style.display = "flex";
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+function submitPickup() {
+  const photo = document.getElementById("pickupPhoto").files[0];
+  if (!photo) return alert("Please upload a pickup photograph.");
+
+  const order = orders.find(item => String(item.id) === String(selectedOrderId));
+  if (!order || order.status !== "accepted") return alert("This order cannot be updated.");
+
+  order.status = "pickup_proof_submitted";
+  order.pickupProofFileName = photo.name;
+  order.pickupProofSubmittedAt = new Date().toISOString();
+  order.handoverHistory = order.handoverHistory || [];
+  order.handoverHistory.push({
+    stage:"rider_pickup_proof_submitted",
+    actor:rider.username,
+    time:order.pickupProofSubmittedAt
+  });
+
+  saveData();
+  closeModal("pickupModal");
+  alert("Pickup proof recorded in this browser demo. The live system must notify the vendor and obtain vendor handover confirmation before treating the parcel as collected.");
+  renderAll();
+}
+
+function submitDelivery() {
+  const code = document.getElementById("customerCode").value.trim();
+  const photo = document.getElementById("deliveryPhoto").files[0];
+
+  if (!code || !photo) return alert("Enter the customer's confirmation code and upload delivery proof.");
+
+  const order = orders.find(item => String(item.id) === String(selectedOrderId));
+  if (!order || order.status !== "picked_up") {
+    return alert("This order is not ready for customer delivery confirmation.");
+  }
+
+  /*
+    IMPORTANT:
+    This demo deliberately does NOT mark the order delivered,
+    verify the customer's private code, or credit the wallet.
+    The production backend must validate the code securely.
+  */
+  order.status = "delivery_proof_submitted";
+  order.deliveryCodeSubmitted = true;
+  order.deliveryProofFileName = photo.name;
+  order.deliveryProofSubmittedAt = new Date().toISOString();
+  order.handoverHistory = order.handoverHistory || [];
+  order.handoverHistory.push({
+    stage:"delivery_proof_submitted_pending_secure_verification",
+    actor:rider.username,
+    time:order.deliveryProofSubmittedAt
+  });
+
+  saveData();
+  closeModal("deliveryModal");
+  alert("Your delivery confirmation has been recorded in this demo. The live EarnGig backend must verify the private customer code before marking this order successful or releasing your earnings.");
+  renderAll();
+}
+
+function renderOverviewActive() {
+  const container = document.getElementById("overviewActive");
+  const active = orders.filter(order =>
+    order.riderUsername === rider.username &&
+    !["delivered","cancelled"].includes(order.status)
+  );
+
+  if (!active.length) {
+    container.innerHTML = "You have no active deliveries yet.";
+    return;
+  }
+
+  container.innerHTML = active.slice(0,5).map(order => `
+    <p><strong>${escapeHTML(order.reference || order.id)}</strong> —
+    ${escapeHTML(order.status.replaceAll("_"," "))}</p>
+  `).join("") + '<button class="secondary" onclick="showPage(\'active\')">View all deliveries</button>';
+}
+
+function renderCompleted() {
+  const container = document.getElementById("completedOrders");
+  const completed = orders.filter(order =>
+    order.riderUsername === rider.username && order.status === "delivered"
+  );
+
+  if (!completed.length) {
+    container.innerHTML = '<div class="empty">No completed deliveries yet.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="panel">
+      <table>
+        <thead><tr><th>Order</th><th>Destination</th><th>Completed</th><th>Earnings</th></tr></thead>
+        <tbody>
+          ${completed.map(order => `
+            <tr>
+              <td>${escapeHTML(order.reference || order.id)}</td>
+              <td>${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}</td>
+              <td>${dateText(order.deliveredAt)}</td>
+              <td>${money(order.riderFee || 0)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderWallet() {
+  document.getElementById("walletBalance").textContent = money(wallet.balance);
+  const container = document.getElementById("walletTransactions");
+
+  if (!wallet.transactions?.length) {
+    container.innerHTML = '<div class="empty">No wallet transactions yet.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <table>
+      <thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
+      <tbody>
+        ${wallet.transactions.map(tx => `
+          <tr>
+            <td>${escapeHTML(tx.description)}</td>
+            <td>${dateText(tx.date)}</td>
+            <td>${money(tx.amount)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function requestWithdrawal() {
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawCalculation").textContent =
+    "Available balance: " + money(wallet.balance) + ". Service charge: 2%.";
+  document.getElementById("withdrawModal").style.display = "flex";
+}
+
+function submitWithdrawal() {
+  const amount = Number(document.getElementById("withdrawAmount").value);
+  if (!Number.isFinite(amount) || amount <= 0) return alert("Enter a valid withdrawal amount.");
+  if (amount > Number(wallet.balance || 0)) return alert("Your withdrawal amount is greater than your available demo balance.");
+
+  const fee = amount * 0.02;
+  const payout = amount - fee;
+
+  alert(
+    "Demo calculation only:\n" +
+    "Withdrawal: " + money(amount) + "\n" +
+    "2% service charge: " + money(fee) + "\n" +
+    "Estimated payout: " + money(payout) +
+    "\n\nNo payment has been made. Live withdrawals require backend payment processing."
+  );
+  closeModal("withdrawModal");
+}
+
+function renderAccount() {
+  document.getElementById("accountDetails").innerHTML = `
+    <p><strong>Name:</strong> ${escapeHTML(rider.fullName)}</p>
+    <p><strong>Username:</strong> ${escapeHTML(rider.username)}</p>
+    <p><strong>Phone:</strong> ${escapeHTML(rider.phone)}</p>
+    <p><strong>Email:</strong> ${escapeHTML(rider.email)}</p>
+    <p><strong>Rider category:</strong> ${escapeHTML(rider.riderType === "collection" ? "Collection Rider" : "Normal Delivery Rider")}</p>
+    <p><strong>Operating state:</strong> ${escapeHTML(rider.state)}</p>
+    <p><strong>Town:</strong> ${escapeHTML(rider.town)}</p>
+    <p><strong>Application status:</strong> <span class="tag green">Approved</span></p>
+    <p class="hint">For account changes or verification updates, contact EarnGig support.</p>
+  `;
+}
+
+/*
+  ADMIN / BACKEND INTEGRATION REQUIRED:
+
+  1. Create vendor orders in a shared database.
+  2. Assign one rider to each order using a secure atomic operation.
+  3. Notify vendors when a rider accepts an order.
+  4. Store pickup and delivery photographs in private cloud storage.
+  5. Allow vendor confirmation of physical parcel handover.
+  6. Verify customer delivery codes on the server.
+  7. Enforce original five-calendar-day delivery deadlines.
+  8. Credit rider earnings only after verified delivery.
+  9. Keep a permanent, server-side handover history.
+  10. Process withdrawals using a secure payment provider.
+
+  This browser demo cannot perform those production operations.
+*/
+
+startDashboard();
+</script>
+</body>
+</html>
