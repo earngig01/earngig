@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Details | EarnGig</title>
+<style>
+:root{
+  --purple:#6427c7;
+  --deep:#48159b;
+  --light:#f2ebff;
+  --gold:#d6a62e;
+  --text:#29243a;
+  --muted:#777286;
+  --border:#ece8f3;
+  --bg:#faf9fc;
+  --green:#168653;
+  --red:#c43e3e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+.topbar{
+  height:70px;background:white;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;position:sticky;top:0;z-index:10
+}
+.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
+.brand svg{width:25px;height:25px}
+.nav{display:flex;align-items:center;gap:20px;font-size:12px;font-weight:700;color:#625d71}
+.nav a:hover{color:var(--purple)}
+.cart-link{background:var(--light);color:var(--purple);padding:10px 13px;border-radius:9px}
+.breadcrumb{max-width:1150px;margin:22px auto 0;padding:0 20px;font-size:11px;color:var(--muted)}
+.breadcrumb a{color:var(--purple);font-weight:700}
+.container{max-width:1150px;margin:auto;padding:20px 20px 55px}
+.product-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:35px;align-items:start}
+.gallery{min-width:0}
+.main-image{
+  height:440px;background:#f0edf5;border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;display:grid;place-items:center
+}
+.main-image img{width:100%;height:100%;object-fit:contain}
+.placeholder{font-size:70px;color:#b9accd}
+.thumbnail-row{display:flex;gap:10px;overflow-x:auto;margin-top:12px}
+.thumbnail{
+  width:75px;height:75px;flex-shrink:0;border:2px solid var(--border);
+  border-radius:9px;overflow:hidden;background:#f0edf5;cursor:pointer
+}
+.thumbnail.active{border-color:var(--purple)}
+.thumbnail img{width:100%;height:100%;object-fit:cover}
+.product-info{background:white;border:1px solid var(--border);border-radius:14px;padding:25px}
+.featured{display:inline-block;background:#fff2c9;color:#805c0c;border-radius:5px;padding:6px 9px;font-size:9px;font-weight:800;margin-bottom:12px}
+.category{font-size:10px;color:var(--purple);font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+h1{font-size:26px;line-height:1.35;margin:0 0 13px}
+.price{font-size:29px;color:var(--purple);font-weight:800;margin-bottom:12px}
+.stock{font-size:11px;color:var(--green);font-weight:700;margin-bottom:18px}
+.stock.unavailable{color:var(--red)}
+.description{font-size:12px;color:#5f5a6e;line-height:1.9;white-space:pre-wrap;margin:17px 0 22px}
+.divider{height:1px;background:var(--border);margin:18px 0}
+.seller-card{background:#faf8fd;border:1px solid var(--border);border-radius:11px;padding:15px}
+.seller-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.seller-details{min-width:0}
+.seller-label{font-size:9px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.seller-name{font-size:13px;font-weight:800;color:var(--purple);display:inline-block}
+.seller-name:hover{text-decoration:underline}
+.seller-location{font-size:10px;color:var(--muted);margin-top:7px}
+.visit-store{font-size:10px;font-weight:800;color:var(--purple);white-space:nowrap}
+.quantity-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0}
+.quantity-control{display:flex;align-items:center;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.quantity-control button{border:0;background:#f6f3fa;width:35px;height:35px;color:var(--purple);font-size:17px;font-weight:800}
+.quantity-control input{width:45px;text-align:center;border:0;outline:0;font-size:12px}
+.quantity-label{font-size:11px;font-weight:700}
+.total-line{display:flex;justify-content:space-between;gap:12px;font-size:11px;margin:12px 0}
+.total-line strong{font-size:13px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.button{border:0;border-radius:9px;padding:14px 10px;text-align:center;font-size:11px;font-weight:800;cursor:pointer}
+.button.primary{background:var(--purple);color:white}
+.button.primary:hover{background:var(--deep)}
+.button.secondary{background:white;border:1px solid #d8c8f1;color:var(--purple)}
+.button:disabled{opacity:.45;cursor:not-allowed}
+.safety-note{margin-top:17px;background:#f5f0ff;border:1px solid #e9defa;border-radius:9px;padding:13px;font-size:10px;color:#59427e;line-height:1.7}
+.related-section{margin-top:40px}
+.related-section h2{font-size:17px;margin-bottom:14px}
+.related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.related-card{background:white;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.related-card img{width:100%;height:135px;object-fit:cover;background:#f0edf5}
+.related-card div{padding:10px}
+.related-card strong{font-size:11px;display:block;margin-bottom:6px}
+.related-card span{font-size:12px;font-weight:800;color:var(--purple)}
+.message{display:none;margin-top:12px;color:var(--green);font-size:11px;font-weight:700}
+.message.show{display:block}
+.error{max-width:550px;margin:50px auto;background:white;border:1px solid var(--border);border-radius:13px;padding:35px;text-align:center}
+.error h2{font-size:19px}
+.error p{font-size:12px;color:var(--muted);line-height:1.7}
+.error a{display:inline-block;margin-top:10px}
+.footer{border-top:1px solid var(--border);background:white;padding:25px 5%;text-align:center;color:var(--muted);font-size:10px}
+.footer a{color:var(--purple);margin:0 8px}
+@media(max-width:800px){
+  .product-layout{grid-template-columns:1fr;gap:18px}
+  .main-image{height:360px}
+  .related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .topbar{height:62px;padding:0 14px}
+  .brand{font-size:20px}
+  .nav{gap:10px;font-size:10px}
+  .nav a:not(.cart-link){display:none}
+  .container{padding:15px 13px 40px}
+  .breadcrumb{padding:0 13px}
+  .main-image{height:290px}
+  .product-info{padding:17px}
+  h1{font-size:22px}
+  .price{font-size:25px}
+  .actions{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+<a href="dashboard.html" class="brand">
+<svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+<path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
+<circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+<circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+<circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+</svg>
+EarnGig
+</a>
+<nav class="nav">
+<a href="dashboard.html">Dashboard</a>
+<a href="marketplace.html">Marketplace</a>
+<a href="my-orders.html">My Orders</a>
+<a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount">0</span></a>
+</nav>
+</header>
+
+<div class="breadcrumb">
+<a href="marketplace.html">Marketplace</a> / <span id="breadcrumbName">Product Details</span>
+</div>
+
+<main class="container" id="pageContent">
+
+<section class="product-layout">
+<div class="gallery">
+<div class="main-image" id="mainImage">
+<div class="placeholder">🛍️</div>
+</div>
+<div class="thumbnail-row" id="thumbnails"></div>
+</div>
+
+<div class="product-info">
+<div id="featuredBadge" class="featured" style="display:none">✦ FEATURED PRODUCT</div>
+<div class="category" id="productCategory">Product</div>
+<h1 id="productName">Loading product...</h1>
+<div class="price" id="productPrice">₦0</div>
+<div class="stock" id="stockStatus"></div>
+
+<div class="divider"></div>
+
+<div class="seller-card">
+<div class="seller-top">
+<div class="seller-details">
+<div class="seller-label">SOLD BY</div>
+<a href="#" class="seller-name" id="sellerName">Seller Store</a>
+<div class="seller-location" id="sellerLocation">📍 Location not provided</div>
+</div>
+<a href="#" class="visit-store" id="visitStore">Visit Store →</a>
+</div>
+</div>
+
+<div class="description" id="productDescription"></div>
+
+<div class="divider"></div>
+
+<div class="quantity-row">
+<span class="quantity-label">Select Quantity</span>
+<div class="quantity-control">
+<button type="button" id="decrease">−</button>
+<input type="number" id="quantity" value="1" min="1" max="1">
+<button type="button" id="increase">+</button>
+</div>
+</div>
+
+<div class="total-line">
+<span>Product subtotal</span>
+<strong id="subtotal">₦0</strong>
+</div>
+
+<div class="actions">
+<button type="button" class="button primary" id="addToCart">Add to Cart</button>
+<button type="button" class="button secondary" id="buyNow">Buy Now</button>
+</div>
+
+<div class="message" id="cartMessage"></div>
+
+<div class="safety-note">
+Your payment is made through EarnGig checkout. The seller's proceeds remain pending until the order is delivered and both buyer and seller confirm fulfilment.
+</div>
+</div>
+</section>
+
+<section class="related-section">
+<h2>More products you may like</h2>
+<div class="related-grid" id="relatedProducts"></div>
+</section>
+
+</main>
+
+<footer class="footer">
+<p>EarnGig Marketplace</p>
+<a href="about.html">About</a>
+<a href="help.html">Help</a>
+<a href="terms.html">Terms</a>
+<a href="privacy.html">Privacy</a>
+<a href="contact.html">Contact</a>
+</footer>
+
+<script>
+const PRODUCTS_KEY = "earngig_seller_products";
+const MARKETPLACE_KEY = "earngig_marketplace_products";
+const PROMOTIONS_KEY = "earngig_seller_promotions";
+const CART_KEY = "earngig_cart";
+
+let currentProduct = null;
+let currentImages = [];
+
+function readJSON(key,fallback){
+  try{
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  }catch(error){
+    return fallback;
+  }
+}
+
+function money(value){
+  return "₦" + (Number(value)||0).toLocaleString("en-NG",{maximumFractionDigits:2});
+}
+
+function getProductId(){
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id") || params.get("product") || "";
+}
+
+function getAllProducts(){
+  const marketplace = readJSON(MARKETPLACE_KEY,null);
+  const products = Array.isArray(marketplace)
+    ? marketplace
+    : readJSON(PRODUCTS_KEY,[]);
+
+  if(!Array.isArray(products)) return [];
+
+  return products.map((product,index)=>({
+    ...product,
+    id:String(product.id || product.productId || product.reference || "product-"+index),
+    name:product.name || product.title || "Unnamed Product",
+    price:Number(product.price)||0,
+    category:product.category || "Other",
+    image:product.imageUrl || product.image || product.photo || "",
+    sellerName:product.sellerName || product.storeName || product.vendorName || "EarnGig Seller",
+    sellerId:product.sellerId || product.vendorId || product.storeId || "",
+    sellerEmail:product.sellerEmail || product.vendorEmail || product.email || "",
+    location:product.location || product.sellerLocation || product.city || "",
+    stock:Number(product.stock ?? product.quantity ?? 0),
+    description:product.description || "Contact the seller for more product information."
+  }));
+}
+
+function getProductImages(product){
+  const images = [];
+
+  [
+    product.imageUrl,
+    product.image,
+    product.photo,
+    product.imageURL,
+    ...(Array.isArray(product.images) ? product.images : [])
+  ].forEach(value=>{
+    if(typeof value === "string" && value.trim() && !images.includes(value.trim())){
+      images.push(value.trim());
+    }
+  });
+
+  return images;
+}
+
+function getStoreUrl(product){
+  const params = new URLSearchParams();
+
+  if(product.sellerId) params.set("seller",product.sellerId);
+  else if(product.sellerEmail) params.set("email",product.sellerEmail);
+
+  const query = params.toString();
+  return "storefront.html" + (query ? "?" + query : "");
+}
+
+function isFeatured(product){
+  const promotions = readJSON(PROMOTIONS_KEY,[]);
+  if(!Array.isArray(promotions)) return false;
+
+  return promotions.some(promotion=>{
+    const status = String(promotion.status || "").toLowerCase();
+    if(status !== "active") return false;
+
+    const expiry = promotion.expiresAt || promotion.endDate || promotion.expiryDate;
+    if(!expiry || new Date(expiry).getTime() <= Date.now()) return false;
+
+    const type = String(promotion.type || promotion.promotionType || "").toLowerCase();
+    if(type.includes("store")) return false;
+
+    const promotedId = String(promotion.productId || promotion.product_id || promotion.targetId || "");
+    return promotedId === String(product.id);
+  });
+}
+
+function showError(){
+  document.getElementById("pageContent").innerHTML = `
+    <div class="error">
+      <h2>Product not found</h2>
+      <p>This product may have been removed, is unavailable, or the product link is incorrect.</p>
+      <a href="marketplace.html" class="button primary">Return to Marketplace</a>
+    </div>
+  `;
+}
+
+function renderGallery(){
+  const main = document.getElementById("mainImage");
+  const thumbnails = document.getElementById("thumbnails");
+
+  main.innerHTML = "";
+  thumbnails.innerHTML = "";
+
+  if(!currentImages.length){
+    const placeholder = document.createElement("div");
+    placeholder.className = "placeholder";
+    placeholder.textContent = "🛍️";
+    main.appendChild(placeholder);
+    return;
+  }
+
+  function showImage(src){
+    main.innerHTML = "";
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = currentProduct.name;
+    img.onerror = ()=>{
+      main.innerHTML = '<div class="placeholder">🛍️</div>';
+    };
+    main.appendChild(img);
+
+    thumbnails.querySelectorAll(".thumbnail").forEach(button=>{
+      button.classList.toggle("active",button.dataset.src === src);
+    });
+  }
+
+  currentImages.forEach((src,index)=>{
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "thumbnail" + (index===0?" active":"");
+    button.dataset.src = src;
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = currentProduct.name + " photo " + (index+1);
+    button.appendChild(img);
+
+    button.addEventListener("click",()=>showImage(src));
+    thumbnails.appendChild(button);
+  });
+
+  showImage(currentImages[0]);
+}
+
+function updateSubtotal(){
+  const quantity = Math.max(1,Number(document.getElementById("quantity").value)||1);
+  document.getElementById("quantity").value = quantity;
+  document.getElementById("subtotal").textContent = money(currentProduct.price*quantity);
+}
+
+function loadProduct(){
+  const id = getProductId();
+  const products = getAllProducts();
+
+  currentProduct = products.find(product=>String(product.id)===String(id));
+
+  if(!currentProduct){
+    showError();
+    return;
+  }
+
+  const product = currentProduct;
+
+  document.title = product.name + " | EarnGig";
+
+  document.getElementById("breadcrumbName").textContent = product.name;
+  document.getElementById("productName").textContent = product.name;
+  document.getElementById("productCategory").textContent = product.category;
+  document.getElementById("productPrice").textContent = money(product.price);
+  document.getElementById("productDescription").textContent = product.description;
+  document.getElementById("sellerName").textContent = product.sellerName;
+  document.getElementById("sellerLocation").textContent = "📍 " + (product.location || "Location not provided");
+
+  const storeUrl = getStoreUrl(product);
+  document.getElementById("sellerName").href = storeUrl;
+  document.getElementById("visitStore").href = storeUrl;
+
+  if(isFeatured(product)){
+    document.getElementById("featuredBadge").style.display = "inline-block";
+  }
+
+  const stockStatus = document.getElementById("stockStatus");
+  const unavailable = product.stock <= 0 || String(product.status || "").toLowerCase() === "paused";
+
+  stockStatus.textContent = unavailable
+    ? "Currently unavailable"
+    : product.stock + " available";
+
+  if(unavailable){
+    stockStatus.classList.add("unavailable");
+    document.getElementById("addToCart").disabled = true;
+    document.getElementById("buyNow").disabled = true;
+    document.getElementById("quantity").disabled = true;
+    document.getElementById("increase").disabled = true;
+    document.getElementById("decrease").disabled = true;
+  }
+
+  document.getElementById("quantity").max = Math.max(1,product.stock);
+  currentImages = getProductImages(product);
+  renderGallery();
+  updateSubtotal();
+  renderRelated(products.filter(item=>item.id!==product.id && item.category===product.category).slice(0,4));
+}
+
+function renderRelated(products){
+  const container = document.getElementById("relatedProducts");
+  container.innerHTML = "";
+
+  if(!products.length){
+    container.innerHTML = '<p style="font-size:11px;color:#777286">More products will appear here as sellers add them.</p>';
+    return;
+  }
+
+  products.forEach(product=>{
+    const link = document.createElement("a");
+    link.className = "related-card";
+    link.href = "product-details.html?id=" + encodeURIComponent(product.id);
+
+    const image = document.createElement("img");
+    image.src = product.image || "";
+    image.alt = product.name;
+    image.onerror = ()=>{image.style.display="none"};
+
+    const details = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = product.name;
+
+    const price = document.createElement("span");
+    price.textContent = money(product.price);
+
+    details.append(name,price);
+    link.append(image,details);
+    container.appendChild(link);
+  });
+}
+
+function updateCartCount(){
+  const cart = readJSON(CART_KEY,[]);
+  const count = Array.isArray(cart)
+    ? cart.reduce((sum,item)=>sum+Number(item.quantity || 1),0)
+    : 0;
+
+  document.getElementById("cartCount").textContent = count;
+}
+
+function addToCart(goToCart=false){
+  if(!currentProduct) return;
+
+  const quantity = Math.max(1,Number(document.getElementById("quantity").value)||1);
+
+  if(quantity > currentProduct.stock){
+    alert("The requested quantity is greater than the available stock.");
+    return;
+  }
+
+  let cart = readJSON(CART_KEY,[]);
+  if(!Array.isArray(cart)) cart = [];
+
+  const existing = cart.find(item=>
+    String(item.productId || item.id) === String(currentProduct.id)
+  );
+
+  if(existing){
+    const newQuantity = Number(existing.quantity || 1)+quantity;
+
+    if(newQuantity > currentProduct.stock){
+      alert("There are not enough units available for that quantity.");
+      return;
+    }
+
+    existing.quantity = newQuantity;
+  }else{
+    cart.push({
+      productId:currentProduct.id,
+      id:currentProduct.id,
+      name:currentProduct.name,
+      price:currentProduct.price,
+      image:currentProduct.image,
+      quantity:quantity,
+      sellerName:currentProduct.sellerName,
+      sellerId:currentProduct.sellerId,
+      sellerEmail:currentProduct.sellerEmail,
+      location:currentProduct.location
+    });
+  }
+
+  localStorage.setItem(CART_KEY,JSON.stringify(cart));
+  updateCartCount();
+
+  if(goToCart){
+    window.location.href = "cart.html";
+  }else{
+    const message = document.getElementById("cartMessage");
+    message.textContent = "✓ Added to your cart successfully.";
+    message.classList.add("show");
+  }
+}
+
+document.getElementById("decrease").addEventListener("click",()=>{
+  const input = document.getElementById("quantity");
+  input.value = Math.max(1,(Number(input.value)||1)-1);
+  updateSubtotal();
+});
+
+document.getElementById("increase").addEventListener("click",()=>{
+  const input = document.getElementById("quantity");
+  input.value = Math.min(currentProduct.stock,(Number(input.value)||1)+1);
+  updateSubtotal();
+});
+
+document.getElementById("quantity").addEventListener("change",()=>{
+  const input = document.getElementById("quantity");
+  input.value = Math.max(1,Math.min(currentProduct.stock,Number(input.value)||1));
+  updateSubtotal();
+});
+
+document.getElementById("addToCart").addEventListener("click",()=>addToCart(false));
+document.getElementById("buyNow").addEventListener("click",()=>addToCart(true));
+
+updateCartCount();
+loadProduct();
+</script>
+
+</body>
+</html>
