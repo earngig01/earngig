@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer Coins | EarnGig</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --gold: #e7ad32;
+      --text: #282235;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --green: #168653;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: var(--text);
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 23px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .back-link {
+      color: var(--purple);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 35px auto;
+      padding: 0 18px 50px;
+    }
+
+    .heading {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .heading h1 {
+      font-size: 29px;
+      margin: 0 0 10px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .balance-card {
+      background: linear-gradient(120deg, #7138c8, #9258df);
+      color: white;
+      border-radius: 18px;
+      padding: 23px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .balance-card small {
+      display: block;
+      opacity: .85;
+      margin-bottom: 8px;
+    }
+
+    .balance-card strong { font-size: 28px; }
+
+    .coin-icon {
+      font-size: 38px;
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      background: #ffffff20;
+      border-radius: 50%;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 28px #29114b09;
+    }
+
+    .panel h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      font-size: 16px;
+      outline: none;
+      color: var(--text);
+    }
+
+    input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .recipient-preview {
+      display: none;
+      align-items: center;
+      gap: 13px;
+      background: var(--lavender);
+      border: 1px solid #e1d2f8;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 12px 0 20px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ded0f6;
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .recipient-preview strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .recipient-preview small { color: var(--muted); }
+
+    .summary {
+      background: #faf8ff;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 17px;
+      margin-top: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .summary-row span { color: var(--muted); }
+
+    .summary-row strong { color: var(--text); }
+
+    .transfer-button {
+      width: 100%;
+      border: 0;
+      border-radius: 11px;
+      padding: 16px;
+      margin-top: 20px;
+      color: white;
+      background: var(--purple);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .transfer-button:hover { background: var(--purple-dark); }
+
+    .transfer-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .notice {
+      background: #fff9e9;
+      border: 1px solid #f2dfad;
+      color: #75551b;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 18px;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .message {
+      display: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 15px;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #a52b2b;
+    }
+
+    .message.success {
+      display: block;
+      background: #eaf8f0;
+      color: #176b43;
+    }
+
+    .rules {
+      padding-left: 20px;
+      color: #625b70;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 600px) {
+      main { margin-top: 25px; }
+      .heading h1 { font-size: 25px; }
+      .panel { padding: 19px; }
+      .balance-card strong { font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+  <a class="back-link" href="dashboard.html">← Dashboard</a>
+</header>
+
+<main>
+  <div class="heading">
+    <h1>Transfer Coins</h1>
+    <p>Send EarnGig coins to another member using their username.</p>
+  </div>
+
+  <section class="balance-card">
+    <div>
+      <small>Your available coin balance</small>
+      <strong id="availableBalance">0 Coins</strong>
+      <div style="font-size:12px;margin-top:8px;opacity:.85;">
+        Demo balance display
+      </div>
+    </div>
+    <div class="coin-icon">🪙</div>
+  </section>
+
+  <section class="panel">
+    <h2>Send Coins to a Member</h2>
+    <p class="subtext">
+      Enter the recipient's EarnGig username and the number of coins you want to send.
+    </p>
+
+    <div class="field">
+      <label for="recipientUsername">Recipient username</label>
+      <input
+        type="text"
+        id="recipientUsername"
+        placeholder="Enter EarnGig username"
+        autocomplete="off"
+      >
+      <div class="hint">
+        Enter the username exactly as it appears on the recipient's EarnGig profile.
+      </div>
+    </div>
+
+    <div class="recipient-preview" id="recipientPreview">
+      <div class="avatar" id="recipientAvatar">?</div>
+      <div>
+        <strong id="recipientName">Recipient</strong>
+        <small id="recipientHandle">@username</small>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="coinAmount">Number of coins to transfer</label>
+      <input
+        type="number"
+        id="coinAmount"
+        min="1"
+        step="1"
+        placeholder="Enter coin amount"
+        inputmode="numeric"
+      >
+      <div class="hint">Enter a whole number of coins.</div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span>Coins to send</span>
+        <strong id="sendAmount">0 coins</strong>
+      </div>
+      <div class="summary-row">
+        <span>Transfer fee</span>
+        <strong>₦0.00</strong>
+      </div>
+      <div class="summary-row">
+        <span>Balance after transfer</span>
+        <strong id="remainingBalance">0 coins</strong>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <button type="button" class="transfer-button" id="transferButton" disabled>
+      Review Transfer
+    </button>
+
+    <div class="notice">
+      <strong>Before you transfer</strong>
+      Check the recipient's username and coin amount carefully. A completed transfer should be recorded in your transaction history and the recipient should receive a notification.
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Transfer Rules</h2>
+    <ul class="rules">
+      <li>You must have enough eligible coins before sending.</li>
+      <li>You cannot transfer coins to your own account.</li>
+      <li>The recipient must have a valid EarnGig account.</li>
+      <li>The recipient's username must be verified before transfer.</li>
+      <li>Every completed transfer should appear in both users' transaction histories.</li>
+      <li>Transfers must be protected against duplicate requests and unauthorized access.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    FRONTEND DEMO ONLY
+
+    This page does not perform real transfers.
+
+    A secure backend is required to:
+    - Authenticate the sender.
+    - Find and verify the recipient by username.
+    - Check eligible coin balances.
+    - Prevent transfers to the sender's own account.
+    - Deduct and credit coins atomically.
+    - Record both sides of the transaction.
+    - Notify sender and recipient.
+    - Prevent duplicate transfers and tampering.
+
+    Coin eligibility policy must also be finalized before launch.
+  */
+
+  const coinInput = document.getElementById("coinAmount");
+  const usernameInput = document.getElementById("recipientUsername");
+  const availableBalanceElement = document.getElementById("availableBalance");
+  const sendAmountElement = document.getElementById("sendAmount");
+  const remainingBalanceElement = document.getElementById("remainingBalance");
+  const transferButton = document.getElementById("transferButton");
+  const messageElement = document.getElementById("message");
+  const recipientPreview = document.getElementById("recipientPreview");
+
+  let availableBalance = 0;
+
+  function formatCoins(value) {
+    return Number(value).toLocaleString("en-NG") + " coins";
+  }
+
+  function showMessage(text, type) {
+    messageElement.textContent = text;
+    messageElement.className = "message " + type;
+  }
+
+  function loadDemoBalance() {
+    try {
+      const savedWallet = JSON.parse(
+        localStorage.getItem("earngig_wallet") || "null"
+      );
+
+      if (savedWallet && Number.isFinite(Number(savedWallet.coins))) {
+        availableBalance = Math.max(0, Number(savedWallet.coins));
+      }
+    } catch (error) {
+      availableBalance = 0;
+    }
+
+    availableBalanceElement.textContent = formatCoins(availableBalance);
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const amount = Number(coinInput.value);
+
+    if (!Number.isInteger(amount) || amount <= 0) {
+      sendAmountElement.textContent = "0 coins";
+      remainingBalanceElement.textContent = formatCoins(availableBalance);
+      transferButton.disabled = true;
+      return;
+    }
+
+    sendAmountElement.textContent = formatCoins(amount);
+
+    const remaining = availableBalance - amount;
+
+    remainingBalanceElement.textContent = formatCoins(
+      Math.max(0, remaining)
+    );
+
+    transferButton.disabled =
+      amount > availableBalance ||
+      usernameInput.value.trim().length < 2;
+
+    if (amount > availableBalance) {
+      showMessage("You do not have enough available coins for this transfer.", "error");
+    } else {
+      messageElement.className = "message";
+      messageElement.textContent = "";
+    }
+  }
+
+  usernameInput.addEventListener("input", () => {
+    recipientPreview.style.display = "none";
+    updateSummary();
+  });
+
+  coinInput.addEventListener("input", updateSummary);
+
+  transferButton.addEventListener("click", () => {
+    const username = usernameInput.value.trim();
+    const amount = Number(coinInput.value);
+
+    if (!username) {
+      showMessage("Please enter the recipient's username.", "error");
+      return;
+    }
+
+    if (!Number.isInteger(amount) || amount <= 0) {
+      showMessage("Enter a valid whole number of coins.", "error");
+      return;
+    }
+
+    if (amount > availableBalance) {
+      showMessage("Your available balance is not enough for this transfer.", "error");
+      return;
+    }
+
+    /*
+      Do not update localStorage or pretend the transfer succeeded.
+      Recipient lookup, confirmation and actual coin movement must
+      happen through the authenticated backend.
+    */
+
+    showMessage(
+      "Transfers are not connected yet. The recipient must be looked up and verified by the EarnGig server before coins can be sent. No coins have been deducted.",
+      "error"
+    );
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  loadDemoBalance();
+</script>
+
+</body>
+</html>
