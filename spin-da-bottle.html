@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spin da Bottle | EarnGig</title>
+<style>
+:root{
+  --bg:#100720;--gold:#ffd66b;--pink:#ff4f9a;
+  --cyan:#42e5ff;--green:#49efa5;--muted:#c0afd8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 10% 5%,#66245f 0,transparent 30%),
+    radial-gradient(circle at 90% 10%,#174d79 0,transparent 30%),
+    radial-gradient(circle at 50% 100%,#462052 0,transparent 38%),
+    var(--bg);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 5%;border-bottom:1px solid #ffffff20;
+  background:#100720d9;backdrop-filter:blur(12px)
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:900}
+.brand span{color:var(--gold)}
+.crown{width:34px;height:30px}
+.back{
+  text-decoration:none;color:#fff;background:#ffffff12;
+  border:1px solid #ffffff25;padding:10px 14px;border-radius:12px
+}
+.container{width:min(1050px,94%);margin:28px auto 55px}
+.hero{text-align:center;margin-bottom:22px}
+.eyebrow{color:var(--cyan);font-size:11px;font-weight:900;letter-spacing:3px}
+h1{
+  margin:8px 0;font-size:clamp(36px,7vw,58px);font-weight:1000;
+  letter-spacing:-2px;
+  background:linear-gradient(90deg,#fff,var(--gold),var(--pink),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{color:var(--muted);font-size:14px;margin:0}
+.shell{
+  padding:20px;border-radius:25px;
+  background:linear-gradient(145deg,#291443,#130b29);
+  border:1px solid #ffffff25;
+  box-shadow:0 25px 80px #0008,inset 0 1px #ffffff15
+}
+.top-controls{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:13px;margin-bottom:17px
+}
+.mode-label{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:1.5px;margin-bottom:7px}
+.mode-switch{display:flex;gap:5px;padding:5px;border-radius:14px;background:#0c0619;border:1px solid #ffffff20}
+.mode-btn{
+  border:0;border-radius:10px;padding:11px 15px;
+  color:#b9a9d0;background:transparent;font-size:11px;font-weight:900
+}
+.mode-btn.active.demo{color:#fff;background:linear-gradient(135deg,#00bfff,#6558ff);box-shadow:0 4px 18px #3b7cff66}
+.mode-btn.active.real{color:#28120a;background:linear-gradient(135deg,#ffd65b,#ff7848);box-shadow:0 4px 18px #ff9d4266}
+.wallet{
+  display:flex;align-items:center;gap:11px;padding:10px 15px;
+  border-radius:14px;background:#ffffff0b;border:1px solid #ffffff20
+}
+.wallet-icon{font-size:25px}
+.wallet small{display:block;color:var(--muted);font-size:10px;font-weight:900}
+.wallet strong{font-size:19px;color:var(--gold)}
+.mode-note{
+  padding:12px 14px;border-radius:12px;background:#2b1c49;
+  border:1px solid #ffffff18;color:#e6d9f4;
+  font-size:12px;line-height:1.5;margin-bottom:17px
+}
+.mode-note.real-note{background:#48251d;border-color:#ff9c4c55;color:#ffe1c5}
+.arena{
+  position:relative;padding:24px 15px 27px;border-radius:23px;
+  overflow:hidden;text-align:center;
+  background:
+    radial-gradient(circle at 50% 45%,#3a1b58 0,#20123d 58%,#100a23 100%);
+  border:1px solid #ffffff20
+}
+.arena:before{
+  content:"✦";position:absolute;top:15px;left:9%;
+  color:var(--gold);font-size:23px;text-shadow:0 0 14px var(--gold)
+}
+.arena:after{
+  content:"✦";position:absolute;bottom:18px;right:9%;
+  color:var(--cyan);font-size:23px;text-shadow:0 0 14px var(--cyan)
+}
+.arena-title{font-size:11px;font-weight:900;letter-spacing:3px;color:#eadcff;margin-bottom:18px}
+.circle{
+  width:min(390px,85vw);aspect-ratio:1;margin:auto;position:relative;
+  border-radius:50%;
+  background:radial-gradient(circle,#321d50 0,#1a1030 70%);
+  border:7px solid #dba64d;
+  box-shadow:0 0 0 5px #59316f,0 0 30px #e8a93d66,inset 0 0 35px #0009
+}
+.circle:after{
+  content:"";position:absolute;inset:12px;border:1px dashed #ffffff38;border-radius:50%;
+  pointer-events:none
+}
+.player{
+  position:absolute;z-index:2;width:70px;height:70px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:50%;border:2px solid #ffffff45;
+  background:linear-gradient(145deg,#533078,#25183e);
+  box-shadow:0 5px 14px #0007;transform:translate(-50%,-50%);
+  transition:background .2s,border .2s,box-shadow .2s
+}
+.player .avatar{font-size:25px;line-height:1.2}
+.player .name{font-size:9px;font-weight:900;color:#f4e8ff;margin-top:3px}
+.player.winner{
+  background:linear-gradient(145deg,#ffc94c,#ff8a32);
+  border:3px solid #fff2b7;
+  box-shadow:0 0 25px #ffc34d,0 0 45px #ff9c3977;
+  animation:pulse .7s infinite alternate
+}
+@keyframes pulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.12)}}
+.bottle-area{
+  position:absolute;z-index:4;left:50%;top:50%;
+  width:170px;height:80px;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none
+}
+.bottle{
+  position:relative;width:150px;height:46px;
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 8px 8px #0009);
+  transition:transform 4.7s cubic-bezier(.12,.72,.12,1)
+}
+.bottle-neck{
+  position:absolute;left:0;top:15px;width:48px;height:16px;
+  border-radius:5px 2px 2px 5px;
+  background:linear-gradient(#8cf4ff,#168ba7 45%,#07576e);
+  border:2px solid #a8faff
+}
+.bottle-neck:before{
+  content:"";position:absolute;left:-9px;top:2px;width:10px;height:9px;
+  background:#e9c46a;border:1px solid #fff0a7;border-radius:3px
+}
+.bottle-body{
+  position:absolute;left:39px;top:2px;width:105px;height:42px;
+  border-radius:12px 25px 25px 12px;
+  background:linear-gradient(180deg,#b6ffff 0%,#33c9db 25%,#087b9b 75%,#034b72 100%);
+  border:3px solid #a4faff;
+  box-shadow:inset 0 4px 7px #ffffff9c,inset 0 -5px 8px #00394c;
+}
+.bottle-body:after{
+  content:"EG";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  color:#fff4b7;font-size:15px;font-weight:1000;
+  text-shadow:0 2px 5px #03445d
+}
+.bottle-glint{
+  position:absolute;left:58px;top:7px;width:49px;height:5px;
+  border-radius:9px;background:#e4ffffa8;transform:rotate(-8deg)
+}
+.spin-button{
+  margin-top:23px;width:min(300px,90%);padding:17px 20px;
+  border:0;border-radius:15px;
+  background:linear-gradient(100deg,#ff4f99,#a83dff,#397cff);
+  color:white;font-size:16px;font-weight:1000;letter-spacing:1px;
+  box-shadow:0 8px 25px #b13dff55,inset 0 1px #ffffff55;
+  transition:transform .15s,filter .15s
+}
+.spin-button:hover{transform:translateY(-3px);filter:brightness(1.12)}
+.spin-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.result{min-height:28px;margin-top:17px;text-align:center;font-size:15px;font-weight:900}
+.result.win{color:#78ffc1}.result.lose{color:#ff9eb5}
+.bet-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.field{padding:15px;background:#ffffff09;border:1px solid #ffffff19;border-radius:15px}
+.field label{display:block;font-size:10px;color:var(--muted);font-weight:900;margin-bottom:9px}
+.field input{
+  width:100%;padding:12px;border:1px solid #ffffff25;
+  border-radius:10px;background:#100720;color:#fff;
+  font-size:18px;font-weight:900;outline:none
+}
+.field input:focus{border-color:var(--cyan)}
+.quick-bets{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.quick-bets button{
+  padding:7px 10px;border-radius:8px;background:#ffffff12;
+  border:1px solid #ffffff20;color:#e8dafa;font-size:10px;font-weight:900
+}
+.prize{
+  min-height:52px;padding:10px 13px;border-radius:11px;
+  background:linear-gradient(100deg,#38214e,#1b2a4c);
+  border:1px solid #e5b95655;display:flex;align-items:center;
+  justify-content:space-between;gap:8px
+}
+.prize strong{font-size:25px;color:var(--gold)}
+.prize small{font-size:9px;color:#d4c3e8;font-weight:900}
+.multiplier{font-size:13px;color:var(--green);font-weight:1000}
+.notice{
+  display:none;margin-top:14px;padding:13px;border-radius:12px;
+  background:#51242e;border:1px solid #ff718b66;color:#ffd8df;
+  font-size:12px;line-height:1.5
+}
+.notice.show{display:block}
+.history{margin-top:18px;padding:15px;border-radius:15px;background:#ffffff08;border:1px solid #ffffff15}
+.history-head{display:flex;justify-content:space-between;align-items:center}
+.history h3{font-size:12px;margin:0;letter-spacing:1px}
+.history-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.history-item{font-size:11px;padding:8px 10px;border-radius:9px;background:#ffffff12;color:#ddd}
+.history-item.win{color:#75ffc0;border:1px solid #47efa455}
+.history-item.lose{color:#ff91a8;border:1px solid #ff557555}
+.footer-note{text-align:center;color:#a996c0;font-size:11px;line-height:1.6;margin:18px 5px 0}
+@media(max-width:600px){
+  .shell{padding:12px}.topbar{padding:14px 4%}
+  .bet-grid{grid-template-columns:1fr}
+  .mode-btn{padding:10px 11px}
+  .player{width:61px;height:61px}
+  .player .avatar{font-size:22px}
+  .bottle-area{transform:translate(-50%,-50%) scale(.85)}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="crown" viewBox="0 0 64 54" fill="none" aria-hidden="true">
+      <path d="M7 15L19 26L31 7L44 26L57 15L51 44H13L7 15Z" stroke="#FFD76A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M14 49H51" stroke="#FFD76A" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="7" cy="12" r="4" fill="#FFD76A"/>
+      <circle cx="31" cy="6" r="4" fill="#FFD76A"/>
+      <circle cx="57" cy="12" r="4" fill="#FFD76A"/>
+    </svg>
+    Earn<span>Gig</span>
+  </div>
+  <a class="back" href="games.html">← All Games</a>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="eyebrow">EarnGig Casino Collection</div>
+    <h1>SPIN DA BOTTLE</h1>
+    <p>Give the bottle a spin. Where will it point?</p>
+  </section>
+
+  <section class="shell">
+    <div class="top-controls">
+      <div>
+        <div class="mode-label">CHOOSE YOUR GAME MODE</div>
+        <div class="mode-switch">
+          <button class="mode-btn active demo" id="demoMode" type="button">🎮 DEMO MODE</button>
+          <button class="mode-btn real" id="realMode" type="button">💎 REAL MODE</button>
+        </div>
+      </div>
+      <div class="wallet">
+        <div class="wallet-icon">🪙</div>
+        <div><small id="walletLabel">DEMO COIN BALANCE</small><strong id="balance">1,000</strong></div>
+      </div>
+    </div>
+
+    <div class="mode-note" id="modeNote">
+      🎮 <strong>Demo mode is ON.</strong> You have 1,000 test coins. Demo coins have no cash value.
+    </div>
+
+    <div class="arena">
+      <div class="arena-title">✨ THE BOTTLE CIRCLE ✨</div>
+      <div class="circle" id="circle">
+        <div class="bottle-area">
+          <div class="bottle" id="bottle">
+            <div class="bottle-neck"></div>
+            <div class="bottle-body"></div>
+            <div class="bottle-glint"></div>
+          </div>
+        </div>
+      </div>
+      <button class="spin-button" id="spinButton" type="button">🍾 SPIN THE BOTTLE</button>
+      <div class="result" id="result">Place your bet and spin the bottle!</div>
+    </div>
+
+    <div class="bet-grid">
+      <div class="field">
+        <label for="stake">YOUR BET (COINS)</label>
+        <input id="stake" type="number" min="10" step="10" value="10">
+        <div class="quick-bets">
+          <button type="button" data-bet="10">10</button>
+          <button type="button" data-bet="50">50</button>
+          <button type="button" data-bet="100">100</button>
+          <button type="button" data-bet="250">250</button>
+          <button type="button" data-bet="500">500</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>WINNING PRIZE</label>
+        <div class="prize">
+          <div><small>EXACT TOTAL PRIZE</small><br><strong id="prize">30</strong></div>
+          <div class="multiplier">3.00×</div>
+        </div>
+        <div style="font-size:10px;color:#b9a9d3;margin-top:9px">A win credits exactly 3× your stake.</div>
+      </div>
+    </div>
+
+    <div class="notice" id="notice" role="status"></div>
+
+    <section class="history">
+      <div class="history-head">
+        <h3>🎯 RECENT SPINS</h3>
+        <span id="roundCount" style="font-size:10px;color:#b9a9d3">0 spins</span>
+      </div>
+      <div class="history-list" id="historyList">
+        <span class="history-item">Your spin history will appear here.</span>
+      </div>
+    </section>
+  </section>
+
+  <p class="footer-note">
+    Demo rules: 8 positions, with 2 winning positions and 6 non-winning positions. A winning result pays exactly 3× the stake. A losing result forfeits the stake. Real mode requires a secure EarnGig wallet and server-side result system; this page does not process real-money bets.
+  </p>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const MULTIPLIER = 3;
+  const MIN_BET = 10;
+  const PLAYER_COUNT = 8;
+  const WINNING_POSITIONS = new Set([1,5]);
+  const AVATARS = ["🦊","🐼","🦁","🐸","🐯","🐨","🐵","🐰"];
+
+  let mode = "demo";
+  let demoBalance = 1000;
+  let realBalance = 0;
+  let rounds = 0;
+  let spinning = false;
+  let rotation = 0;
+
+  const $ = id => document.getElementById(id);
+  const bottle = $("bottle");
+  const stakeEl = $("stake");
+  const circle = $("circle");
+  const playerElements = [];
+
+  function money(n){return Math.floor(n).toLocaleString("en-NG")}
+  function balance(){return mode==="demo"?demoBalance:realBalance}
+
+  function updateBalance(){
+    $("balance").textContent=money(balance());
+    $("walletLabel").textContent=mode==="demo"?"DEMO COIN BALANCE":"REAL WALLET BALANCE";
+  }
+
+  function updatePrize(){
+    const bet=Number(stakeEl.value);
+    $("prize").textContent=Number.isSafeInteger(bet)&&bet>=0?money(bet*MULTIPLIER):"—";
+  }
+
+  function showNotice(message){
+    $("notice").textContent=message;
+    $("notice").classList.add("show");
+  }
+  function clearNotice(){
+    $("notice").textContent="";
+    $("notice").classList.remove("show");
+  }
+
+  function updateButton(){
+    $("spinButton").disabled=spinning||mode==="real"||balance()<MIN_BET;
+  }
+
+  function buildPlayers(){
+    const radius=43;
+    for(let i=0;i<PLAYER_COUNT;i++){
+      const angle=(i*45-90)*Math.PI/180;
+      const player=document.createElement("div");
+      player.className="player";
+      player.style.left=(50+radius*Math.cos(angle))+"%";
+      player.style.top=(50+radius*Math.sin(angle))+"%";
+      player.innerHTML=
+        '<span class="avatar">'+AVATARS[i]+'</span>'+
+        '<span class="name">PLAYER '+(i+1)+'</span>';
+      circle.appendChild(player);
+      playerElements.push(player);
+    }
+  }
+
+  function clearHighlights(){
+    playerElements.forEach(player=>player.classList.remove("winner"));
+  }
+
+  function addHistory(text,outcome){
+    const list=$("historyList");
+    if(rounds===1)list.innerHTML="";
+    const item=document.createElement("span");
+    item.className="history-item "+outcome;
+    item.textContent=text;
+    list.prepend(item);
+    while(list.children.length>8)list.removeChild(list.lastChild);
+    $("roundCount").textContent=rounds+(rounds===1?" spin":" spins");
+  }
+
+  function setMode(next){
+    if(spinning)return;
+    mode=next;
+    $("demoMode").classList.toggle("active",next==="demo");
+    $("realMode").classList.toggle("active",next==="real");
+    $("demoMode").classList.toggle("demo",next==="demo");
+    $("realMode").classList.toggle("real",next==="real");
+
+    if(next==="demo"){
+      $("modeNote").className="mode-note";
+      $("modeNote").innerHTML="🎮 <strong>Demo mode is ON.</strong> Play with test coins. Your demo balance is separate from your real wallet.";
+      $("result").textContent="Demo mode ready. Give the bottle a spin!";
+    }else{
+      $("modeNote").className="mode-note real-note";
+      $("modeNote").innerHTML="💎 <strong>Real mode is selected.</strong> Your real wallet balance is currently 0 coins because a live wallet connection has not been configured in this game file.";
+      $("result").textContent="Real mode selected. Check your wallet balance to play.";
+    }
+    clearNotice();
+    updateBalance();
+    updateButton();
+  }
+
+  function spin(){
+    if(spinning)return;
+
+    if(mode==="real"){
+      showNotice("Real wallet play is not connected yet. No real coins will be taken or awarded. Switch to Demo Mode to test Spin da Bottle.");
+      return;
+    }
+
+    const bet=Number(stakeEl.value);
+    if(!Number.isSafeInteger(bet)||bet<MIN_BET){
+      showNotice("The minimum bet is 10 coins. Enter a valid whole-number stake.");
+      return;
+    }
+    if(bet>demoBalance){
+      showNotice("Your demo coin balance is too low. Reduce your bet or switch modes.");
+      return;
+    }
+
+    clearNotice();
+    clearHighlights();
+    spinning=true;
+    updateButton();
+
+    demoBalance-=bet;
+    updateBalance();
+    $("result").className="result";
+    $("result").textContent="🍾 The bottle is spinning...";
+
+    const target=Math.floor(Math.random()*PLAYER_COUNT);
+    const anglePerPosition=360/PLAYER_COUNT;
+    const targetAngle=target*anglePerPosition;
+    const desired=(360-targetAngle)%360;
+    const current=((rotation%360)+360)%360;
+    const extra=(desired-current+360)%360;
+
+    rotation+=360*7+extra;
+    bottle.style.transform="rotate("+rotation+"deg)";
+
+    setTimeout(()=>{
+      const won=WINNING_POSITIONS.has(target);
+      playerElements[target].classList.add("winner");
+      rounds++;
+
+      if(won){
+        const prize=bet*MULTIPLIER;
+        demoBalance+=prize;
+        $("result").className="result win";
+        $("result").textContent="🎉 PLAYER "+(target+1)+"! YOU WIN "+money(prize)+" COINS!";
+        addHistory("PLAYER "+(target+1)+" · WIN +"+money(prize),"win");
+      }else{
+        $("result").className="result lose";
+        $("result").textContent="PLAYER "+(target+1)+"! Not a winning position this time.";
+        addHistory("PLAYER "+(target+1)+" · LOST -"+money(bet),"lose");
+      }
+
+      updateBalance();
+      spinning=false;
+      updateButton();
+    },4900);
+  }
+
+  $("demoMode").addEventListener("click",()=>setMode("demo"));
+  $("realMode").addEventListener("click",()=>setMode("real"));
+  $("spinButton").addEventListener("click",spin);
+  stakeEl.addEventListener("input",updatePrize);
+
+  document.querySelectorAll("[data-bet]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      stakeEl.value=button.dataset.bet;
+      updatePrize();
+      clearNotice();
+    });
+  });
+
+  buildPlayers();
+  updateBalance();
+  updatePrize();
+  updateButton();
+})();
+</script>
+</body>
+</html>
