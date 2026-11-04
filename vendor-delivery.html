@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Vendor Delivery Dashboard</title>
+<style>
+:root{
+  --purple:#6827c9;
+  --deep:#48149a;
+  --lavender:#f3edff;
+  --gold:#e7b83f;
+  --ink:#211b2b;
+  --muted:#756d80;
+  --border:#e8e0f1;
+  --green:#16834a;
+  --red:#c53b3b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:15px 5%;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:#fff;z-index:5
+}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:22px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+.header-links{display:flex;gap:16px;align-items:center}
+.header-links a{font-size:12px;font-weight:bold;color:var(--purple);text-decoration:none}
+main{max-width:1100px;margin:28px auto;padding:0 16px 60px}
+h1{font-size:27px;margin:0 0 7px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.profile{background:var(--lavender);border:1px solid var(--border);border-radius:12px;padding:12px 15px;font-size:12px}
+.profile strong{color:var(--purple)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stat{border:1px solid var(--border);border-radius:12px;padding:16px}
+.stat span{font-size:11px;color:var(--muted)}
+.stat strong{display:block;font-size:24px;color:var(--purple);margin-top:7px}
+.panel{border:1px solid var(--border);border-radius:14px;padding:18px;margin:18px 0}
+.panel h2{font-size:17px;margin:0 0 14px}
+.order{border:1px solid var(--border);border-radius:12px;padding:15px;margin:12px 0}
+.order-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.order h3{font-size:15px;margin:0 0 6px}
+.meta{font-size:12px;color:var(--muted);line-height:1.8}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:10px;font-weight:800}
+.status.green{background:#e0f5e6;color:#176c36}
+.status.orange{background:#fff0cf;color:#875c00}
+.status.red{background:#ffe4e4;color:#a32929}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+button{
+  border:0;border-radius:8px;padding:10px 13px;
+  font-size:12px;font-weight:800;cursor:pointer
+}
+.primary{background:var(--purple);color:white}
+.secondary{background:var(--lavender);color:var(--purple);border:1px solid #dfd0fa}
+.danger{background:#fff0f0;color:#b52c2c;border:1px solid #f2caca}
+input,textarea,select{
+  width:100%;padding:11px;border:1px solid #ddd3e9;
+  border-radius:8px;font:inherit;font-size:13px;background:white
+}
+.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.field label{font-size:12px;font-weight:800}
+.empty{padding:25px;text-align:center;color:var(--muted);font-size:13px}
+.notice{padding:13px;border-radius:10px;background:#fff8e9;border:1px solid #f0d69a;font-size:12px;line-height:1.7;margin:12px 0}
+.proof{font-size:11px;color:var(--muted);margin-top:8px}
+.photo{max-width:150px;max-height:120px;border-radius:8px;display:block;margin-top:8px}
+.hidden{display:none}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.tabs button{background:#f5f1fa;color:var(--purple)}
+.tabs button.active{background:var(--purple);color:#fff}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+@media(max-width:700px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ h1{font-size:23px}
+ .panel{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <div class="header-links">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+</header>
+
+<main>
+  <div class="topbar">
+    <div>
+      <h1>Vendor Delivery Dashboard</h1>
+      <div class="subtitle">Prepare orders, coordinate pickups and confirm parcel handovers.</div>
+    </div>
+    <div class="profile">
+      Vendor: <strong id="vendorName">Your Store</strong><br>
+      <span id="vendorLocation">Store location not set</span>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>Vendor responsibility:</strong> Prepare the correct order, package it safely, upload a clear parcel photo and physically hand it to the assigned rider. Never confirm a handover before the parcel has actually left your possession.
+  </div>
+
+  <section class="stats">
+    <div class="stat"><span>Awaiting pickup</span><strong id="waitingCount">0</strong></div>
+    <div class="stat"><span>Rider coming</span><strong id="riderComingCount">0</strong></div>
+    <div class="stat"><span>Awaiting your handover</span><strong id="handoverCount">0</strong></div>
+    <div class="stat"><span>Handed over</span><strong id="handedCount">0</strong></div>
+  </section>
+
+  <div class="tabs">
+    <button class="active" onclick="showTab('active',this)">Active orders</button>
+    <button onclick="showTab('history',this)">Handover history</button>
+    <button onclick="showTab('help',this)">Delivery instructions</button>
+  </div>
+
+  <section class="panel" id="activeTab">
+    <h2>Orders requiring delivery preparation</h2>
+    <div id="activeOrders"></div>
+  </section>
+
+  <section class="panel hidden" id="historyTab">
+    <h2>Handover history</h2>
+    <div id="historyOrders"></div>
+  </section>
+
+  <section class="panel hidden" id="helpTab">
+    <h2>How vendor handover works</h2>
+    <ol class="meta">
+      <li>Receive a customer order and prepare the parcel.</li>
+      <li>Confirm the products and package the order.</li>
+      <li>Upload a clear photograph of the packed parcel.</li>
+      <li>Wait for a registered rider to accept the delivery.</li>
+      <li>When the rider arrives, check their identity and order reference.</li>
+      <li>Hand the parcel to the rider and confirm the physical handover.</li>
+      <li>Keep the handover confirmation for your records.</li>
+    </ol>
+    <div class="notice">
+      A parcel photograph alone does not confirm a handover or release payment. The platform must verify the actual transfer of responsibility.
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="year"></span> EarnGig Delivery Network</footer>
+
+<script>
+const ORDER_KEY="earngig_delivery_orders";
+const APP_KEY="earngig_delivery_applications";
+const HISTORY_KEY="earngig_vendor_handover_history";
+
+let orders=readJSON(ORDER_KEY,[]);
+let history=readJSON(HISTORY_KEY,[]);
+let vendorProfile=getVendorProfile();
+
+function readJSON(key,fallback){
+  try{
+    const value=JSON.parse(localStorage.getItem(key));
+    return value??fallback;
+  }catch(e){return fallback}
+}
+
+function saveOrders(){
+  localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
+}
+function saveHistory(){
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(history));
+}
+
+function getVendorProfile(){
+  const possibleKeys=[
+    "earngig_vendor_profile",
+    "earngig_store_profile",
+    "earngig_seller_profile"
+  ];
+  for(const key of possibleKeys){
+    const profile=readJSON(key,null);
+    if(profile)return profile;
+  }
+  return {};
+}
+
+function vendorIdentity(){
+  return String(
+    vendorProfile.storeId||
+    vendorProfile.vendorId||
+    vendorProfile.id||
+    vendorProfile.username||
+    vendorProfile.storeName||
+    vendorProfile.businessName||
+    ""
+  ).trim().toLowerCase();
+}
+
+function getVendorName(){
+  return vendorProfile.storeName||
+    vendorProfile.businessName||
+    vendorProfile.name||
+    "Your Store";
+}
+
+function getVendorLocation(){
+  const state=vendorProfile.state||vendorProfile.businessState||"";
+  const town=vendorProfile.city||vendorProfile.town||"";
+  return [town,state].filter(Boolean).join(", ")||"Store location not set";
+}
+
+function belongsToVendor(order){
+  const identity=vendorIdentity();
+
+  const orderVendor=String(
+    order.vendorId||
+    order.storeId||
+    order.vendorUsername||
+    order.storeName||
+    order.vendorName||
+    ""
+  ).trim().toLowerCase();
+
+  if(!identity)return true;
+  return orderVendor===identity;
+}
+
+function orderStatus(order){
+  return String(order.status||"pending").toLowerCase();
+}
+
+function isHandedOver(order){
+  return [
+    "handed_over",
+    "vendor_handover_confirmed",
+    "pickup_confirmed",
+    "picked_up",
+    "in_transit",
+    "delivered",
+    "awaiting_storekeeper"
+  ].includes(orderStatus(order));
+}
+
+function needsHandover(order){
+  return [
+    "rider_accepted",
+    "rider_coming",
+    "accepted",
+    "coming_for_pickup",
+    "pickup_requested",
+    "awaiting_vendor_handover"
+  ].includes(orderStatus(order));
+}
+
+function statusLabel(order){
+  const status=orderStatus(order);
+  if(isHandedOver(order))return "Handed over / in transit";
+  if(needsHandover(order))return "Rider coming for pickup";
+  if(status==="pickup_proof_submitted")return "Pickup proof submitted";
+  return "Awaiting rider";
+}
+
+function dateText(value){
+  if(!value)return "Not recorded";
+  const date=new Date(value);
+  return isNaN(date.getTime())?"Not recorded":date.toLocaleString();
+}
+
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function render(){
+  orders=readJSON(ORDER_KEY,[]);
+  history=readJSON(HISTORY_KEY,[]);
+
+  const mine=orders.filter(belongsToVendor);
+  const active=mine.filter(order=>!isHandedOver(order));
+  const handed=mine.filter(isHandedOver);
+
+  document.getElementById("vendorName").textContent=getVendorName();
+  document.getElementById("vendorLocation").textContent=getVendorLocation();
+
+  document.getElementById("waitingCount").textContent=
+    active.filter(order=>!needsHandover(order)).length;
+
+  document.getElementById("riderComingCount").textContent=
+    active.filter(needsHandover).length;
+
+  document.getElementById("handoverCount").textContent=
+    active.filter(needsHandover).length;
+
+  document.getElementById("handedCount").textContent=handed.length;
+
+  renderActive(active);
+  renderHistory(handed);
+}
+
+function renderActive(list){
+  const container=document.getElementById("activeOrders");
+
+  if(!list.length){
+    container.innerHTML='<div class="empty">No active delivery orders found.</div>';
+    return;
+  }
+
+  container.innerHTML=list.map((order,index)=>{
+    const actualIndex=orders.findIndex(item=>
+      item.id===order.id && item.createdAt===order.createdAt
+    );
+    const rider=order.riderName||order.assignedRider||"Not assigned";
+    const status=statusLabel(order);
+    const coming=needsHandover(order);
+    const proof=order.vendorParcelPhoto||order.vendorPhoto||"";
+
+    return `
+      <div class="order">
+        <div class="order-head">
+          <div>
+            <h3>Order ${escapeHTML(order.orderId||order.id||"Reference unavailable")}</h3>
+            <div class="meta">
+              Customer: ${escapeHTML(order.customerName||"Customer")}<br>
+              Destination: ${escapeHTML(order.destinationTown||order.customerTown||"Not supplied")},
+              ${escapeHTML(order.destinationState||order.customerState||"Not supplied")}<br>
+              Products: ${escapeHTML(order.productSummary||order.productsSummary||order.productName||"See order details")}<br>
+              Created: ${dateText(order.createdAt)}
+            </div>
+          </div>
+          <span class="status ${coming?"orange":""}">${status}</span>
+        </div>
+
+        <div class="meta" style="margin-top:10px">
+          Assigned rider: <strong>${escapeHTML(rider)}</strong><br>
+          Pickup deadline: Before the end of the pickup day.
+        </div>
+
+        ${proof?`<img class="photo" src="${escapeHTML(proof)}" alt="Parcel proof photo">`:""}
+
+        <div class="actions">
+          <button class="secondary" onclick="openPrepare(${actualIndex})">Prepare / upload parcel photo</button>
+          ${coming?`<button class="primary" onclick="confirmHandover(${actualIndex})">Confirm physical handover</button>`:""}
+        </div>
+        <div id="prepare-${actualIndex}" class="hidden">
+          <div class="field">
+            <label>Parcel photo</label>
+            <input type="file" accept="image/*" id="photo-${actualIndex}">
+          </div>
+          <div class="field">
+            <label>Package note (optional)</label>
+            <textarea id="note-${actualIndex}" rows="2" placeholder="Describe the package or number of parcels"></textarea>
+          </div>
+          <button class="primary" onclick="savePreparation(${actualIndex})">Save parcel preparation</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function openPrepare(index){
+  const section=document.getElementById("prepare-"+index);
+  if(section)section.classList.toggle("hidden");
+}
+
+function savePreparation(index){
+  const order=orders[index];
+  if(!order)return;
+
+  const fileInput=document.getElementById("photo-"+index);
+  const noteInput=document.getElementById("note-"+index);
+  const file=fileInput?.files?.[0];
+
+  const saveNote=()=>{
+    order.vendorPackageNote=noteInput?.value||"";
+    order.vendorPreparedAt=new Date().toISOString();
+    saveOrders();
+    render();
+    alert("Parcel preparation details saved.");
+  };
+
+  if(!file){
+    saveNote();
+    return;
+  }
+
+  if(file.size>2*1024*1024){
+    alert("Please choose an image smaller than 2 MB.");
+    return;
+  }
+
+  const reader=new FileReader();
+  reader.onload=()=>{
+    order.vendorParcelPhoto=reader.result;
+    saveNote();
+  };
+  reader.onerror=()=>alert("Could not read the selected image.");
+  reader.readAsDataURL(file);
+}
+
+function confirmHandover(index){
+  const order=orders[index];
+  if(!order)return;
+
+  if(!needsHandover(order)){
+    alert("This order is not currently awaiting rider pickup.");
+    return;
+  }
+
+  const rider=order.riderName||order.assignedRider||"the assigned rider";
+
+  const confirmed=confirm(
+    "Confirm that you have physically handed order "+
+    (order.orderId||order.id||"")+
+    " to "+rider+"? Only confirm after the parcel has actually been handed over."
+  );
+
+  if(!confirmed)return;
+
+  const now=new Date().toISOString();
+
+  order.status="vendor_handover_confirmed";
+  order.vendorHandoverConfirmedAt=now;
+  order.vendorHandoverConfirmed=true;
+
+  const record={
+    orderId:order.orderId||order.id||"",
+    vendorName:getVendorName(),
+    riderName:rider,
+    confirmedAt:now,
+    status:"vendor_handover_confirmed",
+    note:"Vendor confirmed physical handover."
+  };
+
+  history.push(record);
+  saveOrders();
+  saveHistory();
+
+  render();
+  alert("Handover confirmation recorded in this browser.");
+}
+
+function renderHistory(list){
+  const container=document.getElementById("historyOrders");
+  const records=history.slice().reverse();
+
+  if(!records.length&&!list.length){
+    container.innerHTML='<div class="empty">No handover records yet.</div>';
+    return;
+  }
+
+  const entries=records.length?records:list.map(order=>({
+    orderId:order.orderId||order.id,
+    riderName:order.riderName||order.assignedRider||"Rider",
+    confirmedAt:order.vendorHandoverConfirmedAt||order.updatedAt,
+    status:order.status
+  }));
+
+  container.innerHTML=entries.map(item=>`
+    <div class="order">
+      <h3>Order ${escapeHTML(item.orderId||"Reference unavailable")}</h3>
+      <div class="meta">
+        Rider: ${escapeHTML(item.riderName||"Not recorded")}<br>
+        Handover time: ${dateText(item.confirmedAt)}<br>
+        Status: ${escapeHTML(item.status||"Confirmed")}
+      </div>
+      <span class="status green">Handover recorded</span>
+    </div>
+  `).join("");
+}
+
+function showTab(tab,button){
+  ["active","history","help"].forEach(name=>{
+    document.getElementById(name+"Tab").classList.toggle("hidden",name!==tab);
+  });
+  document.querySelectorAll(".tabs button").forEach(item=>item.classList.remove("active"));
+  button.classList.add("active");
+}
+
+document.getElementById("year").textContent=new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
