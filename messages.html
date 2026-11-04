@@ -1,0 +1,948 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Messages | EarnGig</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --text: #292438;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --background: #faf9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 14px 5%;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .header-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .header-links a {
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1150px;
+      margin: 28px auto;
+      padding: 0 16px 45px;
+    }
+
+    .page-heading { margin-bottom: 18px; }
+
+    .page-heading h1 {
+      font-size: 27px;
+      margin: 0 0 7px;
+    }
+
+    .page-heading p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .messenger {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      height: 680px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px #29114b09;
+    }
+
+    .conversation-sidebar {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .sidebar-top {
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-top h2 {
+      font-size: 18px;
+      margin: 0 0 14px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 7px;
+    }
+
+    input, textarea {
+      font: inherit;
+      outline: none;
+    }
+
+    .search-box input {
+      min-width: 0;
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    .new-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 0 12px;
+      background: var(--purple);
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .conversation-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 14px;
+      border-bottom: 1px solid #f1edf5;
+      cursor: pointer;
+    }
+
+    .conversation-item:hover,
+    .conversation-item.active {
+      background: var(--lavender);
+    }
+
+    .avatar {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      background: #e9defb;
+      color: var(--purple);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .conversation-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .conversation-info strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .conversation-info small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      position: relative;
+    }
+
+    .chat-header {
+      min-height: 72px;
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-header-info { flex: 1; min-width: 0; }
+
+    .chat-header-info strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .chat-header-info small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .chat-tools {
+      display: flex;
+      gap: 7px;
+    }
+
+    .tool-button {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 8px;
+      padding: 9px 10px;
+      color: var(--purple);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .messages-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: #fcfbfe;
+    }
+
+    .welcome-chat {
+      height: 100%;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+    }
+
+    .welcome-chat span {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .welcome-chat h2 {
+      color: var(--text);
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+
+    .welcome-chat p {
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 330px;
+    }
+
+    .message-row {
+      display: flex;
+      margin-bottom: 14px;
+    }
+
+    .message-row.mine { justify-content: flex-end; }
+
+    .bubble {
+      max-width: 75%;
+      padding: 11px 13px;
+      border-radius: 13px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .mine .bubble {
+      background: var(--purple);
+      color: white;
+      border-color: var(--purple);
+      border-bottom-right-radius: 3px;
+    }
+
+    .message-row:not(.mine) .bubble {
+      border-bottom-left-radius: 3px;
+    }
+
+    .bubble small {
+      display: block;
+      margin-top: 5px;
+      font-size: 10px;
+      opacity: .7;
+      text-align: right;
+    }
+
+    .chat-composer {
+      padding: 13px;
+      border-top: 1px solid var(--border);
+      background: white;
+    }
+
+    .composer-tools {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 9px;
+    }
+
+    .composer-tools button {
+      border: 0;
+      background: var(--lavender);
+      color: var(--purple);
+      padding: 8px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .composer-bottom {
+      display: flex;
+      align-items: flex-end;
+      gap: 9px;
+    }
+
+    .composer-bottom textarea {
+      flex: 1;
+      min-width: 0;
+      resize: none;
+      min-height: 44px;
+      max-height: 120px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    .send-button {
+      border: 0;
+      background: var(--purple);
+      color: white;
+      padding: 13px 17px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .send-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .status {
+      display: none;
+      margin: 10px 0 0;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status.error {
+      display: block;
+      background: #fff0f0;
+      color: #9b2929;
+    }
+
+    .status.success {
+      display: block;
+      background: #eaf8f0;
+      color: #176b43;
+    }
+
+    .empty-conversations {
+      text-align: center;
+      padding: 35px 15px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .empty-conversations span {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .mobile-back {
+      display: none;
+      border: 0;
+      background: var(--lavender);
+      color: var(--purple);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 23px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 720px) {
+      header { padding: 12px 15px; }
+      .header-links { gap: 9px; }
+      .header-links a { font-size: 11px; }
+      main { margin-top: 20px; }
+
+      .messenger {
+        display: block;
+        height: min(750px, calc(100vh - 170px));
+        min-height: 520px;
+        position: relative;
+      }
+
+      .conversation-sidebar {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .chat-area {
+        display: none;
+        width: 100%;
+        height: 100%;
+      }
+
+      .messenger.chat-open .conversation-sidebar { display: none; }
+      .messenger.chat-open .chat-area { display: flex; }
+
+      .mobile-back { display: block; }
+      .messages-area { padding: 14px; }
+      .bubble { max-width: 86%; }
+      .chat-tools .tool-button { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="earngig-community.html">Community</a>
+    <a href="notifications.html">Notifications</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-heading">
+    <h1>Private Messages 💬</h1>
+    <p>Connect privately with other EarnGig members.</p>
+  </div>
+
+  <section class="messenger" id="messenger">
+
+    <aside class="conversation-sidebar">
+      <div class="sidebar-top">
+        <h2>Messages</h2>
+        <div class="search-box">
+          <input type="search" id="searchMember"
+            placeholder="Search username...">
+          <button class="new-button" id="newChatButton" type="button">New</button>
+        </div>
+        <div id="searchStatus" class="status"></div>
+      </div>
+
+      <div class="conversation-list" id="conversationList">
+        <div class="empty-conversations">
+          <span>💬</span>
+          Your conversations will appear here.
+        </div>
+      </div>
+    </aside>
+
+    <section class="chat-area">
+
+      <div class="chat-header">
+        <button class="mobile-back" id="mobileBack" type="button">←</button>
+        <div class="avatar" id="chatAvatar">E</div>
+
+        <div class="chat-header-info">
+          <strong id="chatName">Select a conversation</strong>
+          <small id="chatUsername">Choose a member to start chatting</small>
+        </div>
+
+        <div class="chat-tools">
+          <button class="tool-button" id="giftButton" type="button">🎁 Gift</button>
+          <button class="tool-button" id="reportButton" type="button">⚑</button>
+        </div>
+      </div>
+
+      <div class="messages-area" id="messagesArea">
+        <div class="welcome-chat">
+          <span>💜</span>
+          <h2>Your private conversations</h2>
+          <p>Select an existing conversation or search for an EarnGig username to start a new one.</p>
+        </div>
+      </div>
+
+      <div class="chat-composer">
+        <div class="composer-tools">
+          <button type="button" id="photoButton">📷 Photo</button>
+          <button type="button" id="giftComposerButton">🎁 Send Gift</button>
+          <input type="file" id="photoInput" accept="image/*" hidden>
+        </div>
+
+        <form class="composer-bottom" id="messageForm">
+          <textarea id="messageInput" maxlength="2000"
+            placeholder="Write a private message..." disabled></textarea>
+          <button class="send-button" id="sendButton" type="submit" disabled>
+            Send
+          </button>
+        </form>
+
+        <div id="composerStatus" class="status"></div>
+      </div>
+
+    </section>
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    PRIVATE MESSAGING FRONTEND DEMO
+
+    This page stores conversations only in the current browser.
+    It does not send messages to other accounts.
+
+    Production backend requirements:
+    - Authenticated users and username lookup.
+    - Shared private conversation storage.
+    - Secure sender/recipient permissions.
+    - Real-time message delivery.
+    - Unread message counts and notifications.
+    - Image uploads to shared storage.
+    - Virtual gift transactions and coin ledger.
+    - Blocking, reporting and administrator moderation.
+    - Message retention and privacy controls.
+
+    Never use localStorage as the real private messaging database.
+  */
+
+  const STORAGE_KEY = "earngig_private_messages";
+  const PROFILE_KEY = "earngig_profile";
+
+  const messenger = document.getElementById("messenger");
+  const conversationList = document.getElementById("conversationList");
+  const messagesArea = document.getElementById("messagesArea");
+  const searchInput = document.getElementById("searchMember");
+  const messageInput = document.getElementById("messageInput");
+  const sendButton = document.getElementById("sendButton");
+  const composerStatus = document.getElementById("composerStatus");
+
+  let conversations = [];
+  let activeConversationId = null;
+
+  function getProfile() {
+    try {
+      return JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  const profile = getProfile();
+
+  const currentUser = String(
+    profile.username ||
+    profile.handle ||
+    "demo-member"
+  ).replace(/^@/, "");
+
+  const currentName =
+    profile.fullName ||
+    profile.name ||
+    currentUser;
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function loadConversations() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      conversations = Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      conversations = [];
+    }
+  }
+
+  function saveConversations() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
+      return true;
+    } catch (error) {
+      showStatus(composerStatus, "Browser storage is full. Your message could not be saved.", "error");
+      return false;
+    }
+  }
+
+  function showStatus(element, text, type) {
+    element.textContent = text;
+    element.className = "status " + type;
+  }
+
+  function clearStatus(element) {
+    element.textContent = "";
+    element.className = "status";
+  }
+
+  function getOtherParticipant(conversation) {
+    return conversation.participants.find(user => user.username !== currentUser);
+  }
+
+  function getActiveConversation() {
+    return conversations.find(item => item.id === activeConversationId);
+  }
+
+  function findConversation(username) {
+    return conversations.find(conversation =>
+      conversation.participants.some(user => user.username === username)
+    );
+  }
+
+  function renderConversationList() {
+    const sorted = [...conversations].sort((a, b) =>
+      new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0)
+    );
+
+    if (!sorted.length) {
+      conversationList.innerHTML = `
+        <div class="empty-conversations">
+          <span>💬</span>
+          No conversations yet.<br>Start a new chat using a username.
+        </div>
+      `;
+      return;
+    }
+
+    conversationList.innerHTML = sorted.map(conversation => {
+      const other = getOtherParticipant(conversation);
+      if (!other) return "";
+
+      const lastMessage = conversation.messages?.length
+        ? conversation.messages[conversation.messages.length - 1].text
+        : "Start your conversation";
+
+      return `
+        <div class="conversation-item ${conversation.id === activeConversationId ? "active" : ""}"
+          data-conversation-id="${escapeHTML(conversation.id)}">
+          <div class="avatar">${escapeHTML(other.name.charAt(0).toUpperCase())}</div>
+          <div class="conversation-info">
+            <strong>${escapeHTML(other.name)}</strong>
+            <small>@${escapeHTML(other.username)}</small>
+            <small>${escapeHTML(lastMessage || "Attachment")}</small>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function openConversation(conversationId) {
+    const conversation = conversations.find(item => item.id === conversationId);
+    if (!conversation) return;
+
+    activeConversationId = conversationId;
+
+    const other = getOtherParticipant(conversation);
+
+    if (!other) return;
+
+    document.getElementById("chatName").textContent = other.name;
+    document.getElementById("chatUsername").textContent = "@" + other.username;
+    document.getElementById("chatAvatar").textContent =
+      other.name.charAt(0).toUpperCase();
+
+    messageInput.disabled = false;
+    sendButton.disabled = false;
+
+    renderConversationMessages();
+    renderConversationList();
+
+    messenger.classList.add("chat-open");
+    clearStatus(composerStatus);
+  }
+
+  function renderConversationMessages() {
+    const conversation = getActiveConversation();
+
+    if (!conversation) {
+      messagesArea.innerHTML = `
+        <div class="welcome-chat">
+          <span>💜</span>
+          <h2>Your private conversations</h2>
+          <p>Select a conversation or search for a member to start chatting.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const messages = Array.isArray(conversation.messages)
+      ? conversation.messages
+      : [];
+
+    if (!messages.length) {
+      messagesArea.innerHTML = `
+        <div class="welcome-chat">
+          <span>👋</span>
+          <h2>Say hello!</h2>
+          <p>This is the beginning of your conversation. Send a message to get started.</p>
+        </div>
+      `;
+      return;
+    }
+
+    messagesArea.innerHTML = messages.map(message => {
+      const mine = message.sender === currentUser;
+
+      return `
+        <div class="message-row ${mine ? "mine" : ""}">
+          <div class="bubble">
+            ${escapeHTML(message.text || "")}
+            <small>${escapeHTML(formatTime(message.createdAt))}</small>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+
+  function formatTime(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleString("en-NG", {
+      dateStyle: "short",
+      timeStyle: "short"
+    });
+  }
+
+  function startNewConversation(username) {
+    const cleanUsername = username.trim().replace(/^@/, "");
+
+    if (!cleanUsername) {
+      showStatus(
+        document.getElementById("searchStatus"),
+        "Enter a username to search.",
+        "error"
+      );
+      return;
+    }
+
+    if (cleanUsername.toLowerCase() === currentUser.toLowerCase()) {
+      showStatus(
+        document.getElementById("searchStatus"),
+        "You cannot start a conversation with yourself.",
+        "error"
+      );
+      return;
+    }
+
+    const existing = findConversation(cleanUsername);
+
+    if (existing) {
+      clearStatus(document.getElementById("searchStatus"));
+      openConversation(existing.id);
+      return;
+    }
+
+    /*
+      A real member lookup must be done by the EarnGig server.
+      This demo cannot confirm that an arbitrary username belongs
+      to a real member, so it does not create a fake recipient.
+    */
+
+    showStatus(
+      document.getElementById("searchStatus"),
+      "Member lookup is not connected yet. A shared EarnGig member directory is required to verify usernames and start real conversations.",
+      "error"
+    );
+  }
+
+  document.getElementById("newChatButton").addEventListener("click", () => {
+    startNewConversation(searchInput.value);
+  });
+
+  searchInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      startNewConversation(searchInput.value);
+    }
+  });
+
+  conversationList.addEventListener("click", event => {
+    const item = event.target.closest("[data-conversation-id]");
+    if (!item) return;
+
+    openConversation(item.dataset.conversationId);
+  });
+
+  document.getElementById("messageForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const text = messageInput.value.trim();
+
+    if (!text) return;
+
+    const conversation = getActiveConversation();
+
+    if (!conversation) {
+      showStatus(composerStatus, "Select a conversation first.", "error");
+      return;
+    }
+
+    if (!Array.isArray(conversation.messages)) {
+      conversation.messages = [];
+    }
+
+    const message = {
+      id: "message-" + Date.now(),
+      sender: currentUser,
+      text,
+      createdAt: new Date().toISOString()
+    };
+
+    conversation.messages.push(message);
+    conversation.updatedAt = message.createdAt;
+
+    if (!saveConversations()) {
+      conversation.messages.pop();
+      return;
+    }
+
+    messageInput.value = "";
+    clearStatus(composerStatus);
+    renderConversationMessages();
+    renderConversationList();
+  });
+
+  document.getElementById("mobileBack").addEventListener("click", () => {
+    messenger.classList.remove("chat-open");
+  });
+
+  document.getElementById("photoButton").addEventListener("click", () => {
+    if (!activeConversationId) {
+      showStatus(composerStatus, "Select a conversation first.", "error");
+      return;
+    }
+
+    showStatus(
+      composerStatus,
+      "Photo messaging requires shared online media storage. No photo has been sent.",
+      "error"
+    );
+  });
+
+  document.getElementById("photoInput").addEventListener("change", event => {
+    event.target.value = "";
+  });
+
+  function openGiftPage() {
+    if (!activeConversationId) {
+      showStatus(composerStatus, "Select a conversation before sending a gift.", "error");
+      return;
+    }
+
+    const other = getOtherParticipant(getActiveConversation());
+
+    if (!other) return;
+
+    location.href =
+      "virtual-gifts.html?recipient=" +
+      encodeURIComponent(other.username);
+  }
+
+  document.getElementById("giftButton").addEventListener("click", openGiftPage);
+  document.getElementById("giftComposerButton").addEventListener("click", openGiftPage);
+
+  document.getElementById("reportButton").addEventListener("click", () => {
+    const conversation = getActiveConversation();
+
+    if (!conversation) {
+      showStatus(composerStatus, "Select a conversation first.", "error");
+      return;
+    }
+
+    alert(
+      "Reporting and blocking will be connected to EarnGig's moderation system. If a member is harassing or threatening you, do not continue engaging with them."
+    );
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  loadConversations();
+  renderConversationList();
+</script>
+
+</body>
+</html>
