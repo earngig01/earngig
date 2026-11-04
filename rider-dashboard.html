@@ -7,24 +7,13 @@
 <title>EarnGig Rider Dashboard</title>
 <style>
 :root{
-  --purple:#6827c9;
-  --purple-dark:#48149a;
-  --lavender:#f3edff;
-  --gold:#e7b83f;
-  --ink:#211b2b;
-  --muted:#756d80;
-  --border:#e8e0f1;
-  --green:#16834a;
-  --red:#c53b3b;
-  --orange:#b66a00;
+  --purple:#6827c9;--purple-dark:#48149a;--lavender:#f3edff;
+  --gold:#e7b83f;--ink:#211b2b;--muted:#756d80;
+  --border:#e8e0f1;--green:#16834a;--red:#c53b3b;--orange:#b66a00;
 }
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
-header{
-  padding:15px 5%;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--border);
-  position:sticky;top:0;background:#fff;z-index:10
-}
+header{padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
 .brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
 .brand svg{width:25px;height:22px}
 .header-right{display:flex;gap:15px;align-items:center}
@@ -35,11 +24,7 @@ aside{border-right:1px solid var(--border);padding:22px 14px}
 .avatar{width:43px;height:43px;background:var(--purple);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;margin-bottom:10px}
 .profile-mini strong{display:block;font-size:14px}
 .profile-mini small{color:var(--muted);font-size:12px}
-nav button{
-  width:100%;display:flex;align-items:center;gap:10px;
-  background:transparent;color:var(--ink);text-align:left;
-  padding:12px;border-radius:9px;margin:3px 0;font-size:13px
-}
+nav button{width:100%;display:flex;align-items:center;gap:10px;background:transparent;color:var(--ink);text-align:left;padding:12px;border-radius:9px;margin:3px 0;font-size:13px}
 nav button.active,nav button:hover{background:var(--lavender);color:var(--purple)}
 main{padding:28px 4%;max-width:1400px;width:100%;margin:auto}
 h1{font-size:27px;margin:0 0 7px}
@@ -172,6 +157,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
         <div class="note">
           <strong>Pickup deadline:</strong> After accepting a vendor order, collect it before the end of that same calendar day.
           <br><br>
+          <strong>Vendor handover:</strong> Upload pickup proof and wait for the vendor to confirm physical handover before proceeding.
+          <br><br>
           <strong>Delivery deadline:</strong> Every order must be completed within five calendar days from its original release date. Handovers do not reset this deadline.
           <br><br>
           <strong>Customer confirmation:</strong> A delivery is completed only after the customer's private confirmation code is verified.
@@ -191,7 +178,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
           <div class="subtitle">Orders are grouped by vendor pickup location. Each vendor order is handled separately.</div>
         </div>
       </div>
-      <div class="note">When you accept an order, the vendor is notified. You must collect the parcel before the end of that same calendar day. You may accept more nearby orders while completing other deliveries.</div>
+      <div class="note">When you accept an order, the vendor is notified by the shared delivery system. You must collect the parcel before the end of that same calendar day.</div>
       <div id="availableOrders"></div>
     </section>
 
@@ -277,158 +264,172 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
 <footer>© <span id="year"></span> EarnGig Delivery Network</footer>
 
 <script>
-const APPLICATION_KEY = "earngig_delivery_applications";
-const ORDER_KEY = "earngig_delivery_orders";
-const PROFILE_KEY = "earngig_rider_profile";
-const WALLET_KEY = "earngig_rider_delivery_wallet";
+const APPLICATION_KEY="earngig_delivery_applications";
+const ORDER_KEY="earngig_delivery_orders";
+const PROFILE_KEY="earngig_rider_profile";
+const WALLET_KEY="earngig_rider_delivery_wallet";
 
-let rider = null;
-let applications = [];
-let orders = [];
-let wallet = {balance:0,transactions:[]};
-let selectedOrderId = null;
+let rider=null;
+let applications=[];
+let orders=[];
+let wallet={balance:0,transactions:[]};
+let selectedOrderId=null;
 
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent=new Date().getFullYear();
 
-function readJSON(key, fallback) {
-  try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return value ?? fallback;
-  } catch {
+function readJSON(key,fallback){
+  try{
+    const value=JSON.parse(localStorage.getItem(key));
+    return value??fallback;
+  }catch{
     return fallback;
   }
 }
 
-function saveData() {
-  localStorage.setItem(ORDER_KEY, JSON.stringify(orders));
-  localStorage.setItem(WALLET_KEY, JSON.stringify(wallet));
+function saveData(){
+  localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
+  localStorage.setItem(WALLET_KEY,JSON.stringify(wallet));
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[char]));
 }
 
-function startDashboard() {
-  applications = readJSON(APPLICATION_KEY, []);
-  orders = readJSON(ORDER_KEY, []);
-  wallet = readJSON(WALLET_KEY, {balance:0,transactions:[]});
+function startDashboard(){
+  applications=readJSON(APPLICATION_KEY,[]);
+  orders=readJSON(ORDER_KEY,[]);
+  wallet=readJSON(WALLET_KEY,{balance:0,transactions:[]});
 
-  const savedProfile = readJSON(PROFILE_KEY, null);
-  const username = savedProfile?.username;
+  const savedProfile=readJSON(PROFILE_KEY,null);
+  const username=savedProfile?.username;
 
-  if (username) {
-    rider = applications.find(app =>
-      String(app.username).toLowerCase() === String(username).toLowerCase()
+  if(username){
+    rider=applications.find(app=>
+      String(app.username).toLowerCase()===String(username).toLowerCase()
     );
-  } else {
-    rider = applications.find(app =>
-      app.applicationType === "rider" &&
-      app.status === "approved"
+  }else{
+    rider=applications.find(app=>
+      app.applicationType==="rider"&&app.status==="approved"
     );
   }
 
-  if (!rider || rider.applicationType !== "rider" || rider.status !== "approved") {
+  if(!rider||rider.applicationType!=="rider"||rider.status!=="approved"){
     document.getElementById("approvalNotice").classList.remove("hidden");
     document.getElementById("dashboardContent").classList.add("hidden");
 
-    let message = "Your rider application must be approved before you can access delivery jobs.";
-    if (rider?.status === "pending_review") {
-      message = "Your application is awaiting review. Please keep your phone available for the EarnGig verification team.";
-    } else if (rider?.status === "interview_required") {
-      message = "Your application requires a phone interview. Please wait for the verification team to contact you.";
-    } else if (rider?.status === "additional_info_requested") {
-      message = "EarnGig has requested additional information. Please contact the verification team for instructions.";
-    } else if (rider?.status === "rejected") {
-      message = "Your application was not approved. Please contact EarnGig support for further information.";
+    let message="Your rider application must be approved before you can access delivery jobs.";
+    if(rider?.status==="pending_review"){
+      message="Your application is awaiting review. Please keep your phone available for the EarnGig verification team.";
+    }else if(rider?.status==="interview_required"){
+      message="Your application requires a phone interview. Please wait for the verification team to contact you.";
+    }else if(rider?.status==="additional_info_requested"){
+      message="EarnGig has requested additional information. Please contact the verification team for instructions.";
+    }else if(rider?.status==="rejected"){
+      message="Your application was not approved. Please contact EarnGig support for further information.";
     }
-    document.getElementById("approvalMessage").textContent = message;
+
+    document.getElementById("approvalMessage").textContent=message;
     return;
   }
 
   document.getElementById("approvalNotice").classList.add("hidden");
   document.getElementById("dashboardContent").classList.remove("hidden");
 
-  const displayName = rider.fullName || rider.username || "Rider";
-  document.getElementById("riderName").textContent = displayName;
-  document.getElementById("avatar").textContent = displayName.charAt(0).toUpperCase();
-  document.getElementById("riderTypeLabel").textContent =
-    rider.riderType === "collection" ? "Collection Rider" : "Normal Delivery Rider";
+  const displayName=rider.fullName||rider.username||"Rider";
+  document.getElementById("riderName").textContent=displayName;
+  document.getElementById("avatar").textContent=displayName.charAt(0).toUpperCase();
+  document.getElementById("riderTypeLabel").textContent=
+    rider.riderType==="collection"?"Collection Rider":"Normal Delivery Rider";
 
   renderAll();
 }
 
-function showPage(page) {
-  document.querySelectorAll("main section[id^='page-']").forEach(section => section.classList.add("hidden"));
-  document.getElementById("page-" + page).classList.remove("hidden");
+function showPage(page){
+  document.querySelectorAll("main section[id^='page-']").forEach(section=>section.classList.add("hidden"));
+  document.getElementById("page-"+page).classList.remove("hidden");
 
-  document.querySelectorAll("nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
+  document.querySelectorAll("nav button").forEach(button=>{
+    button.classList.toggle("active",button.dataset.page===page);
   });
 
   renderAll();
 }
 
-document.querySelectorAll("nav button").forEach(button => {
-  button.addEventListener("click", () => showPage(button.dataset.page));
+document.querySelectorAll("nav button").forEach(button=>{
+  button.addEventListener("click",()=>showPage(button.dataset.page));
 });
 
-function money(value) {
-  return "₦" + Number(value || 0).toLocaleString("en-NG", {minimumFractionDigits:2,maximumFractionDigits:2});
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,maximumFractionDigits:2
+  });
 }
 
-function dateText(value) {
-  if (!value) return "Not recorded";
-  return new Date(value).toLocaleString("en-NG", {
+function dateText(value){
+  if(!value)return "Not recorded";
+  const date=new Date(value);
+  if(isNaN(date.getTime()))return "Not recorded";
+  return date.toLocaleString("en-NG",{
     day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"
   });
 }
 
-function endOfDay(date) {
-  const result = new Date(date);
+function endOfDay(date){
+  const result=new Date(date);
   result.setHours(23,59,59,999);
   return result;
 }
 
-function pickupDeadline(order) {
-  const source = order.acceptedAt || order.createdAt || new Date().toISOString();
+function pickupDeadline(order){
+  const source=order.acceptedAt||order.createdAt||new Date().toISOString();
   return endOfDay(new Date(source));
 }
 
-function deliveryDeadline(order) {
-  const source = new Date(order.originalReleaseAt || order.createdAt || new Date());
-  source.setDate(source.getDate() + 5);
+function deliveryDeadline(order){
+  const source=new Date(order.originalReleaseAt||order.createdAt||new Date());
+  source.setDate(source.getDate()+5);
   source.setHours(23,59,59,999);
   return source;
 }
 
-function isOverduePickup(order) {
-  return order.status === "accepted" && Date.now() > pickupDeadline(order).getTime();
+function isOverduePickup(order){
+  return order.status==="accepted"&&Date.now()>pickupDeadline(order).getTime();
 }
 
-function isOverdueDelivery(order) {
-  return !["delivered","cancelled"].includes(order.status) &&
-    order.status !== "available" &&
-    Date.now() > deliveryDeadline(order).getTime();
+function isOverdueDelivery(order){
+  return !["delivered","cancelled"].includes(order.status)&&
+    order.status!=="available"&&
+    Date.now()>deliveryDeadline(order).getTime();
 }
 
-function renderAll() {
-  if (!rider) return;
-  const available = orders.filter(order => order.status === "available");
-  const active = orders.filter(order =>
-    order.riderUsername === rider.username &&
+function isAssignedToRider(order){
+  return String(order.riderUsername||"").toLowerCase()===
+    String(rider?.username||"").toLowerCase();
+}
+
+function renderAll(){
+  if(!rider)return;
+
+  // Refresh shared browser data before rendering.
+  orders=readJSON(ORDER_KEY,[]);
+  wallet=readJSON(WALLET_KEY,{balance:0,transactions:[]});
+
+  const available=orders.filter(order=>order.status==="available");
+  const active=orders.filter(order=>
+    isAssignedToRider(order)&&
     !["delivered","cancelled"].includes(order.status)
   );
-  const completed = orders.filter(order =>
-    order.riderUsername === rider.username && order.status === "delivered"
+  const completed=orders.filter(order=>
+    isAssignedToRider(order)&&order.status==="delivered"
   );
 
-  document.getElementById("availableCount").textContent = available.length;
-  document.getElementById("activeCount").textContent = active.length;
-  document.getElementById("completedCount").textContent = completed.length;
-  document.getElementById("overviewWallet").textContent = money(wallet.balance);
-  document.getElementById("walletBalance").textContent = money(wallet.balance);
+  document.getElementById("availableCount").textContent=available.length;
+  document.getElementById("activeCount").textContent=active.length;
+  document.getElementById("completedCount").textContent=completed.length;
+  document.getElementById("overviewWallet").textContent=money(wallet.balance);
+  document.getElementById("walletBalance").textContent=money(wallet.balance);
 
   renderAvailable();
   renderActive();
@@ -438,35 +439,36 @@ function renderAll() {
   renderAccount();
 }
 
-function renderAvailable() {
-  const container = document.getElementById("availableOrders");
-  const available = orders.filter(order => order.status === "available");
+function renderAvailable(){
+  const container=document.getElementById("availableOrders");
+  const available=orders.filter(order=>order.status==="available");
 
-  if (!available.length) {
-    container.innerHTML = '<div class="empty">No vendor orders are available right now. Check again later.</div>';
+  if(!available.length){
+    container.innerHTML='<div class="empty">No vendor orders are available right now. Check again later.</div>';
     return;
   }
 
-  const groups = {};
-  available.forEach(order => {
-    const location = order.pickupTown || order.pickupLocation || "Other locations";
-    if (!groups[location]) groups[location] = [];
+  const groups={};
+
+  available.forEach(order=>{
+    const location=order.pickupTown||order.pickupLocation||"Other locations";
+    if(!groups[location])groups[location]=[];
     groups[location].push(order);
   });
 
-  container.innerHTML = Object.entries(groups).map(([location, items]) => `
+  container.innerHTML=Object.entries(groups).map(([location,items])=>`
     <div class="group-title">Pickup location: ${escapeHTML(location)}</div>
     <div class="order-grid">
-      ${items.map(order => `
+      ${items.map(order=>`
         <div class="order">
           <span class="tag">Available</span>
-          <h3>${escapeHTML(order.reference || order.id)}</h3>
-          <p><strong>Vendor:</strong> ${escapeHTML(order.vendorName || "Vendor")}</p>
-          <p><strong>Pickup:</strong> ${escapeHTML(order.pickupAddress || location)}</p>
-          <p><strong>Destination:</strong> ${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}</p>
-          <p><strong>Customer:</strong> ${escapeHTML(order.customerName || "Customer")}</p>
-          <p><strong>Items:</strong> ${escapeHTML(order.itemSummary || "Vendor order parcel")}</p>
-          <div class="fee">${money(order.riderFee || 0)}</div>
+          <h3>${escapeHTML(order.reference||order.id)}</h3>
+          <p><strong>Vendor:</strong> ${escapeHTML(order.vendorName||"Vendor")}</p>
+          <p><strong>Pickup:</strong> ${escapeHTML(order.pickupAddress||location)}</p>
+          <p><strong>Destination:</strong> ${escapeHTML(order.destinationTown||"")}, ${escapeHTML(order.destinationState||"")}</p>
+          <p><strong>Customer:</strong> ${escapeHTML(order.customerName||"Customer")}</p>
+          <p><strong>Items:</strong> ${escapeHTML(order.itemSummary||"Vendor order parcel")}</p>
+          <div class="fee">${money(order.riderFee||0)}</div>
           <p>Pickup must be completed today after acceptance.</p>
           <div class="order-actions">
             <button onclick="acceptOrder('${escapeHTML(order.id)}')">Accept Pickup</button>
@@ -477,18 +479,29 @@ function renderAvailable() {
   `).join("");
 }
 
-function acceptOrder(id) {
-  const order = orders.find(item => String(item.id) === String(id));
-  if (!order || order.status !== "available") return alert("This order is no longer available.");
+function acceptOrder(id){
+  orders=readJSON(ORDER_KEY,[]);
+  const order=orders.find(item=>String(item.id)===String(id));
 
-  const acceptedAt = new Date().toISOString();
-  order.status = "accepted";
-  order.riderUsername = rider.username;
-  order.riderName = rider.fullName;
-  order.acceptedAt = acceptedAt;
-  order.pickupDeadline = pickupDeadline(order).toISOString();
-  order.deliveryDeadline = deliveryDeadline(order).toISOString();
-  order.handoverHistory = order.handoverHistory || [];
+  if(!order||order.status!=="available"){
+    return alert("This order is no longer available.");
+  }
+
+  const acceptedAt=new Date().toISOString();
+
+  order.status="accepted";
+  order.riderUsername=rider.username;
+  order.riderName=rider.fullName||rider.username;
+  order.acceptedAt=acceptedAt;
+  order.pickupDeadline=pickupDeadline(order).toISOString();
+
+  // Keep the original release date; accepting or handing over never resets it.
+  order.originalReleaseAt=order.originalReleaseAt||order.createdAt||acceptedAt;
+  order.deliveryDeadline=deliveryDeadline(order).toISOString();
+
+  order.handoverHistory=Array.isArray(order.handoverHistory)
+    ?order.handoverHistory:[];
+
   order.handoverHistory.push({
     stage:"rider_accepted",
     actor:rider.username,
@@ -496,184 +509,259 @@ function acceptOrder(id) {
   });
 
   saveData();
-  alert("Order accepted. The vendor should be notified by the live EarnGig backend. You must collect this parcel before the end of today.");
+
+  alert("Order accepted. You must collect this parcel before the end of today. The vendor must confirm physical handover after you submit pickup proof.");
+
   renderAll();
   showPage("active");
 }
 
-function renderActive() {
-  const container = document.getElementById("activeOrders");
-  const active = orders.filter(order =>
-    order.riderUsername === rider.username &&
+function renderActive(){
+  const container=document.getElementById("activeOrders");
+  const active=orders.filter(order=>
+    isAssignedToRider(order)&&
     !["delivered","cancelled"].includes(order.status)
   );
 
-  if (!active.length) {
-    container.innerHTML = '<div class="empty">You have no active deliveries.</div>';
+  if(!active.length){
+    container.innerHTML='<div class="empty">You have no active deliveries.</div>';
     return;
   }
 
-  container.innerHTML = active.map(order => {
-    const overduePickup = isOverduePickup(order);
-    const overdueDelivery = isOverdueDelivery(order);
-    let status = order.status.replaceAll("_"," ");
+  container.innerHTML=active.map(order=>{
+    const overduePickup=isOverduePickup(order);
+    const overdueDelivery=isOverdueDelivery(order);
+
+    const labels={
+      accepted:"Accepted — pickup required",
+      pickup_proof_submitted:"Pickup proof submitted — waiting for vendor",
+      vendor_handover_confirmed:"Vendor confirmed handover — parcel collected",
+      picked_up:"Parcel collected — deliver to customer",
+      delivery_proof_submitted:"Delivery submitted — awaiting secure code verification"
+    };
+
+    const status=labels[order.status]||order.status.replaceAll("_"," ");
 
     return `
       <div class="panel">
         <div class="topline">
           <div>
-            <h2>${escapeHTML(order.reference || order.id)}</h2>
-            <span class="tag ${overduePickup || overdueDelivery ? "red" : "green"}">${escapeHTML(status)}</span>
+            <h2>${escapeHTML(order.reference||order.id)}</h2>
+            <span class="tag ${overduePickup||overdueDelivery?"red":order.status==="vendor_handover_confirmed"||order.status==="picked_up"?"green":"orange"}">${escapeHTML(status)}</span>
           </div>
-          <strong>${money(order.riderFee || 0)}</strong>
+          <strong>${money(order.riderFee||0)}</strong>
         </div>
-        ${overduePickup ? '<p class="tag red">Pickup deadline missed — admin review required</p>' : ""}
-        ${overdueDelivery ? '<p class="tag red">Five-day delivery deadline missed — admin intervention required</p>' : ""}
+
+        ${overduePickup?'<p class="tag red">Pickup deadline missed — admin review required</p>':""}
+        ${overdueDelivery?'<p class="tag red">Five-day delivery deadline missed — admin intervention required</p>':""}
+
         <p class="subtitle">
-          Vendor: ${escapeHTML(order.vendorName || "Vendor")}<br>
-          Pickup: ${escapeHTML(order.pickupAddress || order.pickupTown || "")}<br>
-          Customer: ${escapeHTML(order.customerName || "Customer")}<br>
-          Destination: ${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}
+          Vendor: ${escapeHTML(order.vendorName||"Vendor")}<br>
+          Pickup: ${escapeHTML(order.pickupAddress||order.pickupTown||"")}<br>
+          Customer: ${escapeHTML(order.customerName||"Customer")}<br>
+          Destination: ${escapeHTML(order.destinationTown||"")}, ${escapeHTML(order.destinationState||"")}
         </p>
+
         <p class="subtitle">Accepted: ${dateText(order.acceptedAt)}</p>
         <p class="subtitle">Pickup deadline: ${dateText(order.pickupDeadline)}</p>
         <p class="subtitle">Original five-day deadline: ${dateText(order.deliveryDeadline)}</p>
+
         ${renderOrderAction(order)}
       </div>
     `;
   }).join("");
 }
 
-function renderOrderAction(order) {
-  if (order.status === "accepted") {
+function renderOrderAction(order){
+  if(order.status==="accepted"){
     return `<button onclick="openPickup('${escapeHTML(order.id)}')">Upload Pickup Proof</button>`;
   }
-  if (order.status === "pickup_proof_submitted") {
-    return `<div class="note">Pickup proof submitted. Waiting for vendor handover confirmation.</div>`;
+
+  if(order.status==="pickup_proof_submitted"){
+    return `<div class="note">Your pickup proof has been submitted. Wait for the vendor to physically hand over the parcel and confirm the handover. You cannot proceed to customer delivery yet.</div>`;
   }
-  if (order.status === "picked_up") {
+
+  if(order.status==="vendor_handover_confirmed"){
+    return `
+      <div class="note">
+        <strong>Vendor handover confirmed.</strong><br>
+        The vendor has confirmed that the parcel was physically handed to you. You may now proceed to the customer.
+      </div>
+      <button onclick="openDelivery('${escapeHTML(order.id)}')">Confirm Customer Delivery</button>
+    `;
+  }
+
+  // Also accept the legacy picked_up status for orders already in progress.
+  if(order.status==="picked_up"){
     return `<button onclick="openDelivery('${escapeHTML(order.id)}')">Confirm Customer Delivery</button>`;
   }
-  if (order.status === "delivery_proof_submitted") {
-    return `<div class="note">Delivery confirmation submitted. Waiting for secure customer-code verification.</div>`;
+
+  if(order.status==="delivery_proof_submitted"){
+    return `<div class="note">Your delivery proof has been submitted. The customer's private code still needs secure verification. Earnings have not been released.</div>`;
   }
+
   return `<div class="note">Current stage: ${escapeHTML(order.status)}</div>`;
 }
 
-function openPickup(id) {
-  selectedOrderId = id;
-  document.getElementById("pickupPhoto").value = "";
-  document.getElementById("pickupModal").style.display = "flex";
+function openPickup(id){
+  selectedOrderId=id;
+  document.getElementById("pickupPhoto").value="";
+  document.getElementById("pickupModal").style.display="flex";
 }
 
-function openDelivery(id) {
-  selectedOrderId = id;
-  document.getElementById("customerCode").value = "";
-  document.getElementById("deliveryPhoto").value = "";
-  document.getElementById("deliveryModal").style.display = "flex";
+function openDelivery(id){
+  const order=orders.find(item=>String(item.id)===String(id));
+
+  if(!order||!isAssignedToRider(order)){
+    return alert("This order is not assigned to your rider account.");
+  }
+
+  if(!["vendor_handover_confirmed","picked_up"].includes(order.status)){
+    return alert("The vendor must confirm physical handover before you can confirm customer delivery.");
+  }
+
+  selectedOrderId=id;
+  document.getElementById("customerCode").value="";
+  document.getElementById("deliveryPhoto").value="";
+  document.getElementById("deliveryModal").style.display="flex";
 }
 
-function closeModal(id) {
-  document.getElementById(id).style.display = "none";
+function closeModal(id){
+  document.getElementById(id).style.display="none";
 }
 
-function submitPickup() {
-  const photo = document.getElementById("pickupPhoto").files[0];
-  if (!photo) return alert("Please upload a pickup photograph.");
+function submitPickup(){
+  const photo=document.getElementById("pickupPhoto").files[0];
 
-  const order = orders.find(item => String(item.id) === String(selectedOrderId));
-  if (!order || order.status !== "accepted") return alert("This order cannot be updated.");
+  if(!photo)return alert("Please upload a pickup photograph.");
+  if(!photo.type.startsWith("image/"))return alert("Please select an image file.");
 
-  order.status = "pickup_proof_submitted";
-  order.pickupProofFileName = photo.name;
-  order.pickupProofSubmittedAt = new Date().toISOString();
-  order.handoverHistory = order.handoverHistory || [];
+  orders=readJSON(ORDER_KEY,[]);
+  const order=orders.find(item=>String(item.id)===String(selectedOrderId));
+
+  if(!order||!isAssignedToRider(order)||order.status!=="accepted"){
+    return alert("This order cannot be updated from your account.");
+  }
+
+  const now=new Date().toISOString();
+
+  order.status="pickup_proof_submitted";
+  order.pickupProofFileName=photo.name;
+  order.pickupProofSubmittedAt=now;
+
+  order.handoverHistory=Array.isArray(order.handoverHistory)
+    ?order.handoverHistory:[];
+
   order.handoverHistory.push({
     stage:"rider_pickup_proof_submitted",
     actor:rider.username,
-    time:order.pickupProofSubmittedAt
+    time:now
   });
 
   saveData();
   closeModal("pickupModal");
-  alert("Pickup proof recorded in this browser demo. The live system must notify the vendor and obtain vendor handover confirmation before treating the parcel as collected.");
+
+  alert("Pickup proof recorded. The vendor must now confirm the physical handover before you can proceed to customer delivery.");
+
   renderAll();
 }
 
-function submitDelivery() {
-  const code = document.getElementById("customerCode").value.trim();
-  const photo = document.getElementById("deliveryPhoto").files[0];
+function submitDelivery(){
+  const code=document.getElementById("customerCode").value.trim();
+  const photo=document.getElementById("deliveryPhoto").files[0];
 
-  if (!code || !photo) return alert("Enter the customer's confirmation code and upload delivery proof.");
+  if(!code||!photo){
+    return alert("Enter the customer's confirmation code and upload delivery proof.");
+  }
 
-  const order = orders.find(item => String(item.id) === String(selectedOrderId));
-  if (!order || order.status !== "picked_up") {
-    return alert("This order is not ready for customer delivery confirmation.");
+  if(!photo.type.startsWith("image/")){
+    return alert("Please select an image file.");
+  }
+
+  orders=readJSON(ORDER_KEY,[]);
+  const order=orders.find(item=>String(item.id)===String(selectedOrderId));
+
+  if(!order||!isAssignedToRider(order)){
+    return alert("This order is not assigned to your rider account.");
+  }
+
+  if(!["vendor_handover_confirmed","picked_up"].includes(order.status)){
+    return alert("The vendor must confirm physical handover before customer delivery can be submitted.");
   }
 
   /*
-    IMPORTANT:
-    This demo deliberately does NOT mark the order delivered,
-    verify the customer's private code, or credit the wallet.
-    The production backend must validate the code securely.
+    This browser demo does not verify the customer's private code.
+    It records the submitted code as a pending verification request.
+    Production must send the code to the backend for secure validation.
   */
-  order.status = "delivery_proof_submitted";
-  order.deliveryCodeSubmitted = true;
-  order.deliveryProofFileName = photo.name;
-  order.deliveryProofSubmittedAt = new Date().toISOString();
-  order.handoverHistory = order.handoverHistory || [];
+  const now=new Date().toISOString();
+
+  order.status="delivery_proof_submitted";
+  order.deliveryCodeSubmitted=true;
+  order.deliveryCodeSubmittedAt=now;
+  order.deliveryProofFileName=photo.name;
+  order.deliveryProofSubmittedAt=now;
+
+  order.handoverHistory=Array.isArray(order.handoverHistory)
+    ?order.handoverHistory:[];
+
   order.handoverHistory.push({
     stage:"delivery_proof_submitted_pending_secure_verification",
     actor:rider.username,
-    time:order.deliveryProofSubmittedAt
+    time:now
   });
 
   saveData();
   closeModal("deliveryModal");
-  alert("Your delivery confirmation has been recorded in this demo. The live EarnGig backend must verify the private customer code before marking this order successful or releasing your earnings.");
+
+  alert("Delivery confirmation submitted in this browser demo. The live EarnGig backend must verify the customer's private code before marking the order delivered or releasing your earnings.");
+
   renderAll();
 }
 
-function renderOverviewActive() {
-  const container = document.getElementById("overviewActive");
-  const active = orders.filter(order =>
-    order.riderUsername === rider.username &&
+function renderOverviewActive(){
+  const container=document.getElementById("overviewActive");
+
+  const active=orders.filter(order=>
+    isAssignedToRider(order)&&
     !["delivered","cancelled"].includes(order.status)
   );
 
-  if (!active.length) {
-    container.innerHTML = "You have no active deliveries yet.";
+  if(!active.length){
+    container.innerHTML="You have no active deliveries yet.";
     return;
   }
 
-  container.innerHTML = active.slice(0,5).map(order => `
-    <p><strong>${escapeHTML(order.reference || order.id)}</strong> —
+  container.innerHTML=active.slice(0,5).map(order=>`
+    <p><strong>${escapeHTML(order.reference||order.id)}</strong> —
     ${escapeHTML(order.status.replaceAll("_"," "))}</p>
-  `).join("") + '<button class="secondary" onclick="showPage(\'active\')">View all deliveries</button>';
+  `).join("")+
+  '<button class="secondary" onclick="showPage(\'active\')">View all deliveries</button>';
 }
 
-function renderCompleted() {
-  const container = document.getElementById("completedOrders");
-  const completed = orders.filter(order =>
-    order.riderUsername === rider.username && order.status === "delivered"
+function renderCompleted(){
+  const container=document.getElementById("completedOrders");
+
+  const completed=orders.filter(order=>
+    isAssignedToRider(order)&&order.status==="delivered"
   );
 
-  if (!completed.length) {
-    container.innerHTML = '<div class="empty">No completed deliveries yet.</div>';
+  if(!completed.length){
+    container.innerHTML='<div class="empty">No completed deliveries yet.</div>';
     return;
   }
 
-  container.innerHTML = `
+  container.innerHTML=`
     <div class="panel">
       <table>
         <thead><tr><th>Order</th><th>Destination</th><th>Completed</th><th>Earnings</th></tr></thead>
         <tbody>
-          ${completed.map(order => `
+          ${completed.map(order=>`
             <tr>
-              <td>${escapeHTML(order.reference || order.id)}</td>
-              <td>${escapeHTML(order.destinationTown || "")}, ${escapeHTML(order.destinationState || "")}</td>
+              <td>${escapeHTML(order.reference||order.id)}</td>
+              <td>${escapeHTML(order.destinationTown||"")}, ${escapeHTML(order.destinationState||"")}</td>
               <td>${dateText(order.deliveredAt)}</td>
-              <td>${money(order.riderFee || 0)}</td>
+              <td>${money(order.riderFee||0)}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -682,20 +770,20 @@ function renderCompleted() {
   `;
 }
 
-function renderWallet() {
-  document.getElementById("walletBalance").textContent = money(wallet.balance);
-  const container = document.getElementById("walletTransactions");
+function renderWallet(){
+  document.getElementById("walletBalance").textContent=money(wallet.balance);
+  const container=document.getElementById("walletTransactions");
 
-  if (!wallet.transactions?.length) {
-    container.innerHTML = '<div class="empty">No wallet transactions yet.</div>';
+  if(!wallet.transactions?.length){
+    container.innerHTML='<div class="empty">No wallet transactions yet.</div>';
     return;
   }
 
-  container.innerHTML = `
+  container.innerHTML=`
     <table>
       <thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
       <tbody>
-        ${wallet.transactions.map(tx => `
+        ${wallet.transactions.map(tx=>`
           <tr>
             <td>${escapeHTML(tx.description)}</td>
             <td>${dateText(tx.date)}</td>
@@ -707,60 +795,65 @@ function renderWallet() {
   `;
 }
 
-function requestWithdrawal() {
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawCalculation").textContent =
-    "Available balance: " + money(wallet.balance) + ". Service charge: 2%.";
-  document.getElementById("withdrawModal").style.display = "flex";
+function requestWithdrawal(){
+  document.getElementById("withdrawAmount").value="";
+  document.getElementById("withdrawCalculation").textContent=
+    "Available balance: "+money(wallet.balance)+". Service charge: 2%.";
+  document.getElementById("withdrawModal").style.display="flex";
 }
 
-function submitWithdrawal() {
-  const amount = Number(document.getElementById("withdrawAmount").value);
-  if (!Number.isFinite(amount) || amount <= 0) return alert("Enter a valid withdrawal amount.");
-  if (amount > Number(wallet.balance || 0)) return alert("Your withdrawal amount is greater than your available demo balance.");
+function submitWithdrawal(){
+  const amount=Number(document.getElementById("withdrawAmount").value);
 
-  const fee = amount * 0.02;
-  const payout = amount - fee;
+  if(!Number.isFinite(amount)||amount<=0){
+    return alert("Enter a valid withdrawal amount.");
+  }
+
+  if(amount>Number(wallet.balance||0)){
+    return alert("Your withdrawal amount is greater than your available demo balance.");
+  }
+
+  const fee=amount*0.02;
+  const payout=amount-fee;
 
   alert(
-    "Demo calculation only:\n" +
-    "Withdrawal: " + money(amount) + "\n" +
-    "2% service charge: " + money(fee) + "\n" +
-    "Estimated payout: " + money(payout) +
+    "Demo calculation only:\n"+
+    "Withdrawal: "+money(amount)+"\n"+
+    "2% service charge: "+money(fee)+"\n"+
+    "Estimated payout: "+money(payout)+
     "\n\nNo payment has been made. Live withdrawals require backend payment processing."
   );
+
   closeModal("withdrawModal");
 }
 
-function renderAccount() {
-  document.getElementById("accountDetails").innerHTML = `
+function renderAccount(){
+  document.getElementById("accountDetails").innerHTML=`
     <p><strong>Name:</strong> ${escapeHTML(rider.fullName)}</p>
     <p><strong>Username:</strong> ${escapeHTML(rider.username)}</p>
     <p><strong>Phone:</strong> ${escapeHTML(rider.phone)}</p>
     <p><strong>Email:</strong> ${escapeHTML(rider.email)}</p>
-    <p><strong>Rider category:</strong> ${escapeHTML(rider.riderType === "collection" ? "Collection Rider" : "Normal Delivery Rider")}</p>
+    <p><strong>Rider category:</strong> ${escapeHTML(rider.riderType==="collection"?"Collection Rider":"Normal Delivery Rider")}</p>
     <p><strong>Operating state:</strong> ${escapeHTML(rider.state)}</p>
     <p><strong>Town:</strong> ${escapeHTML(rider.town)}</p>
     <p><strong>Application status:</strong> <span class="tag green">Approved</span></p>
-    <p class="hint">For account changes or verification updates, contact EarnGig support.</p>
+    <p>For account changes or verification updates, contact EarnGig support.</p>
   `;
 }
 
 /*
-  ADMIN / BACKEND INTEGRATION REQUIRED:
+  PRODUCTION BACKEND STILL REQUIRED:
 
-  1. Create vendor orders in a shared database.
-  2. Assign one rider to each order using a secure atomic operation.
-  3. Notify vendors when a rider accepts an order.
-  4. Store pickup and delivery photographs in private cloud storage.
-  5. Allow vendor confirmation of physical parcel handover.
-  6. Verify customer delivery codes on the server.
-  7. Enforce original five-calendar-day delivery deadlines.
-  8. Credit rider earnings only after verified delivery.
-  9. Keep a permanent, server-side handover history.
-  10. Process withdrawals using a secure payment provider.
+  - Shared database for customer, vendor and rider orders.
+  - Secure rider assignment and vendor notifications.
+  - Secure storage for parcel photographs.
+  - Server-side vendor handover confirmation.
+  - Server-side customer code verification.
+  - Permanent delivery and handover history.
+  - Automatic rider wallet credit after verified delivery.
+  - Secure withdrawal processing.
 
-  This browser demo cannot perform those production operations.
+  localStorage only shares data within the same browser and device.
 */
 
 startDashboard();
