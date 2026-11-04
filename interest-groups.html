@@ -1,0 +1,957 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interest Groups | EarnGig</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --gold: #e7ad32;
+      --text: #292438;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --background: #faf9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .header-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .header-links a {
+      text-decoration: none;
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 17px 50px;
+    }
+
+    .heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .heading h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .button {
+      background: var(--purple);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button:hover { background: var(--purple-dark); }
+
+    .button.secondary {
+      background: var(--lavender);
+      color: var(--purple);
+      border: 1px solid #dfd0f6;
+    }
+
+    .button.secondary:hover { background: #e8dcff; }
+
+    .hero {
+      background: linear-gradient(115deg, #7138c8, #9561dc);
+      color: white;
+      padding: 25px;
+      border-radius: 17px;
+      margin-bottom: 23px;
+    }
+
+    .hero h2 {
+      margin: 0 0 9px;
+      font-size: 22px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: .92;
+      max-width: 700px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .toolbar input, .toolbar select {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .toolbar input {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .toolbar input:focus, .toolbar select:focus,
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 25px 0 15px;
+      gap: 12px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .group-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .group-banner {
+      height: 105px;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      background: var(--lavender);
+    }
+
+    .group-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .group-content h3 {
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+
+    .group-content p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 13px;
+      flex: 1;
+    }
+
+    .group-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 13px;
+    }
+
+    .group-content .button { width: 100%; }
+
+    .joined-label {
+      display: inline-block;
+      color: #168653;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .empty {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      grid-column: 1 / -1;
+    }
+
+    .empty span {
+      display: block;
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .my-groups {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .my-group-chip {
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 9px 13px;
+      background: white;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #17102099;
+      z-index: 50;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal {
+      background: white;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 17px;
+      padding: 23px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 17px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .close {
+      border: 0;
+      background: var(--lavender);
+      color: var(--purple);
+      border-radius: 8px;
+      padding: 8px 11px;
+      cursor: pointer;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .field input, .field textarea, .field select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font: inherit;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .modal .button { width: 100%; }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 13px;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #9b2929;
+    }
+
+    .message.success {
+      display: block;
+      background: #eaf8f0;
+      color: #176b43;
+    }
+
+    .guidelines {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 19px;
+      margin-top: 25px;
+    }
+
+    .guidelines h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .guidelines ul {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      padding-left: 19px;
+      margin-bottom: 0;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 850px) {
+      .group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media(max-width: 550px) {
+      header { padding: 12px 15px; }
+      .header-links { gap: 9px; }
+      .header-links a { font-size: 11px; }
+      main { margin-top: 22px; }
+      .heading h1 { font-size: 24px; }
+      .group-grid { grid-template-columns: 1fr; }
+      .hero { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="earngig-community.html">Community</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="heading">
+    <div>
+      <h1>Interest Groups 👥</h1>
+      <p>Find people who share your interests, join discussions and create your own groups.</p>
+    </div>
+    <button class="button" id="openCreate">＋ Create a Group</button>
+  </section>
+
+  <section class="hero">
+    <h2>Find Your People on EarnGig</h2>
+    <p>
+      Whether you love business, entertainment, technology, education,
+      sports or creative work, there is room for you here. Join existing
+      groups or start a new community around something you care about.
+    </p>
+  </section>
+
+  <div class="toolbar">
+    <input type="search" id="searchGroups" placeholder="Search groups by name or interest...">
+    <select id="categoryFilter">
+      <option value="all">All Categories</option>
+      <option value="Business">Business</option>
+      <option value="Technology">Technology</option>
+      <option value="Education">Education</option>
+      <option value="Entertainment">Entertainment</option>
+      <option value="Sports">Sports</option>
+      <option value="Lifestyle">Lifestyle</option>
+      <option value="Creative">Creative</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <section>
+    <div class="section-heading">
+      <h2>My Groups</h2>
+      <span id="joinedCount">0 groups joined</span>
+    </div>
+    <div class="my-groups" id="myGroups">
+      <div style="color:#777184;font-size:13px;">You haven't joined any groups yet.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <h2>Discover Groups</h2>
+      <span id="groupCount"></span>
+    </div>
+    <div class="group-grid" id="groupGrid"></div>
+  </section>
+
+  <section class="guidelines">
+    <h3>Group Community Guidelines</h3>
+    <ul>
+      <li>Respect every member, even when opinions differ.</li>
+      <li>Keep discussions relevant to the group's topic.</li>
+      <li>Do not harass, threaten or impersonate other members.</li>
+      <li>Do not post scams, spam or misleading information.</li>
+      <li>Report inappropriate groups or content to EarnGig administrators.</li>
+      <li>Group owners are responsible for keeping their communities respectful.</li>
+    </ul>
+  </section>
+
+</main>
+
+<div class="modal-backdrop" id="createModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Create an Interest Group</h2>
+      <button class="close" id="closeCreate">✕</button>
+    </div>
+
+    <form id="createForm">
+      <div class="field">
+        <label for="groupName">Group name</label>
+        <input id="groupName" maxlength="60" required
+          placeholder="Example: Nigerian Entrepreneurs">
+      </div>
+
+      <div class="field">
+        <label for="groupCategory">Group category</label>
+        <select id="groupCategory" required>
+          <option value="">Select a category</option>
+          <option>Business</option>
+          <option>Technology</option>
+          <option>Education</option>
+          <option>Entertainment</option>
+          <option>Sports</option>
+          <option>Lifestyle</option>
+          <option>Creative</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="groupDescription">Group description</label>
+        <textarea id="groupDescription" maxlength="500" required
+          placeholder="Tell people what your group is about..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="groupPrivacy">Group visibility</label>
+        <select id="groupPrivacy">
+          <option value="Public">Public — anyone can join</option>
+          <option value="Private">Private — request to join</option>
+        </select>
+      </div>
+
+      <button type="submit" class="button">Create Group</button>
+      <div class="message" id="createMessage"></div>
+    </form>
+  </div>
+</div>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    INTEREST GROUPS FRONTEND DEMO
+
+    Groups created here are saved only in this browser.
+
+    Production features requiring a backend:
+    - Shared groups and member lists.
+    - Authenticated group ownership and moderators.
+    - Public joining and private join requests.
+    - Group discussions, posts, comments and media.
+    - Invitations and group notifications.
+    - Reporting, moderation and administrator controls.
+    - Protection against fake accounts and spam.
+
+    This page does not create globally visible groups.
+  */
+
+  const STORAGE_KEY = "earngig_interest_groups";
+  const MEMBER_KEY = "earngig_joined_groups";
+  const PROFILE_KEY = "earngig_profile";
+
+  const starterGroups = [
+    {
+      id: "business-community",
+      name: "Nigerian Entrepreneurs",
+      category: "Business",
+      description: "A place for business owners, founders and aspiring entrepreneurs to exchange ideas and opportunities.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 125,
+      icon: "💼",
+      starter: true
+    },
+    {
+      id: "tech-community",
+      name: "Technology & Innovation",
+      category: "Technology",
+      description: "Discuss software, digital skills, gadgets, AI and exciting technology developments.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 98,
+      icon: "💻",
+      starter: true
+    },
+    {
+      id: "education-community",
+      name: "Learning & Education",
+      category: "Education",
+      description: "Share learning resources, study tips, educational opportunities and useful knowledge.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 87,
+      icon: "📚",
+      starter: true
+    },
+    {
+      id: "entertainment-community",
+      name: "Movies, Music & Entertainment",
+      category: "Entertainment",
+      description: "Talk about movies, music, books, celebrities and entertainment.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 112,
+      icon: "🎬",
+      starter: true
+    },
+    {
+      id: "sports-community",
+      name: "Sports Arena",
+      category: "Sports",
+      description: "Discuss football, basketball, sports news, competitions and your favourite teams.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 143,
+      icon: "⚽",
+      starter: true
+    },
+    {
+      id: "lifestyle-community",
+      name: "Lifestyle & Everyday Living",
+      category: "Lifestyle",
+      description: "Connect around food, travel, hobbies, personal interests and everyday experiences.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 76,
+      icon: "🌍",
+      starter: true
+    },
+    {
+      id: "creative-community",
+      name: "Writers & Creatives",
+      category: "Creative",
+      description: "A home for writers, artists, designers, photographers and creative thinkers.",
+      privacy: "Public",
+      owner: "EarnGig",
+      members: 91,
+      icon: "🎨",
+      starter: true
+    }
+  ];
+
+  const categoryIcons = {
+    Business: "💼",
+    Technology: "💻",
+    Education: "📚",
+    Entertainment: "🎬",
+    Sports: "⚽",
+    Lifestyle: "🌍",
+    Creative: "🎨",
+    Other: "👥"
+  };
+
+  function getProfile() {
+    try {
+      return JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  const profile = getProfile();
+
+  const currentUser =
+    profile.username ||
+    profile.handle ||
+    "demo-member";
+
+  function loadArray(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || "[]");
+      return Array.isArray(value) ? value : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  let groups = loadArray(STORAGE_KEY);
+  let joinedGroups = loadArray(MEMBER_KEY);
+
+  function saveGroups() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
+      return true;
+    } catch (error) {
+      alert("Could not save groups. Your browser storage may be full.");
+      return false;
+    }
+  }
+
+  function saveMemberships() {
+    try {
+      localStorage.setItem(MEMBER_KEY, JSON.stringify(joinedGroups));
+      return true;
+    } catch (error) {
+      alert("Could not save your group memberships.");
+      return false;
+    }
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function isJoined(groupId) {
+    return joinedGroups.includes(groupId);
+  }
+
+  function renderMyGroups() {
+    const container = document.getElementById("myGroups");
+    const myJoined = groups.filter(group => isJoined(group.id));
+
+    document.getElementById("joinedCount").textContent =
+      myJoined.length + (myJoined.length === 1 ? " group joined" : " groups joined");
+
+    if (!myJoined.length) {
+      container.innerHTML =
+        '<div style="color:#777184;font-size:13px;">You haven\'t joined any groups yet.</div>';
+      return;
+    }
+
+    container.innerHTML = myJoined.map(group => `
+      <button class="my-group-chip" type="button"
+        data-open-group="${escapeHTML(group.id)}">
+        ${escapeHTML(group.icon)} ${escapeHTML(group.name)}
+      </button>
+    `).join("");
+  }
+
+  function renderGroups() {
+    const grid = document.getElementById("groupGrid");
+    const search = document.getElementById("searchGroups").value
+      .trim().toLowerCase();
+
+    const category = document.getElementById("categoryFilter").value;
+
+    const filtered = groups.filter(group => {
+      const matchesSearch =
+        group.name.toLowerCase().includes(search) ||
+        group.description.toLowerCase().includes(search) ||
+        group.category.toLowerCase().includes(search);
+
+      const matchesCategory =
+        category === "all" || group.category === category;
+
+      return matchesSearch && matchesCategory;
+    });
+
+    document.getElementById("groupCount").textContent =
+      filtered.length + (filtered.length === 1 ? " group" : " groups");
+
+    if (!filtered.length) {
+      grid.innerHTML = `
+        <div class="empty">
+          <span>🔎</span>
+          No groups match your search. Try another keyword or create a new group.
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(group => {
+      const joined = isJoined(group.id);
+
+      return `
+        <article class="group-card">
+          <div class="group-banner">${escapeHTML(group.icon)}</div>
+          <div class="group-content">
+            ${joined ? '<span class="joined-label">✓ YOU ARE A MEMBER</span>' : ''}
+            <h3>${escapeHTML(group.name)}</h3>
+            <p>${escapeHTML(group.description)}</p>
+            <div class="group-meta">
+              <span>${escapeHTML(group.category)}</span>
+              <span>${Number(group.members || 0).toLocaleString("en-NG")} members</span>
+            </div>
+            <div class="group-meta">
+              <span>${escapeHTML(group.privacy)} group</span>
+              <span>By ${escapeHTML(group.owner)}</span>
+            </div>
+            <button class="button ${joined ? 'secondary' : ''}"
+              type="button" data-join-group="${escapeHTML(group.id)}">
+              ${joined ? 'Leave Group' : (group.privacy === 'Private' ? 'Request to Join' : 'Join Group')}
+            </button>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function renderAll() {
+    renderMyGroups();
+    renderGroups();
+  }
+
+  document.getElementById("groupGrid").addEventListener("click", event => {
+    const button = event.target.closest("[data-join-group]");
+    if (!button) return;
+
+    const id = button.dataset.joinGroup;
+    const group = groups.find(item => item.id === id);
+
+    if (!group) return;
+
+    if (isJoined(id)) {
+      if (!confirm("Are you sure you want to leave this group?")) return;
+
+      joinedGroups = joinedGroups.filter(item => item !== id);
+
+      if (!group.starter) {
+        group.members = Math.max(0, Number(group.members || 0) - 1);
+      }
+
+      saveMemberships();
+      saveGroups();
+      renderAll();
+      return;
+    }
+
+    if (group.privacy === "Private") {
+      alert("This is a private group. Join requests will be available when the shared EarnGig group service is connected.");
+      return;
+    }
+
+    joinedGroups.push(id);
+
+    if (!group.starter) {
+      group.members = Number(group.members || 0) + 1;
+    }
+
+    saveMemberships();
+    saveGroups();
+    renderAll();
+  });
+
+  document.getElementById("myGroups").addEventListener("click", event => {
+    const button = event.target.closest("[data-open-group]");
+    if (!button) return;
+
+    const group = groups.find(item => item.id === button.dataset.openGroup);
+    if (!group) return;
+
+    alert(
+      group.name +
+      "\n\nGroup discussions will be available when the shared group discussion feature is connected."
+    );
+  });
+
+  document.getElementById("searchGroups").addEventListener("input", renderGroups);
+  document.getElementById("categoryFilter").addEventListener("change", renderGroups);
+
+  const modal = document.getElementById("createModal");
+
+  document.getElementById("openCreate").addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  document.getElementById("closeCreate").addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  modal.addEventListener("click", event => {
+    if (event.target === modal) modal.style.display = "none";
+  });
+
+  document.getElementById("createForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("groupName").value.trim();
+    const category = document.getElementById("groupCategory").value;
+    const description = document.getElementById("groupDescription").value.trim();
+    const privacy = document.getElementById("groupPrivacy").value;
+    const message = document.getElementById("createMessage");
+
+    if (name.length < 3) {
+      message.textContent = "Group name must contain at least 3 characters.";
+      message.className = "message error";
+      return;
+    }
+
+    if (description.length < 10) {
+      message.textContent = "Please provide a more detailed group description.";
+      message.className = "message error";
+      return;
+    }
+
+    const duplicate = groups.some(group =>
+      group.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (duplicate) {
+      message.textContent = "A group with this name already exists in this browser.";
+      message.className = "message error";
+      return;
+    }
+
+    const newGroup = {
+      id: "group-" + Date.now(),
+      name,
+      category,
+      description,
+      privacy,
+      owner: currentUser,
+      members: 1,
+      icon: categoryIcons[category] || "👥",
+      starter: false
+    };
+
+    groups.unshift(newGroup);
+    joinedGroups.push(newGroup.id);
+
+    if (!saveGroups() || !saveMemberships()) {
+      groups = groups.filter(group => group.id !== newGroup.id);
+      joinedGroups = joinedGroups.filter(id => id !== newGroup.id);
+      return;
+    }
+
+    message.textContent = "Your group has been created in this browser demo.";
+    message.className = "message success";
+
+    renderAll();
+
+    setTimeout(() => {
+      modal.style.display = "none";
+      document.getElementById("createForm").reset();
+      message.className = "message";
+      message.textContent = "";
+    }, 900);
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  if (!groups.length) {
+    groups = starterGroups;
+    saveGroups();
+  }
+
+  renderAll();
+</script>
+
+</body>
+</html>
