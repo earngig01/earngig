@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promote My Store | EarnGig</title>
+<style>
+:root {
+  --purple:#6427c7;
+  --purple-dark:#48159b;
+  --purple-light:#f2ebff;
+  --gold:#d6a62e;
+  --text:#25213a;
+  --muted:#77738a;
+  --border:#ece8f3;
+  --background:#faf9fc;
+  --green:#168653;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
+.brand svg{width:25px;height:25px}
+.top-actions{display:flex;gap:18px;font-size:13px;font-weight:700;color:var(--purple)}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.sidebar{background:white;border-right:1px solid var(--border);padding:25px 15px}
+.side-label{color:#9993a9;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:0 12px;margin:19px 0 9px}
+.side-link{display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;margin:3px 0;font-size:13px;color:#625d71;font-weight:600}
+.side-link:hover,.side-link.active{color:var(--purple);background:var(--purple-light)}
+.side-link span{width:20px;text-align:center;font-size:16px}
+main{max-width:1450px;width:100%;padding:34px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:25px}
+h1{margin:0 0 8px;font-size:28px}
+.subtitle{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.button{border:0;border-radius:9px;padding:12px 17px;background:var(--purple);color:white;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;justify-content:center;align-items:center}
+.button:hover{background:var(--purple-dark)}
+.button.secondary{background:white;color:var(--purple);border:1px solid #d9c8f4}
+.button.secondary:hover{background:var(--purple-light)}
+.hero{background:linear-gradient(120deg,#4b189c,#7944d1);color:white;border-radius:16px;padding:30px;margin-bottom:25px;position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;right:45px;top:5px;font-size:110px;color:#ffffff18}
+.hero h2{font-size:23px;margin:0 0 10px}
+.hero p{font-size:13px;line-height:1.7;max-width:600px;color:#eee5ff;margin:0}
+.hero-tag{display:inline-block;margin-top:17px;padding:8px 12px;border:1px solid #ffffff55;border-radius:30px;font-size:11px;font-weight:700}
+.section-title{font-size:17px;margin:28px 0 7px}
+.section-subtitle{font-size:12px;color:var(--muted);margin:0 0 17px;line-height:1.6}
+.packages{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.package{background:white;border:1px solid var(--border);border-radius:14px;padding:21px;box-shadow:0 8px 28px rgba(39,20,75,.04);display:flex;flex-direction:column}
+.package.featured{border:2px solid var(--purple);position:relative}
+.package-label{font-size:10px;color:var(--purple);font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+.package h3{font-size:17px;margin:10px 0 6px}
+.package p{font-size:11px;color:var(--muted);line-height:1.6;min-height:34px;margin:0}
+.price{font-size:25px;font-weight:800;margin:17px 0}
+.price small{font-size:11px;color:var(--muted);font-weight:500}
+.package ul{padding-left:17px;margin:0 0 20px;flex:1}
+.package li{font-size:11px;color:#625d71;margin:10px 0;line-height:1.5}
+.package .button{width:100%}
+.gold-text{color:#a87916}
+.promotion-form{background:white;border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:25px}
+.promotion-form h2{font-size:16px;margin:0 0 7px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:17px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+label{font-size:11px;font-weight:700;color:#514b63}
+input,select{height:43px;border:1px solid var(--border);border-radius:8px;padding:0 12px;background:white;color:var(--text);font-size:12px;outline:none}
+input:focus,select:focus{border-color:var(--purple)}
+.form-help{font-size:10px;color:var(--muted);line-height:1.5}
+.requests{background:white;border:1px solid var(--border);border-radius:14px;margin-top:25px;overflow:hidden}
+.panel-heading{padding:19px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.panel-heading h2{font-size:15px;margin:0}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th{text-align:left;padding:14px 16px;background:#fcfbfd;color:#898398;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:15px 16px;border-top:1px solid #f0edf4;font-size:11px}
+.status{display:inline-block;padding:6px 9px;border-radius:30px;font-size:10px;font-weight:700;text-transform:capitalize}
+.status-pending{background:#fff2dc;color:#a66a13}
+.status-approved{background:#e4f7ed;color:#168653}
+.status-rejected{background:#ffe9e9;color:#c43e3e}
+.status-active{background:#eee8ff;color:#6330b9}
+.status-expired{background:#f0edf4;color:#716b80}
+.empty{padding:38px 20px;text-align:center;color:var(--muted);font-size:12px}
+.notice{margin-top:20px;padding:15px 17px;background:#f5f0ff;border:1px solid #e9defa;border-radius:10px;color:#59427e;font-size:11px;line-height:1.7}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#170d2a99;z-index:30;padding:20px;align-items:center;justify-content:center}
+.modal-backdrop.show{display:flex}
+.modal{background:white;width:100%;max-width:460px;border-radius:15px;padding:23px}
+.modal h2{font-size:18px;margin:0 0 9px}
+.modal p{font-size:12px;color:var(--muted);line-height:1.7}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions button{flex:1}
+@media(max-width:1000px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:flex;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--border);gap:5px}
+.side-label{display:none}
+.side-link{white-space:nowrap;margin:0}
+main{padding:25px 18px}
+.packages{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+.topbar{height:62px;padding:0 15px}
+.brand{font-size:20px}
+.top-actions{gap:10px;font-size:11px}
+.heading{flex-direction:column}
+h1{font-size:24px}
+.packages{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.hero{padding:23px}
+.hero h2{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+<a href="dashboard.html" class="brand">
+<svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+<path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
+<circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+<circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+<circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+</svg>
+EarnGig
+</a>
+<div class="top-actions">
+<a href="dashboard.html">Dashboard</a>
+<a href="my-shop.html">Seller Centre</a>
+</div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+<div class="side-label">SELLER CENTRE</div>
+<a class="side-link" href="my-shop.html"><span>▦</span> Overview</a>
+<a class="side-link" href="store-registration.html"><span>＋</span> Open a Shop</a>
+<a class="side-link" href="storefront.html"><span>🏪</span> My Store</a>
+<a class="side-link" href="store-customisation.html"><span>🎨</span> Store Customisation</a>
+<a class="side-link" href="my-products.html"><span>📦</span> My Products</a>
+<a class="side-link" href="my-orders.html"><span>🛍️</span> Orders</a>
+<a class="side-link active" href="promote-store.html"><span>📣</span> Promotions</a>
+<a class="side-link" href="sales-earnings.html"><span>💰</span> Sales & Earnings</a>
+<a class="side-link" href="shop-payments.html"><span>💳</span> Shop Payments</a>
+<a class="side-link" href="withdrawals.html"><span>🏦</span> Withdrawals</a>
+<a class="side-link" href="store-settings.html"><span>⚙️</span> Store Settings</a>
+</aside>
+
+<main>
+<div class="heading">
+<div>
+<h1>Promote My Store</h1>
+<p class="subtitle">Give your products and storefront more visibility across EarnGig.</p>
+</div>
+<a href="storefront.html" class="button secondary">View My Store</a>
+</div>
+
+<section class="hero">
+<h2>Let More Customers Discover Your Business</h2>
+<p>Choose a promotion package for a product or your entire store. Featured placements are designed to give your business additional visibility on EarnGig.</p>
+<span class="hero-tag">More visibility. More opportunities.</span>
+</section>
+
+<h2 class="section-title">Feature a Product</h2>
+<p class="section-subtitle">Choose how long you want one of your products to receive featured placement.</p>
+
+<div class="packages">
+<article class="package">
+<span class="package-label">Quick Promotion</span>
+<h3>Feature Product — 24 Hours</h3>
+<p>Give one product a short promotional boost.</p>
+<div class="price">₦1,000</div>
+<ul>
+<li>One selected product</li>
+<li>Featured placement for 24 hours</li>
+<li>Suitable for short promotions</li>
+</ul>
+<button class="button" onclick="choosePackage('product','24 Hours',1000)">Choose Package</button>
+</article>
+
+<article class="package featured">
+<span class="package-label">Popular Choice</span>
+<h3>Feature Product — 7 Days</h3>
+<p>Keep one product featured for a full week.</p>
+<div class="price">₦5,500</div>
+<ul>
+<li>One selected product</li>
+<li>Featured placement for 7 days</li>
+<li>More time for customers to discover it</li>
+</ul>
+<button class="button" onclick="choosePackage('product','7 Days',5500)">Choose Package</button>
+</article>
+
+<article class="package">
+<span class="package-label">Extended Promotion</span>
+<h3>Feature Product — 30 Days</h3>
+<p>Maintain a featured product placement for a month.</p>
+<div class="price">₦15,000</div>
+<ul>
+<li>One selected product</li>
+<li>Featured placement for 30 days</li>
+<li>Longer promotional visibility</li>
+</ul>
+<button class="button" onclick="choosePackage('product','30 Days',15000)">Choose Package</button>
+</article>
+</div>
+
+<h2 class="section-title">Feature Your Entire Store</h2>
+<p class="section-subtitle">Promote your storefront rather than an individual product.</p>
+
+<div class="packages">
+<article class="package">
+<span class="package-label">Store Promotion</span>
+<h3>Feature Store — 7 Days</h3>
+<p>Give your entire store featured visibility for one week.</p>
+<div class="price">₦20,000</div>
+<ul>
+<li>Your store is the promoted destination</li>
+<li>Featured placement for 7 days</li>
+<li>Promote your full product collection</li>
+</ul>
+<button class="button" onclick="choosePackage('store','7 Days',20000)">Choose Package</button>
+</article>
+
+<article class="package featured">
+<span class="package-label gold-text">Extended Store Promotion</span>
+<h3>Feature Store — 30 Days</h3>
+<p>Keep your storefront featured for a full month.</p>
+<div class="price">₦50,000</div>
+<ul>
+<li>Your store is the promoted destination</li>
+<li>Featured placement for 30 days</li>
+<li>Longer storefront visibility</li>
+</ul>
+<button class="button" onclick="choosePackage('store','30 Days',50000)">Choose Package</button>
+</article>
+</div>
+
+<section class="promotion-form" id="requestForm">
+<h2>Promotion Request</h2>
+<p class="section-subtitle">Select a package above, then provide the details for your promotion.</p>
+
+<div class="form-grid">
+<div class="field">
+<label for="promotionType">Promotion Type</label>
+<select id="promotionType">
+<option value="">Select promotion type</option>
+<option value="product">Feature a Product</option>
+<option value="store">Feature My Store</option>
+</select>
+</div>
+
+<div class="field">
+<label for="promotionDuration">Duration</label>
+<select id="promotionDuration">
+<option value="">Select duration</option>
+</select>
+</div>
+
+<div class="field">
+<label for="productSelect">Product to Promote</label>
+<select id="productSelect">
+<option value="">Select a product</option>
+</select>
+<span class="form-help">Required only when promoting an individual product.</span>
+</div>
+
+<div class="field">
+<label for="packagePrice">Package Price</label>
+<input id="packagePrice" readonly placeholder="Select a package above">
+</div>
+
+<div class="field full">
+<label for="promotionNote">Additional Instructions (Optional)</label>
+<input id="promotionNote" maxlength="250" placeholder="Add any information about your promotion">
+</div>
+
+<div class="field full">
+<button class="button" type="button" onclick="submitRequest()">Submit Promotion Request</button>
+<span class="form-help">Submitting a request does not charge you. Payment and activation will be handled after the promotion process is confirmed.</span>
+</div>
+</div>
+</section>
+
+<section class="requests">
+<div class="panel-heading">
+<h2>My Promotion Requests</h2>
+<span class="subtitle" id="requestCount">0 requests</span>
+</div>
+<div class="table-wrap" id="requestTableWrap">
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Promotion</th>
+<th>Duration</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="requestRows"></tbody>
+</table>
+</div>
+<div class="empty hidden" id="emptyRequests">You have not submitted any promotion requests yet.</div>
+</section>
+
+<div class="notice">
+<strong>Promotion payment:</strong> The package prices shown are EarnGig's listed promotion prices.
+This frontend page records requests in your browser only. It does not process payment or activate
+a featured placement. A verified payment and promotion approval process must be connected before
+a promotion goes live.
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="confirmModal">
+<div class="modal">
+<h2>Promotion Package Selected</h2>
+<p id="confirmText">Review your selected package.</p>
+<div class="modal-actions">
+<button class="button secondary" onclick="closeConfirm()">Cancel</button>
+<button class="button" onclick="confirmPackage()">Use This Package</button>
+</div>
+</div>
+</div>
+
+<script>
+const PRODUCTS_KEY = "earngig_seller_products";
+const REQUESTS_KEY = "earngig_seller_promotions";
+
+const prices = {
+  product: {
+    "24 Hours": 1000,
+    "7 Days": 5500,
+    "30 Days": 15000
+  },
+  store: {
+    "7 Days": 20000,
+    "30 Days": 50000
+  }
+};
+
+let selectedPackage = null;
+
+function money(value) {
+  return "₦" + Number(value || 0).toLocaleString("en-NG");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+function readArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function loadProducts() {
+  const products = readArray(PRODUCTS_KEY);
+  const select = document.getElementById("productSelect");
+
+  const activeProducts = products.filter(product =>
+    product.status !== "paused" &&
+    product.status !== "deleted"
+  );
+
+  if (!activeProducts.length) {
+    select.innerHTML = '<option value="">No products available</option>';
+    return;
+  }
+
+  select.innerHTML = '<option value="">Select a product</option>' +
+    activeProducts.map(product => {
+      const id = product.id || product.name;
+      return `<option value="${escapeHTML(id)}">${escapeHTML(product.name || "Unnamed product")}</option>`;
+    }).join("");
+}
+
+function updateDurations() {
+  const type = document.getElementById("promotionType").value;
+  const duration = document.getElementById("promotionDuration");
+
+  duration.innerHTML = '<option value="">Select duration</option>';
+
+  if (!type || !prices[type]) return;
+
+  Object.keys(prices[type]).forEach(period => {
+    duration.innerHTML += `<option value="${escapeHTML(period)}">${escapeHTML(period)} — ${money(prices[type][period])}</option>`;
+  });
+
+  document.getElementById("packagePrice").value = "";
+}
+
+function updatePrice() {
+  const type = document.getElementById("promotionType").value;
+  const duration = document.getElementById("promotionDuration").value;
+
+  const amount = prices[type]?.[duration];
+  document.getElementById("packagePrice").value =
+    amount ? money(amount) : "";
+}
+
+function choosePackage(type, duration, amount) {
+  selectedPackage = { type, duration, amount };
+
+  document.getElementById("confirmText").textContent =
+    `${type === "product" ? "Feature a product" : "Feature your store"} for ${duration} at ${money(amount)}.`;
+
+  document.getElementById("confirmModal").classList.add("show");
+}
+
+function closeConfirm() {
+  document.getElementById("confirmModal").classList.remove("show");
+}
+
+function confirmPackage() {
+  if (!selectedPackage) return;
+
+  document.getElementById("promotionType").value = selectedPackage.type;
+  updateDurations();
+
+  document.getElementById("promotionDuration").value = selectedPackage.duration;
+  updatePrice();
+
+  document.getElementById("productSelect").disabled =
+    selectedPackage.type === "store";
+
+  if (selectedPackage.type === "store") {
+    document.getElementById("productSelect").value = "";
+  }
+
+  closeConfirm();
+
+  document.getElementById("requestForm").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function submitRequest() {
+  const type = document.getElementById("promotionType").value;
+  const duration = document.getElementById("promotionDuration").value;
+  const productId = document.getElementById("productSelect").value;
+  const note = document.getElementById("promotionNote").value.trim();
+
+  if (!type || !duration || !prices[type]?.[duration]) {
+    alert("Please select a valid promotion package.");
+    return;
+  }
+
+  if (type === "product" && !productId) {
+    alert("Please select the product you want to promote.");
+    return;
+  }
+
+  const products = readArray(PRODUCTS_KEY);
+  const product = type === "product"
+    ? products.find(item => String(item.id || item.name) === String(productId))
+    : null;
+
+  if (type === "product" && !product) {
+    alert("The selected product could not be found. Please refresh your product list.");
+    return;
+  }
+
+  const requests = readArray(REQUESTS_KEY);
+
+  const request = {
+    id: "PROMO-" + Date.now(),
+    reference: "EGP-" + Math.random().toString(36).slice(2, 8).toUpperCase(),
+    type,
+    duration,
+    amount: prices[type][duration],
+    productId: product ? (product.id || "") : null,
+    productName: product ? product.name : null,
+    note,
+    status: "pending",
+    paymentStatus: "not_paid",
+    submittedAt: new Date().toISOString()
+  };
+
+  requests.unshift(request);
+  localStorage.setItem(REQUESTS_KEY, JSON.stringify(requests));
+
+  document.getElementById("promotionNote").value = "";
+  document.getElementById("promotionType").value = "";
+  document.getElementById("promotionDuration").innerHTML =
+    '<option value="">Select duration</option>';
+  document.getElementById("productSelect").value = "";
+  document.getElementById("productSelect").disabled = false;
+  document.getElementById("packagePrice").value = "";
+
+  renderRequests();
+
+  alert("Your promotion request has been saved. It has not been paid for or activated.");
+}
+
+function renderRequests() {
+  const requests = readArray(REQUESTS_KEY);
+  const tbody = document.getElementById("requestRows");
+  const table = document.getElementById("requestTableWrap");
+  const empty = document.getElementById("emptyRequests");
+
+  document.getElementById("requestCount").textContent =
+    requests.length + (requests.length === 1 ? " request" : " requests");
+
+  if (!requests.length) {
+    table.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  table.classList.remove("hidden");
+  empty.classList.add("hidden");
+
+  tbody.innerHTML = requests.map(request => {
+    const status = ["pending","approved","rejected","active","expired"].includes(request.status)
+      ? request.status
+      : "pending";
+
+    const date = request.submittedAt
+      ? new Date(request.submittedAt).toLocaleDateString("en-NG")
+      : "Date unavailable";
+
+    const title = request.type === "store"
+      ? "Store Promotion"
+      : request.productName || "Product Promotion";
+
+    return `
+      <tr>
+        <td><strong>${escapeHTML(request.reference || request.id)}</strong></td>
+        <td>${escapeHTML(title)}</td>
+        <td>${escapeHTML(request.duration)}</td>
+        <td><strong>${money(request.amount)}</strong></td>
+        <td>${escapeHTML(date)}</td>
+        <td><span class="status status-${status}">${escapeHTML(status)}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+document.getElementById("promotionType").addEventListener("change", () => {
+  document.getElementById("productSelect").disabled =
+    document.getElementById("promotionType").value === "store";
+  updateDurations();
+});
+
+document.getElementById("promotionDuration").addEventListener("change", updatePrice);
+
+loadProducts();
+renderRequests();
+</script>
+</body>
+</html>
