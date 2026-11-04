@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store Withdrawals | EarnGig</title>
+<style>
+:root{
+  --purple:#6427c7;
+  --purple-dark:#48159b;
+  --purple-light:#f2ebff;
+  --gold:#d6a62e;
+  --text:#25213a;
+  --muted:#77738a;
+  --border:#ece8f3;
+  --background:#faf9fc;
+  --green:#168653;
+  --orange:#b87518;
+  --red:#c43e3e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
+.brand svg{width:25px;height:25px}
+.top-actions{display:flex;gap:18px;font-size:13px;font-weight:700;color:var(--purple)}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.sidebar{background:white;border-right:1px solid var(--border);padding:25px 15px}
+.side-label{color:#9993a9;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:0 12px;margin:19px 0 9px}
+.side-link{display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;margin:3px 0;font-size:13px;color:#625d71;font-weight:600}
+.side-link:hover,.side-link.active{color:var(--purple);background:var(--purple-light)}
+.side-link span{width:20px;text-align:center;font-size:16px}
+main{max-width:1450px;width:100%;padding:34px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:25px}
+h1{font-size:28px;margin:0 0 8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:12px 17px;background:var(--purple);color:white;font-size:12px;font-weight:700;cursor:pointer}
+.button:hover{background:var(--purple-dark)}
+.button.secondary{background:white;color:var(--purple);border:1px solid #d9c8f4}
+.button:disabled{opacity:.5;cursor:not-allowed}
+.balance-card{background:linear-gradient(120deg,#4b189c,#7944d1);border-radius:16px;padding:25px;color:white;margin-bottom:22px;position:relative;overflow:hidden}
+.balance-card:after{content:"₦";position:absolute;right:40px;top:-25px;font-size:170px;font-weight:800;color:#ffffff12}
+.balance-card small{font-size:11px;color:#e8dcff;position:relative;z-index:1}
+.balance-amount{font-size:35px;font-weight:800;margin:13px 0 7px;position:relative;z-index:1}
+.balance-card p{font-size:11px;color:#e8dcff;margin:0;position:relative;z-index:1}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.stat{background:white;border:1px solid var(--border);border-radius:12px;padding:17px}
+.stat small{display:block;color:var(--muted);font-size:11px;margin-bottom:9px}
+.stat strong{font-size:21px}
+.panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:22px}
+.panel-heading{padding:19px 20px;border-bottom:1px solid var(--border)}
+.panel-heading h2{font-size:15px;margin:0}
+.panel-body{padding:21px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+label{font-size:11px;font-weight:700;color:#514b63}
+input,select{height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:12px;color:var(--text);background:white;outline:none;width:100%}
+input:focus,select:focus{border-color:var(--purple)}
+.help{font-size:10px;color:var(--muted);line-height:1.5}
+.checkbox-row{display:flex;align-items:flex-start;gap:9px;font-size:11px;color:#625d71;line-height:1.6}
+.checkbox-row input{width:16px;height:16px;margin:0;flex-shrink:0}
+.fee-preview{background:#f8f5ff;border:1px solid #e9defa;padding:15px;border-radius:9px;font-size:12px;line-height:1.8}
+.fee-preview strong{color:var(--purple)}
+.warning{background:#fff8e9;border:1px solid #f1dfb8;border-radius:9px;padding:13px;color:#805a18;font-size:11px;line-height:1.6;margin-bottom:18px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th{text-align:left;padding:14px 16px;background:#fcfbfd;color:#898398;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+td{padding:15px 16px;border-top:1px solid #f0edf4;font-size:11px}
+.ref{color:var(--purple);font-weight:800}
+.status{display:inline-block;padding:6px 9px;border-radius:30px;font-size:10px;font-weight:700;text-transform:capitalize}
+.status-pending{background:#fff2dc;color:var(--orange)}
+.status-approved{background:#e4f7ed;color:var(--green)}
+.status-paid{background:#e4f7ed;color:var(--green)}
+.status-rejected,.status-failed{background:#ffe9e9;color:var(--red)}
+.status-processing{background:#eee8ff;color:#6330b9}
+.empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:12px}
+.notice{padding:15px 17px;background:#f5f0ff;border:1px solid #e9defa;border-radius:10px;color:#59427e;font-size:11px;line-height:1.7;margin-top:20px}
+@media(max-width:1000px){
+.layout{grid-template-columns:1fr}
+.sidebar{display:flex;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--border);gap:5px}
+.side-label{display:none}
+.side-link{white-space:nowrap;margin:0}
+main{padding:25px 18px}
+}
+@media(max-width:650px){
+.topbar{height:62px;padding:0 15px}
+.brand{font-size:20px}
+.top-actions{gap:10px;font-size:11px}
+.heading{flex-direction:column}
+h1{font-size:24px}
+.stats{grid-template-columns:1fr 1fr;gap:9px}
+.stat{padding:13px}
+.stat strong{font-size:18px}
+.form-grid{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.balance-amount{font-size:29px}
+.balance-card{padding:21px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+<a href="dashboard.html" class="brand">
+<svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+<path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
+<circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+<circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+<circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+</svg>
+EarnGig
+</a>
+<div class="top-actions">
+<a href="dashboard.html">Dashboard</a>
+<a href="my-shop.html">Seller Centre</a>
+</div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+<div class="side-label">SELLER CENTRE</div>
+<a class="side-link" href="my-shop.html"><span>▦</span> Overview</a>
+<a class="side-link" href="store-registration.html"><span>＋</span> Open a Shop</a>
+<a class="side-link" href="storefront.html"><span>🏪</span> My Store</a>
+<a class="side-link" href="store-customisation.html"><span>🎨</span> Store Customisation</a>
+<a class="side-link" href="my-products.html"><span>📦</span> My Products</a>
+<a class="side-link" href="my-orders.html"><span>🛍️</span> Orders</a>
+<a class="side-link" href="promote-store.html"><span>📣</span> Promotions</a>
+<a class="side-link" href="sales-earnings.html"><span>💰</span> Sales & Earnings</a>
+<a class="side-link" href="shop-payments.html"><span>💳</span> Shop Payments</a>
+<a class="side-link" href="store-wallet.html"><span>🏦</span> Store Wallet</a>
+<a class="side-link active" href="withdrawals.html"><span>↗</span> Withdrawals</a>
+<a class="side-link" href="store-settings.html"><span>⚙️</span> Store Settings</a>
+</aside>
+
+<main>
+<div class="heading">
+<div>
+<h1>Withdraw Store Earnings</h1>
+<p class="subtitle">Transfer eligible sales earnings from your Seller Store Wallet to your bank account.</p>
+</div>
+<a href="store-wallet.html" class="button secondary">Back to Store Wallet</a>
+</div>
+
+<section class="balance-card">
+<small>AVAILABLE STORE BALANCE</small>
+<div class="balance-amount" id="availableBalance">₦0.00</div>
+<p>This is separate from your normal EarnGig wallet and game rewards.</p>
+</section>
+
+<section class="stats">
+<div class="stat">
+<small>Pending Withdrawal Requests</small>
+<strong id="pendingWithdrawals">₦0.00</strong>
+</div>
+<div class="stat">
+<small>Total Withdrawn</small>
+<strong id="totalWithdrawn">₦0.00</strong>
+</div>
+<div class="stat">
+<small>Withdrawal Requests</small>
+<strong id="requestCount">0</strong>
+</div>
+</section>
+
+<section class="panel">
+<div class="panel-heading">
+<h2>Request a Bank Withdrawal</h2>
+</div>
+<div class="panel-body">
+<div class="warning">
+Only money available in your Seller Store Wallet can be requested for withdrawal.
+Pending settlements and money in your normal EarnGig wallet are not available here.
+</div>
+
+<form id="withdrawalForm">
+<div class="form-grid">
+<div class="field">
+<label for="amount">Withdrawal Amount (₦)</label>
+<input type="number" id="amount" min="1" step="0.01" placeholder="Enter amount" required>
+<span class="help">Your available balance is shown above.</span>
+</div>
+
+<div class="field">
+<label for="bankName">Bank Name</label>
+<select id="bankName" required>
+<option value="">Select your bank</option>
+<option>Access Bank</option>
+<option>Access Bank (Diamond)</option>
+<option>Ecobank Nigeria</option>
+<option>Fidelity Bank</option>
+<option>First Bank of Nigeria</option>
+<option>First City Monument Bank (FCMB)</option>
+<option>Globus Bank</option>
+<option>Guaranty Trust Bank (GTBank)</option>
+<option>Keystone Bank</option>
+<option>Moniepoint MFB</option>
+<option>Opay</option>
+<option>Palmpay</option>
+<option>Polaris Bank</option>
+<option>PremiumTrust Bank</option>
+<option>Providus Bank</option>
+<option>Stanbic IBTC Bank</option>
+<option>Standard Chartered Bank</option>
+<option>Sterling Bank</option>
+<option>Union Bank</option>
+<option>United Bank for Africa (UBA)</option>
+<option>Unity Bank</option>
+<option>Wema Bank</option>
+<option>Zenith Bank</option>
+<option>Other</option>
+</select>
+</div>
+
+<div class="field">
+<label for="accountName">Account Name</label>
+<input type="text" id="accountName" maxlength="100" placeholder="Name on your bank account" required>
+</div>
+
+<div class="field">
+<label for="accountNumber">Account Number</label>
+<input type="text" id="accountNumber" inputmode="numeric" maxlength="10" minlength="10" pattern="[0-9]{10}" placeholder="10-digit account number" required>
+</div>
+
+<div class="field full">
+<div class="fee-preview">
+<div>Requested withdrawal: <strong id="previewAmount">₦0.00</strong></div>
+<div>Withdrawal fee: <strong id="previewFee">To be confirmed</strong></div>
+<div>Estimated amount to receive: <strong id="previewNet">To be confirmed</strong></div>
+</div>
+<span class="help">No withdrawal fee has been specified yet. The final fee and payout amount must be confirmed before withdrawals are enabled.</span>
+</div>
+
+<div class="field full">
+<label class="checkbox-row">
+<input type="checkbox" id="confirmDetails" required>
+<span>I confirm that the bank account details entered above are correct and belong to me or my registered business.</span>
+</label>
+</div>
+
+<div class="field full">
+<button type="submit" class="button" id="submitButton">Submit Withdrawal Request</button>
+<span class="help">Submitting creates a pending request. It does not transfer money immediately.</span>
+</div>
+</div>
+</form>
+</div>
+</section>
+
+<section class="panel">
+<div class="panel-heading">
+<h2>Withdrawal History</h2>
+</div>
+<div class="table-wrap" id="tableWrap">
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Date</th>
+<th>Amount</th>
+<th>Bank</th>
+<th>Account</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="withdrawalRows"></tbody>
+</table>
+</div>
+<div class="empty hidden" id="emptyState">
+No withdrawal requests yet. Your requests will appear here.
+</div>
+</section>
+
+<div class="notice">
+<strong>Withdrawal process:</strong> Your request is recorded as pending for review. It must be
+checked and approved before a bank transfer is made. This frontend demonstration does not
+contact banks, verify account ownership or send money. Do not use real bank details in this demo.
+</div>
+</main>
+</div>
+
+<script>
+const STORE_WALLET_KEY = "earngig_store_wallet";
+const WITHDRAWALS_KEY = "earngig_store_withdrawals";
+
+/*
+  Withdrawal fee has not yet been specified.
+  Keep this as null until EarnGig confirms the fee policy.
+  Do not calculate or deduct an invented fee.
+*/
+const WITHDRAWAL_FEE = null;
+
+let wallet = readWallet();
+let withdrawals = readWithdrawals();
+
+function money(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,character=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+function readWallet(){
+  try{
+    const data = JSON.parse(localStorage.getItem(STORE_WALLET_KEY) || "null");
+
+    if(!data || typeof data !== "object" || Array.isArray(data)){
+      return {
+        currency:"NGN",
+        availableBalance:0,
+        pendingBalance:0,
+        totalCredited:0,
+        totalWithdrawn:0,
+        transactions:[]
+      };
+    }
+
+    return {
+      currency:"NGN",
+      availableBalance:Number(data.availableBalance || 0),
+      pendingBalance:Number(data.pendingBalance || 0),
+      totalCredited:Number(data.totalCredited || 0),
+      totalWithdrawn:Number(data.totalWithdrawn || 0),
+      transactions:Array.isArray(data.transactions) ? data.transactions : []
+    };
+  }catch(error){
+    return {
+      currency:"NGN",
+      availableBalance:0,
+      pendingBalance:0,
+      totalCredited:0,
+      totalWithdrawn:0,
+      transactions:[]
+    };
+  }
+}
+
+function readWithdrawals(){
+  try{
+    const data = JSON.parse(localStorage.getItem(WITHDRAWALS_KEY) || "[]");
+    return Array.isArray(data) ? data : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function saveWallet(){
+  localStorage.setItem(STORE_WALLET_KEY,JSON.stringify(wallet));
+}
+
+function saveWithdrawals(){
+  localStorage.setItem(WITHDRAWALS_KEY,JSON.stringify(withdrawals));
+}
+
+function makeReference(){
+  return "EGW-" + Date.now().toString(36).toUpperCase();
+}
+
+function renderBalances(){
+  const pending = withdrawals
+    .filter(item => item.status === "pending" || item.status === "processing" || item.status === "approved")
+    .reduce((sum,item)=>sum + Number(item.amount || 0),0);
+
+  document.getElementById("availableBalance").textContent = money(wallet.availableBalance);
+  document.getElementById("pendingWithdrawals").textContent = money(pending);
+  document.getElementById("totalWithdrawn").textContent = money(wallet.totalWithdrawn);
+  document.getElementById("requestCount").textContent = withdrawals.length;
+}
+
+function renderHistory(){
+  const tbody = document.getElementById("withdrawalRows");
+  const table = document.getElementById("tableWrap");
+  const empty = document.getElementById("emptyState");
+
+  if(!withdrawals.length){
+    table.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  table.classList.remove("hidden");
+  empty.classList.add("hidden");
+
+  const sorted = [...withdrawals].sort((a,b)=>
+    new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+  );
+
+  tbody.innerHTML = sorted.map(item=>{
+    const date = item.createdAt
+      ? new Date(item.createdAt).toLocaleDateString("en-NG")
+      : "Date unavailable";
+
+    const status = ["pending","processing","approved","paid","rejected","failed"].includes(item.status)
+      ? item.status
+      : "pending";
+
+    return `
+      <tr>
+        <td class="ref">${escapeHTML(item.reference)}</td>
+        <td>${escapeHTML(date)}</td>
+        <td><strong>${money(item.amount)}</strong></td>
+        <td>${escapeHTML(item.bankName)}</td>
+        <td>••••••${escapeHTML(String(item.accountNumber).slice(-4))}</td>
+        <td><span class="status status-${status}">${escapeHTML(status)}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function updatePreview(){
+  const amount = Number(document.getElementById("amount").value || 0);
+
+  document.getElementById("previewAmount").textContent = money(amount);
+
+  if(WITHDRAWAL_FEE === null){
+    document.getElementById("previewFee").textContent = "To be confirmed";
+    document.getElementById("previewNet").textContent = "To be confirmed";
+  }else{
+    document.getElementById("previewFee").textContent = money(WITHDRAWAL_FEE);
+    document.getElementById("previewNet").textContent =
+      money(Math.max(0,amount - WITHDRAWAL_FEE));
+  }
+}
+
+document.getElementById("amount").addEventListener("input",updatePreview);
+
+document.getElementById("withdrawalForm").addEventListener("submit",event=>{
+  event.preventDefault();
+
+  wallet = readWallet();
+  withdrawals = readWithdrawals();
+
+  const amount = Number(document.getElementById("amount").value);
+  const bankName = document.getElementById("bankName").value;
+  const accountName = document.getElementById("accountName").value.trim();
+  const accountNumber = document.getElementById("accountNumber").value.trim();
+  const confirmed = document.getElementById("confirmDetails").checked;
+
+  if(!Number.isFinite(amount) || amount <= 0){
+    alert("Enter a valid withdrawal amount.");
+    return;
+  }
+
+  if(amount > wallet.availableBalance){
+    alert("Your Store Wallet does not have enough available funds for this withdrawal.");
+    return;
+  }
+
+  if(!/^\d{10}$/.test(accountNumber)){
+    alert("Enter a valid 10-digit Nigerian bank account number.");
+    return;
+  }
+
+  if(!accountName || !bankName){
+    alert("Please complete all bank details.");
+    return;
+  }
+
+  if(!confirmed){
+    alert("Please confirm your bank details.");
+    return;
+  }
+
+  if(WITHDRAWAL_FEE === null){
+    alert("Withdrawal requests are not enabled yet. EarnGig must first confirm the withdrawal fee and payout rules.");
+    return;
+  }
+
+  if(amount <= WITHDRAWAL_FEE){
+    alert("The withdrawal amount must be greater than the withdrawal fee.");
+    return;
+  }
+
+  const request = {
+    id:"withdrawal-" + Date.now(),
+    reference:makeReference(),
+    amount,
+    fee:WITHDRAWAL_FEE,
+    estimatedNet:amount - WITHDRAWAL_FEE,
+    bankName,
+    accountName,
+    accountNumber,
+    status:"pending",
+    createdAt:new Date().toISOString()
+  };
+
+  /*
+    A real withdrawal system must reserve funds on the server.
+    This browser-only version intentionally does not deduct funds.
+  */
+  withdrawals.unshift(request);
+  saveWithdrawals();
+
+  document.getElementById("withdrawalForm").reset();
+  updatePreview();
+  renderBalances();
+  renderHistory();
+
+  alert("Withdrawal request saved as pending. No funds have been deducted or transferred.");
+});
+
+renderBalances();
+renderHistory();
+updatePreview();
+</script>
+</body>
+</html>
