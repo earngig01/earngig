@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -410,7 +411,7 @@ footer{
   <section class="referral-card">
     <div class="referral-heading">
       <h2>👥 Referral Rewards</h2>
-      <span class="reward-tag">10,000 COINS PER REFERRAL</span>
+      <span class="reward-tag">5,000 COINS PER REFERRAL</span>
     </div>
 
     <div class="referral-grid">
@@ -425,13 +426,13 @@ footer{
       </div>
 
       <div class="referral-stat">
-        <strong>10,000</strong>
+        <strong>5,000</strong>
         <span>Coins per successful referral</span>
       </div>
     </div>
 
     <p class="referral-description">
-      Earn <strong>10,000 coins</strong> every time someone joins EarnGig using your referral link and completes the required verification.
+      Earn <strong>5,000 coins</strong> every time someone joins EarnGig using your referral link and completes the required verification.
     </p>
 
     <a href="referrals.html" class="referral-link">View and share your referral link →</a>
@@ -478,7 +479,7 @@ footer{
             </div>
 
             <div class="preview-item">
-              <span>5% service charge</span>
+              <span>2% service charge</span>
               <strong id="serviceCharge">₦0.00</strong>
             </div>
 
@@ -549,8 +550,8 @@ footer{
           <strong>Withdrawal rules</strong><br>
           • Withdrawals can only be requested on Fridays.<br>
           • Minimum withdrawal amount is ₦100.<br>
-          • A 5% service charge is deducted from every withdrawal.<br>
-          • You receive the remaining 95% after the service charge.<br>
+          • A 2% service charge is deducted from every withdrawal.<br>
+          • You receive the remaining 98% after the service charge.<br>
           • You must have enough eligible coins to cover the full requested amount.
         </div>
 
@@ -620,6 +621,7 @@ footer{
 <script>
 /*
   FRONTEND DEMONSTRATION
+
   Connect wallet balances and withdrawal processing to a secure backend
   before accepting real withdrawal requests.
 */
@@ -630,8 +632,9 @@ const walletData = {
 };
 
 const COINS_PER_NAIRA = 10;
-const WITHDRAWAL_FEE_RATE = 0.05;
+const WITHDRAWAL_FEE_RATE = 0.02;
 const MINIMUM_WITHDRAWAL = 100;
+const REFERRAL_REWARD = 5000;
 
 const WITHDRAWALS_KEY = "earngig_main_wallet_withdrawals";
 
@@ -787,14 +790,13 @@ function updateWithdrawalPreview(){
 
 function updateReferralWallet(){
   const referrals = readJSON("earngig_referrals",[]);
-
   const list = Array.isArray(referrals) ? referrals : [];
 
   const successful = list.filter(item=>
-    item && item.status === "successful"
+    item && String(item.status || "").toLowerCase() === "successful"
   );
 
-  const earnedCoins = successful.length * 10000;
+  const earnedCoins = successful.length * REFERRAL_REWARD;
 
   document.getElementById("walletReferralCount").textContent =
     successful.length.toLocaleString("en-NG");
@@ -987,7 +989,7 @@ document.getElementById("withdrawForm").addEventListener("submit",function(event
     id:"EGW-" + Date.now(),
     amount:Number(amount.toFixed(2)),
     fee:fee,
-    feeRate:5,
+    feeRate:2,
     netAmount:netAmount,
     coinsRequired:coinsNeeded,
     bank:bank,
@@ -1009,7 +1011,7 @@ document.getElementById("withdrawForm").addEventListener("submit",function(event
   message.textContent =
     "Your withdrawal details have been saved as a demonstration request. " +
     "Requested: " + formatNaira(amount) +
-    ". Service charge: " + formatNaira(fee) +
+    ". Service charge (2%): " + formatNaira(fee) +
     ". You would receive: " + formatNaira(netAmount) +
     ". Real withdrawal processing is not connected yet.";
 
