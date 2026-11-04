@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,7 +146,9 @@ EarnGig
 const CART_KEY = "earngig_cart";
 const DRAFT_KEY = "earngig_checkout_draft";
 const USER_EMAIL_KEY = "earngig_current_user_email";
-const SERVICE_CHARGE = 250;
+
+/* One fixed charge for the entire checkout */
+const SERVICE_CHARGE = 100;
 
 function readJSON(key,fallback){
   try{
@@ -185,6 +188,7 @@ function groupCart(cart){
         items:[]
       });
     }
+
     groups.get(key).items.push(item);
   });
 
@@ -340,8 +344,8 @@ function renderCheckout(){
         </div>
 
         <div class="charge-note">
-          <strong>Fixed ₦250 service charge</strong><br>
-          Charged once for the entire checkout, regardless of the number of products or sellers.
+          <strong>Fixed ₦100 service charge</strong><br>
+          Charged only once for the entire checkout, regardless of the transaction amount, number of products or number of sellers.
         </div>
 
         <div class="delivery-note">
@@ -379,6 +383,7 @@ function saveCheckoutDraft(){
   }
 
   const cart = getCart();
+
   if(!cart.length){
     alert("Your cart is empty.");
     window.location.href = "cart.html";
