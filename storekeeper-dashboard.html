@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Storekeeper Dashboard</title>
+<style>
+:root{
+  --purple:#6827c9;--deep:#48149a;--lavender:#f3edff;
+  --gold:#e7b83f;--ink:#211b2b;--muted:#756d80;
+  --border:#e8e0f1;--green:#16834a;--red:#c53b3b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{padding:15px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:5}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+header a:not(.brand){color:var(--purple);font-size:13px;font-weight:bold;text-decoration:none}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100vh - 60px)}
+aside{border-right:1px solid var(--border);padding:22px 14px}
+.profile{background:var(--lavender);padding:15px;border-radius:13px;margin-bottom:20px}
+.avatar{height:43px;width:43px;background:var(--purple);color:white;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:bold;margin-bottom:10px}
+.profile strong{display:block;font-size:14px}
+.profile small{color:var(--muted)}
+nav button{display:block;width:100%;text-align:left;background:transparent;color:var(--ink);padding:12px;border-radius:9px;margin:4px 0;font-size:13px}
+nav button.active,nav button:hover{background:var(--lavender);color:var(--purple)}
+main{padding:28px 4%;max-width:1400px;width:100%;margin:auto}
+h1{font-size:27px;margin:0 0 7px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+button{border:0;border-radius:9px;background:var(--purple);color:white;padding:11px 15px;font-weight:bold;cursor:pointer}
+button:hover{background:var(--deep)}
+button.secondary{background:#eee7f8;color:var(--purple)}
+button.danger{background:#fff0f0;color:var(--red)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:20px 0}
+.stat,.panel{border:1px solid var(--border);border-radius:14px;padding:17px}
+.stat small{color:var(--muted);font-size:12px}
+.stat strong{display:block;font-size:24px;margin-top:8px}
+.panel{margin:16px 0}
+.panel h2{font-size:18px;margin:0 0 13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{border:1px solid var(--border);border-radius:12px;padding:15px}
+.card h3{font-size:15px;margin:8px 0}
+.card p{font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0}
+.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:11px;font-weight:bold}
+.tag.green{background:#e7f8ed;color:var(--green)}
+.tag.orange{background:#fff5e5;color:#a45e00}
+.tag.red{background:#fff0f0;color:var(--red)}
+.fee{font-size:20px;font-weight:900;color:var(--purple);margin:12px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{font-size:12px}
+.empty{padding:28px;text-align:center;color:var(--muted);background:#faf8fc;border-radius:12px;font-size:13px}
+.note{background:var(--lavender);border-radius:10px;padding:13px;font-size:12px;line-height:1.6;margin:13px 0}
+.hidden{display:none!important}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:17px 0}
+.tabs button{background:#f2eef7;color:var(--muted);font-size:12px}
+.tabs button.active{background:var(--purple);color:white}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:12px 9px;border-bottom:1px solid var(--border);text-align:left}
+th{color:var(--muted);font-size:11px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #dcd3e7;border-radius:8px;font:inherit;margin:5px 0 12px}
+label{font-size:12px;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:#1b102d88;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal-box{background:white;border-radius:15px;padding:22px;width:100%;max-width:480px;max-height:90vh;overflow:auto}
+.modal-box h2{font-size:19px;margin-top:0}
+.modal-actions{display:flex;gap:8px;margin-top:12px}
+.modal-actions button{flex:1}
+.wallet-total{font-size:32px;font-weight:900;color:var(--purple);margin:8px 0}
+.notice{padding:22px;border:1px solid #f0d69a;background:#fff8e9;border-radius:13px;line-height:1.6}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:11px}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ aside{border:0;border-bottom:1px solid var(--border);padding:10px}
+ .profile{display:none}
+ nav{display:flex;overflow-x:auto;gap:5px}
+ nav button{width:auto;white-space:nowrap;flex-shrink:0}
+ main{padding:20px 14px}
+}
+@media(max-width:600px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .grid{grid-template-columns:1fr}
+ .topline{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <a href="notifications.html">Notifications</a>
+</header>
+
+<div class="layout">
+<aside>
+  <div class="profile">
+    <div class="avatar" id="avatar">S</div>
+    <strong id="storekeeperName">Storekeeper</strong>
+    <small id="storeNameLabel">Collection point</small>
+  </div>
+  <nav>
+    <button class="active" data-page="overview">▦ Overview</button>
+    <button data-page="incoming">↓ Incoming Shipments</button>
+    <button data-page="parcels">▣ My Parcels</button>
+    <button data-page="collected">✓ Customer Collections</button>
+    <button data-page="wallet">₦ Delivery Wallet</button>
+    <button data-page="account">♙ My Account</button>
+  </nav>
+</aside>
+
+<main>
+  <section id="approvalNotice" class="notice hidden">
+    <h2>Storekeeper approval required</h2>
+    <p id="approvalMessage">Your storekeeper application must be approved before you can receive parcels.</p>
+    <a href="delivery.html" style="color:#6827c9;font-weight:bold">Return to registration</a>
+  </section>
+
+  <div id="dashboardContent" class="hidden">
+    <section id="page-overview">
+      <div class="topline">
+        <div>
+          <h1>Storekeeper Dashboard</h1>
+          <p class="subtitle">Receive shipments, manage parcels and serve customers.</p>
+        </div>
+        <button onclick="showPage('incoming')">View Incoming Shipments</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Incoming Shipments</small><strong id="incomingCount">0</strong></div>
+        <div class="stat"><small>Parcels Awaiting Pickup</small><strong id="parcelCount">0</strong></div>
+        <div class="stat"><small>Customers Served</small><strong id="collectedCount">0</strong></div>
+        <div class="stat"><small>Delivery Wallet</small><strong id="overviewBalance">₦0</strong></div>
+      </div>
+      <div class="panel">
+        <h2>How your collection point works</h2>
+        <div class="note">
+          1. A collection rider sends a bulk shipment to your registered collection point.<br><br>
+          2. You physically inspect the shipment and confirm the number of parcels received.<br><br>
+          3. The bulk shipment is separated into individual customer parcels.<br><br>
+          4. Contact customers to inform them their parcels are ready.<br><br>
+          5. Verify each customer's private pickup code when they arrive.<br><br>
+          6. Your approved storekeeper fee is credited for each successfully verified collection.
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Recent incoming shipments</h2>
+        <div id="recentShipments" class="empty">No incoming shipments yet.</div>
+      </div>
+    </section>
+
+    <section id="page-incoming" class="hidden">
+      <h1>Incoming Shipments</h1>
+      <p class="subtitle">Confirm only shipments you have physically received and inspected.</p>
+      <div class="note">Check the actual parcel count and visible condition before confirming. Confirmation is a permanent handover record and triggers the collection rider's shipment payment in the live system.</div>
+      <div id="incomingShipments"></div>
+    </section>
+
+    <section id="page-parcels" class="hidden">
+      <h1>Parcels Awaiting Customer Pickup</h1>
+      <p class="subtitle">These are individual parcels separated from confirmed bulk shipments.</p>
+      <div id="parcelList"></div>
+    </section>
+
+    <section id="page-collected" class="hidden">
+      <h1>Customer Collections</h1>
+      <p class="subtitle">Your completed customer parcel handovers.</p>
+      <div id="collectionHistory"></div>
+    </section>
+
+    <section id="page-wallet" class="hidden">
+      <h1>Storekeeper Delivery Wallet</h1>
+      <p class="subtitle">A separate Naira wallet for your approved collection fees.</p>
+      <div class="panel">
+        <small class="subtitle">Available demo balance</small>
+        <div class="wallet-total" id="walletBalance">₦0.00</div>
+        <div class="note">Withdrawal service charge: 2%. Storekeepers have no minimum withdrawal amount under the EarnGig policy. Actual withdrawals require secure backend payment processing.</div>
+        <button onclick="openWithdrawal()">Request Withdrawal</button>
+      </div>
+      <div class="panel">
+        <h2>Wallet transactions</h2>
+        <div id="transactions"></div>
+      </div>
+    </section>
+
+    <section id="page-account" class="hidden">
+      <h1>Collection Point Account</h1>
+      <div class="panel" id="accountDetails"></div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div class="modal" id="receiptModal">
+  <div class="modal-box">
+    <h2>Confirm physical shipment receipt</h2>
+    <p class="subtitle">Inspect the shipment before entering the actual count.</p>
+    <label>Shipment reference</label>
+    <input id="receiptReference" disabled>
+    <label>Expected number of parcels</label>
+    <input id="expectedCount" disabled>
+    <label>Actual number of parcels received *</label>
+    <input id="actualCount" type="number" min="0">
+    <label>Parcel condition *</label>
+    <select id="parcelCondition">
+      <option value="">Select condition</option>
+      <option value="all_good">All parcels appear intact</option>
+      <option value="damaged">One or more parcels damaged</option>
+      <option value="shortage">Parcel count is lower than expected</option>
+      <option value="other">Other discrepancy</option>
+    </select>
+    <label>Receipt notes</label>
+    <textarea id="receiptNotes" rows="3" placeholder="Describe any missing or damaged parcels"></textarea>
+    <label>Upload shipment receipt photograph *</label>
+    <input id="receiptPhoto" type="file" accept="image/*">
+    <div class="note">In the live system, the collection rider will be notified of your receipt confirmation and any discrepancy.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('receiptModal')">Cancel</button>
+      <button onclick="submitReceipt()">Confirm Receipt</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="pickupModal">
+  <div class="modal-box">
+    <h2>Confirm customer parcel collection</h2>
+    <p class="subtitle">Ask the customer to provide their private pickup confirmation code.</p>
+    <label>Parcel reference</label>
+    <input id="pickupReference" disabled>
+    <label>Customer confirmation code *</label>
+    <input id="pickupCode" placeholder="Enter code provided by customer" autocomplete="off">
+    <div class="note">You cannot view or retrieve the customer's private code. The customer must provide it. The live backend must verify it before the parcel is marked collected and your fee is credited.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('pickupModal')">Cancel</button>
+      <button onclick="submitCustomerPickup()">Verify and Submit</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="withdrawModal">
+  <div class="modal-box">
+    <h2>Withdraw delivery earnings</h2>
+    <p class="subtitle">No minimum withdrawal amount applies to storekeepers.</p>
+    <label>Withdrawal amount (₦)</label>
+    <input id="withdrawAmount" type="number" min="1" placeholder="Enter amount">
+    <div id="withdrawDetails" class="note">Service charge: 2%.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('withdrawModal')">Cancel</button>
+      <button onclick="submitWithdrawal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> EarnGig Collection Network</footer>
+
+<script>
+const APP_KEY = "earngig_delivery_applications";
+const SHIPMENT_KEY = "earngig_delivery_shipments";
+const PARCEL_KEY = "earngig_storekeeper_parcels";
+const WALLET_KEY = "earngig_storekeeper_delivery_wallet";
+const PROFILE_KEY = "earngig_storekeeper_profile";
+
+let storekeeper = null;
+let shipments = [];
+let parcels = [];
+let wallet = {balance:0,transactions:[]};
+let selectedShipment = null;
+let selectedParcel = null;
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function readJSON(key,fallback){
+  try{return JSON.parse(localStorage.getItem(key)) ?? fallback}
+  catch{return fallback}
+}
+function saveAll(){
+  localStorage.setItem(SHIPMENT_KEY,JSON.stringify(shipments));
+  localStorage.setItem(PARCEL_KEY,JSON.stringify(parcels));
+  localStorage.setItem(WALLET_KEY,JSON.stringify(wallet));
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function dateText(value){
+  if(!value)return "Not recorded";
+  return new Date(value).toLocaleString("en-NG",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+
+function initialise(){
+  const applications=readJSON(APP_KEY,[]);
+  const savedProfile=readJSON(PROFILE_KEY,null);
+  const username=savedProfile?.username;
+
+  if(username){
+    storekeeper=applications.find(a=>
+      String(a.username).toLowerCase()===String(username).toLowerCase()
+    );
+  }else{
+    storekeeper=applications.find(a=>
+      a.applicationType==="storekeeper" && a.status==="approved"
+    );
+  }
+
+  if(!storekeeper || storekeeper.applicationType!=="storekeeper" || storekeeper.status!=="approved"){
+    document.getElementById("approvalNotice").classList.remove("hidden");
+    document.getElementById("dashboardContent").classList.add("hidden");
+
+    let message="Your storekeeper application must be approved before you can receive parcels.";
+    if(storekeeper?.status==="pending_review"){
+      message="Your application is awaiting review. Please keep your phone available for the EarnGig verification team.";
+    }else if(storekeeper?.status==="interview_required"){
+      message="Your application requires a phone interview. Please wait for the verification team to contact you.";
+    }else if(storekeeper?.status==="additional_info_requested"){
+      message="EarnGig has requested additional information. Contact the verification team for instructions.";
+    }else if(storekeeper?.status==="rejected"){
+      message="Your application was not approved. Contact EarnGig support for further information.";
+    }
+    document.getElementById("approvalMessage").textContent=message;
+    return;
+  }
+
+  shipments=readJSON(SHIPMENT_KEY,[]);
+  parcels=readJSON(PARCEL_KEY,[]);
+  wallet=readJSON(WALLET_KEY,{balance:0,transactions:[]});
+
+  const name=storekeeper.fullName||"Storekeeper";
+  document.getElementById("storekeeperName").textContent=name;
+  document.getElementById("avatar").textContent=name.charAt(0).toUpperCase();
+  document.getElementById("storeNameLabel").textContent=storekeeper.storeName||"Collection point";
+
+  document.getElementById("approvalNotice").classList.add("hidden");
+  document.getElementById("dashboardContent").classList.remove("hidden");
+  renderAll();
+}
+
+function showPage(page){
+  document.querySelectorAll("main section[id^='page-']").forEach(s=>s.classList.add("hidden"));
+  document.getElementById("page-"+page).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  renderAll();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+
+function renderAll(){
+  if(!storekeeper)return;
+  const mine=shipments.filter(s=>s.storekeeperUsername===storekeeper.username);
+  const incoming=mine.filter(s=>s.status==="awaiting_storekeeper");
+  const awaiting=parcels.filter(p=>p.storekeeperUsername===storekeeper.username&&p.status==="awaiting_customer");
+  const collected=parcels.filter(p=>p.storekeeperUsername===storekeeper.username&&p.status==="collected");
+
+  document.getElementById("incomingCount").textContent=incoming.length;
+  document.getElementById("parcelCount").textContent=awaiting.length;
+  document.getElementById("collectedCount").textContent=collected.length;
+  document.getElementById("overviewBalance").textContent=money(wallet.balance);
+  document.getElementById("walletBalance").textContent=money(wallet.balance);
+
+  renderIncoming();
+  renderParcels();
+  renderCollected();
+  renderRecent();
+  renderWallet();
+  renderAccount();
+}
+
+function renderIncoming(){
+  const container=document.getElementById("incomingShipments");
+  const incoming=shipments.filter(s=>
+    s.storekeeperUsername===storekeeper.username&&s.status==="awaiting_storekeeper"
+  );
+  if(!incoming.length){
+    container.innerHTML='<div class="empty">No incoming shipments right now.</div>';
+    return;
+  }
+
+  container.innerHTML='<div class="grid">'+incoming.map(s=>`
+    <div class="card">
+      <span class="tag orange">Awaiting physical receipt</span>
+      <h3>${escapeHTML(s.reference||s.id)}</h3>
+      <p><strong>Collection rider:</strong> ${escapeHTML(s.collectionRiderName||s.collectionRiderUsername||"Rider")}</p>
+      <p><strong>Dispatch route:</strong> ${escapeHTML(s.originTown||"")}, ${escapeHTML(s.originState||"")} → ${escapeHTML(s.destinationTown||"")}, ${escapeHTML(s.destinationState||"")}</p>
+      <p><strong>Expected parcels:</strong> ${Number(s.parcelCount||0)}</p>
+      <p><strong>Dispatched:</strong> ${dateText(s.dispatchedAt)}</p>
+      <div class="actions">
+        <button onclick="openReceipt('${escapeHTML(s.id)}')">Inspect and Confirm Receipt</button>
+      </div>
+    </div>
+  `).join("")+'</div>';
+}
+
+function openReceipt(id){
+  selectedShipment=shipments.find(s=>String(s.id)===String(id));
+  if(!selectedShipment)return;
+  document.getElementById("receiptReference").value=selectedShipment.reference||selectedShipment.id;
+  document.getElementById("expectedCount").value=selectedShipment.parcelCount||0;
+  document.getElementById("actualCount").value=selectedShipment.parcelCount||0;
+  document.getElementById("parcelCondition").value="";
+  document.getElementById("receiptNotes").value="";
+  document.getElementById("receiptPhoto").value="";
+  document.getElementById("receiptModal").style.display="flex";
+}
+
+function submitReceipt(){
+  if(!selectedShipment)return;
+  const actual=Number(document.getElementById("actualCount").value);
+  const condition=document.getElementById("parcelCondition").value;
+  const photo=document.getElementById("receiptPhoto").files[0];
+
+  if(!Number.isInteger(actual)||actual<0)return alert("Enter the actual parcel count.");
+  if(!condition)return alert("Select the parcel condition.");
+  if(!photo)return alert("Upload a receipt photograph.");
+
+  const now=new Date().toISOString();
+  selectedShipment.actualParcelCount=actual;
+  selectedShipment.receiptCondition=condition;
+  selectedShipment.receiptNotes=document.getElementById("receiptNotes").value.trim();
+  selectedShipment.receiptPhotoFileName=photo.name;
+  selectedShipment.receivedAt=now;
+  selectedShipment.status="receipt_confirmation_submitted";
+  selectedShipment.handoverHistory=selectedShipment.handoverHistory||[];
+  selectedShipment.handoverHistory.push({
+    stage:"storekeeper_receipt_confirmation_submitted",
+    actor:storekeeper.username,
+    time:now,
+    actualParcelCount:actual,
+    condition
+  });
+
+  /*
+    DEMO LIMITATION:
+    This records a receipt confirmation locally.
+    A production backend must validate the handover, notify the collection
+    rider, settle the collection rider's shipment earnings, and split the
+    bulk shipment into individual parcels.
+  */
+
+  saveAll();
+  closeModal("receiptModal");
+  alert("Receipt confirmation recorded in this browser demo. The live system must verify the shipment and create the individual parcel records.");
+  renderAll();
+}
+
+function renderParcels(){
+  const container=document.getElementById("parcelList");
+  const mine=parcels.filter(p=>
+    p.storekeeperUsername===storekeeper.username&&p.status==="awaiting_customer"
+  );
+  if(!mine.length){
+    container.innerHTML='<div class="empty">No parcels are awaiting customer pickup.</div>';
+    return;
+  }
+
+  container.innerHTML='<div class="grid">'+mine.map(p=>`
+    <div class="card">
+      <span class="tag green">Ready for customer</span>
+      <h3>${escapeHTML(p.reference||p.id)}</h3>
+      <p><strong>Customer:</strong> ${escapeHTML(p.customerName||"Customer")}</p>
+      <p><strong>Phone:</strong> ${escapeHTML(p.customerPhone||"Not provided")}</p>
+      <p><strong>Product:</strong> ${escapeHTML(p.productSummary||"Parcel")}</p>
+      <p><strong>Order reference:</strong> ${escapeHTML(p.orderReference||"")}</p>
+      <p><strong>Received:</strong> ${dateText(p.receivedAt)}</p>
+      <div class="fee">${money(p.storekeeperFee||0)}</div>
+      <p>Approved storekeeper fee for this parcel, subject to successful customer code verification.</p>
+      <div class="actions">
+        <button onclick="openPickup('${escapeHTML(p.id)}')">Customer Collecting Parcel</button>
+      </div>
+    </div>
+  `).join("")+'</div>';
+}
+
+function openPickup(id){
+  selectedParcel=parcels.find(p=>String(p.id)===String(id));
+  if(!selectedParcel)return;
+  document.getElementById("pickupReference").value=selectedParcel.reference||selectedParcel.id;
+  document.getElementById("pickupCode").value="";
+  document.getElementById("pickupModal").style.display="flex";
+}
+
+function submitCustomerPickup(){
+  const code=document.getElementById("pickupCode").value.trim();
+  if(!code)return alert("Enter the private pickup code provided by the customer.");
+  if(!selectedParcel)return;
+
+  /*
+    SECURITY:
+    Never compare customer codes in browser JavaScript.
+    Never display or retrieve the customer's private code here.
+    Send the entered code to the secure backend for verification.
+    Do not mark the parcel collected or credit the wallet until the
+    backend confirms that the code is correct.
+  */
+
+  alert("The code must be checked by the secure EarnGig backend. This demo does not verify codes, mark parcels collected or credit your wallet.");
+}
+
+function renderCollected(){
+  const container=document.getElementById("collectionHistory");
+  const mine=parcels.filter(p=>
+    p.storekeeperUsername===storekeeper.username&&p.status==="collected"
+  );
+  if(!mine.length){
+    container.innerHTML='<div class="empty">No completed customer collections yet.</div>';
+    return;
+  }
+
+  container.innerHTML=`
+    <div class="panel">
+      <table>
+        <thead><tr><th>Parcel</th><th>Customer</th><th>Collected</th><th>Fee</th></tr></thead>
+        <tbody>
+          ${mine.map(p=>`
+            <tr>
+              <td>${escapeHTML(p.reference||p.id)}</td>
+              <td>${escapeHTML(p.customerName||"Customer")}</td>
+              <td>${dateText(p.collectedAt)}</td>
+              <td>${money(p.storekeeperFee||0)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderRecent(){
+  const container=document.getElementById("recentShipments");
+  const mine=shipments.filter(s=>s.storekeeperUsername===storekeeper.username).slice(-5).reverse();
+  if(!mine.length){
+    container.innerHTML="No incoming shipments yet.";
+    return;
+  }
+  container.innerHTML=mine.map(s=>`
+    <p><strong>${escapeHTML(s.reference||s.id)}</strong> — ${escapeHTML(s.status.replaceAll("_"," "))}</p>
+  `).join("");
+}
+
+function renderWallet(){
+  const container=document.getElementById("transactions");
+  if(!wallet.transactions?.length){
+    container.innerHTML='<div class="empty">No wallet transactions yet.</div>';
+    return;
+  }
+  container.innerHTML=`
+    <table>
+      <thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
+      <tbody>
+        ${wallet.transactions.map(tx=>`
+          <tr>
+            <td>${escapeHTML(tx.description)}</td>
+            <td>${dateText(tx.date)}</td>
+            <td>${money(tx.amount)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>`;
+}
+
+function openWithdrawal(){
+  document.getElementById("withdrawAmount").value="";
+  document.getElementById("withdrawDetails").textContent=
+    "Available balance: "+money(wallet.balance)+". Service charge: 2%. No minimum withdrawal amount.";
+  document.getElementById("withdrawModal").style.display="flex";
+}
+
+function submitWithdrawal(){
+  const amount=Number(document.getElementById("withdrawAmount").value);
+  if(!Number.isFinite(amount)||amount<=0)return alert("Enter a valid amount.");
+  if(amount>wallet.balance)return alert("Insufficient available balance.");
+
+  const fee=amount*.02;
+  const payout=amount-fee;
+  alert(
+    "Demo calculation only:\nWithdrawal: "+money(amount)+
+    "\nService charge (2%): "+money(fee)+
+    "\nEstimated payout: "+money(payout)+
+    "\n\nNo money has been withdrawn. Live withdrawals require backend payment processing."
+  );
+}
+
+function renderAccount(){
+  document.getElementById("accountDetails").innerHTML=`
+    <p><strong>Full name:</strong> ${escapeHTML(storekeeper.fullName)}</p>
+    <p><strong>Username:</strong> ${escapeHTML(storekeeper.username)}</p>
+    <p><strong>Phone:</strong> ${escapeHTML(storekeeper.phone)}</p>
+    <p><strong>Email:</strong> ${escapeHTML(storekeeper.email)}</p>
+    <p><strong>Collection point:</strong> ${escapeHTML(storekeeper.storeName)}</p>
+    <p><strong>Address:</strong> ${escapeHTML(storekeeper.storeAddress)}</p>
+    <p><strong>State:</strong> ${escapeHTML(storekeeper.state)}</p>
+    <p><strong>Town:</strong> ${escapeHTML(storekeeper.town)}</p>
+    <p><strong>Application status:</strong> <span class="tag green">Approved</span></p>
+  `;
+}
+
+function closeModal(id){
+  document.getElementById(id).style.display="none";
+}
+
+/*
+  PRODUCTION BACKEND REQUIREMENTS:
+
+  - Securely authenticate the storekeeper.
+  - Send incoming shipment notifications.
+  - Verify physical shipment receipt and actual parcel count.
+  - Split confirmed bulk shipments into individual parcel records.
+  - Notify customers that parcels are ready.
+  - Verify customer pickup codes server-side.
+  - Credit the storekeeper fee per verified customer collection.
+  - Maintain permanent handover and discrepancy records.
+  - Process withdrawals with a 2% service charge and no minimum.
+*/
+
+initialise();
+</script>
+</body>
+</html>
