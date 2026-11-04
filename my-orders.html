@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Orders | EarnGig Seller Centre</title>
 <style>
-:root{--purple:#6427c7;--deep:#48159b;--pale:#f2ebff;--gold:#d6a62e;--text:#29243a;--muted:#777286;--border:#ece8f3;--bg:#faf9fc;--green:#168653;--red:#c43e3e;--orange:#bd7415}
+:root{--purple:#6427c7;--deep:#48159b;--pale:#f2ebff;--gold:#d6a62e;--text:#29243a;--muted:#777286;--border:#ece8f3;--bg:#fff;--green:#168653;--red:#c43e3e;--orange:#bd7415}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 a{text-decoration:none;color:inherit}
@@ -28,7 +29,7 @@ button{font:inherit;cursor:pointer}
 .stat{background:white;border:1px solid var(--border);border-radius:11px;padding:15px}
 .stat span{font-size:10px;color:var(--muted);font-weight:700}
 .stat strong{display:block;font-size:22px;margin-top:8px}
-.notice{background:#fff8e8;border:1px solid #f1e3c2;border-radius:9px;padding:12px 14px;color:#785b1c;font-size:10px;line-height:1.7;margin-bottom:18px}
+.notice{background:#f7f2ff;border:1px solid #e5d9f7;border-radius:9px;padding:13px 14px;color:#51318a;font-size:10px;line-height:1.8;margin-bottom:18px}
 .filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:15px}
 .filter{border:1px solid var(--border);background:white;color:#625d71;border-radius:22px;padding:9px 13px;font-size:10px;font-weight:800;white-space:nowrap}
 .filter.active{background:var(--pale);border-color:#d9c8f1;color:var(--purple)}
@@ -66,6 +67,12 @@ button{font:inherit;cursor:pointer}
 .empty{background:white;border:1px dashed #d9d1e4;border-radius:12px;padding:40px 18px;text-align:center}
 .empty h3{font-size:16px;margin:0 0 7px}
 .empty p{font-size:10px;color:var(--muted);line-height:1.7}
+.delivery-box{background:#faf8ff;border:1px solid #e9e1f5;border-radius:9px;padding:12px;margin-top:13px}
+.delivery-box h4{font-size:10px;margin:0 0 10px;color:var(--purple)}
+.delivery-step{display:flex;justify-content:space-between;gap:10px;font-size:9px;padding:7px 0;border-bottom:1px solid #eee8f6}
+.delivery-step:last-child{border-bottom:0}
+.step-wait{color:var(--orange);font-weight:700}
+.step-done{color:var(--green);font-weight:700}
 .modal-bg{display:none;position:fixed;inset:0;background:#17102088;z-index:30;padding:18px;overflow:auto;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
 .modal{width:100%;max-width:570px;max-height:92vh;overflow:auto;background:white;border-radius:13px;padding:22px}
@@ -73,7 +80,7 @@ button{font:inherit;cursor:pointer}
 .modal p{font-size:10px;color:var(--muted);line-height:1.7}
 .field{margin:13px 0}
 .field label{display:block;font-size:10px;font-weight:800;margin-bottom:6px}
-.field input,.field textarea,.field select{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:11px;font-family:Arial}
+.field input,.field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:11px;font-family:Arial}
 .field textarea{min-height:75px;resize:vertical}
 .field small{display:block;color:var(--muted);font-size:9px;margin-top:5px;line-height:1.5}
 .preview{width:100%;max-height:220px;object-fit:contain;border:1px solid var(--border);border-radius:8px;display:none;margin-top:9px}
@@ -127,19 +134,19 @@ EarnGig
 <div class="heading">
 <div>
 <h1>My Orders</h1>
-<p>Manage buyer orders, prepare packages and confirm successful deliveries.</p>
+<p>Accept orders, prepare packages and confirm handover to delivery riders.</p>
 </div>
 </div>
 
 <div class="stats">
 <div class="stat"><span>Total Orders</span><strong id="totalCount">0</strong></div>
 <div class="stat"><span>New Orders</span><strong id="newCount">0</strong></div>
-<div class="stat"><span>Preparing / Dispatch</span><strong id="activeCount">0</strong></div>
-<div class="stat"><span>Awaiting Confirmation</span><strong id="confirmCount">0</strong></div>
+<div class="stat"><span>Preparing</span><strong id="activeCount">0</strong></div>
+<div class="stat"><span>Awaiting Rider Pickup</span><strong id="confirmCount">0</strong></div>
 </div>
 
 <div class="notice">
-<strong>Seller settlement rule:</strong> Sales proceeds remain pending in your separate Naira Store Wallet until both you and the buyer confirm successful delivery. EarnGig's ₦250 checkout service charge is not part of your sales proceeds. Delivery charges are negotiated separately with the buyer.
+<strong>Seller payment release:</strong> Your eligible sales proceeds are credited to your separate Naira Seller Store Wallet after you confirm handover and the assigned rider confirms physical pickup. This is separate from the rider's delivery earnings. The ₦100 checkout service charge is not deducted from your product proceeds.
 </div>
 
 <div class="filters">
@@ -147,7 +154,7 @@ EarnGig
 <button class="filter" data-filter="pending">New</button>
 <button class="filter" data-filter="accepted">Accepted</button>
 <button class="filter" data-filter="processing">Preparing</button>
-<button class="filter" data-filter="dispatched">Dispatched</button>
+<button class="filter" data-filter="dispatched">Handed to Rider</button>
 <button class="filter" data-filter="completed">Completed</button>
 <button class="filter" data-filter="cancelled">Cancelled</button>
 <button class="filter" data-filter="disputed">Disputed</button>
@@ -168,96 +175,207 @@ EarnGig
 <script>
 const ORDERS_KEY="earngig_seller_orders";
 const EMAIL_KEY="earngig_current_user_email";
+const WALLET_TX_KEY="earngig_store_wallet_transactions";
 let activeFilter="all";
 let photoData="";
 
-function readOrders(){
+function readJSON(key,fallback){
   try{
-    const data=JSON.parse(localStorage.getItem(ORDERS_KEY)||"[]");
-    return Array.isArray(data)?data:[];
-  }catch(e){return []}
+    const value=JSON.parse(localStorage.getItem(key));
+    return value===null||value===undefined?fallback:value;
+  }catch(e){return fallback}
 }
-function saveOrders(data){localStorage.setItem(ORDERS_KEY,JSON.stringify(data))}
-function currentEmail(){return (localStorage.getItem(EMAIL_KEY)||"").trim().toLowerCase()}
-function money(n){return "₦"+(Number(n)||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function dateText(v){if(!v)return "Date unavailable";const d=new Date(v);return isNaN(d)?"Date unavailable":d.toLocaleString("en-NG")}
-
+function readOrders(){
+  const data=readJSON(ORDERS_KEY,[]);
+  return Array.isArray(data)?data:[];
+}
+function saveOrders(data){
+  localStorage.setItem(ORDERS_KEY,JSON.stringify(data));
+}
+function currentEmail(){
+  return String(localStorage.getItem(EMAIL_KEY)||"").trim().toLowerCase();
+}
+function money(n){
+  return "₦"+(Number(n)||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function dateText(v){
+  if(!v)return "Date unavailable";
+  const d=new Date(v);
+  return isNaN(d)?"Date unavailable":d.toLocaleString("en-NG");
+}
+function orderRef(o){
+  return String(o.reference||o.orderReference||o.id||"");
+}
 function statusOf(o){
   const s=String(o.status||o.orderStatus||"pending").toLowerCase();
   if(["new","awaiting_acceptance","awaiting_vendor","awaiting_seller"].includes(s))return "pending";
   if(["confirmed"].includes(s))return "accepted";
   if(["preparing","packed"].includes(s))return "processing";
-  if(["out_for_delivery","shipped"].includes(s))return "dispatched";
+  if(["out_for_delivery","shipped","dispatched"].includes(s))return "dispatched";
   if(["delivered","received","buyer_received"].includes(s))return "awaiting_confirmation";
   if(["completed"].includes(s))return "completed";
   if(["canceled"].includes(s))return "cancelled";
   return s;
 }
 function label(s){
-  return ({pending:"New Order",accepted:"Accepted",processing:"Being Prepared",dispatched:"Out for Delivery",awaiting_confirmation:"Awaiting Seller Confirmation",completed:"Completed",cancelled:"Cancelled",rejected:"Rejected",disputed:"Disputed"})[s]||s.replace(/_/g," ");
+  return ({pending:"New Order",accepted:"Accepted",processing:"Being Prepared",dispatched:"Handed to Rider",awaiting_confirmation:"Awaiting Confirmation",completed:"Completed",cancelled:"Cancelled",rejected:"Rejected",disputed:"Disputed"})[s]||s.replace(/_/g," ");
 }
 function myOrders(){
-  const orders=readOrders();
   const email=currentEmail();
-  if(!email)return orders;
-  return orders.filter(o=>{
-    const seller=String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").toLowerCase();
-    return !seller||seller===email;
+  if(!email)return [];
+  return readOrders().filter(o=>{
+    const seller=String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").trim().toLowerCase();
+    return seller===email;
   });
 }
-function itemsOf(o){return Array.isArray(o.items)?o.items:(o.product?[o.product]:[])}
+function itemsOf(o){
+  return Array.isArray(o.items)?o.items:(o.product?[o.product]:[]);
+}
 function totalOf(o){
   if(o.sellerTotal!==undefined)return Number(o.sellerTotal)||0;
   if(o.subtotal!==undefined)return Number(o.subtotal)||0;
   return itemsOf(o).reduce((s,i)=>s+(Number(i.price)||0)*Math.max(1,Number(i.quantity)||1),0);
 }
 function findOrder(ref){
-  return readOrders().find(o=>String(o.reference||o.orderReference||o.id||"")===String(ref));
+  const email=currentEmail();
+  if(!email)return null;
+  return readOrders().find(o=>
+    orderRef(o)===String(ref)&&
+    String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").trim().toLowerCase()===email
+  )||null;
 }
 function updateOrder(ref,updates){
+  const email=currentEmail();
+  if(!email)return false;
   const all=readOrders();
-  const i=all.findIndex(o=>String(o.reference||o.orderReference||o.id||"")===String(ref));
+  const i=all.findIndex(o=>
+    orderRef(o)===String(ref)&&
+    String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").trim().toLowerCase()===email
+  );
   if(i<0)return false;
-  all[i]={...all[i],...updates};
+  all[i]={...all[i],...updates,updatedAt:new Date().toISOString()};
   saveOrders(all);
   render();
   return true;
 }
+
+/* Idempotent seller settlement:
+   A wallet credit is created only after both seller handover and rider pickup
+   confirmations are recorded on the same order. */
+function releaseSellerEarnings(order){
+  if(!order||order.sellerWalletCreditedAt)return false;
+  const sellerConfirmed=order.sellerHandoverConfirmed===true||
+    order.sellerHandoverStatus==="confirmed";
+  const riderConfirmed=order.riderPickupConfirmed===true||
+    order.riderPickupStatus==="confirmed";
+
+  if(!sellerConfirmed||!riderConfirmed)return false;
+
+  const email=currentEmail();
+  const ref=orderRef(order);
+  if(!email||!ref)return false;
+
+  const amount=totalOf(order);
+  if(amount<=0)return false;
+
+  const transactions=readJSON(WALLET_TX_KEY,[]);
+  const list=Array.isArray(transactions)?transactions:[];
+  const transactionId="SELLER-SALE-"+ref;
+
+  if(list.some(t=>String(t.transactionId||t.id)===transactionId)){
+    updateOrder(ref,{
+      sellerWalletCredited:true,
+      sellerWalletCreditedAt:order.sellerWalletCreditedAt||new Date().toISOString()
+    });
+    return false;
+  }
+
+  const now=new Date().toISOString();
+  list.push({
+    transactionId,
+    type:"sale_credit",
+    wallet:"seller_store_wallet",
+    orderReference:ref,
+    sellerEmail:email,
+    amount,
+    status:"credited",
+    description:"Product sale proceeds released after seller handover and rider pickup confirmation",
+    createdAt:now
+  });
+  localStorage.setItem(WALLET_TX_KEY,JSON.stringify(list));
+
+  const all=readOrders();
+  const index=all.findIndex(o=>
+    orderRef(o)===ref&&
+    String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").trim().toLowerCase()===email
+  );
+  if(index>=0){
+    all[index]={
+      ...all[index],
+      sellerWalletCredited:true,
+      sellerWalletCreditedAt:now,
+      sellerWalletCreditReference:transactionId
+    };
+    saveOrders(all);
+  }
+  return true;
+}
+function checkAllSellerReleases(){
+  myOrders().forEach(order=>releaseSellerEarnings(order));
+}
 function render(){
+  checkAllSellerReleases();
+
+  const email=currentEmail();
+  const target=document.getElementById("ordersList");
+  if(!email){
+    document.getElementById("totalCount").textContent="0";
+    document.getElementById("newCount").textContent="0";
+    document.getElementById("activeCount").textContent="0";
+    document.getElementById("confirmCount").textContent="0";
+    target.innerHTML='<div class="empty"><h3>Seller sign-in required</h3><p>Please sign in to your EarnGig seller account to view your orders.</p><a class="btn primary" href="login.html">Sign In</a></div>';
+    return;
+  }
+
   const orders=myOrders();
   const states=orders.map(statusOf);
   document.getElementById("totalCount").textContent=orders.length;
   document.getElementById("newCount").textContent=states.filter(s=>s==="pending").length;
-  document.getElementById("activeCount").textContent=states.filter(s=>["accepted","processing","dispatched"].includes(s)).length;
-  document.getElementById("confirmCount").textContent=states.filter(s=>s==="awaiting_confirmation"||s==="dispatched").length;
+  document.getElementById("activeCount").textContent=states.filter(s=>["accepted","processing"].includes(s)).length;
+  document.getElementById("confirmCount").textContent=orders.filter(o=>
+    o.sellerHandoverConfirmed===true&&!o.riderPickupConfirmed
+  ).length;
 
   const query=document.getElementById("searchInput").value.trim().toLowerCase();
   const list=orders.filter(o=>{
     const s=statusOf(o);
     const matches=activeFilter==="all"||s===activeFilter;
-    const text=[o.reference,o.orderReference,o.id,o.buyerName,o.customerName,o.buyerEmail].join(" ").toLowerCase();
+    const text=[orderRef(o),o.buyerName,o.customerName,o.buyerEmail].join(" ").toLowerCase();
     return matches&&text.includes(query);
   }).sort((a,b)=>new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0));
 
-  const target=document.getElementById("ordersList");
   target.innerHTML="";
   if(!list.length){
-    target.innerHTML='<div class="empty"><h3>No orders found</h3><p>New paid marketplace orders assigned to your store will appear here.</p></div>';
+    target.innerHTML='<div class="empty"><h3>No orders found</h3><p>Paid marketplace orders assigned to your seller account will appear here.</p></div>';
     return;
   }
 
   list.forEach(o=>{
-    const ref=o.reference||o.orderReference||o.id||"Order";
+    const ref=orderRef(o)||"Order";
     const s=statusOf(o);
     const card=document.createElement("article");
     card.className="order";
+
     const head=document.createElement("div");
     head.className="order-head";
     head.innerHTML=`<div><div class="ref">Order ${esc(ref)}</div><div class="date">${esc(dateText(o.createdAt||o.date))}</div></div><span class="pill ${esc(s)}">${esc(label(s))}</span>`;
 
     const body=document.createElement("div");
     body.className="order-body";
+
     const buyer=document.createElement("div");
     buyer.className="buyer";
     buyer.innerHTML=`Buyer: <strong>${esc(o.buyerName||o.customerName||"Buyer")}</strong> &nbsp; | &nbsp; ${esc(o.buyerPhone||o.delivery?.phone||"Phone not provided")}`;
@@ -266,65 +384,126 @@ function render(){
     itemList.className="items";
     itemsOf(o).forEach(i=>{
       const row=document.createElement("div");row.className="item";
-      const img=document.createElement("img");img.src=i.image||i.imageUrl||"";img.alt=i.name||"Product";img.onerror=()=>img.style.visibility="hidden";
+      const img=document.createElement("img");
+      img.src=i.image||i.imageUrl||"";img.alt=i.name||"Product";
+      img.onerror=()=>img.style.visibility="hidden";
       const info=document.createElement("div");info.className="item-info";
       info.innerHTML=`<strong>${esc(i.name||i.title||"Product")}</strong><span>Quantity: ${Math.max(1,Number(i.quantity)||1)}</span>`;
-      const price=document.createElement("div");price.className="item-price";price.textContent=money((Number(i.price)||0)*Math.max(1,Number(i.quantity)||1));
+      const price=document.createElement("div");price.className="item-price";
+      price.textContent=money((Number(i.price)||0)*Math.max(1,Number(i.quantity)||1));
       row.append(img,info,price);itemList.appendChild(row);
     });
 
+    const handover=document.createElement("div");
+    handover.className="delivery-box";
+    const sellerDone=o.sellerHandoverConfirmed===true||o.sellerHandoverStatus==="confirmed";
+    const riderDone=o.riderPickupConfirmed===true||o.riderPickupStatus==="confirmed";
+    const credited=!!o.sellerWalletCredited;
+    handover.innerHTML=`
+      <h4>DELIVERY HANDOVER & SELLER PAYMENT</h4>
+      <div class="delivery-step"><span>Seller confirms package handed to rider</span><strong class="${sellerDone?"step-done":"step-wait"}">${sellerDone?"Confirmed":"Awaiting seller"}</strong></div>
+      <div class="delivery-step"><span>Rider confirms physical pickup</span><strong class="${riderDone?"step-done":"step-wait"}">${riderDone?"Confirmed":"Awaiting rider"}</strong></div>
+      <div class="delivery-step"><span>Seller Store Wallet</span><strong class="${credited?"step-done":"step-wait"}">${credited?"Credited":sellerDone&&riderDone?"Processing":"Pending confirmation"}</strong></div>
+    `;
+
     const bottom=document.createElement("div");bottom.className="order-bottom";
     const amount=document.createElement("div");amount.className="amount";
-    amount.innerHTML=`Your expected sales proceeds<strong>${money(totalOf(o))}</strong>`;
+    amount.innerHTML=`Expected product proceeds<strong>${money(totalOf(o))}</strong>`;
     const actions=document.createElement("div");actions.className="actions";
-    const detail=document.createElement("button");detail.className="btn light";detail.textContent="View Details";detail.onclick=()=>showDetails(ref);actions.appendChild(detail);
+
+    const detail=document.createElement("button");
+    detail.className="btn light";detail.textContent="View Details";
+    detail.onclick=()=>showDetails(ref);actions.appendChild(detail);
 
     if(s==="pending"){
-      const accept=document.createElement("button");accept.className="btn primary";accept.textContent="Accept Order";accept.onclick=()=>acceptOrder(ref);actions.appendChild(accept);
-      const reject=document.createElement("button");reject.className="btn danger";reject.textContent="Reject";reject.onclick=()=>rejectOrder(ref);actions.appendChild(reject);
+      const accept=document.createElement("button");
+      accept.className="btn primary";accept.textContent="Accept Order";
+      accept.onclick=()=>acceptOrder(ref);actions.appendChild(accept);
+
+      const reject=document.createElement("button");
+      reject.className="btn danger";reject.textContent="Reject";
+      reject.onclick=()=>rejectOrder(ref);actions.appendChild(reject);
     }
     if(s==="accepted"){
-      const prep=document.createElement("button");prep.className="btn primary";prep.textContent="Start Preparing";prep.onclick=()=>changeStatus(ref,"processing");actions.appendChild(prep);
+      const prep=document.createElement("button");
+      prep.className="btn primary";prep.textContent="Start Preparing";
+      prep.onclick=()=>changeStatus(ref,"processing");actions.appendChild(prep);
     }
     if(s==="processing"){
-      const dispatch=document.createElement("button");dispatch.className="btn primary";dispatch.textContent="Upload Package Photo & Dispatch";dispatch.onclick=()=>showDispatch(ref);actions.appendChild(dispatch);
+      const dispatch=document.createElement("button");
+      dispatch.className="btn primary";dispatch.textContent="Upload Package Photo";
+      dispatch.onclick=()=>showDispatch(ref);actions.appendChild(dispatch);
     }
-    if(s==="dispatched"||s==="awaiting_confirmation"){
-      const confirmBtn=document.createElement("button");confirmBtn.className="btn green";confirmBtn.textContent="Confirm Delivery";confirmBtn.onclick=()=>sellerConfirm(ref);actions.appendChild(confirmBtn);
+    if(s==="dispatched"&&!sellerDone){
+      const handoverBtn=document.createElement("button");
+      handoverBtn.className="btn green";handoverBtn.textContent="Confirm Handover to Rider";
+      handoverBtn.onclick=()=>confirmSellerHandover(ref);
+      actions.appendChild(handoverBtn);
     }
+    const track=document.createElement("a");
+    track.className="btn light";
+    track.href="delivery-tracking.html?order="+encodeURIComponent(ref);
+    track.textContent="Track Delivery";
+    actions.appendChild(track);
+
     bottom.append(amount,actions);
-    body.append(buyer,itemList,bottom);
+    body.append(buyer,itemList,handover,bottom);
     card.append(head,body);
     target.appendChild(card);
   });
 }
 function acceptOrder(ref){
   if(!confirm("Accept this buyer's order?"))return;
-  updateOrder(ref,{status:"accepted",orderStatus:"accepted",sellerAccepted:true,sellerAcceptedAt:new Date().toISOString()});
+  updateOrder(ref,{
+    status:"accepted",
+    orderStatus:"accepted",
+    sellerAccepted:true,
+    sellerAcceptedAt:new Date().toISOString()
+  });
 }
 function rejectOrder(ref){
   const reason=prompt("Please provide a reason for rejecting this order:");
   if(!reason||!reason.trim())return;
-  updateOrder(ref,{status:"rejected",orderStatus:"rejected",sellerRejectionReason:reason.trim(),sellerRejectedAt:new Date().toISOString()});
+  updateOrder(ref,{
+    status:"rejected",
+    orderStatus:"rejected",
+    sellerRejectionReason:reason.trim(),
+    sellerRejectedAt:new Date().toISOString()
+  });
 }
 function changeStatus(ref,status){
   if(!confirm("Update this order to "+label(status)+"?"))return;
-  updateOrder(ref,{status,orderStatus:status,[status==="processing"?"preparationStartedAt":"updatedAt"]:new Date().toISOString()});
+  updateOrder(ref,{
+    status,
+    orderStatus:status,
+    preparationStartedAt:new Date().toISOString()
+  });
 }
 function showDispatch(ref){
   const o=findOrder(ref);if(!o)return;
   photoData="";
   document.getElementById("modal").innerHTML=`
-    <h2>Dispatch Package</h2>
-    <p>Upload a clear photo showing the actual package before marking this order as out for delivery.</p>
-    <div class="field"><label>Package photo *</label><input type="file" id="packagePhoto" accept="image/*"><small>Image is stored in this browser for this frontend demonstration. Production storage needs secure file uploads.</small><img id="photoPreview" class="preview" alt="Package preview"></div>
-    <div class="field"><label>Delivery note (optional)</label><textarea id="dispatchNote" placeholder="Add any useful dispatch information..."></textarea></div>
-    <div class="modal-actions"><button class="btn light" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="submitDispatch('${esc(ref)}')">Mark Out for Delivery</button></div>`;
+    <h2>Prepare Package for Rider</h2>
+    <p>Upload a clear photo of the actual sealed package. The rider must still confirm physical pickup separately.</p>
+    <div class="field">
+      <label>Package photo *</label>
+      <input type="file" id="packagePhoto" accept="image/*">
+      <small>Browser demonstration only. Production requires secure image storage.</small>
+      <img id="photoPreview" class="preview" alt="Package preview">
+    </div>
+    <div class="field">
+      <label>Package note (optional)</label>
+      <textarea id="dispatchNote" placeholder="Package description or pickup instructions"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="submitDispatch('${esc(ref)}')">Save Package Photo</button>
+    </div>`;
   document.getElementById("modalBg").classList.add("show");
   document.getElementById("packagePhoto").addEventListener("change",e=>{
     const file=e.target.files[0];if(!file)return;
     if(!file.type.startsWith("image/")){alert("Please select an image.");return}
-    if(file.size>1500000){alert("Please use an image smaller than 1.5MB for this browser demo.");e.target.value="";return}
+    if(file.size>1500000){alert("Please use an image smaller than 1.5MB.");e.target.value="";return}
     const reader=new FileReader();
     reader.onload=()=>{
       photoData=reader.result;
@@ -335,34 +514,45 @@ function showDispatch(ref){
   });
 }
 function submitDispatch(ref){
-  if(!photoData){alert("A package photo is required before dispatch.");return}
+  if(!photoData){alert("A package photo is required.");return}
   const note=document.getElementById("dispatchNote").value.trim();
   updateOrder(ref,{
     status:"dispatched",
     orderStatus:"dispatched",
+    packagePhoto:photoData,
     dispatchPhoto:photoData,
     dispatchNote:note,
-    dispatchedAt:new Date().toISOString()
+    packageReadyAt:new Date().toISOString()
   });
   closeModal();
-  alert("Dispatch details saved. The buyer can now see that the package is out for delivery.");
+  alert("Package photo saved. Confirm the handover only after the rider physically collects the package.");
 }
-function sellerConfirm(ref){
+function confirmSellerHandover(ref){
   const o=findOrder(ref);if(!o)return;
-  if(!confirm("Confirm that you have fulfilled and delivered this order to the buyer? The funds remain pending until the buyer also confirms receipt."))return;
+  if(!o.packagePhoto&&!o.dispatchPhoto){
+    alert("Upload the package photo before confirming handover.");
+    return;
+  }
+  if(!confirm("Confirm that you have physically handed this package to the assigned rider? The rider must separately confirm pickup before your sales proceeds are credited."))return;
+
   updateOrder(ref,{
-    sellerDelivered:true,
-    sellerConfirmedAt:new Date().toISOString(),
-    sellerConfirmationStatus:"confirmed",
-    status:o.buyerReceived||o.buyerConfirmationStatus==="confirmed"?"completed":"awaiting_confirmation",
-    orderStatus:o.buyerReceived||o.buyerConfirmationStatus==="confirmed"?"completed":"awaiting_confirmation"
+    sellerHandoverConfirmed:true,
+    sellerHandoverStatus:"confirmed",
+    sellerHandoverConfirmedAt:new Date().toISOString()
   });
-  alert("Your delivery confirmation has been recorded. Funds become eligible for release only after both parties confirm. This page does not transfer money.");
+
+  const updated=findOrder(ref);
+  if(updated)releaseSellerEarnings(updated);
+  render();
+  alert("Your handover confirmation has been recorded. Your Store Wallet will be credited once the rider also confirms physical pickup.");
 }
 function showDetails(ref){
   const o=findOrder(ref);if(!o)return;
   const d=o.delivery||{};
-  const photo=o.dispatchPhoto||o.packagePhoto||"";
+  const sellerDone=o.sellerHandoverConfirmed===true||o.sellerHandoverStatus==="confirmed";
+  const riderDone=o.riderPickupConfirmed===true||o.riderPickupStatus==="confirmed";
+  const photo=o.packagePhoto||o.dispatchPhoto||"";
+
   document.getElementById("modal").innerHTML=`
     <h2>Order Details</h2>
     <div class="detail"><span>Reference</span><strong>${esc(ref)}</strong></div>
@@ -371,31 +561,45 @@ function showDetails(ref){
     <div class="detail"><span>Phone</span><strong>${esc(o.buyerPhone||d.phone||"Not provided")}</strong></div>
     <div class="detail"><span>Delivery address</span><strong>${esc(d.address||d.fullAddress||o.deliveryAddress||"Not provided")}</strong></div>
     <div class="detail"><span>City / State</span><strong>${esc([d.city||o.city,d.state||o.state].filter(Boolean).join(", ")||"Not provided")}</strong></div>
-    <div class="detail"><span>Expected seller proceeds</span><strong>${money(totalOf(o))}</strong></div>
+    <div class="detail"><span>Product proceeds</span><strong>${money(totalOf(o))}</strong></div>
     <div class="detail"><span>Payment status</span><strong>${esc(o.paymentStatus||"Not available")}</strong></div>
-    <div class="detail"><span>Buyer receipt confirmation</span><strong>${o.buyerReceived||o.buyerConfirmationStatus==="confirmed"?"Confirmed":"Awaiting buyer"}</strong></div>
-    <div class="detail"><span>Seller delivery confirmation</span><strong>${o.sellerDelivered||o.sellerConfirmationStatus==="confirmed"?"Confirmed":"Awaiting seller"}</strong></div>
+    <div class="detail"><span>Seller handover</span><strong>${sellerDone?"Confirmed":"Awaiting seller"}</strong></div>
+    <div class="detail"><span>Rider pickup</span><strong>${riderDone?"Confirmed":"Awaiting rider"}</strong></div>
+    <div class="detail"><span>Seller wallet</span><strong>${o.sellerWalletCredited?"Credited":"Awaiting both confirmations"}</strong></div>
     <div class="timeline">
       <div><b>Order created</b>${esc(dateText(o.createdAt||o.date))}</div>
       ${o.sellerAcceptedAt?`<div><b>Accepted</b>${esc(dateText(o.sellerAcceptedAt))}</div>`:""}
       ${o.preparationStartedAt?`<div><b>Preparation started</b>${esc(dateText(o.preparationStartedAt))}</div>`:""}
-      ${o.dispatchedAt?`<div><b>Dispatched</b>${esc(dateText(o.dispatchedAt))}</div>`:""}
-      ${o.buyerConfirmedAt?`<div><b>Buyer confirmed receipt</b>${esc(dateText(o.buyerConfirmedAt))}</div>`:""}
-      ${o.sellerConfirmedAt?`<div><b>Seller confirmed delivery</b>${esc(dateText(o.sellerConfirmedAt))}</div>`:""}
+      ${o.packageReadyAt?`<div><b>Package prepared</b>${esc(dateText(o.packageReadyAt))}</div>`:""}
+      ${o.sellerHandoverConfirmedAt?`<div><b>Seller confirmed handover</b>${esc(dateText(o.sellerHandoverConfirmedAt))}</div>`:""}
+      ${o.riderPickupConfirmedAt?`<div><b>Rider confirmed pickup</b>${esc(dateText(o.riderPickupConfirmedAt))}</div>`:""}
+      ${o.sellerWalletCreditedAt?`<div><b>Seller wallet credited</b>${esc(dateText(o.sellerWalletCreditedAt))}</div>`:""}
     </div>
-    ${photo?`<p><strong>Package photo</strong></p><img src="${photo}" style="width:100%;max-height:250px;object-fit:contain;border:1px solid #eee;border-radius:8px" alt="Dispatch package photo">`:""}
-    <div class="modal-actions"><button class="btn light" onclick="closeModal()">Close</button></div>`;
+    ${photo?`<p><strong>Package photo</strong></p><img src="${photo}" style="width:100%;max-height:250px;object-fit:contain;border:1px solid #eee;border-radius:8px" alt="Package photo">`:""}
+    <div class="modal-actions">
+      <a class="btn light" href="delivery-tracking.html?order=${encodeURIComponent(ref)}">Track Delivery</a>
+      <button class="btn light" onclick="closeModal()">Close</button>
+    </div>`;
   document.getElementById("modalBg").classList.add("show");
 }
-function closeModal(){document.getElementById("modalBg").classList.remove("show")}
+function closeModal(){
+  document.getElementById("modalBg").classList.remove("show");
+}
 document.querySelectorAll(".filter").forEach(button=>{
   button.addEventListener("click",()=>{
     document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
-    button.classList.add("active");activeFilter=button.dataset.filter;render();
+    button.classList.add("active");
+    activeFilter=button.dataset.filter;
+    render();
   });
 });
 document.getElementById("searchInput").addEventListener("input",render);
-document.getElementById("modalBg").addEventListener("click",e=>{if(e.target.id==="modalBg")closeModal()});
+document.getElementById("modalBg").addEventListener("click",e=>{
+  if(e.target.id==="modalBg")closeModal();
+});
+window.addEventListener("storage",e=>{
+  if(e.key===ORDERS_KEY)render();
+});
 render();
 </script>
 </body>
