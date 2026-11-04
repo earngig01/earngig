@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Payments | EarnGig</title>
+<style>
+:root{
+  --purple:#6427c7;
+  --purple-dark:#48159b;
+  --purple-light:#f2ebff;
+  --gold:#d6a62e;
+  --text:#25213a;
+  --muted:#77738a;
+  --border:#ece8f3;
+  --background:#faf9fc;
+  --green:#168653;
+  --orange:#b87518;
+  --red:#c43e3e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--text)}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.topbar{
+  height:72px;background:white;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;position:sticky;top:0;z-index:10
+}
+.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
+.brand svg{width:25px;height:25px}
+.top-actions{display:flex;gap:18px;font-size:13px;font-weight:700;color:var(--purple)}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.sidebar{background:white;border-right:1px solid var(--border);padding:25px 15px}
+.side-label{color:#9993a9;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:0 12px;margin:19px 0 9px}
+.side-link{display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;margin:3px 0;font-size:13px;color:#625d71;font-weight:600}
+.side-link:hover,.side-link.active{color:var(--purple);background:var(--purple-light)}
+.side-link span{width:20px;text-align:center;font-size:16px}
+main{max-width:1450px;width:100%;padding:34px;margin:auto}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:25px}
+h1{font-size:28px;margin:0 0 8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+.button{
+  display:inline-flex;justify-content:center;align-items:center;
+  border:0;border-radius:9px;padding:12px 17px;background:var(--purple);
+  color:white;font-size:12px;font-weight:700;cursor:pointer
+}
+.button:hover{background:var(--purple-dark)}
+.button.secondary{background:white;border:1px solid #d9c8f4;color:var(--purple)}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:23px}
+.summary-card{background:white;border:1px solid var(--border);border-radius:13px;padding:19px}
+.summary-card small{display:block;color:var(--muted);font-size:12px;margin-bottom:12px}
+.summary-card strong{display:block;font-size:23px;overflow-wrap:anywhere}
+.summary-icon{float:right;font-size:21px}
+.summary-card .hint{display:block;margin-top:8px;color:var(--muted);font-size:10px}
+.panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:22px}
+.panel-heading{padding:19px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-heading h2{font-size:15px;margin:0}
+.panel-body{padding:20px}
+.fee-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.fee-card{border:1px solid var(--border);border-radius:12px;padding:18px}
+.fee-card h3{font-size:14px;margin:0 0 7px}
+.fee-card p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
+.fee-price{font-size:23px;font-weight:800;color:var(--purple);margin-top:14px}
+.fee-tag{display:inline-block;font-size:9px;font-weight:700;background:var(--purple-light);color:var(--purple);padding:6px 9px;border-radius:20px;margin-top:10px}
+.status{display:inline-block;padding:6px 9px;border-radius:30px;font-size:10px;font-weight:700;text-transform:capitalize;white-space:nowrap}
+.status-paid{background:#e4f7ed;color:var(--green)}
+.status-pending{background:#fff2dc;color:var(--orange)}
+.status-failed,.status-rejected{background:#ffe9e9;color:var(--red)}
+.status-not-paid{background:#f0edf4;color:#716b80}
+.status-unknown{background:#f0edf4;color:#716b80}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th{text-align:left;padding:14px 16px;background:#fcfbfd;color:#898398;font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+td{padding:15px 16px;border-top:1px solid #f0edf4;font-size:11px}
+.ref{font-weight:800;color:var(--purple)}
+.empty{padding:38px 20px;text-align:center;color:var(--muted);font-size:12px}
+.notice{padding:15px 17px;background:#f5f0ff;border:1px solid #e9defa;border-radius:10px;color:#59427e;font-size:11px;line-height:1.7;margin-top:20px}
+.payment-info{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.info-box{background:#fcfbfd;border:1px solid var(--border);border-radius:10px;padding:16px}
+.info-box h3{font-size:12px;margin:0 0 8px}
+.info-box p{font-size:11px;color:var(--muted);line-height:1.7;margin:0}
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:flex;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--border);gap:5px}
+  .side-label{display:none}
+  .side-link{white-space:nowrap;margin:0}
+  main{padding:25px 18px}
+}
+@media(max-width:650px){
+  .topbar{height:62px;padding:0 15px}
+  .brand{font-size:20px}
+  .top-actions{gap:10px;font-size:11px}
+  .heading{flex-direction:column}
+  h1{font-size:24px}
+  .summary-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .summary-card{padding:14px}
+  .summary-card strong{font-size:20px}
+  .fee-grid,.payment-info{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
+      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
+      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
+    </svg>
+    EarnGig
+  </a>
+  <div class="top-actions">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="my-shop.html">Seller Centre</a>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="side-label">SELLER CENTRE</div>
+  <a class="side-link" href="my-shop.html"><span>▦</span> Overview</a>
+  <a class="side-link" href="store-registration.html"><span>＋</span> Open a Shop</a>
+  <a class="side-link" href="storefront.html"><span>🏪</span> My Store</a>
+  <a class="side-link" href="store-customisation.html"><span>🎨</span> Store Customisation</a>
+  <a class="side-link" href="my-products.html"><span>📦</span> My Products</a>
+  <a class="side-link" href="my-orders.html"><span>🛍️</span> Orders</a>
+  <a class="side-link" href="promote-store.html"><span>📣</span> Promotions</a>
+  <a class="side-link" href="sales-earnings.html"><span>💰</span> Sales & Earnings</a>
+  <a class="side-link active" href="shop-payments.html"><span>💳</span> Shop Payments</a>
+  <a class="side-link" href="withdrawals.html"><span>🏦</span> Withdrawals</a>
+  <a class="side-link" href="store-settings.html"><span>⚙️</span> Store Settings</a>
+</aside>
+
+<main>
+  <div class="heading">
+    <div>
+      <h1>Shop Payments</h1>
+      <p class="subtitle">Review your store fees, promotion payments and payment records.</p>
+    </div>
+    <a href="my-shop.html" class="button secondary">Seller Overview</a>
+  </div>
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span class="summary-icon">💳</span>
+      <small>Total Recorded Payments</small>
+      <strong id="totalPaid">₦0</strong>
+      <span class="hint">Payments marked as successful</span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">⏳</span>
+      <small>Pending Payments</small>
+      <strong id="pendingAmount">₦0</strong>
+      <span class="hint">Recorded payment requests awaiting confirmation</span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">🧾</span>
+      <small>Payment Records</small>
+      <strong id="recordCount">0</strong>
+      <span class="hint">Records available in this browser</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>EarnGig Seller Fees</h2>
+      <span class="subtitle">Current listed prices</span>
+    </div>
+    <div class="panel-body">
+      <div class="fee-grid">
+        <div class="fee-card">
+          <h3>Basic Store Registration</h3>
+          <p>One-time fee payable only after your seller application has been approved.</p>
+          <div class="fee-price">₦20,000</div>
+          <span class="fee-tag">One-time payment</span>
+        </div>
+        <div class="fee-card">
+          <h3>Premium Store Customisation</h3>
+          <p>Optional upgrade for additional storefront presentation and layout options.</p>
+          <div class="fee-price">₦10,000</div>
+          <span class="fee-tag">Optional one-time payment</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Promotion Package Prices</h2>
+      <a href="promote-store.html" class="button secondary">Promote My Store</a>
+    </div>
+    <div class="panel-body">
+      <div class="fee-grid">
+        <div class="fee-card">
+          <h3>Feature Product — 24 Hours</h3>
+          <p>Featured placement for one selected product.</p>
+          <div class="fee-price">₦1,000</div>
+        </div>
+        <div class="fee-card">
+          <h3>Feature Product — 7 Days</h3>
+          <p>Featured placement for one selected product.</p>
+          <div class="fee-price">₦5,500</div>
+        </div>
+        <div class="fee-card">
+          <h3>Feature Product — 30 Days</h3>
+          <p>Extended featured placement for one product.</p>
+          <div class="fee-price">₦15,000</div>
+        </div>
+        <div class="fee-card">
+          <h3>Feature Store — 7 Days</h3>
+          <p>Promote your entire storefront for one week.</p>
+          <div class="fee-price">₦20,000</div>
+        </div>
+        <div class="fee-card">
+          <h3>Feature Store — 30 Days</h3>
+          <p>Promote your entire storefront for one month.</p>
+          <div class="fee-price">₦50,000</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Payment History</h2>
+      <span class="subtitle" id="historyCount">0 records</span>
+    </div>
+    <div class="table-wrap" id="historyTableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Payment Description</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="historyRows"></tbody>
+      </table>
+    </div>
+    <div class="empty hidden" id="emptyHistory">
+      No payment records are available yet.
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Payment Information</h2>
+    </div>
+    <div class="panel-body">
+      <div class="payment-info">
+        <div class="info-box">
+          <h3>Store Registration Payment</h3>
+          <p>Your ₦20,000 basic store fee becomes payable only after your store application is approved. You should not pay before approval.</p>
+        </div>
+        <div class="info-box">
+          <h3>Premium Customisation</h3>
+          <p>The ₦10,000 premium customisation upgrade is optional. It is separate from the basic store registration fee.</p>
+        </div>
+        <div class="info-box">
+          <h3>Promotion Payments</h3>
+          <p>Promotion requests are not automatically paid or activated. A promotion becomes active only after the required payment and approval process.</p>
+        </div>
+        <div class="info-box">
+          <h3>Customer Checkout Charges</h3>
+          <p>EarnGig applies a checkout service charge to customer purchases. The charge is between ₦100 and ₦1,000, depending on purchase value. The final calculation is not displayed here yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <strong>Payment security:</strong> This page is a frontend record viewer. It does not collect
+    money, verify bank transfers or process Paystack transactions. Only verified payment records
+    should be treated as successful payments.
+  </div>
+</main>
+</div>
+
+<script>
+const ENTITLEMENTS_KEY = "earngig_seller_entitlements";
+const PROMOTIONS_KEY = "earngig_seller_promotions";
+const PAYMENT_HISTORY_KEY = "earngig_seller_payment_history";
+
+function readObject(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "{}");
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function readArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function money(value) {
+  return "₦" + Number(value || 0).toLocaleString("en-NG");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
+
+function isPaid(status) {
+  return ["paid","successful","completed","verified"].includes(
+    String(status || "").toLowerCase()
+  );
+}
+
+function normalisePaymentStatus(status) {
+  const value = String(status || "").toLowerCase();
+
+  if (isPaid(value)) return "paid";
+  if (value === "pending" || value === "processing") return "pending";
+  if (value === "failed" || value === "rejected") return "failed";
+  return "not-paid";
+}
+
+function statusLabel(status) {
+  const normalised = normalisePaymentStatus(status);
+
+  if (normalised === "paid") return "Paid";
+  if (normalised === "pending") return "Pending";
+  if (normalised === "failed") return "Failed";
+  return "Not paid";
+}
+
+function dateLabel(value) {
+  if (!value) return "Date unavailable";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+  return date.toLocaleDateString("en-NG", {
+    day:"numeric",
+    month:"short",
+    year:"numeric"
+  });
+}
+
+function loadPaymentRecords() {
+  const records = readArray(PAYMENT_HISTORY_KEY);
+  const entitlements = readObject(ENTITLEMENTS_KEY);
+  const promotions = readArray(PROMOTIONS_KEY);
+
+  const combined = [...records];
+
+  /*
+    Add basic and premium store payment records only when the entitlement
+    object contains a confirmed payment flag. These are display records,
+    not independent payment verification.
+  */
+
+  if (entitlements.basicStorePaid === true) {
+    const alreadyRecorded = combined.some(record =>
+      record.type === "basic_store" || record.description === "Basic Store Registration"
+    );
+
+    if (!alreadyRecorded) {
+      combined.push({
+        id:"basic-store-payment",
+        reference:"Basic Store",
+        type:"basic_store",
+        description:"Basic Store Registration",
+        amount:20000,
+        status:"paid",
+        paymentMethod:"Not recorded",
+        date:entitlements.basicStorePaidAt || ""
+      });
+    }
+  }
+
+  if (entitlements.premiumCustomisationPaid === true) {
+    const alreadyRecorded = combined.some(record =>
+      record.type === "premium_customisation" ||
+      record.description === "Premium Store Customisation"
+    );
+
+    if (!alreadyRecorded) {
+      combined.push({
+        id:"premium-customisation-payment",
+        reference:"Premium Customisation",
+        type:"premium_customisation",
+        description:"Premium Store Customisation",
+        amount:10000,
+        status:"paid",
+        paymentMethod:"Not recorded",
+        date:entitlements.premiumCustomisationPaidAt || ""
+      });
+    }
+  }
+
+  promotions.forEach(promotion => {
+    const paymentStatus = promotion.paymentStatus || "not_paid";
+
+    if (paymentStatus === "not_paid") return;
+
+    const exists = combined.some(record =>
+      record.promotionId && record.promotionId === promotion.id
+    );
+
+    if (!exists) {
+      combined.push({
+        id:"promotion-" + promotion.id,
+        promotionId:promotion.id,
+        reference:promotion.reference || promotion.id,
+        description:promotion.type === "store"
+          ? "Featured Store Promotion"
+          : "Featured Product Promotion",
+        amount:Number(promotion.amount || 0),
+        status:paymentStatus,
+        paymentMethod:promotion.paymentMethod || "Not recorded",
+        date:promotion.paidAt || promotion.submittedAt || ""
+      });
+    }
+  });
+
+  return combined.sort((a,b) => {
+    const dateA = new Date(a.date || a.createdAt || 0).getTime() || 0;
+    const dateB = new Date(b.date || b.createdAt || 0).getTime() || 0;
+    return dateB - dateA;
+  });
+}
+
+function renderPage() {
+  const records = loadPaymentRecords();
+
+  const paidRecords = records.filter(record => isPaid(record.status));
+  const pendingRecords = records.filter(record =>
+    normalisePaymentStatus(record.status) === "pending"
+  );
+
+  const totalPaid = paidRecords.reduce((sum,record) =>
+    sum + Number(record.amount || 0),0
+  );
+
+  const pendingAmount = pendingRecords.reduce((sum,record) =>
+    sum + Number(record.amount || 0),0
+  );
+
+  document.getElementById("totalPaid").textContent = money(totalPaid);
+  document.getElementById("pendingAmount").textContent = money(pendingAmount);
+  document.getElementById("recordCount").textContent = records.length;
+
+  document.getElementById("historyCount").textContent =
+    records.length + (records.length === 1 ? " record" : " records");
+
+  const tbody = document.getElementById("historyRows");
+  const table = document.getElementById("historyTableWrap");
+  const empty = document.getElementById("emptyHistory");
+
+  if (!records.length) {
+    table.classList.add("hidden");
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  table.classList.remove("hidden");
+  empty.classList.add("hidden");
+
+  tbody.innerHTML = records.map(record => {
+    const status = normalisePaymentStatus(record.status);
+
+    return `
+      <tr>
+        <td><span class="ref">${escapeHTML(record.reference || record.id || "Payment")}</span></td>
+        <td>${escapeHTML(record.description || record.type || "Shop payment")}</td>
+        <td>${escapeHTML(dateLabel(record.date || record.createdAt || record.paidAt))}</td>
+        <td><strong>${money(record.amount)}</strong></td>
+        <td>${escapeHTML(record.paymentMethod || "Not recorded")}</td>
+        <td><span class="status status-${status}">${escapeHTML(statusLabel(record.status))}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+renderPage();
+</script>
+</body>
+</html>
