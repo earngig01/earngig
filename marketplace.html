@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,13 +32,13 @@ a{text-decoration:none;color:inherit}
 button,input,select{font:inherit}
 
 .topbar{
-  height:70px;
+  min-height:70px;
   background:white;
   border-bottom:1px solid var(--border);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 5%;
+  padding:10px 5%;
   position:sticky;
   top:0;
   z-index:20
@@ -49,7 +50,8 @@ button,input,select{font:inherit}
   gap:8px;
   color:var(--purple);
   font-size:23px;
-  font-weight:800
+  font-weight:800;
+  flex-shrink:0
 }
 
 .brand svg{width:25px;height:25px}
@@ -57,7 +59,7 @@ button,input,select{font:inherit}
 .nav{
   display:flex;
   align-items:center;
-  gap:20px;
+  gap:12px;
   font-size:12px;
   font-weight:700;
   color:#5f596e
@@ -69,7 +71,24 @@ button,input,select{font:inherit}
   background:var(--light);
   color:var(--purple);
   padding:10px 13px;
-  border-radius:9px
+  border-radius:9px;
+  white-space:nowrap
+}
+
+.nav .purchases-link{
+  background:var(--purple);
+  color:white;
+  padding:11px 14px;
+  border-radius:9px;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center
+}
+
+.nav .purchases-link:hover{
+  background:var(--deep);
+  color:white
 }
 
 .hero{
@@ -380,27 +399,40 @@ button,input,select{font:inherit}
   .products-grid{
     grid-template-columns:repeat(3,minmax(0,1fr))
   }
+  .nav{gap:8px}
 }
 
 @media(max-width:700px){
   .topbar{
-    height:62px;
-    padding:0 14px
+    min-height:62px;
+    padding:9px 12px;
+    gap:8px
   }
 
-  .brand{font-size:20px}
+  .brand{font-size:19px}
+  .brand svg{width:22px;height:22px}
 
   .nav{
-    gap:10px;
+    gap:6px;
     font-size:10px
   }
 
-  .nav a:not(.cart-link){display:none}
+  .nav a:not(.cart-link):not(.purchases-link){
+    display:none
+  }
+
+  .nav .purchases-link{
+    padding:10px 9px;
+    font-size:10px
+  }
+
+  .nav .cart-link{
+    padding:10px 9px;
+    font-size:10px
+  }
 
   .hero{padding:32px 20px}
-
   .hero h1{font-size:27px}
-
   .container{padding:20px 13px 35px}
 
   .products-grid{
@@ -409,13 +441,17 @@ button,input,select{font:inherit}
   }
 
   .product-image-wrap{height:155px}
-
   .product-info{padding:10px}
-
   .product-price{font-size:15px}
 }
 
 @media(max-width:360px){
+  .brand{font-size:17px}
+  .nav{gap:4px}
+  .nav .purchases-link,.nav .cart-link{
+    padding:9px 7px;
+    font-size:9px
+  }
   .products-grid{grid-template-columns:1fr}
   .product-image-wrap{height:210px}
 }
@@ -445,7 +481,12 @@ EarnGig
 <a href="games.html">Games</a>
 <a href="novels.html">Novels</a>
 <a href="marketplace.html" class="active">Marketplace</a>
-<a href="my-orders.html">My Orders</a>
+
+<!-- Customer purchase history button -->
+<a href="buyer-orders.html" class="purchases-link">
+My Purchases
+</a>
+
 <a href="cart.html" class="cart-link">
 🛒 Cart <span id="cartCount">0</span>
 </a>
