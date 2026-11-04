@@ -6,223 +6,457 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spin2Win | EarnGig</title>
 <style>
-:root{--purple:#6827c9;--deep:#48149a;--lavender:#f3edff;--gold:#e7b83f;--ink:#211b2b;--muted:#756d80;--border:#e8e0f1;--green:#16834a;--red:#c53b3b}
+:root{
+  --bg:#100720;--panel:#211039;--gold:#ffd66b;
+  --pink:#ff4f9a;--cyan:#42e5ff;--green:#49efa5;
+  --muted:#c0afd8;--red:#ff5b79;
+}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
-header{display:flex;justify-content:space-between;align-items:center;padding:15px 5%;border-bottom:1px solid var(--border)}
-.brand{display:flex;align-items:center;gap:7px;color:var(--purple);text-decoration:none;font-size:23px;font-weight:900}
-.brand svg{width:26px;height:23px}
-header a.back{color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
-main{width:min(620px,92%);margin:28px auto 55px}
-.heading{text-align:center}
-.heading h1{margin:0 0 8px;font-size:32px}
-.heading p{color:var(--muted);font-size:13px;line-height:1.6}
-.panel{margin-top:22px;padding:22px;border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 30px #32105d0b}
-.demo{display:inline-block;padding:7px 11px;border-radius:20px;background:#fff5dc;color:#805600;font-size:10px;font-weight:900;letter-spacing:.7px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
-.stat{padding:14px;background:var(--lavender);border-radius:12px;text-align:center}
-.stat span{display:block;color:var(--muted);font-size:11px}
-.stat strong{display:block;color:var(--purple);font-size:22px;margin-top:5px}
-.wheel-wrap{display:flex;justify-content:center;align-items:center;position:relative;margin:25px auto;width:280px;height:280px}
-.pointer{position:absolute;top:-8px;z-index:2;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:28px solid #2d174b;filter:drop-shadow(0 2px 2px #0003)}
-.wheel{width:260px;height:260px;border-radius:50%;border:8px solid #fff;outline:2px solid #e4d8f2;background:conic-gradient(#6827c9 0deg 45deg,#f0c65c 45deg 90deg,#8b5cf6 90deg 135deg,#f5d88d 135deg 180deg,#6827c9 180deg 225deg,#f0c65c 225deg 270deg,#8b5cf6 270deg 315deg,#f5d88d 315deg 360deg);position:relative;transition:transform 4s cubic-bezier(.12,.72,.15,1);box-shadow:0 7px 18px #32105d22}
-.wheel-label{position:absolute;left:50%;top:50%;width:100px;margin-left:-50px;margin-top:-9px;text-align:right;font-size:13px;font-weight:900;color:#fff;transform-origin:50px 9px}
-.wheel-label:nth-child(1){transform:rotate(22.5deg) translateX(48px)}
-.wheel-label:nth-child(2){transform:rotate(67.5deg) translateX(48px);color:#321b05}
-.wheel-label:nth-child(3){transform:rotate(112.5deg) translateX(48px)}
-.wheel-label:nth-child(4){transform:rotate(157.5deg) translateX(48px);color:#321b05}
-.wheel-label:nth-child(5){transform:rotate(202.5deg) translateX(48px)}
-.wheel-label:nth-child(6){transform:rotate(247.5deg) translateX(48px);color:#321b05}
-.wheel-label:nth-child(7){transform:rotate(292.5deg) translateX(48px)}
-.wheel-label:nth-child(8){transform:rotate(337.5deg) translateX(48px);color:#321b05}
-.field{margin:16px 0}
-.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}
-input{width:100%;padding:13px;border:1px solid #ddd3e9;border-radius:9px;font-size:14px;outline:none}
-input:focus{border-color:var(--purple)}
-.payout{background:#f8f4ff;border:1px solid #e5d7fa;border-radius:12px;padding:14px;line-height:1.7;font-size:12px}
-.payout strong{color:var(--purple)}
-button{padding:14px 12px;border:0;border-radius:10px;font-weight:800;cursor:pointer}
-button:disabled{opacity:.4;cursor:not-allowed}
-.primary{background:var(--purple);color:#fff}
-.secondary{background:var(--lavender);color:var(--purple)}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
-.result{display:none;margin-top:17px;padding:15px;border-radius:11px;text-align:center;font-size:13px;line-height:1.6}
-.result.win{display:block;background:#e8f8ed;color:#176c36}
-.result.lose{display:block;background:#fff0f0;color:#a32929}
-.result.info{display:block;background:#f3edff;color:var(--purple)}
-.rules{margin-top:18px;border-top:1px solid var(--border);padding-top:15px;font-size:12px;line-height:1.8;color:var(--muted)}
-.rules h2{font-size:15px;color:var(--ink)}
-footer{text-align:center;padding:20px;color:var(--muted);font-size:11px}
-@media(max-width:420px){.panel{padding:15px}.wheel-wrap{width:250px;height:250px}.wheel{width:230px;height:230px}}
+body{
+  margin:0;min-height:100vh;color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 10% 5%,#66245f 0,transparent 30%),
+    radial-gradient(circle at 90% 10%,#174d79 0,transparent 30%),
+    radial-gradient(circle at 50% 100%,#462052 0,transparent 38%),
+    var(--bg);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 5%;border-bottom:1px solid #ffffff20;
+  background:#100720d9;backdrop-filter:blur(12px)
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:900}
+.brand span{color:var(--gold)}
+.crown{width:34px;height:30px}
+.back{
+  text-decoration:none;color:#fff;background:#ffffff12;
+  border:1px solid #ffffff25;padding:10px 14px;border-radius:12px
+}
+.container{width:min(1050px,94%);margin:28px auto 55px}
+.hero{text-align:center;margin-bottom:22px}
+.eyebrow{color:var(--cyan);font-size:11px;font-weight:900;letter-spacing:3px}
+h1{
+  margin:8px 0;font-size:clamp(38px,7vw,60px);font-weight:1000;
+  letter-spacing:-2px;
+  background:linear-gradient(90deg,#fff,var(--gold),var(--pink),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{color:var(--muted);font-size:14px;margin:0}
+.shell{
+  padding:20px;border-radius:25px;
+  background:linear-gradient(145deg,#291443,#130b29);
+  border:1px solid #ffffff25;
+  box-shadow:0 25px 80px #0008,inset 0 1px #ffffff15
+}
+.top-controls{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:13px;margin-bottom:17px
+}
+.mode-label{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:1.5px;margin-bottom:7px}
+.mode-switch{display:flex;gap:5px;padding:5px;border-radius:14px;background:#0c0619;border:1px solid #ffffff20}
+.mode-btn{
+  border:0;border-radius:10px;padding:11px 15px;
+  color:#b9a9d0;background:transparent;font-size:11px;font-weight:900
+}
+.mode-btn.active.demo{color:#fff;background:linear-gradient(135deg,#00bfff,#6558ff);box-shadow:0 4px 18px #3b7cff66}
+.mode-btn.active.real{color:#28120a;background:linear-gradient(135deg,#ffd65b,#ff7848);box-shadow:0 4px 18px #ff9d4266}
+.wallet{
+  display:flex;align-items:center;gap:11px;padding:10px 15px;
+  border-radius:14px;background:#ffffff0b;border:1px solid #ffffff20
+}
+.wallet-icon{font-size:25px}
+.wallet small{display:block;color:var(--muted);font-size:10px;font-weight:900}
+.wallet strong{font-size:19px;color:var(--gold)}
+.mode-note{
+  padding:12px 14px;border-radius:12px;background:#2b1c49;
+  border:1px solid #ffffff18;color:#e6d9f4;
+  font-size:12px;line-height:1.5;margin-bottom:17px
+}
+.mode-note.real-note{background:#48251d;border-color:#ff9c4c55;color:#ffe1c5}
+.wheel-stage{
+  position:relative;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:25px 12px 28px;border-radius:22px;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 50%,#34204f 0,#1b1236 55%,#100a23 100%);
+  border:1px solid #ffffff1c
+}
+.wheel-stage:before,.wheel-stage:after{
+  content:"✦";position:absolute;color:#ffd76b;font-size:22px;
+  text-shadow:0 0 15px #ffd76b
+}
+.wheel-stage:before{top:20px;left:9%}
+.wheel-stage:after{bottom:18px;right:10%}
+.wheel-heading{font-size:11px;font-weight:900;letter-spacing:3px;color:#e9d7ff;margin-bottom:20px}
+.wheel-wrap{position:relative;width:min(340px,78vw);aspect-ratio:1}
+.pointer{
+  position:absolute;z-index:5;top:-14px;left:50%;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:18px solid transparent;border-right:18px solid transparent;
+  border-top:38px solid var(--gold);
+  filter:drop-shadow(0 4px 5px #0009)
+}
+.wheel{
+  width:100%;height:100%;border-radius:50%;
+  border:9px solid #ffd76b;
+  box-shadow:0 0 0 5px #6c3b82,0 0 35px #e5a93e66,inset 0 0 20px #0008;
+  background:conic-gradient(
+    #fa3985 0deg 45deg,
+    #7137dc 45deg 90deg,
+    #12a7c9 90deg 135deg,
+    #f09a2d 135deg 180deg,
+    #fa3985 180deg 225deg,
+    #7137dc 225deg 270deg,
+    #12a7c9 270deg 315deg,
+    #f09a2d 315deg 360deg
+  );
+  position:relative;overflow:hidden;
+  transform:rotate(0deg);
+  transition:transform 4.5s cubic-bezier(.12,.72,.12,1);
+}
+.wheel-label{
+  position:absolute;left:50%;top:50%;
+  width:50%;height:50%;transform-origin:0 0;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:15px;font-size:12px;font-weight:1000;
+  text-shadow:0 2px 4px #0009
+}
+.wheel-label span{display:block;transform:rotate(22.5deg)}
+.wheel-center{
+  position:absolute;z-index:3;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:78px;height:78px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#fff4bd,#e9a92e 45%,#9b5412);
+  border:5px solid #fff0b2;box-shadow:0 0 0 5px #4b286b,0 5px 15px #0009;
+  color:#391b30;font-weight:1000;font-size:14px
+}
+.spin-button{
+  margin-top:24px;width:min(300px,90%);padding:17px 20px;
+  border:0;border-radius:15px;
+  background:linear-gradient(100deg,#ff4f99,#a83dff,#397cff);
+  color:white;font-size:17px;font-weight:1000;letter-spacing:1px;
+  box-shadow:0 8px 25px #b13dff55,inset 0 1px #ffffff55;
+  transition:transform .15s,filter .15s
+}
+.spin-button:hover{transform:translateY(-3px);filter:brightness(1.12)}
+.spin-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.result{
+  min-height:28px;margin-top:17px;text-align:center;
+  font-size:15px;font-weight:900;color:#fff
+}
+.result.win{color:#78ffc1}
+.result.lose{color:#ff9eb5}
+.bet-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.field{padding:15px;background:#ffffff09;border:1px solid #ffffff19;border-radius:15px}
+.field label{display:block;font-size:10px;color:var(--muted);font-weight:900;margin-bottom:9px}
+.field input{
+  width:100%;padding:12px;border:1px solid #ffffff25;
+  border-radius:10px;background:#100720;color:#fff;
+  font-size:18px;font-weight:900;outline:none
+}
+.field input:focus{border-color:var(--cyan)}
+.quick-bets{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.quick-bets button{
+  padding:7px 10px;border-radius:8px;background:#ffffff12;
+  border:1px solid #ffffff20;color:#e8dafa;font-size:10px;font-weight:900
+}
+.prize{
+  min-height:52px;padding:10px 13px;border-radius:11px;
+  background:linear-gradient(100deg,#38214e,#1b2a4c);
+  border:1px solid #e5b95655;display:flex;align-items:center;
+  justify-content:space-between;gap:8px
+}
+.prize strong{font-size:25px;color:var(--gold)}
+.prize small{font-size:9px;color:#d4c3e8;font-weight:900}
+.multiplier{font-size:13px;color:var(--green);font-weight:1000}
+.notice{
+  display:none;margin-top:14px;padding:13px;border-radius:12px;
+  background:#51242e;border:1px solid #ff718b66;
+  color:#ffd8df;font-size:12px;line-height:1.5
+}
+.notice.show{display:block}
+.history{margin-top:18px;padding:15px;border-radius:15px;background:#ffffff08;border:1px solid #ffffff15}
+.history-head{display:flex;justify-content:space-between;align-items:center}
+.history h3{font-size:12px;margin:0;letter-spacing:1px}
+.history-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.history-item{font-size:11px;padding:8px 10px;border-radius:9px;background:#ffffff12;color:#ddd}
+.history-item.win{color:#75ffc0;border:1px solid #47efa455}
+.history-item.lose{color:#ff91a8;border:1px solid #ff557555}
+.footer-note{text-align:center;color:#a996c0;font-size:11px;line-height:1.6;margin:18px 5px 0}
+@media(max-width:600px){
+  .shell{padding:12px}.topbar{padding:14px 4%}
+  .bet-grid{grid-template-columns:1fr}
+  .mode-btn{padding:10px 11px}
+}
 </style>
 </head>
 <body>
-<header>
-<a class="brand" href="index.html">
-<svg viewBox="0 0 40 32" fill="none">
-<path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
-<path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
-<circle cx="4" cy="8" r="2.5" fill="#E7B83F"/><circle cx="20" cy="3" r="2.5" fill="#E7B83F"/><circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
-</svg>EarnGig
-</a>
-<a class="back" href="games.html">← All Games</a>
+<header class="topbar">
+  <div class="brand">
+    <svg class="crown" viewBox="0 0 64 54" fill="none" aria-hidden="true">
+      <path d="M7 15L19 26L31 7L44 26L57 15L51 44H13L7 15Z" stroke="#FFD76A" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M14 49H51" stroke="#FFD76A" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="7" cy="12" r="4" fill="#FFD76A"/>
+      <circle cx="31" cy="6" r="4" fill="#FFD76A"/>
+      <circle cx="57" cy="12" r="4" fill="#FFD76A"/>
+    </svg>
+    Earn<span>Gig</span>
+  </div>
+  <a class="back" href="games.html">← All Games</a>
 </header>
 
-<main>
-<div class="heading">
-<h1>🎡 Spin2Win</h1>
-<p>Choose your stake, spin the wheel and see if you land on the winning segment.</p>
-</div>
+<main class="container">
+  <section class="hero">
+    <div class="eyebrow">EarnGig Casino Collection</div>
+    <h1>SPIN2WIN</h1>
+    <p>Place your bet, spin the wheel and see where luck takes you.</p>
+  </section>
 
-<section class="panel">
-<div class="demo">DEMO MODE · SIMULATED COINS</div>
-<div class="stats">
-<div class="stat"><span>Demo balance</span><strong id="balance">1,000</strong></div>
-<div class="stat"><span>Winning prize</span><strong id="prize">500</strong></div>
-</div>
+  <section class="shell">
+    <div class="top-controls">
+      <div>
+        <div class="mode-label">CHOOSE YOUR GAME MODE</div>
+        <div class="mode-switch">
+          <button class="mode-btn active demo" id="demoMode" type="button">🎮 DEMO MODE</button>
+          <button class="mode-btn real" id="realMode" type="button">💎 REAL MODE</button>
+        </div>
+      </div>
+      <div class="wallet">
+        <div class="wallet-icon">🪙</div>
+        <div><small id="walletLabel">DEMO COIN BALANCE</small><strong id="balance">1,000</strong></div>
+      </div>
+    </div>
 
-<div class="wheel-wrap">
-<div class="pointer"></div>
-<div class="wheel" id="wheel">
-<span class="wheel-label">WIN</span>
-<span class="wheel-label">TRY</span>
-<span class="wheel-label">WIN</span>
-<span class="wheel-label">TRY</span>
-<span class="wheel-label">WIN</span>
-<span class="wheel-label">TRY</span>
-<span class="wheel-label">WIN</span>
-<span class="wheel-label">TRY</span>
-</div>
-</div>
+    <div class="mode-note" id="modeNote">
+      🎮 <strong>Demo mode is ON.</strong> You have 1,000 test coins. Demo coins have no cash value.
+    </div>
 
-<div class="field">
-<label for="stake">Your stake (demo coins)</label>
-<input id="stake" type="number" min="10" step="10" value="100">
-</div>
+    <div class="wheel-stage">
+      <div class="wheel-heading">✨ THE LUCKY SPIN ✨</div>
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel">
+          <div class="wheel-label" style="transform:rotate(22.5deg)"><span>WIN</span></div>
+          <div class="wheel-label" style="transform:rotate(67.5deg)"><span>TRY</span></div>
+          <div class="wheel-label" style="transform:rotate(112.5deg)"><span>WIN</span></div>
+          <div class="wheel-label" style="transform:rotate(157.5deg)"><span>TRY</span></div>
+          <div class="wheel-label" style="transform:rotate(202.5deg)"><span>WIN</span></div>
+          <div class="wheel-label" style="transform:rotate(247.5deg)"><span>TRY</span></div>
+          <div class="wheel-label" style="transform:rotate(292.5deg)"><span>WIN</span></div>
+          <div class="wheel-label" style="transform:rotate(337.5deg)"><span>TRY</span></div>
+        </div>
+        <div class="wheel-center">SPIN</div>
+      </div>
+      <button class="spin-button" id="spinButton" type="button">🎰 SPIN THE WHEEL</button>
+      <div class="result" id="result">Your next spin could be the winning one!</div>
+    </div>
 
-<div class="payout">
-Winning multiplier: <strong>5×</strong><br>
-Example: 100-coin stake = <strong>500 coins total prize</strong>.<br>
-The original stake is NOT added again.
-</div>
+    <div class="bet-grid">
+      <div class="field">
+        <label for="stake">YOUR BET (COINS)</label>
+        <input id="stake" type="number" min="10" step="10" value="10">
+        <div class="quick-bets">
+          <button type="button" data-bet="10">10</button>
+          <button type="button" data-bet="50">50</button>
+          <button type="button" data-bet="100">100</button>
+          <button type="button" data-bet="250">250</button>
+          <button type="button" data-bet="500">500</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>WINNING PRIZE</label>
+        <div class="prize">
+          <div><small>EXACT TOTAL PRIZE</small><br><strong id="prize">50</strong></div>
+          <div class="multiplier">5.00×</div>
+        </div>
+        <div style="font-size:10px;color:#b9a9d3;margin-top:9px">A win credits exactly 5× your stake.</div>
+      </div>
+    </div>
 
-<div class="actions">
-<button class="primary" id="spinButton" onclick="spin()">SPIN THE WHEEL</button>
-<button class="secondary" onclick="resetDemo()">RESET DEMO</button>
-</div>
-<div class="result" id="result"></div>
+    <div class="notice" id="notice" role="status"></div>
 
-<div class="rules">
-<h2>How to play</h2>
-1. Choose your demo coin stake.<br>
-2. Press Spin the Wheel.<br>
-3. The wheel lands on a WIN or TRY segment.<br>
-4. WIN credits exactly 5× your stake as the total prize.<br>
-5. TRY means your stake is forfeited.<br>
-6. The wheel's result is simulated in this demo. Production results must be generated and verified securely on the server.
-</div>
-</section>
+    <section class="history">
+      <div class="history-head">
+        <h3>🎯 RECENT SPINS</h3>
+        <span id="roundCount" style="font-size:10px;color:#b9a9d3">0 spins</span>
+      </div>
+      <div class="history-list" id="historyList">
+        <span class="history-item">Your spin history will appear here.</span>
+      </div>
+    </section>
+  </section>
+
+  <p class="footer-note">
+    Demo mode uses simulated coins and a client-side random result. The wheel has four WIN and four TRY segments. Real mode is an interface placeholder until the secure EarnGig wallet and server-side game result system are connected. Do not use this client-side demo for real-money play.
+  </p>
 </main>
 
-<footer>© <span id="year"></span> EarnGig. All rights reserved.</footer>
-
 <script>
-const MULTIPLIER=5;
-const STARTING_BALANCE=1000;
-const WIN_SEGMENTS=[0,2,4,6];
+(() => {
+  "use strict";
 
-let balance=STARTING_BALANCE;
-let spinning=false;
-let rotation=0;
+  const MULTIPLIER = 5;
+  const MIN_BET = 10;
+  const WIN_SEGMENTS = [0,2,4,6];
 
-const wheel=document.getElementById("wheel");
-const spinButton=document.getElementById("spinButton");
-const result=document.getElementById("result");
-const stakeInput=document.getElementById("stake");
+  let mode = "demo";
+  let demoBalance = 1000;
+  let realBalance = 0;
+  let rounds = 0;
+  let spinning = false;
+  let rotation = 0;
 
-function updateDisplay(){
-  const stake=Number(stakeInput.value)||0;
-  document.getElementById("balance").textContent=balance.toLocaleString();
-  document.getElementById("prize").textContent=Math.floor(stake*MULTIPLIER).toLocaleString();
-}
+  const $ = id => document.getElementById(id);
+  const wheel = $("wheel");
+  const stakeEl = $("stake");
 
-function showResult(message,type){
-  result.textContent=message;
-  result.className="result "+type;
-}
+  function money(n){return Math.floor(n).toLocaleString("en-NG")}
+  function balance(){return mode === "demo" ? demoBalance : realBalance}
 
-function spin(){
-  if(spinning)return;
-
-  const stake=Number(stakeInput.value);
-  if(!Number.isInteger(stake)||stake<10){
-    showResult("Enter a valid stake of at least 10 demo coins.","info");
-    return;
-  }
-  if(stake>balance){
-    showResult("Your demo balance is too low for this stake.","info");
-    return;
+  function updateBalance(){
+    $("balance").textContent = money(balance());
+    $("walletLabel").textContent =
+      mode === "demo" ? "DEMO COIN BALANCE" : "REAL WALLET BALANCE";
   }
 
-  balance-=stake;
-  updateDisplay();
-  spinning=true;
-  spinButton.disabled=true;
-  stakeInput.disabled=true;
-  result.className="result";
+  function updatePrize(){
+    const bet = Number(stakeEl.value);
+    $("prize").textContent =
+      Number.isSafeInteger(bet) && bet >= 0 ? money(bet*MULTIPLIER) : "—";
+  }
 
-  // Demo-only random result. Production outcome must be server-authoritative.
-  const segment=Math.floor(Math.random()*8);
-  const segmentAngle=segment*45+22.5;
-  const desiredRotation=360-segmentAngle;
-  const currentNormalized=((rotation%360)+360)%360;
-  const extra=(desiredRotation-currentNormalized+360)%360;
+  function notice(message){
+    $("notice").textContent = message;
+    $("notice").classList.add("show");
+  }
+  function clearNotice(){
+    $("notice").textContent = "";
+    $("notice").classList.remove("show");
+  }
 
-  rotation+=360*5+extra;
-  wheel.style.transform=`rotate(${rotation}deg)`;
+  function updateButton(){
+    $("spinButton").disabled =
+      spinning || mode === "real" || balance() < MIN_BET;
+  }
 
-  setTimeout(()=>{
-    const won=WIN_SEGMENTS.includes(segment);
+  function setMode(next){
+    if(spinning) return;
+    mode = next;
+    $("demoMode").classList.toggle("active",next==="demo");
+    $("realMode").classList.toggle("active",next==="real");
+    $("demoMode").classList.toggle("demo",next==="demo");
+    $("realMode").classList.toggle("real",next==="real");
 
-    if(won){
-      const totalPrize=stake*MULTIPLIER;
-      balance+=totalPrize;
-      showResult(
-        "YOU WIN! Your total demo prize is "+totalPrize.toLocaleString()+
-        " coins. Your stake is not added separately.",
-        "win"
-      );
+    if(next === "demo"){
+      $("modeNote").className = "mode-note";
+      $("modeNote").innerHTML =
+        "🎮 <strong>Demo mode is ON.</strong> Play using test coins. Your demo balance is separate from your real wallet.";
+      $("result").textContent = "Demo mode ready. Place your bet and spin!";
     }else{
-      showResult(
-        "Not this time. Your "+stake.toLocaleString()+
-        " demo coins have been forfeited.",
-        "lose"
-      );
+      $("modeNote").className = "mode-note real-note";
+      $("modeNote").innerHTML =
+        "💎 <strong>Real mode is selected.</strong> Your real wallet balance is currently 0 coins because a live wallet connection has not been configured in this game file.";
+      $("result").textContent = "Real mode selected. Check your wallet balance to play.";
     }
 
-    updateDisplay();
-    spinning=false;
-    spinButton.disabled=false;
-    stakeInput.disabled=false;
-  },4100);
-}
+    clearNotice();
+    updateBalance();
+    updateButton();
+  }
 
-function resetDemo(){
-  if(spinning)return;
-  balance=STARTING_BALANCE;
-  rotation=0;
-  wheel.style.transition="none";
-  wheel.style.transform="rotate(0deg)";
-  void wheel.offsetWidth;
-  wheel.style.transition="transform 4s cubic-bezier(.12,.72,.15,1)";
-  stakeInput.value=100;
-  updateDisplay();
-  showResult("Demo balance reset to 1,000 coins.","info");
-}
+  function addHistory(text,outcome){
+    const list = $("historyList");
+    if(rounds === 1) list.innerHTML = "";
+    const item = document.createElement("span");
+    item.className = "history-item " + outcome;
+    item.textContent = text;
+    list.prepend(item);
+    while(list.children.length > 8) list.removeChild(list.lastChild);
+    $("roundCount").textContent = rounds + (rounds===1 ? " spin" : " spins");
+  }
 
-stakeInput.addEventListener("input",updateDisplay);
-document.getElementById("year").textContent=new Date().getFullYear();
-updateDisplay();
+  function spin(){
+    if(spinning) return;
+
+    if(mode === "real"){
+      notice("Real wallet play is not connected yet. No real coins will be taken or awarded. Switch to Demo Mode to test Spin2Win.");
+      return;
+    }
+
+    const bet = Number(stakeEl.value);
+    if(!Number.isSafeInteger(bet) || bet < MIN_BET){
+      notice("The minimum bet is 10 coins. Enter a valid whole-number stake.");
+      return;
+    }
+    if(bet > demoBalance){
+      notice("Your demo coin balance is too low. Reduce your bet or switch modes.");
+      return;
+    }
+
+    clearNotice();
+    spinning = true;
+    updateButton();
+
+    demoBalance -= bet;
+    updateBalance();
+    $("result").className = "result";
+    $("result").textContent = "✨ The wheel is spinning...";
+
+    const winning = Math.random() < 0.5;
+    const segment = winning
+      ? WIN_SEGMENTS[Math.floor(Math.random()*WIN_SEGMENTS.length)]
+      : [1,3,5,7][Math.floor(Math.random()*4)];
+
+    const segmentCenter = segment*45 + 22.5;
+    const desired = (360-segmentCenter+360)%360;
+    const current = ((rotation%360)+360)%360;
+    const extra = (desired-current+360)%360;
+    rotation += 360*6 + extra;
+
+    wheel.style.transform = "rotate(" + rotation + "deg)";
+
+    setTimeout(()=>{
+      rounds++;
+      if(winning){
+        const prize = bet*MULTIPLIER;
+        demoBalance += prize;
+        $("result").className = "result win";
+        $("result").textContent = "🎉 JACKPOT! You won " + money(prize) + " coins!";
+        addHistory("WIN +" + money(prize) + " coins","win");
+      }else{
+        $("result").className = "result lose";
+        $("result").textContent = "Not this time! The wheel landed on TRY.";
+        addHistory("TRY -" + money(bet) + " coins","lose");
+      }
+
+      updateBalance();
+      spinning = false;
+      updateButton();
+    },4600);
+  }
+
+  $("demoMode").addEventListener("click",()=>setMode("demo"));
+  $("realMode").addEventListener("click",()=>setMode("real"));
+  $("spinButton").addEventListener("click",spin);
+  stakeEl.addEventListener("input",updatePrize);
+
+  document.querySelectorAll("[data-bet]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      stakeEl.value = button.dataset.bet;
+      updatePrize();
+      clearNotice();
+    });
+  });
+
+  updateBalance();
+  updatePrize();
+  updateButton();
+})();
 </script>
 </body>
 </html>
