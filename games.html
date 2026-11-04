@@ -66,7 +66,19 @@ h1{font-size:clamp(32px,6vw,49px);margin-bottom:12px;letter-spacing:-1.5px}
 .prize strong{color:var(--lime)}
 .game-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .status{color:var(--gold);font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:.6px}
-.play-button{border:none;border-radius:8px;padding:9px 12px;background:#51406b;color:#d7cde3;font-size:11px;font-weight:bold;cursor:not-allowed;opacity:.8}
+.status.available{color:var(--lime)}
+.play-button{
+  display:inline-block;text-align:center;border:none;border-radius:8px;
+  padding:9px 12px;background:#51406b;color:#d7cde3;
+  font-size:11px;font-weight:bold;cursor:not-allowed;opacity:.8
+}
+.play-button.active{
+  background:linear-gradient(110deg,#c5ff4a,#83e65b);
+  color:#17220b;cursor:pointer;opacity:1;
+  box-shadow:0 4px 14px #a7f34a35;
+  transition:transform .2s,filter .2s
+}
+.play-button.active:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .variable{color:#d8b8ff}
 .empty{display:none;text-align:center;padding:40px 10px;color:var(--muted)}
 .note{margin-top:30px;padding:17px;border:1px solid #a879ff35;background:#8b5cf610;border-radius:13px;color:#cbbbe0;text-align:center;font-size:12px;line-height:1.7}
@@ -120,6 +132,7 @@ footer{padding:22px 5%;text-align:center;border-top:1px solid #ffffff12;color:#9
   <p>Explore exciting games, challenge your skills and win EarnGig coins. Entry fees and winning prizes are displayed clearly for every game.</p>
   <div class="stats">
     <div class="stat"><strong>17</strong><span>Games planned</span></div>
+    <div class="stat"><strong>4</strong><span>Games available to test</span></div>
     <div class="stat"><strong>EarnGig</strong><span>Your gaming destination</span></div>
   </div>
 </section>
@@ -220,36 +233,40 @@ footer{padding:22px 5%;text-align:center;border-top:1px solid #ffffff12;color:#9
 <div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
 <div class="game-bottom"><span class="status">Coming Soon</span><button class="play-button" disabled>Coming Soon</button></div></div></article>
 
+<!-- HI-LO: PLAYABLE DEMO -->
 <article class="game-card" data-name="hi lo hilo" data-category="chance">
 <div class="game-art"><span class="game-icon">🃏</span></div><div class="game-info">
 <h3>Hi-Lo</h3><p>Predict whether the next card will be higher or lower.</p>
-<div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div>
-<div class="game-bottom"><span class="status">Coming Soon</span><button class="play-button" disabled>Coming Soon</button></div></div></article>
+<div class="prize variable">Stake: Choose your amount<br>Winning prize: <strong>3× your stake</strong></div>
+<div class="game-bottom"><span class="status available">Available</span><a class="play-button active" href="hi-lo.html">PLAY NOW ↗</a></div></div></article>
 
+<!-- SPIN2WIN: PLAYABLE DEMO -->
 <article class="game-card" data-name="spin2win spin to win" data-category="chance">
 <div class="game-art"><span class="game-icon">🎡</span></div><div class="game-info">
 <h3>Spin2Win</h3><p>Spin the wheel and see where your turn takes you.</p>
-<div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div>
-<div class="game-bottom"><span class="status">Coming Soon</span><button class="play-button" disabled>Coming Soon</button></div></div></article>
+<div class="prize variable">Stake: Choose your amount<br>Winning prize: <strong>5× your stake</strong></div>
+<div class="game-bottom"><span class="status available">Available</span><a class="play-button active" href="spin2win.html">PLAY NOW ↗</a></div></div></article>
 
+<!-- SPIN DA BOTTLE: PLAYABLE DEMO -->
 <article class="game-card" data-name="spin da bottle" data-category="chance">
 <div class="game-art"><span class="game-icon">🍾</span></div><div class="game-info">
-<h3>Spin da Bottle</h3><p>Join the spin and take on fun challenges.</p>
-<div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div>
-<div class="game-bottom"><span class="status">Coming Soon</span><button class="play-button" disabled>Coming Soon</button></div></div></article>
+<h3>Spin da Bottle</h3><p>Join the spin and see which player the bottle selects.</p>
+<div class="prize variable">Stake: Choose your amount<br>Winning prize: <strong>3× your stake</strong></div>
+<div class="game-bottom"><span class="status available">Available</span><a class="play-button active" href="spin-da-bottle.html">PLAY NOW ↗</a></div></div></article>
 
+<!-- SPIN MATCH: PLAYABLE DEMO -->
 <article class="game-card" data-name="spin match" data-category="chance">
 <div class="game-art"><span class="game-icon">🎯</span></div><div class="game-info">
-<h3>Spin Match</h3><p>Spin, match the symbols and aim for a winning result.</p>
-<div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div>
-<div class="game-bottom"><span class="status">Coming Soon</span><button class="play-button" disabled>Coming Soon</button></div></div></article>
+<h3>Spin Match</h3><p>Spin three reels, match the symbols and aim for a win.</p>
+<div class="prize variable">Stake: Choose your amount<br>Winning prize: <strong>4× your stake</strong></div>
+<div class="game-bottom"><span class="status available">Available</span><a class="play-button active" href="spin-match.html">PLAY NOW ↗</a></div></div></article>
 
 </div>
 <div class="empty" id="emptyMessage">No games found. Try another search.</div>
 </section>
 
 <div class="note">
-  Game entry fees are deducted once per round. A winning player receives exactly the prize displayed — the entry fee is not added back separately. For Car Racing and Ludo Battle, computer opponents may fill vacant player positions when real players are unavailable. Computer opponents do not contribute entry fees or create artificial prize-pool money. Games will open after secure gameplay and wallet verification are ready.
+  Four games are currently available in demo mode. Demo coins are simulated and have no cash value. Real-money gameplay requires secure wallet integration and server-side game verification. Game entry fees are deducted once per round. A winner receives exactly the displayed prize; the entry fee is not added back separately. For Car Racing and Ludo Battle, computer opponents may fill vacant player positions when real players are unavailable. Computer opponents do not contribute entry fees or create artificial prize-pool money.
 </div>
 </main>
 
