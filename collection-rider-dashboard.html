@@ -1,0 +1,722 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnGig Collection Rider Dashboard</title>
+<style>
+:root{
+  --purple:#6827c9;--deep:#48149a;--lavender:#f3edff;
+  --gold:#e7b83f;--ink:#211b2b;--muted:#756d80;
+  --border:#e8e0f1;--green:#16834a;--red:#c53b3b;
+  --orange:#a45e00;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
+header{padding:15px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:5}
+.brand{display:flex;align-items:center;gap:7px;color:var(--purple);font-size:23px;font-weight:900;text-decoration:none}
+.brand svg{width:25px;height:22px}
+header a:not(.brand){color:var(--purple);text-decoration:none;font-size:13px;font-weight:bold}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100vh - 60px)}
+aside{padding:22px 14px;border-right:1px solid var(--border)}
+.profile{background:var(--lavender);padding:15px;border-radius:13px;margin-bottom:20px}
+.avatar{width:43px;height:43px;background:var(--purple);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;margin-bottom:10px}
+.profile strong{display:block;font-size:14px}
+.profile small{color:var(--muted)}
+nav button{display:block;width:100%;text-align:left;padding:12px;background:transparent;color:var(--ink);border-radius:9px;margin:4px 0;font-size:13px}
+nav button.active,nav button:hover{background:var(--lavender);color:var(--purple)}
+main{padding:28px 4%;max-width:1450px;width:100%;margin:auto}
+h1{font-size:27px;margin:0 0 7px}
+h2{font-size:18px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+button{border:0;border-radius:9px;background:var(--purple);color:white;padding:11px 15px;font-weight:800;cursor:pointer}
+button:hover{background:var(--deep)}
+button.secondary{background:#eee7f8;color:var(--purple)}
+button.danger{background:#fff0f0;color:var(--red)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:20px 0}
+.stat,.panel{border:1px solid var(--border);border-radius:14px;padding:17px}
+.stat small{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:24px;margin-top:8px}
+.panel{margin:16px 0}
+.panel h2{margin:0 0 13px}
+.note{background:var(--lavender);padding:13px;border-radius:10px;font-size:12px;line-height:1.7;margin:13px 0}
+.warning{background:#fff8e9;border:1px solid #f0d69a;padding:13px;border-radius:10px;font-size:12px;line-height:1.6;margin:13px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{border:1px solid var(--border);border-radius:12px;padding:15px}
+.card h3{font-size:15px;margin:9px 0}
+.card p{font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0}
+.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:var(--lavender);color:var(--purple);font-size:11px;font-weight:800}
+.tag.green{background:#e7f8ed;color:var(--green)}
+.tag.orange{background:#fff5e5;color:var(--orange)}
+.tag.red{background:#fff0f0;color:var(--red)}
+.fee{font-size:20px;font-weight:900;color:var(--purple);margin:12px 0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{font-size:12px}
+.empty{padding:28px;text-align:center;color:var(--muted);background:#faf8fc;border-radius:12px;font-size:13px}
+.group-title{font-weight:900;color:var(--deep);margin:22px 0 10px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}
+.tabs button{background:#f2eef7;color:var(--muted);font-size:12px}
+.tabs button.active{background:var(--purple);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:12px 9px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-size:11px;color:var(--muted)}
+label{font-size:12px;font-weight:700}
+input,select,textarea{width:100%;padding:11px;border:1px solid #dcd3e7;border-radius:8px;font:inherit;margin:5px 0 12px;background:white}
+.hidden{display:none!important}
+.modal{display:none;position:fixed;inset:0;background:#1b102d88;z-index:20;align-items:center;justify-content:center;padding:15px}
+.modal-box{background:white;border-radius:15px;padding:22px;width:100%;max-width:500px;max-height:90vh;overflow:auto}
+.modal-box h2{margin-top:0}
+.modal-actions{display:flex;gap:8px;margin-top:12px}
+.modal-actions button{flex:1}
+.wallet-total{font-size:32px;font-weight:900;color:var(--purple);margin:8px 0}
+.notice{padding:22px;background:#fff8e9;border:1px solid #f0d69a;border-radius:13px;line-height:1.6}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:11px}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ aside{border:0;border-bottom:1px solid var(--border);padding:10px}
+ .profile{display:none}
+ nav{display:flex;overflow-x:auto;gap:5px}
+ nav button{width:auto;white-space:nowrap;flex-shrink:0}
+ main{padding:20px 14px}
+}
+@media(max-width:600px){
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .grid{grid-template-columns:1fr}
+ .topline{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 40 32" fill="none">
+      <path d="M4 9L12 16L20 4L28 16L36 9L32 27H8L4 9Z" fill="#E7B83F" stroke="#C99520" stroke-width="1.5"/>
+      <path d="M9 30H31" stroke="#C99520" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="4" cy="8" r="2.5" fill="#E7B83F"/>
+      <circle cx="20" cy="3" r="2.5" fill="#E7B83F"/>
+      <circle cx="36" cy="8" r="2.5" fill="#E7B83F"/>
+    </svg>
+    EarnGig
+  </a>
+  <a href="notifications.html">Notifications</a>
+</header>
+
+<div class="layout">
+<aside>
+  <div class="profile">
+    <div class="avatar" id="avatar">C</div>
+    <strong id="riderName">Collection Rider</strong>
+    <small>Collection and dispatch</small>
+  </div>
+  <nav>
+    <button class="active" data-page="overview">▦ Overview</button>
+    <button data-page="available">＋ Available Pickups</button>
+    <button data-page="collected">▣ Collected Parcels</button>
+    <button data-page="groups">⇢ Destination Groups</button>
+    <button data-page="shipments">🚚 Dispatched Shipments</button>
+    <button data-page="wallet">₦ Delivery Wallet</button>
+    <button data-page="account">♙ My Account</button>
+  </nav>
+</aside>
+
+<main>
+  <section id="approvalNotice" class="notice hidden">
+    <h2>Collection rider approval required</h2>
+    <p id="approvalMessage">Your application must be approved before you can collect parcels.</p>
+    <a href="delivery.html" style="color:#6827c9;font-weight:bold">Return to registration</a>
+  </section>
+
+  <div id="dashboardContent" class="hidden">
+
+    <section id="page-overview">
+      <div class="topline">
+        <div>
+          <h1>Collection Rider Dashboard</h1>
+          <p class="subtitle">Collect vendor orders, group parcels by destination and dispatch shipments to registered storekeepers.</p>
+        </div>
+        <button onclick="showPage('available')">Find Pickups</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><small>Available Pickups</small><strong id="availableCount">0</strong></div>
+        <div class="stat"><small>Collected Parcels</small><strong id="collectedCount">0</strong></div>
+        <div class="stat"><small>Awaiting Receipt</small><strong id="dispatchCount">0</strong></div>
+        <div class="stat"><small>Delivery Wallet</small><strong id="walletOverview">₦0</strong></div>
+      </div>
+
+      <div class="panel">
+        <h2>Collection rider workflow</h2>
+        <div class="note">
+          <strong>1.</strong> Accept vendor orders and collect them before the end of the same calendar day.<br><br>
+          <strong>2.</strong> Upload parcel pickup proof and obtain vendor handover confirmation.<br><br>
+          <strong>3.</strong> Group collected parcels by destination state and town.<br><br>
+          <strong>4.</strong> Select an approved storekeeper and prepare a bulk shipment.<br><br>
+          <strong>5.</strong> Arrange transport, upload dispatch proof and record transport costs.<br><br>
+          <strong>6.</strong> Wait for the storekeeper to physically confirm receipt and parcel count.<br><br>
+          <strong>7.</strong> Your agreed shipment earnings become payable after verified receipt.
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Recent activity</h2>
+        <div id="recentActivity" class="empty">No collection activity yet.</div>
+      </div>
+    </section>
+
+    <section id="page-available" class="hidden">
+      <h1>Available Vendor Pickups</h1>
+      <p class="subtitle">Accept individual vendor orders. You can accept several nearby orders.</p>
+      <div class="warning">After accepting an order, you must collect it before the end of the same calendar day. Do not accept orders you cannot collect on time.</div>
+      <div id="availableOrders"></div>
+    </section>
+
+    <section id="page-collected" class="hidden">
+      <h1>My Collected Parcels</h1>
+      <p class="subtitle">These are parcels collected from vendors and confirmed for your collection work.</p>
+      <div id="collectedOrders"></div>
+    </section>
+
+    <section id="page-groups" class="hidden">
+      <h1>Destination Groups</h1>
+      <p class="subtitle">Parcels are grouped by destination state and town. Each group can be dispatched separately.</p>
+      <div class="note">Choose a registered storekeeper for each destination group. Only include parcels physically in your possession and confirmed by the vendor.</div>
+      <div id="destinationGroups"></div>
+    </section>
+
+    <section id="page-shipments" class="hidden">
+      <h1>Dispatched Shipments</h1>
+      <p class="subtitle">Track shipments sent to storekeepers and their receipt confirmations.</p>
+      <div id="shipmentList"></div>
+    </section>
+
+    <section id="page-wallet" class="hidden">
+      <h1>Collection Rider Delivery Wallet</h1>
+      <p class="subtitle">Separate from your EarnGig coin wallet.</p>
+      <div class="panel">
+        <small class="subtitle">Available demo balance</small>
+        <div class="wallet-total" id="walletBalance">₦0.00</div>
+        <div class="note">Withdrawal service charge: 2%. Shipment earnings are payable after verified storekeeper receipt. Actual payment requires a secure backend.</div>
+        <button onclick="openWithdrawal()">Request Withdrawal</button>
+      </div>
+      <div class="panel">
+        <h2>Transactions</h2>
+        <div id="walletTransactions"></div>
+      </div>
+    </section>
+
+    <section id="page-account" class="hidden">
+      <h1>My Account</h1>
+      <div class="panel" id="accountDetails"></div>
+    </section>
+
+  </div>
+</main>
+</div>
+
+<div class="modal" id="pickupModal">
+  <div class="modal-box">
+    <h2>Upload vendor pickup proof</h2>
+    <p class="subtitle">Upload a clear photo of the parcel collected from the vendor.</p>
+    <label>Parcel photograph *</label>
+    <input id="pickupPhoto" type="file" accept="image/*">
+    <div class="note">The vendor must confirm that the parcel was physically handed over to you.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('pickupModal')">Cancel</button>
+      <button onclick="submitPickupProof()">Submit Proof</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="dispatchModal">
+  <div class="modal-box">
+    <h2>Prepare destination shipment</h2>
+    <p class="subtitle">Confirm the parcels, storekeeper and transport arrangement for this group.</p>
+
+    <label>Destination</label>
+    <input id="dispatchDestination" disabled>
+
+    <label>Number of parcels in this shipment</label>
+    <input id="dispatchCount" type="number" min="1">
+
+    <label>Registered storekeeper *</label>
+    <select id="storekeeperSelect">
+      <option value="">Select a storekeeper</option>
+    </select>
+
+    <label>Agreed transport operator / driver</label>
+    <input id="transportDriver" placeholder="Driver or transport company">
+
+    <label>Transport fee paid or agreed (₦) *</label>
+    <input id="transportFee" type="number" min="0" placeholder="Enter amount">
+
+    <label>Your agreed shipment earnings (₦) *</label>
+    <input id="shipmentEarnings" type="number" min="0" placeholder="Enter agreed earnings">
+
+    <label>Route / dispatch notes</label>
+    <textarea id="dispatchNotes" rows="3" placeholder="Route, departure details or other notes"></textarea>
+
+    <label>Upload dispatch / transport handover proof *</label>
+    <input id="dispatchPhoto" type="file" accept="image/*">
+
+    <div class="warning">
+      Confirm the transport arrangement and actual handover to the driver. The shipment will remain awaiting storekeeper receipt confirmation. Your shipment earnings are not released until receipt is verified.
+    </div>
+
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('dispatchModal')">Cancel</button>
+      <button onclick="submitDispatch()">Submit Dispatch</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="withdrawModal">
+  <div class="modal-box">
+    <h2>Withdraw collection earnings</h2>
+    <label>Withdrawal amount (₦)</label>
+    <input id="withdrawAmount" type="number" min="1" placeholder="Enter amount">
+    <div class="note" id="withdrawDetails">Service charge: 2%.</div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeModal('withdrawModal')">Cancel</button>
+      <button onclick="submitWithdrawal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<footer>© <span id="year"></span> EarnGig Delivery Network</footer>
+
+<script>
+const APP_KEY="earngig_delivery_applications";
+const ORDER_KEY="earngig_delivery_orders";
+const SHIPMENT_KEY="earngig_delivery_shipments";
+const WALLET_KEY="earngig_collection_rider_wallet";
+const PROFILE_KEY="earngig_collection_rider_profile";
+
+let rider=null;
+let orders=[];
+let shipments=[];
+let wallet={balance:0,transactions:[]};
+let selectedOrder=null;
+let selectedGroup=null;
+
+document.getElementById("year").textContent=new Date().getFullYear();
+
+function readJSON(key,fallback){
+  try{return JSON.parse(localStorage.getItem(key))??fallback}
+  catch{return fallback}
+}
+function saveAll(){
+  localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
+  localStorage.setItem(SHIPMENT_KEY,JSON.stringify(shipments));
+  localStorage.setItem(WALLET_KEY,JSON.stringify(wallet));
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function money(value){
+  return "₦"+Number(value||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function dateText(value){
+  if(!value)return "Not recorded";
+  return new Date(value).toLocaleString("en-NG",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function endOfDay(value){
+  const d=new Date(value);
+  d.setHours(23,59,59,999);
+  return d;
+}
+function pickupDeadline(order){
+  return endOfDay(order.acceptedAt||order.createdAt||new Date()).getTime();
+}
+
+function initialise(){
+  const apps=readJSON(APP_KEY,[]);
+  const saved=readJSON(PROFILE_KEY,null);
+  const username=saved?.username;
+
+  if(username){
+    rider=apps.find(a=>String(a.username).toLowerCase()===String(username).toLowerCase());
+  }else{
+    rider=apps.find(a=>a.applicationType==="rider"&&a.riderType==="collection"&&a.status==="approved");
+  }
+
+  if(!rider||rider.applicationType!=="rider"||rider.riderType!=="collection"||rider.status!=="approved"){
+    document.getElementById("approvalNotice").classList.remove("hidden");
+    let message="Your collection rider application must be approved before you can collect or dispatch parcels.";
+    if(rider?.status==="pending_review")message="Your application is awaiting review. Keep your phone available for verification.";
+    else if(rider?.status==="interview_required")message="Your application requires a phone interview. Please wait for the verification team.";
+    else if(rider?.status==="additional_info_requested")message="EarnGig has requested additional information. Contact the verification team.";
+    else if(rider?.status==="rejected")message="Your application was not approved. Contact EarnGig support.";
+    document.getElementById("approvalMessage").textContent=message;
+    return;
+  }
+
+  orders=readJSON(ORDER_KEY,[]);
+  shipments=readJSON(SHIPMENT_KEY,[]);
+  wallet=readJSON(WALLET_KEY,{balance:0,transactions:[]});
+
+  const name=rider.fullName||"Collection Rider";
+  document.getElementById("riderName").textContent=name;
+  document.getElementById("avatar").textContent=name.charAt(0).toUpperCase();
+  document.getElementById("approvalNotice").classList.add("hidden");
+  document.getElementById("dashboardContent").classList.remove("hidden");
+  renderAll();
+}
+
+function showPage(page){
+  document.querySelectorAll("main section[id^='page-']").forEach(s=>s.classList.add("hidden"));
+  document.getElementById("page-"+page).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  renderAll();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+
+function renderAll(){
+  if(!rider)return;
+  const mine=orders.filter(o=>o.riderUsername===rider.username);
+  const available=orders.filter(o=>o.status==="available");
+  const collected=mine.filter(o=>o.status==="picked_up"||o.status==="pickup_confirmed");
+  const pending=shipments.filter(s=>s.collectionRiderUsername===rider.username&&s.status==="awaiting_storekeeper");
+
+  document.getElementById("availableCount").textContent=available.length;
+  document.getElementById("collectedCount").textContent=collected.length;
+  document.getElementById("dispatchCount").textContent=pending.length;
+  document.getElementById("walletOverview").textContent=money(wallet.balance);
+  document.getElementById("walletBalance").textContent=money(wallet.balance);
+
+  renderAvailable();
+  renderCollected();
+  renderGroups();
+  renderShipments();
+  renderRecent();
+  renderWallet();
+  renderAccount();
+}
+
+function renderAvailable(){
+  const container=document.getElementById("availableOrders");
+  const available=orders.filter(o=>o.status==="available");
+  if(!available.length){
+    container.innerHTML='<div class="empty">No available vendor pickups right now.</div>';
+    return;
+  }
+  const groups={};
+  available.forEach(o=>{
+    const location=o.pickupTown||o.pickupLocation||"Other locations";
+    if(!groups[location])groups[location]=[];
+    groups[location].push(o);
+  });
+  container.innerHTML=Object.entries(groups).map(([location,items])=>`
+    <div class="group-title">Pickup area: ${escapeHTML(location)}</div>
+    <div class="grid">${items.map(o=>`
+      <div class="card">
+        <span class="tag">Available vendor order</span>
+        <h3>${escapeHTML(o.reference||o.id)}</h3>
+        <p><strong>Vendor:</strong> ${escapeHTML(o.vendorName||"Vendor")}</p>
+        <p><strong>Pickup address:</strong> ${escapeHTML(o.pickupAddress||location)}</p>
+        <p><strong>Destination:</strong> ${escapeHTML(o.destinationTown||"")}, ${escapeHTML(o.destinationState||"")}</p>
+        <p><strong>Customer:</strong> ${escapeHTML(o.customerName||"Customer")}</p>
+        <p><strong>Items:</strong> ${escapeHTML(o.itemSummary||"Parcel")}</p>
+        <div class="fee">${money(o.collectionFee||o.riderFee||0)}</div>
+        <p>Collect before the end of today after accepting.</p>
+        <div class="actions"><button onclick="acceptOrder('${escapeHTML(o.id)}')">Accept Pickup</button></div>
+      </div>
+    `).join("")}</div>
+  `).join("");
+}
+
+function acceptOrder(id){
+  const order=orders.find(o=>String(o.id)===String(id));
+  if(!order||order.status!=="available")return alert("This order is no longer available.");
+
+  const now=new Date().toISOString();
+  order.status="accepted";
+  order.riderUsername=rider.username;
+  order.riderName=rider.fullName;
+  order.acceptedAt=now;
+  order.pickupDeadline=new Date(pickupDeadline(order)).toISOString();
+  order.handoverHistory=order.handoverHistory||[];
+  order.handoverHistory.push({stage:"collection_rider_accepted",actor:rider.username,time:now});
+  saveAll();
+  alert("Pickup accepted. The vendor must be notified by the live EarnGig backend. Collect this parcel before the end of today.");
+  renderAll();
+}
+
+function renderCollected(){
+  const container=document.getElementById("collectedOrders");
+  const mine=orders.filter(o=>
+    o.riderUsername===rider.username&&
+    ["picked_up","pickup_confirmed"].includes(o.status)
+  );
+  if(!mine.length){
+    container.innerHTML='<div class="empty">You have no confirmed collected parcels yet.</div>';
+    return;
+  }
+  container.innerHTML='<div class="grid">'+mine.map(o=>`
+    <div class="card">
+      <span class="tag green">Collected</span>
+      <h3>${escapeHTML(o.reference||o.id)}</h3>
+      <p><strong>Vendor:</strong> ${escapeHTML(o.vendorName||"Vendor")}</p>
+      <p><strong>Destination:</strong> ${escapeHTML(o.destinationTown||"")}, ${escapeHTML(o.destinationState||"")}</p>
+      <p><strong>Customer:</strong> ${escapeHTML(o.customerName||"Customer")}</p>
+      <p><strong>Pickup confirmed:</strong> ${dateText(o.pickedUpAt||o.pickupConfirmedAt)}</p>
+      <p>This parcel can be included in a destination group once vendor handover is confirmed.</p>
+    </div>
+  `).join("")+'</div>';
+}
+
+function getDestinationGroups(){
+  const mine=orders.filter(o=>
+    o.riderUsername===rider.username&&
+    ["picked_up","pickup_confirmed"].includes(o.status)&&
+    !o.shipmentId
+  );
+  const groups={};
+  mine.forEach(o=>{
+    const state=(o.destinationState||"Unknown").trim();
+    const town=(o.destinationTown||"Unknown").trim();
+    const key=state+"|||"+town;
+    if(!groups[key])groups[key]=[];
+    groups[key].push(o);
+  });
+  return groups;
+}
+
+function renderGroups(){
+  const container=document.getElementById("destinationGroups");
+  const groups=getDestinationGroups();
+  const keys=Object.keys(groups);
+  if(!keys.length){
+    container.innerHTML='<div class="empty">No confirmed collected parcels are waiting for dispatch.</div>';
+    return;
+  }
+  container.innerHTML=keys.map(key=>{
+    const items=groups[key];
+    const [state,town]=key.split("|||");
+    const total=items.reduce((sum,o)=>sum+Number(o.collectionFee||o.riderFee||0),0);
+    return `
+      <div class="panel">
+        <div class="topline">
+          <div>
+            <span class="tag green">Ready to group</span>
+            <h2>${escapeHTML(town)}, ${escapeHTML(state)}</h2>
+            <p class="subtitle">${items.length} parcel(s) ready for this destination.</p>
+          </div>
+          <button onclick="openDispatch('${escapeHTML(key)}')">Create Shipment</button>
+        </div>
+        <table>
+          <thead><tr><th>Order</th><th>Vendor</th><th>Customer</th></tr></thead>
+          <tbody>${items.map(o=>`
+            <tr>
+              <td>${escapeHTML(o.reference||o.id)}</td>
+              <td>${escapeHTML(o.vendorName||"Vendor")}</td>
+              <td>${escapeHTML(o.customerName||"Customer")}</td>
+            </tr>
+          `).join("")}</tbody>
+        </table>
+      </div>
+    `;
+  }).join("");
+}
+
+function openDispatch(key){
+  const groups=getDestinationGroups();
+  selectedGroup={key,orders:groups[key]||[]};
+  if(!selectedGroup.orders.length)return alert("No eligible parcels in this destination group.");
+
+  document.getElementById("dispatchDestination").value=key.replace("|||",", ");
+  document.getElementById("dispatchCount").value=selectedGroup.orders.length;
+  document.getElementById("transportDriver").value="";
+  document.getElementById("transportFee").value="";
+  document.getElementById("shipmentEarnings").value="";
+  document.getElementById("dispatchNotes").value="";
+  document.getElementById("dispatchPhoto").value="";
+
+  const storekeepers=readJSON(APP_KEY,[]).filter(a=>
+    a.applicationType==="storekeeper"&&a.status==="approved"&&
+    String(a.state||"").toLowerCase()===String(selectedGroup.orders[0].destinationState||"").toLowerCase()
+  );
+
+  const select=document.getElementById("storekeeperSelect");
+  select.innerHTML='<option value="">Select a registered storekeeper</option>';
+  storekeepers.forEach(s=>{
+    const option=document.createElement("option");
+    option.value=s.username;
+    option.textContent=(s.storeName||s.fullName)+" — "+(s.town||"");
+    select.appendChild(option);
+  });
+
+  document.getElementById("dispatchModal").style.display="flex";
+}
+
+function submitDispatch(){
+  if(!selectedGroup||!selectedGroup.orders.length)return;
+  const count=Number(document.getElementById("dispatchCount").value);
+  const storekeeperUsername=document.getElementById("storekeeperSelect").value;
+  const driver=document.getElementById("transportDriver").value.trim();
+  const transportFee=Number(document.getElementById("transportFee").value);
+  const earnings=Number(document.getElementById("shipmentEarnings").value);
+  const photo=document.getElementById("dispatchPhoto").files[0];
+
+  if(!Number.isInteger(count)||count!==selectedGroup.orders.length){
+    return alert("The shipment parcel count must match the selected parcels.");
+  }
+  if(!storekeeperUsername)return alert("Select an approved storekeeper.");
+  if(!driver)return alert("Enter the transport driver or operator.");
+  if(!Number.isFinite(transportFee)||transportFee<0)return alert("Enter a valid transport fee.");
+  if(!Number.isFinite(earnings)||earnings<=0)return alert("Enter the agreed shipment earnings.");
+  if(!photo)return alert("Upload dispatch handover proof.");
+
+  const storekeeper=readJSON(APP_KEY,[]).find(a=>
+    a.username===storekeeperUsername&&a.applicationType==="storekeeper"&&a.status==="approved"
+  );
+  if(!storekeeper)return alert("The selected storekeeper is not approved.");
+
+  const destination=selectedGroup.key.split("|||");
+  const now=new Date().toISOString();
+  const shipment={
+    id:"EGS-"+Date.now(),
+    reference:"EGS-"+Date.now().toString().slice(-8),
+    collectionRiderUsername:rider.username,
+    collectionRiderName:rider.fullName,
+    storekeeperUsername:storekeeper.username,
+    storekeeperName:storekeeper.fullName,
+    storeName:storekeeper.storeName,
+    originTown:rider.town,
+    originState:rider.state,
+    destinationState:destination[0],
+    destinationTown:destination[1],
+    parcelCount:count,
+    orderIds:selectedGroup.orders.map(o=>o.id),
+    transportDriver:driver,
+    transportFee,
+    shipmentEarnings:earnings,
+    dispatchNotes:document.getElementById("dispatchNotes").value.trim(),
+    dispatchProofFileName:photo.name,
+    dispatchedAt:now,
+    status:"awaiting_storekeeper",
+    handoverHistory:[{
+      stage:"bulk_shipment_dispatched",
+      actor:rider.username,
+      time:now,
+      parcelCount:count
+    }]
+  };
+
+  shipments.push(shipment);
+  selectedGroup.orders.forEach(o=>{
+    o.shipmentId=shipment.id;
+    o.status="in_transit_to_storekeeper";
+    o.dispatchedAt=now;
+    o.handoverHistory=o.handoverHistory||[];
+    o.handoverHistory.push({
+      stage:"included_in_bulk_shipment",
+      actor:rider.username,
+      time:now,
+      shipmentId:shipment.id
+    });
+  });
+
+  saveAll();
+  closeModal("dispatchModal");
+  alert("Shipment recorded in this browser demo. The live system must notify the storekeeper and collect their physical receipt confirmation before releasing your agreed shipment earnings.");
+  renderAll();
+  showPage("shipments");
+}
+
+function renderShipments(){
+  const container=document.getElementById("shipmentList");
+  const mine=shipments.filter(s=>s.collectionRiderUsername===rider.username).reverse();
+  if(!mine.length){
+    container.innerHTML='<div class="empty">You have not dispatched any shipments yet.</div>';
+    return;
+  }
+  container.innerHTML='<div class="grid">'+mine.map(s=>`
+    <div class="card">
+      <span class="tag ${s.status==="receipt_confirmed"?"green":"orange"}">${escapeHTML(s.status.replaceAll("_"," "))}</span>
+      <h3>${escapeHTML(s.reference||s.id)}</h3>
+      <p><strong>Destination:</strong> ${escapeHTML(s.destinationTown)}, ${escapeHTML(s.destinationState)}</p>
+      <p><strong>Storekeeper:</strong> ${escapeHTML(s.storeName||s.storekeeperName||s.storekeeperUsername)}</p>
+      <p><strong>Parcels:</strong> ${Number(s.parcelCount||0)}</p>
+      <p><strong>Transport driver:</strong> ${escapeHTML(s.transportDriver)}</p>
+      <p><strong>Transport cost:</strong> ${money(s.transportFee)}</p>
+      <div class="fee">Agreed earnings: ${money(s.shipmentEarnings)}</div>
+      <p><strong>Dispatched:</strong> ${dateText(s.dispatchedAt)}</p>
+      ${s.status==="receipt_confirmed"?`<p class="tag green">Storekeeper confirmed receipt</p>`:`<p class="tag orange">Waiting for storekeeper confirmation</p>`}
+    </div>
+  `).join("")+'</div>';
+}
+
+function renderRecent(){
+  const container=document.getElementById("recentActivity");
+  const mine=orders.filter(o=>o.riderUsername===rider.username).slice(-5).reverse();
+  if(!mine.length){container.innerHTML="No collection activity yet.";return;}
+  container.innerHTML=mine.map(o=>`
+    <p><strong>${escapeHTML(o.reference||o.id)}</strong> — ${escapeHTML(o.status.replaceAll("_"," "))}</p>
+  `).join("");
+}
+
+function renderWallet(){
+  const container=document.getElementById("walletTransactions");
+  if(!wallet.transactions?.length){
+    container.innerHTML='<div class="empty">No wallet transactions yet.</div>';
+    return;
+  }
+  container.innerHTML=`
+    <table><thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
+    <tbody>${wallet.transactions.map(tx=>`
+      <tr><td>${escapeHTML(tx.description)}</td><td>${dateText(tx.date)}</td><td>${money(tx.amount)}</td></tr>
+    `).join("")}</tbody></table>`;
+}
+
+function openWithdrawal(){
+  document.getElementById("withdrawAmount").value="";
+  document.getElementById("withdrawDetails").textContent="Available balance: "+money(wallet.balance)+". Service charge: 2%.";
+  document.getElementById("withdrawModal").style.display="flex";
+}
+function submitWithdrawal(){
+  const amount=Number(document.getElementById("withdrawAmount").value);
+  if(!Number.isFinite(amount)||amount<=0)return alert("Enter a valid amount.");
+  if(amount>wallet.balance)return alert("Insufficient balance.");
+  const fee=amount*.02;
+  alert("Demo calculation only:\nWithdrawal: "+money(amount)+"\n2% charge: "+money(fee)+"\nEstimated payout: "+money(amount-fee)+"\n\nNo payment has been made. Live withdrawals require backend processing.");
+  closeModal("withdrawModal");
+}
+
+function renderAccount(){
+  document.getElementById("accountDetails").innerHTML=`
+    <p><strong>Name:</strong> ${escapeHTML(rider.fullName)}</p>
+    <p><strong>Username:</strong> ${escapeHTML(rider.username)}</p>
+    <p><strong>Phone:</strong> ${escapeHTML(rider.phone)}</p>
+    <p><strong>Email:</strong> ${escapeHTML(rider.email)}</p>
+    <p><strong>Rider category:</strong> Collection Rider</p>
+    <p><strong>State:</strong> ${escapeHTML(rider.state)}</p>
+    <p><strong>Town:</strong> ${escapeHTML(rider.town)}</p>
+    <p><strong>Status:</strong> <span class="tag green">Approved</span></p>
+  `;
+}
+function closeModal(id){document.getElementById(id).style.display="none"}
+
+/*
+  IMPORTANT PRODUCTION REQUIREMENTS:
+
+  - Vendor and rider dashboards must use a shared backend.
+  - Vendor handover must be confirmed before an order enters the
+    collection rider's confirmed parcel list.
+  - Storekeeper selection must be validated by the server.
+  - Dispatch proof must be uploaded to private storage.
+  - Storekeeper must physically confirm actual parcel count and condition.
+  - Shipment earnings must be credited once, only after verified receipt.
+  - Duplicate confirmations must be rejected by the backend.
+  - Preserve individual order records and permanent handover history.
+*/
+
+initialise();
+</script>
+</body>
+</html>
