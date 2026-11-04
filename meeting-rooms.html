@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Rooms | EarnGig</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --gold: #e7ad32;
+      --text: #292438;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --background: #faf9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 14px 5%;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .header-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .header-links a {
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 32px auto;
+      padding: 0 17px 50px;
+    }
+
+    .heading { margin-bottom: 23px; }
+
+    .heading h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .hero {
+      background: linear-gradient(115deg, #7138c8, #9561dc);
+      color: white;
+      border-radius: 18px;
+      padding: 27px;
+      margin-bottom: 25px;
+    }
+
+    .hero h2 {
+      font-size: 22px;
+      margin: 0 0 9px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+      opacity: .93;
+      max-width: 720px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .panel h2 {
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 19px;
+    }
+
+    .field { margin-bottom: 17px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+      outline: none;
+      color: var(--text);
+      background: white;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .primary-button {
+      width: 100%;
+      background: var(--purple);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary-button:hover { background: var(--purple-dark); }
+
+    .primary-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .secondary-button {
+      border: 1px solid #dfd0f6;
+      color: var(--purple);
+      background: var(--lavender);
+      padding: 10px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .room-result {
+      display: none;
+      background: var(--lavender);
+      border: 1px solid #dfd0f6;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .room-result strong {
+      display: block;
+      color: var(--purple);
+      font-size: 25px;
+      letter-spacing: 4px;
+      margin: 8px 0;
+    }
+
+    .room-result p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .room-list {
+      margin-top: 25px;
+    }
+
+    .room-list-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .room-list-heading h2 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .room-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 13px;
+      margin-bottom: 11px;
+    }
+
+    .room-details { min-width: 0; }
+
+    .room-details strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .room-details small {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .room-code {
+      color: var(--purple);
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .room-actions {
+      display: flex;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .empty {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      text-align: center;
+      padding: 30px 15px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .empty span {
+      display: block;
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .notice {
+      background: #fff9e9;
+      border: 1px solid #f2dfad;
+      color: #75551b;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 22px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .status {
+      display: none;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status.error {
+      display: block;
+      background: #fff0f0;
+      color: #9b2929;
+    }
+
+    .status.success {
+      display: block;
+      background: #eaf8f0;
+      color: #176b43;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 700px) {
+      header { padding: 12px 14px; }
+      .header-links { gap: 9px; }
+      .header-links a { font-size: 11px; }
+      .main-grid { grid-template-columns: 1fr; }
+      .heading h1 { font-size: 24px; }
+      .panel { padding: 18px; }
+      .room-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .room-actions { width: 100%; }
+      .room-actions button { flex: 1; }
+      .hero { padding: 21px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="earngig-community.html">Community</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="heading">
+    <h1>EarnGig Meeting Rooms 🎥</h1>
+    <p>Create a room, invite your friends and bring everyone together.</p>
+  </section>
+
+  <section class="hero">
+    <h2>Your Space to Connect</h2>
+    <p>
+      Create a private meeting room and receive a unique room code.
+      Share the code with friends so they can find your room.
+      Meeting rooms are designed for community discussions, collaboration
+      and conversations.
+    </p>
+  </section>
+
+  <div class="main-grid">
+
+    <section class="panel">
+      <h2>＋ Create a Meeting Room</h2>
+      <p class="subtext">
+        Give your room a name and choose how you want participants to join.
+      </p>
+
+      <form id="createRoomForm">
+        <div class="field">
+          <label for="roomName">Meeting room name</label>
+          <input id="roomName" type="text" maxlength="60"
+            placeholder="Example: Weekend Friends Meeting" required>
+        </div>
+
+        <div class="field">
+          <label for="roomDescription">Room description</label>
+          <textarea id="roomDescription" maxlength="300"
+            placeholder="What will the meeting be about?"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="roomType">Meeting type</label>
+          <select id="roomType">
+            <option value="Discussion">Group discussion</option>
+            <option value="Study">Study session</option>
+            <option value="Business">Business meeting</option>
+            <option value="Social">Social gathering</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="roomPrivacy">Room privacy</label>
+          <select id="roomPrivacy">
+            <option value="Private">Private — join with room code</option>
+            <option value="Public">Public — discoverable room</option>
+          </select>
+        </div>
+
+        <button class="primary-button" type="submit">
+          Create Meeting Room
+        </button>
+
+        <div id="createStatus" class="status"></div>
+      </form>
+
+      <div class="room-result" id="roomResult">
+        <strong id="generatedCode">------</strong>
+        <p>
+          Your demo room code has been created. Share it with friends.
+          Actual room hosting and joining require the meeting service.
+        </p>
+        <button class="secondary-button" id="copyNewCode" type="button">
+          Copy Room Code
+        </button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>↗ Join a Meeting Room</h2>
+      <p class="subtext">
+        Already have a room code? Enter it below to look up the room.
+      </p>
+
+      <form id="joinRoomForm">
+        <div class="field">
+          <label for="joinCode">Meeting room code</label>
+          <input id="joinCode" type="text" maxlength="6"
+            placeholder="Enter 6-character code"
+            style="text-transform:uppercase;letter-spacing:4px;"
+            required>
+        </div>
+
+        <button class="primary-button" type="submit">
+          Find Meeting Room
+        </button>
+
+        <div id="joinStatus" class="status"></div>
+      </form>
+
+      <div class="notice">
+        <strong>How joining works</strong>
+        The room code identifies a meeting room. A real meeting service
+        must verify the room, its access rules and the participant before
+        allowing entry.
+      </div>
+    </section>
+
+  </div>
+
+  <section class="room-list">
+    <div class="room-list-heading">
+      <h2>Rooms Created on This Device</h2>
+      <span style="font-size:12px;color:#777184;">Browser demo</span>
+    </div>
+
+    <div id="roomList">
+      <div class="empty">
+        <span>🎥</span>
+        You haven't created any meeting rooms yet.
+      </div>
+    </div>
+  </section>
+
+  <section class="notice">
+    <strong>Meeting room features</strong>
+    The room creation and code lookup on this page are demonstrations.
+    Live voice calls, video calls, group chat, participant controls,
+    screen sharing and real invitations need a connected meeting service.
+    Room codes created in this browser are not accessible to other members.
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    EARNGIG MEETING ROOMS FRONTEND DEMO
+
+    This page creates demo room records in the current browser.
+
+    It does NOT create real online meeting rooms.
+
+    Production implementation requires:
+    - Authenticated room owners and participants.
+    - Shared database for room records and membership.
+    - Server-generated unique room codes.
+    - Secure room access and expiration.
+    - Real-time chat.
+    - Voice/video infrastructure such as a WebRTC-based service.
+    - Host controls, participant moderation and reporting.
+    - Optional recording and privacy controls with clear consent.
+
+    A local room code is not a working meeting link.
+  */
+
+  const STORAGE_KEY = "earngig_meeting_rooms";
+  const PROFILE_KEY = "earngig_profile";
+
+  const roomList = document.getElementById("roomList");
+  const createStatus = document.getElementById("createStatus");
+  const joinStatus = document.getElementById("joinStatus");
+
+  let rooms = [];
+  let latestRoomCode = "";
+
+  function getProfile() {
+    try {
+      return JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+
+  const profile = getProfile();
+
+  const currentUser =
+    profile.username ||
+    profile.handle ||
+    "demo-member";
+
+  const currentName =
+    profile.fullName ||
+    profile.name ||
+    currentUser;
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function showStatus(element, text, type) {
+    element.textContent = text;
+    element.className = "status " + type;
+  }
+
+  function clearStatus(element) {
+    element.textContent = "";
+    element.className = "status";
+  }
+
+  function loadRooms() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      rooms = Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      rooms = [];
+    }
+  }
+
+  function saveRooms() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rooms));
+      return true;
+    } catch (error) {
+      alert("Could not save the meeting room. Browser storage may be full.");
+      return false;
+    }
+  }
+
+  function generateCode() {
+    const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+
+    for (let attempt = 0; attempt < 20; attempt++) {
+      code = "";
+
+      for (let i = 0; i < 6; i++) {
+        code += characters[Math.floor(Math.random() * characters.length)];
+      }
+
+      if (!rooms.some(room => room.code === code)) {
+        return code;
+      }
+    }
+
+    return "EG" + Date.now().toString().slice(-4);
+  }
+
+  function formatDate(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "Recently created";
+
+    return date.toLocaleString("en-NG", {
+      dateStyle: "medium",
+      timeStyle: "short"
+    });
+  }
+
+  function renderRooms() {
+    if (!rooms.length) {
+      roomList.innerHTML = `
+        <div class="empty">
+          <span>🎥</span>
+          You haven't created any meeting rooms yet.
+        </div>
+      `;
+      return;
+    }
+
+    const ownRooms = rooms.filter(room => room.owner === currentUser);
+
+    if (!ownRooms.length) {
+      roomList.innerHTML = `
+        <div class="empty">
+          <span>🎥</span>
+          You haven't created any meeting rooms on this device.
+        </div>
+      `;
+      return;
+    }
+
+    roomList.innerHTML = ownRooms.map(room => `
+      <article class="room-card">
+        <div class="room-details">
+          <strong>${escapeHTML(room.name)}</strong>
+          <small>
+            ${escapeHTML(room.type)} · ${escapeHTML(room.privacy)} room<br>
+            Created ${escapeHTML(formatDate(room.createdAt))}<br>
+            Room code: <span class="room-code">${escapeHTML(room.code)}</span>
+          </small>
+        </div>
+
+        <div class="room-actions">
+          <button class="secondary-button"
+            type="button" data-copy-code="${escapeHTML(room.code)}">
+            Copy Code
+          </button>
+          <button class="secondary-button"
+            type="button" data-delete-room="${escapeHTML(room.id)}">
+            Delete
+          </button>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  document.getElementById("createRoomForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const name = document.getElementById("roomName").value.trim();
+    const description = document.getElementById("roomDescription").value.trim();
+    const type = document.getElementById("roomType").value;
+    const privacy = document.getElementById("roomPrivacy").value;
+
+    if (name.length < 3) {
+      showStatus(createStatus, "Room name must contain at least 3 characters.", "error");
+      return;
+    }
+
+    const room = {
+      id: "room-" + Date.now(),
+      name,
+      description,
+      type,
+      privacy,
+      code: generateCode(),
+      owner: currentUser,
+      ownerName: currentName,
+      createdAt: new Date().toISOString()
+    };
+
+    rooms.unshift(room);
+
+    if (!saveRooms()) {
+      rooms.shift();
+      return;
+    }
+
+    latestRoomCode = room.code;
+
+    document.getElementById("generatedCode").textContent = room.code;
+    document.getElementById("roomResult").style.display = "block";
+
+    showStatus(
+      createStatus,
+      "Demo room created in this browser. Live meeting functionality is not connected.",
+      "success"
+    );
+
+    event.target.reset();
+    renderRooms();
+  });
+
+  document.getElementById("copyNewCode").addEventListener("click", async () => {
+    if (!latestRoomCode) return;
+
+    try {
+      await navigator.clipboard.writeText(latestRoomCode);
+      showStatus(createStatus, "Room code copied.", "success");
+    } catch (error) {
+      showStatus(
+        createStatus,
+        "Copy is unavailable. Select and copy the displayed room code manually.",
+        "error"
+      );
+    }
+  });
+
+  document.getElementById("joinRoomForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const code = document.getElementById("joinCode").value
+      .trim()
+      .toUpperCase();
+
+    if (!/^[A-Z0-9]{6}$/.test(code)) {
+      showStatus(joinStatus, "Enter a valid 6-character room code.", "error");
+      return;
+    }
+
+    const room = rooms.find(item => item.code === code);
+
+    if (!room) {
+      showStatus(
+        joinStatus,
+        "Room not found on this device. Room lookup across members requires the shared EarnGig meeting service.",
+        "error"
+      );
+      return;
+    }
+
+    if (room.owner === currentUser) {
+      showStatus(
+        joinStatus,
+        "This is your own demo room. Live room entry is not connected yet.",
+        "success"
+      );
+      return;
+    }
+
+    showStatus(
+      joinStatus,
+      "Room found, but live meeting entry is not connected. The meeting service must verify your access.",
+      "error"
+    );
+  });
+
+  roomList.addEventListener("click", async event => {
+    const copyButton = event.target.closest("[data-copy-code]");
+    const deleteButton = event.target.closest("[data-delete-room]");
+
+    if (copyButton) {
+      const code = copyButton.dataset.copyCode;
+
+      try {
+        await navigator.clipboard.writeText(code);
+        alert("Room code copied.");
+      } catch (error) {
+        alert("Copy unavailable. Room code: " + code);
+      }
+    }
+
+    if (deleteButton) {
+      const id = deleteButton.dataset.deleteRoom;
+      const room = rooms.find(item => item.id === id);
+
+      if (!room || room.owner !== currentUser) return;
+
+      if (!confirm("Delete this demo meeting room?")) return;
+
+      rooms = rooms.filter(item => item.id !== id);
+      saveRooms();
+      renderRooms();
+    }
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  loadRooms();
+  renderRooms();
+</script>
+
+</body>
+</html>
