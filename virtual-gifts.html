@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Gifts | EarnGig</title>
+  <style>
+    :root {
+      --purple: #7138c8;
+      --purple-dark: #5423a3;
+      --lavender: #f3edff;
+      --gold: #e7ad32;
+      --text: #292438;
+      --muted: #777184;
+      --border: #e9e2f3;
+      --background: #faf9fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 14px 5%;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--purple);
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .brand svg { width: 25px; height: 25px; }
+
+    .header-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .header-links a {
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 17px 50px;
+    }
+
+    .heading { margin-bottom: 22px; }
+
+    .heading h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .balance-card {
+      background: linear-gradient(115deg, #7138c8, #9561dc);
+      border-radius: 17px;
+      padding: 22px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 23px;
+    }
+
+    .balance-card small {
+      display: block;
+      opacity: .85;
+      margin-bottom: 8px;
+    }
+
+    .balance-card strong { font-size: 27px; }
+
+    .coin-icon {
+      font-size: 39px;
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      background: #ffffff20;
+      border-radius: 50%;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 15px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-heading span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .gift-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 15px;
+      padding: 17px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: .18s ease;
+      position: relative;
+    }
+
+    .gift-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px #7138c817;
+    }
+
+    .gift-card.selected {
+      border: 2px solid var(--purple);
+      background: var(--lavender);
+    }
+
+    .gift-emoji {
+      font-size: 42px;
+      margin: 5px 0 12px;
+    }
+
+    .gift-card h3 {
+      font-size: 14px;
+      margin: 0 0 7px;
+    }
+
+    .gift-card .price {
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .gift-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 7px;
+    }
+
+    .premium-label {
+      position: absolute;
+      top: 9px;
+      right: 8px;
+      background: #fff4d7;
+      color: #8a641b;
+      padding: 4px 6px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .form-panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 23px;
+      margin-top: 25px;
+    }
+
+    .form-panel h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    .subtext {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+      outline: none;
+      color: var(--text);
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7138c815;
+    }
+
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .selected-gift {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      background: #faf8ff;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .selected-gift .emoji { font-size: 36px; }
+
+    .selected-gift strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .selected-gift small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .summary {
+      background: #faf8ff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 18px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 9px 0;
+      font-size: 13px;
+    }
+
+    .summary-row span { color: var(--muted); }
+
+    .send-button {
+      width: 100%;
+      background: var(--purple);
+      color: white;
+      border: 0;
+      border-radius: 11px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 800;
+      margin-top: 18px;
+      cursor: pointer;
+    }
+
+    .send-button:hover { background: var(--purple-dark); }
+
+    .send-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .notice {
+      background: #fff9e9;
+      border: 1px solid #f2dfad;
+      border-radius: 12px;
+      padding: 15px;
+      color: #75551b;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 18px;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .status {
+      display: none;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 13px;
+    }
+
+    .status.error {
+      display: block;
+      background: #fff0f0;
+      color: #9b2929;
+    }
+
+    .status.success {
+      display: block;
+      background: #eaf8f0;
+      color: #176b43;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media(max-width: 800px) {
+      .gift-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media(max-width: 550px) {
+      header { padding: 12px 14px; }
+      .header-links { gap: 9px; }
+      .header-links a { font-size: 11px; }
+      .gift-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .heading h1 { font-size: 24px; }
+      .form-panel { padding: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M9 19L21 29L31 9L42 29L55 19L49 48H15L9 19Z"
+        fill="#E7AD32" stroke="#C58B19" stroke-width="3"
+        stroke-linejoin="round"/>
+      <path d="M15 54H49" stroke="#E7AD32" stroke-width="5"
+        stroke-linecap="round"/>
+      <circle cx="9" cy="16" r="4" fill="#E7AD32"/>
+      <circle cx="31" cy="7" r="4" fill="#E7AD32"/>
+      <circle cx="55" cy="16" r="4" fill="#E7AD32"/>
+    </svg>
+    EarnGig
+  </a>
+
+  <nav class="header-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="earngig-community.html">Community</a>
+    <a href="messages.html">Messages</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="heading">
+    <h1>Virtual Gifts 🎁</h1>
+    <p>Make someone's day with a gift. Choose from affordable surprises to luxurious premium gifts.</p>
+  </section>
+
+  <section class="balance-card">
+    <div>
+      <small>Your available coin balance</small>
+      <strong id="balance">0 Coins</strong>
+      <div style="font-size:12px;margin-top:8px;opacity:.85;">
+        Gift purchases use EarnGig coins.
+      </div>
+    </div>
+    <div class="coin-icon">🪙</div>
+  </section>
+
+  <div class="section-heading">
+    <h2>Affordable Gifts</h2>
+    <span>Small gestures, big smiles</span>
+  </div>
+
+  <section class="gift-grid" id="affordableGifts"></section>
+
+  <div class="section-heading">
+    <h2>Premium Gifts</h2>
+    <span>Make a grand impression</span>
+  </div>
+
+  <section class="gift-grid" id="premiumGifts"></section>
+
+  <section class="form-panel">
+    <h2>Send a Virtual Gift</h2>
+    <p class="subtext">
+      Select a gift above, enter the recipient's EarnGig username and add an optional message.
+    </p>
+
+    <div class="selected-gift" id="selectedGift">
+      <div class="emoji">🎁</div>
+      <div>
+        <strong>No gift selected</strong>
+        <small>Choose a gift from the collection above.</small>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="recipient">Recipient username</label>
+      <input id="recipient" type="text"
+        placeholder="Enter EarnGig username"
+        autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="giftMessage">Personal message (optional)</label>
+      <textarea id="giftMessage" maxlength="300"
+        placeholder="Write a kind message for the recipient..."></textarea>
+    </div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span>Selected gift</span>
+        <strong id="summaryGift">None</strong>
+      </div>
+      <div class="summary-row">
+        <span>Gift price</span>
+        <strong id="summaryPrice">0 coins</strong>
+      </div>
+      <div class="summary-row">
+        <span>Transfer fee</span>
+        <strong>0 coins</strong>
+      </div>
+      <div class="summary-row">
+        <span>Recipient gets</span>
+        <strong id="recipientGets">1 gift</strong>
+      </div>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <button class="send-button" id="sendGift" type="button" disabled>
+      Send Gift
+    </button>
+
+    <div class="notice">
+      <strong>Important gift information</strong>
+      Virtual gifts are purchased using EarnGig coins. Gift coins are spent on the gift and are not cash withdrawals or cash rewards. The recipient receives the virtual gift, not its coin purchase price.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
+
+<script>
+  /*
+    VIRTUAL GIFTS FRONTEND DEMO
+
+    This page displays the gift catalogue and calculates gift prices.
+
+    Real gift sending requires a secure backend to:
+    - Authenticate sender and recipient.
+    - Verify recipient username.
+    - Check eligible coin balance.
+    - Deduct coins exactly once.
+    - Record the gift transaction.
+    - Deliver the gift to the recipient's account.
+    - Notify recipient and sender.
+    - Prevent duplicate transactions and balance manipulation.
+
+    Do not deduct coins or record successful gifts in localStorage.
+  */
+
+  const gifts = [
+    { id: "heart", name: "Heart", emoji: "❤️", price: 10, tier: "affordable" },
+    { id: "flower", name: "Flower", emoji: "🌸", price: 20, tier: "affordable" },
+    { id: "smile", name: "Smile", emoji: "😊", price: 30, tier: "affordable" },
+    { id: "coffee", name: "Coffee", emoji: "☕", price: 50, tier: "affordable" },
+    { id: "teddy", name: "Teddy Bear", emoji: "🧸", price: 100, tier: "affordable" },
+    { id: "bouquet", name: "Rose Bouquet", emoji: "💐", price: 250, tier: "affordable" },
+    { id: "cake", name: "Birthday Cake", emoji: "🎂", price: 500, tier: "affordable" },
+
+    { id: "diamond", name: "Diamond", emoji: "💎", price: 1000, tier: "premium" },
+    { id: "golden-crown", name: "Golden Crown", emoji: "👑", price: 2500, tier: "premium" },
+    { id: "luxury-car", name: "Luxury Car", emoji: "🏎️", price: 5000, tier: "premium" },
+    { id: "royal-palace", name: "Royal Palace", emoji: "🏰", price: 10000, tier: "premium" }
+  ];
+
+  const affordableContainer = document.getElementById("affordableGifts");
+  const premiumContainer = document.getElementById("premiumGifts");
+  const selectedGiftElement = document.getElementById("selectedGift");
+  const sendButton = document.getElementById("sendGift");
+  const statusElement = document.getElementById("status");
+
+  let selectedGift = null;
+  let availableBalance = 0;
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function formatCoins(amount) {
+    return Number(amount).toLocaleString("en-NG") + " coins";
+  }
+
+  function renderGifts() {
+    gifts.forEach(gift => {
+      const card = document.createElement("button");
+
+      card.type = "button";
+      card.className = "gift-card";
+      card.dataset.giftId = gift.id;
+
+      card.innerHTML = `
+        ${gift.tier === "premium" ? '<span class="premium-label">PREMIUM</span>' : ''}
+        <div class="gift-emoji">${gift.emoji}</div>
+        <h3>${escapeHTML(gift.name)}</h3>
+        <div class="price">${formatCoins(gift.price)}</div>
+        <small>Tap to select</small>
+      `;
+
+      card.addEventListener("click", () => selectGift(gift.id));
+
+      if (gift.tier === "premium") {
+        premiumContainer.appendChild(card);
+      } else {
+        affordableContainer.appendChild(card);
+      }
+    });
+  }
+
+  function selectGift(giftId) {
+    selectedGift = gifts.find(gift => gift.id === giftId);
+
+    if (!selectedGift) return;
+
+    document.querySelectorAll(".gift-card").forEach(card => {
+      card.classList.toggle(
+        "selected",
+        card.dataset.giftId === giftId
+      );
+    });
+
+    selectedGiftElement.innerHTML = `
+      <div class="emoji">${selectedGift.emoji}</div>
+      <div>
+        <strong>${escapeHTML(selectedGift.name)}</strong>
+        <small>${formatCoins(selectedGift.price)}</small>
+      </div>
+    `;
+
+    document.getElementById("summaryGift").textContent = selectedGift.name;
+    document.getElementById("summaryPrice").textContent =
+      formatCoins(selectedGift.price);
+
+    updateButton();
+    clearStatus();
+  }
+
+  function loadDemoBalance() {
+    try {
+      const wallet = JSON.parse(
+        localStorage.getItem("earngig_wallet") || "null"
+      );
+
+      if (wallet && Number.isFinite(Number(wallet.coins))) {
+        availableBalance = Math.max(0, Number(wallet.coins));
+      }
+    } catch (error) {
+      availableBalance = 0;
+    }
+
+    document.getElementById("balance").textContent =
+      formatCoins(availableBalance);
+  }
+
+  function updateButton() {
+    const username = document.getElementById("recipient").value.trim();
+
+    sendButton.disabled = !selectedGift || username.length < 2;
+  }
+
+  function clearStatus() {
+    statusElement.textContent = "";
+    statusElement.className = "status";
+  }
+
+  function showError(text) {
+    statusElement.textContent = text;
+    statusElement.className = "status error";
+  }
+
+  document.getElementById("recipient").addEventListener("input", () => {
+    updateButton();
+    clearStatus();
+  });
+
+  sendButton.addEventListener("click", () => {
+    const recipient = document.getElementById("recipient").value.trim().replace(/^@/, "");
+    const message = document.getElementById("giftMessage").value.trim();
+
+    if (!selectedGift) {
+      showError("Please select a gift first.");
+      return;
+    }
+
+    if (!recipient) {
+      showError("Enter the recipient's username.");
+      return;
+    }
+
+    if (selectedGift.price > availableBalance) {
+      showError("Your displayed coin balance is not enough for this gift.");
+      return;
+    }
+
+    /*
+      No gift is sent and no coins are deducted here.
+
+      The production backend must verify the recipient and balance,
+      then complete the transaction securely.
+    */
+
+    showError(
+      "Gift sending is not connected yet. EarnGig must verify the recipient and coin balance through its secure server before sending. No coins have been deducted."
+    );
+  });
+
+  // Allow messages.html to prefill a recipient username.
+  const query = new URLSearchParams(location.search);
+  const recipientFromUrl = query.get("recipient");
+
+  if (recipientFromUrl) {
+    document.getElementById("recipient").value = recipientFromUrl;
+  }
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  renderGifts();
+  loadDemoBalance();
+  updateButton();
+</script>
+
+</body>
+</html>
