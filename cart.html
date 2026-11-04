@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,7 +117,9 @@ EarnGig
 const CART_KEY = "earngig_cart";
 const PRODUCTS_KEY = "earngig_seller_products";
 const MARKETPLACE_KEY = "earngig_marketplace_products";
-const SERVICE_CHARGE = 250;
+
+// One flat ₦100 service charge per entire checkout.
+const SERVICE_CHARGE = 100;
 
 function readJSON(key,fallback){
   try{
@@ -368,8 +371,8 @@ function renderCart(){
       <strong>${money(totalPayable)}</strong>
     </div>
     <div class="service-note">
-      <strong>Fixed EarnGig service charge: ₦250</strong><br>
-      This charge applies once per checkout, regardless of the number of products or sellers in your cart.
+      <strong>Fixed EarnGig service charge: ₦100</strong><br>
+      This charge applies once per entire checkout, regardless of the number of products or sellers in your cart.
     </div>
     <div class="delivery-note">
       <strong>Delivery is separate</strong><br>
