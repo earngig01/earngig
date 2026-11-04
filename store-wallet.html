@@ -3,102 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Store Wallet | EarnGig</title>
+<title>Seller Store Wallet | EarnGig</title>
 <style>
-:root{
-  --purple:#6427c7;
-  --purple-dark:#48159b;
-  --purple-light:#f2ebff;
-  --gold:#d6a62e;
-  --text:#25213a;
-  --muted:#77738a;
-  --border:#ece8f3;
-  --background:#faf9fc;
-  --green:#168653;
-  --orange:#b87518;
-  --red:#c43e3e;
-}
+:root{--purple:#6427c7;--pale:#f2ebff;--gold:#d6a62e;--text:#29243a;--muted:#777286;--border:#ece8f3;--bg:#faf9fc;--green:#168653;--orange:#bd7415;--red:#c43e3e}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--text)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 a{text-decoration:none;color:inherit}
-button,select,input{font:inherit}
-.topbar{height:72px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:10}
-.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
+button{font:inherit;cursor:pointer}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 4%}
+.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:22px;font-weight:800}
 .brand svg{width:25px;height:25px}
-.top-actions{display:flex;gap:18px;font-size:13px;font-weight:700;color:var(--purple)}
-.layout{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:calc(100vh - 72px)}
-.sidebar{background:white;border-right:1px solid var(--border);padding:25px 15px}
-.side-label{color:#9993a9;font-size:10px;font-weight:800;letter-spacing:1.2px;padding:0 12px;margin:19px 0 9px}
-.side-link{display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;margin:3px 0;font-size:13px;color:#625d71;font-weight:600}
-.side-link:hover,.side-link.active{color:var(--purple);background:var(--purple-light)}
-.side-link span{width:20px;text-align:center;font-size:16px}
-main{max-width:1450px;width:100%;padding:34px;margin:auto}
-.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:25px}
-h1{font-size:28px;margin:0 0 8px}
-.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
-.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:12px 17px;background:var(--purple);color:white;font-size:12px;font-weight:700;cursor:pointer}
-.button:hover{background:var(--purple-dark)}
-.button.secondary{background:white;color:var(--purple);border:1px solid #d9c8f4}
-.wallet-hero{background:linear-gradient(120deg,#4b189c,#7944d1);color:white;border-radius:17px;padding:28px;margin-bottom:22px;position:relative;overflow:hidden}
-.wallet-hero:after{content:"₦";position:absolute;right:45px;top:-25px;font-size:180px;font-weight:800;color:#ffffff12}
-.wallet-top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}
-.wallet-top small{font-size:11px;color:#e8dcff}
-.wallet-icon{font-size:27px}
-.balance{font-size:37px;font-weight:800;margin:17px 0 8px;position:relative;z-index:1}
-.balance-label{font-size:11px;color:#e8dcff;position:relative;z-index:1}
-.wallet-actions{display:flex;gap:10px;margin-top:22px;position:relative;z-index:1;flex-wrap:wrap}
-.wallet-actions .button{background:white;color:var(--purple)}
-.wallet-actions .button.secondary{background:#ffffff20;color:white;border:1px solid #ffffff66}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
-.stat{background:white;border:1px solid var(--border);border-radius:13px;padding:19px}
-.stat small{display:block;font-size:11px;color:var(--muted);margin-bottom:11px}
-.stat strong{font-size:22px}
-.stat-icon{float:right;font-size:20px}
-.panel{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:22px}
-.panel-heading{padding:19px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.panel-heading h2{font-size:15px;margin:0}
-.panel-body{padding:20px}
-.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
-.info-card{background:#fcfbfd;border:1px solid var(--border);border-radius:11px;padding:16px}
-.info-card h3{font-size:12px;margin:0 0 8px}
-.info-card p{font-size:11px;color:var(--muted);line-height:1.7;margin:0}
-.filter-row{display:flex;gap:10px;padding:15px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap}
-.filter-row input,.filter-row select{height:40px;border:1px solid var(--border);border-radius:8px;padding:0 11px;font-size:11px;background:white;outline:none}
-.filter-row input{flex:1;min-width:170px}
+.toplinks{display:flex;gap:18px;font-size:11px;font-weight:700;color:#625d71}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);max-width:1400px;margin:auto;min-height:calc(100vh - 68px)}
+.sidebar{background:white;border-right:1px solid var(--border);padding:22px 13px}
+.side-title{font-size:9px;color:#aaa3b5;font-weight:800;letter-spacing:1px;padding:10px}
+.side-link{display:block;padding:12px 10px;border-radius:8px;font-size:11px;font-weight:700;color:#655e73;margin-bottom:3px}
+.side-link:hover,.side-link.active{background:var(--pale);color:var(--purple)}
+.content{padding:28px 25px 50px;min-width:0}
+.heading{margin-bottom:20px}
+.heading h1{font-size:25px;margin:0 0 7px}
+.heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
+.wallet-hero{background:linear-gradient(120deg,#4b179d,#7135ce);border-radius:15px;padding:25px;color:white;margin-bottom:17px;position:relative;overflow:hidden}
+.wallet-hero:after{content:"₦";position:absolute;right:25px;top:-35px;font-size:160px;font-weight:800;color:#ffffff12}
+.hero-label{font-size:11px;color:#e4d6ff}
+.hero-balance{font-size:34px;font-weight:800;margin:12px 0 18px;position:relative;z-index:1}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-actions a{padding:11px 15px;border-radius:8px;font-size:10px;font-weight:800;background:white;color:var(--purple)}
+.hero-actions a.secondary{background:#ffffff20;color:white;border:1px solid #ffffff55}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.card{background:white;border:1px solid var(--border);border-radius:11px;padding:16px}
+.card span{font-size:10px;color:var(--muted);font-weight:700}
+.card strong{display:block;font-size:21px;margin-top:9px}
+.card.pending strong{color:var(--orange)}
+.card.total strong{color:var(--purple)}
+.notice{background:#fff8e8;border:1px solid #f1e3c2;border-radius:9px;padding:13px 15px;font-size:10px;line-height:1.7;color:#785b1c;margin-bottom:18px}
+.panel{background:white;border:1px solid var(--border);border-radius:12px;padding:17px;margin-bottom:17px}
+.panel h2{font-size:14px;margin:0 0 13px}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th{text-align:left;padding:14px 16px;background:#fcfbfd;color:#898398;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
-td{padding:15px 16px;border-top:1px solid #f0edf4;font-size:11px}
-.ref{color:var(--purple);font-weight:800}
-.amount-in{color:var(--green);font-weight:800}
-.amount-out{color:var(--red);font-weight:800}
-.status{display:inline-block;padding:6px 9px;border-radius:30px;font-size:10px;font-weight:700;text-transform:capitalize}
-.status-completed{background:#e4f7ed;color:var(--green)}
-.status-pending{background:#fff2dc;color:var(--orange)}
-.status-failed{background:#ffe9e9;color:var(--red)}
-.status-other{background:#f0edf4;color:#716b80}
-.empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:12px}
-.notice{padding:15px 17px;background:#f5f0ff;border:1px solid #e9defa;border-radius:10px;color:#59427e;font-size:11px;line-height:1.7;margin-top:20px}
-@media(max-width:1000px){
-.layout{grid-template-columns:1fr}
-.sidebar{display:flex;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--border);gap:5px}
-.side-label{display:none}
-.side-link{white-space:nowrap;margin:0}
-main{padding:25px 18px}
-}
-@media(max-width:650px){
-.topbar{height:62px;padding:0 15px}
-.brand{font-size:20px}
-.top-actions{gap:10px;font-size:11px}
-.heading{flex-direction:column}
-h1{font-size:24px}
-.stats{grid-template-columns:1fr 1fr;gap:9px}
-.stat{padding:14px}
-.stat strong{font-size:19px}
-.info-grid{grid-template-columns:1fr}
-.balance{font-size:30px}
-.wallet-hero{padding:22px}
-}
+table{width:100%;border-collapse:collapse;min-width:550px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #f0edf4;font-size:10px}
+th{color:var(--muted);font-size:9px;background:#fcfbfe}
+.status{font-size:9px;font-weight:800;padding:6px 9px;border-radius:18px;background:#f1eff5}
+.status.completed{background:#e8f7ef;color:var(--green)}
+.status.pending{background:#fff4e5;color:var(--orange)}
+.status.failed{background:#fff0f0;color:var(--red)}
+.empty{text-align:center;color:var(--muted);padding:24px;font-size:11px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.info{background:#faf9fc;border:1px solid var(--border);border-radius:9px;padding:14px}
+.info strong{display:block;font-size:11px;margin-bottom:6px}
+.info p{font-size:10px;color:var(--muted);line-height:1.6;margin:0}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{display:none}.content{padding:22px 14px 40px}}
+@media(max-width:650px){.cards{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.toplinks a:not(:last-child){display:none}.hero-balance{font-size:28px}}
 </style>
 </head>
 <body>
@@ -114,298 +69,190 @@ h1{font-size:24px}
 </svg>
 EarnGig
 </a>
-<div class="top-actions">
+<nav class="toplinks">
 <a href="dashboard.html">Dashboard</a>
+<a href="marketplace.html">Marketplace</a>
 <a href="my-shop.html">Seller Centre</a>
-</div>
+</nav>
 </header>
 
 <div class="layout">
 <aside class="sidebar">
-<div class="side-label">SELLER CENTRE</div>
-<a class="side-link" href="my-shop.html"><span>▦</span> Overview</a>
-<a class="side-link" href="store-registration.html"><span>＋</span> Open a Shop</a>
-<a class="side-link" href="storefront.html"><span>🏪</span> My Store</a>
-<a class="side-link" href="store-customisation.html"><span>🎨</span> Store Customisation</a>
-<a class="side-link" href="my-products.html"><span>📦</span> My Products</a>
-<a class="side-link" href="my-orders.html"><span>🛍️</span> Orders</a>
-<a class="side-link" href="promote-store.html"><span>📣</span> Promotions</a>
-<a class="side-link" href="sales-earnings.html"><span>💰</span> Sales & Earnings</a>
-<a class="side-link" href="shop-payments.html"><span>💳</span> Shop Payments</a>
-<a class="side-link active" href="store-wallet.html"><span>🏦</span> Store Wallet</a>
-<a class="side-link" href="withdrawals.html"><span>↗</span> Withdrawals</a>
-<a class="side-link" href="store-settings.html"><span>⚙️</span> Store Settings</a>
+<div class="side-title">SELLER CENTRE</div>
+<a class="side-link" href="my-shop.html">▦ Overview</a>
+<a class="side-link" href="store-registration.html">＋ Open a Shop</a>
+<a class="side-link" href="storefront.html">▣ Store Setup</a>
+<a class="side-link" href="store-customisation.html">✦ Store Customisation</a>
+<a class="side-link" href="my-products.html">□ My Products</a>
+<a class="side-link" href="my-orders.html">▤ Orders</a>
+<a class="side-link" href="promote-store.html">↗ Promotions</a>
+<a class="side-link" href="sales-earnings.html">◷ Sales & Earnings</a>
+<a class="side-link active" href="store-wallet.html">₦ Store Wallet</a>
+<a class="side-link" href="withdrawals.html">⇧ Withdrawals</a>
+<a class="side-link" href="shop-payments.html">▣ Shop Payments</a>
+<a class="side-link" href="store-settings.html">⚙ Store Settings</a>
 </aside>
 
-<main>
+<main class="content">
 <div class="heading">
-<div>
-<h1>Store Wallet</h1>
-<p class="subtitle">Your store sales money, kept separate from your normal EarnGig wallet.</p>
-</div>
-<a href="wallet.html" class="button secondary">View Normal Wallet</a>
+<h1>Seller Store Wallet</h1>
+<p>Your marketplace sales money, kept separately from your EarnGig coins and rewards.</p>
 </div>
 
 <section class="wallet-hero">
-<div class="wallet-top">
-<div>
-<small>YOUR SELLER STORE WALLET</small>
-<div class="balance" id="availableBalance">₦0.00</div>
-<div class="balance-label">Available balance for withdrawal</div>
-</div>
-<div class="wallet-icon">🏦</div>
-</div>
-<div class="wallet-actions">
-<a href="withdrawals.html" class="button">Withdraw to Bank</a>
-<a href="#transactions" class="button secondary">View Transactions</a>
+<div class="hero-label">Available to Withdraw · Nigerian Naira</div>
+<div class="hero-balance" id="availableBalance">₦0.00</div>
+<div class="hero-actions">
+<a href="withdrawals.html">Request Withdrawal</a>
+<a href="sales-earnings.html" class="secondary">View Sales</a>
 </div>
 </section>
 
-<section class="stats">
-<div class="stat">
-<span class="stat-icon">⏳</span>
-<small>Pending Settlements</small>
+<section class="cards">
+<div class="card pending">
+<span>Pending Settlement</span>
 <strong id="pendingBalance">₦0.00</strong>
 </div>
-<div class="stat">
-<span class="stat-icon">📈</span>
-<small>Total Sales Credited</small>
+<div class="card total">
+<span>Total Sales Confirmed</span>
 <strong id="totalCredited">₦0.00</strong>
 </div>
-<div class="stat">
-<span class="stat-icon">↗</span>
-<small>Total Withdrawn</small>
+<div class="card">
+<span>Total Withdrawn</span>
 <strong id="totalWithdrawn">₦0.00</strong>
 </div>
 </section>
 
-<section class="panel">
-<div class="panel-heading">
-<h2>How Your Store Wallet Works</h2>
+<div class="notice">
+<strong>When can you withdraw?</strong> Your sales proceeds remain pending until the buyer confirms receipt and you confirm successful delivery. Once both confirmations are recorded, the funds become eligible for your available Store Wallet balance. Delivery charges are negotiated separately. EarnGig's ₦250 checkout service charge does not belong to you.
 </div>
-<div class="panel-body">
-<div class="info-grid">
-<div class="info-card">
-<h3>Store sales are paid in Naira</h3>
-<p>Money from successful customer purchases is credited to your Seller Store Wallet in Nigerian Naira.</p>
-</div>
-<div class="info-card">
-<h3>Separate from game rewards</h3>
-<p>Your store money cannot be used as gaming coins and does not enter your normal EarnGig rewards wallet.</p>
-</div>
-<div class="info-card">
-<h3>Pending settlements</h3>
-<p>Payments that have not completed the settlement process remain pending and cannot be withdrawn.</p>
-</div>
-<div class="info-card">
-<h3>Withdraw to your bank</h3>
-<p>When funds become available, you can request a bank withdrawal through the separate withdrawals page.</p>
-</div>
-</div>
-</div>
-</section>
 
-<section class="panel" id="transactions">
-<div class="panel-heading">
-<h2>Store Wallet Transactions</h2>
-<span class="subtitle" id="transactionCount">0 transactions</span>
-</div>
-<div class="filter-row">
-<input type="search" id="searchInput" placeholder="Search transaction reference or description">
-<select id="typeFilter">
-<option value="all">All transactions</option>
-<option value="sale">Sales</option>
-<option value="withdrawal">Withdrawals</option>
-<option value="refund">Refunds</option>
-<option value="adjustment">Adjustments</option>
-</select>
-</div>
-<div class="table-wrap" id="tableWrap">
+<section class="panel">
+<h2>Wallet Transactions</h2>
+<div class="table-wrap">
 <table>
 <thead>
-<tr>
-<th>Reference</th>
-<th>Description</th>
-<th>Date</th>
-<th>Type</th>
-<th>Amount</th>
-<th>Status</th>
-</tr>
+<tr><th>Date</th><th>Description</th><th>Reference</th><th>Amount</th><th>Status</th></tr>
 </thead>
-<tbody id="transactionRows"></tbody>
+<tbody id="transactions">
+<tr><td colspan="5" class="empty">No wallet transactions yet.</td></tr>
+</tbody>
 </table>
-</div>
-<div class="empty hidden" id="emptyTransactions">
-No store wallet transactions yet. Your eligible store sales will appear here when recorded.
 </div>
 </section>
 
-<div class="notice">
-<strong>Important separation:</strong> This wallet is for seller business revenue only. It does not
-share funds with <strong>EarnGig's normal wallet</strong>, game earnings, reading rewards or coins.
-Never use a game wallet balance as a store wallet balance.
+<section class="panel">
+<h2>How Your Seller Wallet Works</h2>
+<div class="info-grid">
+<div class="info">
+<strong>1. Buyer pays</strong>
+<p>After successful checkout, the seller's product proceeds are held as pending settlement.</p>
 </div>
+<div class="info">
+<strong>2. You dispatch</strong>
+<p>Accept the order, prepare the package and upload a package photo before dispatch.</p>
+</div>
+<div class="info">
+<strong>3. Both confirm</strong>
+<p>The buyer confirms receipt and you confirm delivery. Each vendor order is settled separately.</p>
+</div>
+<div class="info">
+<strong>4. Funds become available</strong>
+<p>After both confirmations, the sale becomes eligible for your available Naira Store Wallet balance.</p>
+</div>
+</div>
+</section>
 </main>
 </div>
 
 <script>
-const STORE_WALLET_KEY = "earngig_store_wallet";
+const WALLET_KEY="earngig_store_wallet";
+const ORDERS_KEY="earngig_seller_orders";
+const EMAIL_KEY="earngig_current_user_email";
 
-function money(value){
-  return "₦" + Number(value || 0).toLocaleString("en-NG", {
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
+function readJSON(key,fallback){
+  try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}
+  catch(e){return fallback}
+}
+function money(n){
+  return "₦"+(Number(n)||0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function dateText(v){
+  if(!v)return "—";
+  const d=new Date(v);
+  return isNaN(d)?"—":d.toLocaleDateString("en-NG");
+}
+function statusOf(o){
+  const s=String(o.status||o.orderStatus||"pending").toLowerCase();
+  if(["canceled"].includes(s))return "cancelled";
+  if(["delivered","received","buyer_received"].includes(s))return "awaiting_confirmation";
+  return s;
+}
+function amountOf(o){
+  if(o.sellerTotal!==undefined)return Number(o.sellerTotal)||0;
+  if(o.subtotal!==undefined)return Number(o.subtotal)||0;
+  const items=Array.isArray(o.items)?o.items:(o.product?[o.product]:[]);
+  return items.reduce((sum,i)=>sum+(Number(i.price)||0)*Math.max(1,Number(i.quantity)||1),0);
+}
+function myOrders(){
+  const orders=readJSON(ORDERS_KEY,[]);
+  const email=(localStorage.getItem(EMAIL_KEY)||"").trim().toLowerCase();
+  if(!email)return orders;
+  return orders.filter(o=>{
+    const seller=String(o.sellerEmail||o.vendorEmail||o.storeEmail||"").trim().toLowerCase();
+    return !seller||seller===email;
   });
 }
-
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[character]);
-}
-
-function readWallet(){
-  try{
-    const wallet = JSON.parse(localStorage.getItem(STORE_WALLET_KEY) || "null");
-
-    if(!wallet || typeof wallet !== "object" || Array.isArray(wallet)){
-      return {
-        currency:"NGN",
-        availableBalance:0,
-        pendingBalance:0,
-        totalCredited:0,
-        totalWithdrawn:0,
-        transactions:[]
-      };
-    }
-
-    return {
-      currency:"NGN",
-      availableBalance:Number(wallet.availableBalance || 0),
-      pendingBalance:Number(wallet.pendingBalance || 0),
-      totalCredited:Number(wallet.totalCredited || 0),
-      totalWithdrawn:Number(wallet.totalWithdrawn || 0),
-      transactions:Array.isArray(wallet.transactions) ? wallet.transactions : []
-    };
-  }catch(error){
-    return {
-      currency:"NGN",
-      availableBalance:0,
-      pendingBalance:0,
-      totalCredited:0,
-      totalWithdrawn:0,
-      transactions:[]
-    };
-  }
-}
-
-let wallet = readWallet();
-
-function transactionDate(transaction){
-  const value = transaction.createdAt || transaction.date || transaction.timestamp;
-  if(!value) return "Date unavailable";
-
-  const date = new Date(value);
-  if(Number.isNaN(date.getTime())) return "Date unavailable";
-
-  return date.toLocaleDateString("en-NG",{
-    day:"numeric",
-    month:"short",
-    year:"numeric"
+function getSettlementTotals(){
+  let pending=0,confirmed=0;
+  myOrders().forEach(o=>{
+    const s=statusOf(o);
+    if(["cancelled","rejected"].includes(s))return;
+    const buyer=o.buyerReceived||o.buyerConfirmationStatus==="confirmed";
+    const seller=o.sellerDelivered||o.sellerConfirmationStatus==="confirmed";
+    const amount=amountOf(o);
+    if(buyer&&seller)confirmed+=amount;
+    else pending+=amount;
   });
+  return {pending,confirmed};
 }
-
-function transactionType(transaction){
-  const type = String(transaction.type || "adjustment").toLowerCase();
-  const allowed = ["sale","withdrawal","refund","adjustment"];
-  return allowed.includes(type) ? type : "adjustment";
-}
-
-function transactionStatus(transaction){
-  const status = String(transaction.status || "completed").toLowerCase();
-  if(["completed","paid","successful","settled"].includes(status)) return "completed";
-  if(["pending","processing"].includes(status)) return "pending";
-  if(["failed","rejected","cancelled"].includes(status)) return "failed";
-  return "other";
-}
-
-function renderBalances(){
-  document.getElementById("availableBalance").textContent =
-    money(wallet.availableBalance);
-
-  document.getElementById("pendingBalance").textContent =
-    money(wallet.pendingBalance);
-
-  document.getElementById("totalCredited").textContent =
-    money(wallet.totalCredited);
-
-  document.getElementById("totalWithdrawn").textContent =
-    money(wallet.totalWithdrawn);
-}
-
-function renderTransactions(){
-  const search = document.getElementById("searchInput").value.trim().toLowerCase();
-  const filter = document.getElementById("typeFilter").value;
-
-  const filtered = wallet.transactions.filter(transaction => {
-    const type = transactionType(transaction);
-    const reference = String(transaction.reference || transaction.id || "").toLowerCase();
-    const description = String(transaction.description || "").toLowerCase();
-
-    return (filter === "all" || filter === type) &&
-      (!search || reference.includes(search) || description.includes(search));
-  }).sort((a,b) => {
-    const dateA = new Date(a.createdAt || a.date || 0).getTime() || 0;
-    const dateB = new Date(b.createdAt || b.date || 0).getTime() || 0;
-    return dateB - dateA;
-  });
-
-  document.getElementById("transactionCount").textContent =
-    filtered.length + (filtered.length === 1 ? " transaction" : " transactions");
-
-  const table = document.getElementById("tableWrap");
-  const empty = document.getElementById("emptyTransactions");
-  const tbody = document.getElementById("transactionRows");
-
-  if(!filtered.length){
-    table.classList.add("hidden");
-    empty.classList.remove("hidden");
+function renderTransactions(wallet){
+  const tbody=document.getElementById("transactions");
+  tbody.innerHTML="";
+  const list=Array.isArray(wallet.transactions)?wallet.transactions:[];
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="5" class="empty">No wallet transactions yet.</td></tr>';
     return;
   }
-
-  table.classList.remove("hidden");
-  empty.classList.add("hidden");
-
-  tbody.innerHTML = filtered.map(transaction => {
-    const type = transactionType(transaction);
-    const status = transactionStatus(transaction);
-    const amount = Number(transaction.amount || 0);
-    const isOutgoing = type === "withdrawal" || type === "refund";
-
-    return `
-      <tr>
-        <td class="ref">${escapeHTML(transaction.reference || transaction.id || "Transaction")}</td>
-        <td>${escapeHTML(transaction.description || "Store wallet transaction")}</td>
-        <td>${escapeHTML(transactionDate(transaction))}</td>
-        <td>${escapeHTML(type)}</td>
-        <td class="${isOutgoing ? "amount-out" : "amount-in"}">
-          ${isOutgoing ? "−" : "+"}${money(amount)}
-        </td>
-        <td><span class="status status-${status}">${escapeHTML(status)}</span></td>
-      </tr>
-    `;
-  }).join("");
+  list.slice().sort((a,b)=>new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0)).forEach(t=>{
+    const tr=document.createElement("tr");
+    const status=String(t.status||"completed").toLowerCase();
+    tr.innerHTML=`
+      <td>${dateText(t.createdAt||t.date)}</td>
+      <td>${escapeHTML(t.description||t.type||"Wallet transaction")}</td>
+      <td>${escapeHTML(t.reference||"—")}</td>
+      <td><strong>${money(t.amount)}</strong></td>
+      <td><span class="status ${status==="pending"?"pending":status==="failed"?"failed":"completed"}">${escapeHTML(status)}</span></td>`;
+    tbody.appendChild(tr);
+  });
 }
+function escapeHTML(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function render(){
+  const wallet=readJSON(WALLET_KEY,{});
+  const totals=getSettlementTotals();
 
-document.getElementById("searchInput").addEventListener("input",renderTransactions);
-document.getElementById("typeFilter").addEventListener("change",renderTransactions);
+  // The wallet's saved available balance is authoritative.
+  // This page does not credit or transfer funds automatically.
+  document.getElementById("availableBalance").textContent=money(wallet.availableBalance);
+  document.getElementById("pendingBalance").textContent=money(totals.pending);
+  document.getElementById("totalCredited").textContent=money(wallet.totalCredited);
+  document.getElementById("totalWithdrawn").textContent=money(wallet.totalWithdrawn);
 
-renderBalances();
-renderTransactions();
+  renderTransactions(wallet);
+}
+render();
 </script>
 </body>
 </html>
