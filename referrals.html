@@ -5,45 +5,260 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Referrals | EarnGig</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#fff;color:#242039}
-header{padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;border-bottom:1px solid #eee5ff;background:#fff}
-.logo{font-size:25px;font-weight:900;color:#6428bd;text-decoration:none}
+
+body{
+font-family:Arial,sans-serif;
+background:#fff;
+color:#242039;
+}
+
+header{
+padding:17px 5%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+flex-wrap:wrap;
+border-bottom:1px solid #eee5ff;
+background:#fff;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:7px;
+font-size:25px;
+font-weight:900;
+color:#6428bd;
+text-decoration:none;
+}
+
+.logo svg{width:25px;height:25px}
+
 .logo span{color:#e6aa20}
-nav{display:flex;gap:18px;flex-wrap:wrap}
-nav a{color:#554b60;text-decoration:none;font-size:14px}
+
+nav{
+display:flex;
+gap:18px;
+flex-wrap:wrap;
+}
+
+nav a{
+color:#554b60;
+text-decoration:none;
+font-size:14px;
+}
+
 nav a:hover{color:#742bd1}
-main{max-width:950px;margin:35px auto;padding:0 18px 50px}
+
+main{
+max-width:950px;
+margin:35px auto;
+padding:0 18px 50px;
+}
+
 h1{font-size:29px;margin-bottom:8px}
-.subtitle{color:#77718a;margin-bottom:25px;line-height:1.5}
-.card{background:#fff;border:1px solid #e8ddfa;border-radius:17px;padding:25px;margin-bottom:20px;box-shadow:0 5px 20px rgba(80,35,140,.045)}
+
+.subtitle{
+color:#77718a;
+margin-bottom:25px;
+line-height:1.5;
+}
+
+.card{
+background:#fff;
+border:1px solid #e8ddfa;
+border-radius:17px;
+padding:25px;
+margin-bottom:20px;
+box-shadow:0 5px 20px rgba(80,35,140,.045);
+}
+
 .card h2{font-size:19px;margin-bottom:12px}
-.referral-box{background:#f7f2ff;border:1px dashed #b99ae8;border-radius:13px;padding:20px;text-align:center}
+
+.referral-box{
+background:#f7f2ff;
+border:1px dashed #b99ae8;
+border-radius:13px;
+padding:20px;
+text-align:center;
+}
+
 .small{font-size:13px;color:#77718a}
-.code{font-size:30px;font-weight:900;letter-spacing:3px;color:#6827bd;margin:12px 0}
-.link{background:white;border:1px solid #e2d5f5;border-radius:9px;padding:13px;overflow-wrap:anywhere;font-size:13px;color:#51476a;margin:12px 0}
-button{border:0;border-radius:9px;padding:12px 18px;background:#702bc5;color:white;font-weight:700;cursor:pointer}
+
+.code{
+font-size:30px;
+font-weight:900;
+letter-spacing:3px;
+color:#6827bd;
+margin:12px 0;
+overflow-wrap:anywhere;
+}
+
+.link{
+background:white;
+border:1px solid #e2d5f5;
+border-radius:9px;
+padding:13px;
+overflow-wrap:anywhere;
+font-size:13px;
+color:#51476a;
+margin:12px 0;
+}
+
+button{
+border:0;
+border-radius:9px;
+padding:12px 18px;
+background:#702bc5;
+color:white;
+font-weight:700;
+cursor:pointer;
+}
+
 button:hover{background:#57209d}
-.secondary{background:#eee5fb;color:#6428bd}
+
+button:disabled{
+opacity:.5;
+cursor:not-allowed;
+}
+
+.secondary{
+background:#eee5fb;
+color:#6428bd;
+}
+
 .secondary:hover{background:#e3d5f7}
-.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.stat{background:#faf8ff;border:1px solid #eee5fb;padding:20px;border-radius:13px}
-.stat strong{display:block;font-size:27px;color:#6929bd;margin-bottom:5px}
-.stat span{font-size:13px;color:#77718a}
-.reward-banner{background:linear-gradient(135deg,#f3eaff,#fbf8ff);border:1px solid #dfcef7;border-radius:14px;padding:23px;text-align:center;margin-bottom:20px}
-.reward-number{font-size:38px;font-weight:900;color:#6929bd;margin:8px 0}
-.reward-banner p{font-size:13px;color:#655a76;line-height:1.6}
+
+.actions{
+display:flex;
+gap:10px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+}
+
+.stat{
+background:#faf8ff;
+border:1px solid #eee5fb;
+padding:20px;
+border-radius:13px;
+}
+
+.stat strong{
+display:block;
+font-size:27px;
+color:#6929bd;
+margin-bottom:5px;
+}
+
+.stat span{
+font-size:13px;
+color:#77718a;
+}
+
+.reward-banner{
+background:linear-gradient(135deg,#f3eaff,#fbf8ff);
+border:1px solid #dfcef7;
+border-radius:14px;
+padding:23px;
+text-align:center;
+margin-bottom:20px;
+}
+
+.reward-number{
+font-size:38px;
+font-weight:900;
+color:#6929bd;
+margin:8px 0;
+}
+
+.reward-banner p{
+font-size:13px;
+color:#655a76;
+line-height:1.6;
+}
+
 .coin{font-size:25px}
-.rules{list-style:none;display:grid;gap:13px;margin-top:15px}
-.rules li{display:flex;gap:11px;align-items:flex-start;color:#625a73;font-size:14px;line-height:1.5}
-.check{color:#7138b8;font-weight:bold}
-.steps{line-height:2;color:#625a73;padding-left:20px}
-.notice{font-size:12px;color:#8b829b;line-height:1.6;margin-top:14px}
-#message{font-size:13px;color:#26834d;margin-top:12px;min-height:18px}
-.empty{text-align:center;padding:25px;color:#81798e}
-footer{text-align:center;color:#93899c;font-size:12px;padding:25px}
+
+.rules{
+list-style:none;
+display:grid;
+gap:13px;
+margin-top:15px;
+}
+
+.rules li{
+display:flex;
+gap:11px;
+align-items:flex-start;
+color:#625a73;
+font-size:14px;
+line-height:1.5;
+}
+
+.check{
+color:#7138b8;
+font-weight:bold;
+}
+
+.steps{
+line-height:2;
+color:#625a73;
+padding-left:20px;
+}
+
+.notice{
+font-size:12px;
+color:#8b829b;
+line-height:1.6;
+margin-top:14px;
+}
+
+#message{
+font-size:13px;
+color:#26834d;
+margin-top:12px;
+min-height:18px;
+}
+
+.empty{
+text-align:center;
+padding:25px;
+color:#81798e;
+}
+
+.referral-person{
+padding:13px;
+border-bottom:1px solid #eee5fb;
+text-align:left;
+display:flex;
+justify-content:space-between;
+gap:12px;
+flex-wrap:wrap;
+font-size:14px;
+}
+
+.status{
+color:#702bc5;
+font-weight:700;
+}
+
+footer{
+text-align:center;
+color:#93899c;
+font-size:12px;
+padding:25px;
+}
+
 @media(max-width:650px){
 header{padding:15px}
 nav{gap:12px}
@@ -56,10 +271,21 @@ h1{font-size:25px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
-<a class="logo" href="index.html">♛ Earn<span>Gig</span></a>
+<a class="logo" href="index.html">
+<svg viewBox="0 0 64 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Gold crown">
+<path d="M7 15L19 25L31 7L44 25L57 15L51 40H13L7 15Z" fill="#E6AA20" stroke="#C58A12" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M13 34H51" stroke="#FFF0B8" stroke-width="2"/>
+<circle cx="7" cy="13" r="4" fill="#E6AA20"/>
+<circle cx="31" cy="6" r="4" fill="#E6AA20"/>
+<circle cx="57" cy="13" r="4" fill="#E6AA20"/>
+</svg>
+Earn<span>Gig</span>
+</a>
+
 <nav>
 <a href="dashboard.html">Dashboard</a>
 <a href="profile.html">Profile</a>
@@ -68,204 +294,392 @@ h1{font-size:25px}
 </header>
 
 <main>
+
 <h1>Refer & Earn 👥</h1>
-<p class="subtitle">Invite friends to EarnGig, share your personal referral link and earn coins for every successful referral.</p>
+
+<p class="subtitle">
+Invite friends to EarnGig, share your personal referral link and earn coins for every successful referral.
+</p>
 
 <div class="reward-banner">
 <div class="coin">🪙</div>
 <p>YOUR REFERRAL REWARD</p>
-<div class="reward-number">10,000 Coins</div>
-<p>Earn <strong>10,000 coins for every successful and verified referral!</strong></p>
+<div class="reward-number">5,000 Coins</div>
+<p>
+Earn <strong>5,000 coins for every successful and verified referral!</strong>
+</p>
 </div>
 
 <section class="card">
 <h2>Your Personal Referral Code</h2>
+
 <div class="referral-box">
+
 <p class="small">This is your personal referral code</p>
+
 <div class="code" id="referralCode">LOADING</div>
+
 <div class="actions">
 <button class="secondary" onclick="copyCode()">Copy Code</button>
 </div>
 
-<p class="small" style="margin-top:20px">Your personal referral link</p>
+<p class="small" style="margin-top:20px">
+Your personal referral link
+</p>
+
 <div class="link" id="referralLink">Loading...</div>
+
 <div class="actions">
 <button onclick="copyLink()">Copy Referral Link</button>
 <button class="secondary" onclick="shareWhatsApp()">Share on WhatsApp</button>
 </div>
-<div id="message"></div>
+
+<div id="message" role="status" aria-live="polite"></div>
+
 </div>
-<p class="notice">Your referral code is generated from your saved profile. Secure referral tracking requires the EarnGig database.</p>
+
+<p class="notice">
+Your referral code is generated from your saved profile. Secure referral tracking requires the EarnGig database.
+</p>
 </section>
 
 <section class="card">
 <h2>Your Referral Summary</h2>
+
 <div class="stats">
+
 <div class="stat">
 <strong id="totalReferrals">0</strong>
 <span>Total Referrals</span>
 </div>
+
 <div class="stat">
 <strong id="successfulReferrals">0</strong>
 <span>Successful Referrals</span>
 </div>
+
 <div class="stat">
 <strong id="rewardsEarned">0</strong>
 <span>Coins Earned</span>
 </div>
+
 </div>
-<p class="notice">Your coin rewards will update after successful referrals are verified and credited.</p>
+
+<p class="notice">
+Your coin rewards will update after successful referrals are verified and credited.
+</p>
 </section>
 
 <section class="card">
-<h2>How You Earn Your 10,000 Coins</h2>
+<h2>How You Earn Your 5,000 Coins</h2>
+
 <ol class="steps">
 <li>Copy your personal referral link.</li>
 <li>Share it with your friends and family.</li>
 <li>Your friend opens your link and registers on EarnGig.</li>
 <li>The new account completes the required verification.</li>
-<li>You receive <strong>10,000 coins</strong> for that successful referral.</li>
+<li>Your successful referral is verified by EarnGig.</li>
+<li>You receive <strong>5,000 coins</strong> for that successful referral.</li>
 </ol>
 </section>
 
 <section class="card">
 <h2>Referral Reward Rules</h2>
+
 <ul class="rules">
-<li><span class="check">✓</span><span>Every successful and verified referral earns you <strong>10,000 coins.</strong></span></li>
-<li><span class="check">✓</span><span>Each referred account can generate only one referral reward.</span></li>
-<li><span class="check">✓</span><span>You cannot use your own referral code.</span></li>
-<li><span class="check">✓</span><span>Pending or unverified referrals do not earn coins yet.</span></li>
-<li><span class="check">✓</span><span>Referral rewards should appear in your wallet and transaction history after they are credited.</span></li>
+<li>
+<span class="check">✓</span>
+<span>Every successful and verified referral earns you <strong>5,000 coins.</strong></span>
+</li>
+
+<li>
+<span class="check">✓</span>
+<span>Each referred account can generate only one referral reward.</span>
+</li>
+
+<li>
+<span class="check">✓</span>
+<span>You cannot use your own referral code.</span>
+</li>
+
+<li>
+<span class="check">✓</span>
+<span>Pending or unverified referrals do not earn coins yet.</span>
+</li>
+
+<li>
+<span class="check">✓</span>
+<span>Referral rewards should appear in your wallet and transaction history after they are credited.</span>
+</li>
 </ul>
-<p class="notice">Rewards are subject to verification and the EarnGig referral system. Automated verification and coin crediting will become active when the backend is connected.</p>
+
+<p class="notice">
+Rewards are subject to verification and the EarnGig referral system. Automated verification and coin crediting will become active when the backend is connected.
+</p>
 </section>
 
 <section class="card">
 <h2>People You've Referred</h2>
 <div class="empty" id="referralList">No referrals recorded yet.</div>
 </section>
+
 </main>
 
 <footer>© 2026 EarnGig. All rights reserved.</footer>
 
 <script>
+
+const REFERRAL_REWARD = 5000;
+
 function getProfileIdentity(){
-const keys=["earngig_username","earngig_email","earngig_firstName"];
+
+const keys = [
+"earngig_username",
+"earngig_email",
+"earngig_firstName"
+];
+
 for(const key of keys){
-const value=localStorage.getItem(key);
-if(value && value.trim())return value.trim().toLowerCase();
+
+const value = localStorage.getItem(key);
+
+if(value && value.trim()){
+return value.trim().toLowerCase();
 }
+
+}
+
 return "";
 }
 
 function makeReferralCode(identity){
-let hash=0;
-for(let i=0;i<identity.length;i++){
-hash=((hash<<5)-hash+identity.charCodeAt(i))|0;
+
+let hash = 0;
+
+for(let i = 0; i < identity.length; i++){
+
+hash = ((hash << 5) - hash + identity.charCodeAt(i)) | 0;
+
 }
-return "EG"+Math.abs(hash).toString(36).toUpperCase().padStart(6,"0").slice(-6);
+
+return "EG" + Math.abs(hash)
+.toString(36)
+.toUpperCase()
+.padStart(6,"0")
+.slice(-6);
+
 }
 
 function showMessage(text){
-document.getElementById("message").textContent=text;
-}
 
-function initializeReferralPage(){
-const identity=getProfileIdentity();
+document.getElementById("message").textContent = text;
 
-if(!identity){
-document.getElementById("referralCode").textContent="PROFILE NEEDED";
-document.getElementById("referralLink").textContent=
-"Please save your username or email in your EarnGig profile first.";
-return;
-}
-
-const code=makeReferralCode(identity);
-const link=new URL("register.html",window.location.href);
-link.searchParams.set("ref",code);
-
-document.getElementById("referralCode").textContent=code;
-document.getElementById("referralLink").textContent=link.href;
-
-localStorage.setItem("earngig_referral_code",code);
-
-let referrals=[];
-try{
-referrals=JSON.parse(localStorage.getItem("earngig_referrals")||"[]");
-if(!Array.isArray(referrals))referrals=[];
-}catch(error){
-referrals=[];
-}
-
-const successful=referrals.filter(item=>item.status==="successful");
-const earnedCoins=successful.length*10000;
-
-document.getElementById("totalReferrals").textContent=referrals.length;
-document.getElementById("successfulReferrals").textContent=successful.length;
-document.getElementById("rewardsEarned").textContent=earnedCoins.toLocaleString();
-
-if(referrals.length){
-document.getElementById("referralList").innerHTML=
-referrals.map(item=>`
-<p style="padding:12px;border-bottom:1px solid #eee5fb;text-align:left">
-${escapeHTML(item.name||"New referral")}
-<span style="float:right;color:#702bc5">${escapeHTML(item.status||"Pending")}</span>
-</p>`).join("");
-}
 }
 
 function escapeHTML(value){
-return String(value).replace(/[&<>"']/g,char=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+
+return String(value).replace(/[&<>"']/g, char => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
 })[char]);
+
 }
 
-function copyText(value,success){
-if(navigator.clipboard && window.isSecureContext){
-navigator.clipboard.writeText(value)
-.then(()=>showMessage(success))
-.catch(()=>fallbackCopy(value,success));
-}else{
-fallbackCopy(value,success);
-}
-}
+function getReferrals(){
 
-function fallbackCopy(value,success){
-const input=document.createElement("textarea");
-input.value=value;
-input.style.position="fixed";
-input.style.opacity="0";
-document.body.appendChild(input);
-input.select();
 try{
-document.execCommand("copy");
-showMessage(success);
+
+const referrals = JSON.parse(
+localStorage.getItem("earngig_referrals") || "[]"
+);
+
+return Array.isArray(referrals) ? referrals : [];
+
 }catch(error){
-showMessage("Copy failed. Please copy manually.");
+
+return [];
+
 }
+
+}
+
+function initializeReferralPage(){
+
+const identity = getProfileIdentity();
+
+if(!identity){
+
+document.getElementById("referralCode").textContent = "PROFILE NEEDED";
+
+document.getElementById("referralLink").textContent =
+"Please save your username or email in your EarnGig profile first.";
+
+document.getElementById("totalReferrals").textContent = "0";
+document.getElementById("successfulReferrals").textContent = "0";
+document.getElementById("rewardsEarned").textContent = "0";
+
+return;
+
+}
+
+const code = makeReferralCode(identity);
+
+const link = new URL("register.html", window.location.href);
+
+link.searchParams.set("ref", code);
+
+document.getElementById("referralCode").textContent = code;
+document.getElementById("referralLink").textContent = link.href;
+
+localStorage.setItem("earngig_referral_code", code);
+
+const referrals = getReferrals();
+
+const successful = referrals.filter(item =>
+String(item.status || "").toLowerCase() === "successful"
+);
+
+const earnedCoins = successful.length * REFERRAL_REWARD;
+
+document.getElementById("totalReferrals").textContent =
+referrals.length.toLocaleString();
+
+document.getElementById("successfulReferrals").textContent =
+successful.length.toLocaleString();
+
+document.getElementById("rewardsEarned").textContent =
+earnedCoins.toLocaleString();
+
+const referralList = document.getElementById("referralList");
+
+if(referrals.length){
+
+referralList.innerHTML = referrals.map(item => {
+
+const name = escapeHTML(item.name || "New referral");
+
+const status = escapeHTML(item.status || "Pending");
+
+return `
+<div class="referral-person">
+<span>${name}</span>
+<span class="status">${status}</span>
+</div>
+`;
+
+}).join("");
+
+}
+
+}
+
+function copyText(value, success){
+
+if(navigator.clipboard && window.isSecureContext){
+
+navigator.clipboard.writeText(value)
+.then(() => showMessage(success))
+.catch(() => fallbackCopy(value));
+
+}else{
+
+fallbackCopy(value);
+
+}
+
+}
+
+function fallbackCopy(value){
+
+const input = document.createElement("textarea");
+
+input.value = value;
+input.style.position = "fixed";
+input.style.opacity = "0";
+
+document.body.appendChild(input);
+
+input.select();
+
+try{
+
+const copied = document.execCommand("copy");
+
+showMessage(
+copied ? "Copied successfully!" : "Copy failed. Please copy manually."
+);
+
+}catch(error){
+
+showMessage("Copy failed. Please copy manually.");
+
+}
+
 input.remove();
+
 }
 
 function copyCode(){
-const code=document.getElementById("referralCode").textContent;
-if(code==="PROFILE NEEDED")return showMessage("Please complete your profile first.");
-copyText(code,"Referral code copied!");
+
+const code = document.getElementById("referralCode").textContent;
+
+if(code === "PROFILE NEEDED"){
+
+showMessage("Please complete your profile first.");
+
+return;
+
+}
+
+copyText(code, "Referral code copied!");
+
 }
 
 function copyLink(){
-const link=document.getElementById("referralLink").textContent;
-if(!link.startsWith("http"))return showMessage("Please complete your profile first.");
-copyText(link,"Referral link copied!");
+
+const link = document.getElementById("referralLink").textContent;
+
+if(!link.startsWith("http")){
+
+showMessage("Please complete your profile first.");
+
+return;
+
+}
+
+copyText(link, "Referral link copied!");
+
 }
 
 function shareWhatsApp(){
-const link=document.getElementById("referralLink").textContent;
-if(!link.startsWith("http"))return showMessage("Please complete your profile first.");
-const message="Join me on EarnGig! Use my referral link to register and get started: "+link;
-window.open("https://wa.me/?text="+encodeURIComponent(message),"_blank");
+
+const link = document.getElementById("referralLink").textContent;
+
+if(!link.startsWith("http")){
+
+showMessage("Please complete your profile first.");
+
+return;
+
+}
+
+const message =
+"Join me on EarnGig! Use my referral link to register and get started: " + link;
+
+window.open(
+"https://wa.me/?text=" + encodeURIComponent(message),
+"_blank",
+"noopener"
+);
+
 }
 
 initializeReferralPage();
+
 </script>
+
 </body>
 </html>
