@@ -64,7 +64,7 @@ input,textarea,select{
 .field label{font-size:12px;font-weight:800}
 .empty{padding:25px;text-align:center;color:var(--muted);font-size:13px}
 .notice{padding:13px;border-radius:10px;background:#fff8e9;border:1px solid #f0d69a;font-size:12px;line-height:1.7;margin:12px 0}
-.proof{font-size:11px;color:var(--muted);margin-top:8px}
+.proof{font-size:11px;color:var(--muted);margin-top:8px;display:block}
 .photo{max-width:150px;max-height:120px;border-radius:8px;display:block;margin-top:8px}
 .hidden{display:none}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
@@ -72,9 +72,9 @@ input,textarea,select{
 .tabs button.active{background:var(--purple);color:#fff}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
 @media(max-width:700px){
- .stats{grid-template-columns:repeat(2,1fr)}
- h1{font-size:23px}
- .panel{padding:14px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:23px}
+  .panel{padding:14px}
 }
 </style>
 </head>
@@ -144,7 +144,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
       <li>Upload a clear photograph of the packed parcel.</li>
       <li>Wait for a registered rider to accept the delivery.</li>
       <li>When the rider arrives, check their identity and order reference.</li>
-      <li>Hand the parcel to the rider and confirm the physical handover.</li>
+      <li>The rider uploads pickup proof.</li>
+      <li>Physically hand the parcel to the rider.</li>
+      <li>Confirm the physical handover on this dashboard.</li>
       <li>Keep the handover confirmation for your records.</li>
     </ol>
     <div class="notice">
@@ -168,12 +170,15 @@ function readJSON(key,fallback){
   try{
     const value=JSON.parse(localStorage.getItem(key));
     return value??fallback;
-  }catch(e){return fallback}
+  }catch(e){
+    return fallback;
+  }
 }
 
 function saveOrders(){
   localStorage.setItem(ORDER_KEY,JSON.stringify(orders));
 }
+
 function saveHistory(){
   localStorage.setItem(HISTORY_KEY,JSON.stringify(history));
 }
@@ -184,10 +189,12 @@ function getVendorProfile(){
     "earngig_store_profile",
     "earngig_seller_profile"
   ];
+
   for(const key of possibleKeys){
     const profile=readJSON(key,null);
     if(profile)return profile;
   }
+
   return {};
 }
 
@@ -233,7 +240,7 @@ function belongsToVendor(order){
 }
 
 function orderStatus(order){
-  return String(order.status||"pending").toLowerCase();
+  return String(order.status||order.orderStatus||"pending").toLowerCase();
 }
 
 function isHandedOver(order){
@@ -255,27 +262,46 @@ function needsHandover(order){
     "accepted",
     "coming_for_pickup",
     "pickup_requested",
-    "awaiting_vendor_handover"
+    "awaiting_vendor_handover",
+    "pickup_proof_submitted"
   ].includes(orderStatus(order));
 }
 
 function statusLabel(order){
   const status=orderStatus(order);
-  if(isHandedOver(order))return "Handed over / in transit";
-  if(needsHandover(order))return "Rider coming for pickup";
-  if(status==="pickup_proof_submitted")return "Pickup proof submitted";
+
+  if(isHandedOver(order)){
+    return "Handed over / in transit";
+  }
+
+  if(status==="pickup_proof_submitted"){
+    return "Rider submitted pickup proof — confirm handover";
+  }
+
+  if(needsHandover(order)){
+    return "Rider coming for pickup";
+  }
+
   return "Awaiting rider";
 }
 
 function dateText(value){
   if(!value)return "Not recorded";
+
   const date=new Date(value);
-  return isNaN(date.getTime())?"Not recorded":date.toLocaleString();
+
+  return isNaN(date.getTime())
+    ?"Not recorded"
+    :date.toLocaleString();
 }
 
 function escapeHTML(value){
   return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[char]));
 }
 
@@ -297,7 +323,7 @@ function render(){
     active.filter(needsHandover).length;
 
   document.getElementById("handoverCount").textContent=
-    active.filter(needsHandover).length;
+    active.filter(order=>orderStatus(order)==="pickup_proof_submitted").length;
 
   document.getElementById("handedCount").textContent=handed.length;
 
@@ -313,13 +339,15 @@ function renderActive(list){
     return;
   }
 
-  container.innerHTML=list.map((order,index)=>{
+  container.innerHTML=list.map((order)=>{
     const actualIndex=orders.findIndex(item=>
       item.id===order.id && item.createdAt===order.createdAt
     );
+
     const rider=order.riderName||order.assignedRider||"Not assigned";
     const status=statusLabel(order);
     const coming=needsHandover(order);
+    const pickupProofSubmitted=orderStatus(order)==="pickup_proof_submitted";
     const proof=order.vendorParcelPhoto||order.vendorPhoto||"";
 
     return `
@@ -340,25 +368,43 @@ function renderActive(list){
 
         <div class="meta" style="margin-top:10px">
           Assigned rider: <strong>${escapeHTML(rider)}</strong><br>
-          Pickup deadline: Before the end of the pickup day.
+          Pickup deadline: Before the end of the pickup day.<br>
+          Rider pickup proof:
+          <strong>${pickupProofSubmitted
+            ? "Submitted ("+escapeHTML(order.pickupProofFileName||"photo attached")+")"
+            : "Not submitted yet"}</strong>
         </div>
 
         ${proof?`<img class="photo" src="${escapeHTML(proof)}" alt="Parcel proof photo">`:""}
 
         <div class="actions">
-          <button class="secondary" onclick="openPrepare(${actualIndex})">Prepare / upload parcel photo</button>
-          ${coming?`<button class="primary" onclick="confirmHandover(${actualIndex})">Confirm physical handover</button>`:""}
+          <button class="secondary" onclick="openPrepare(${actualIndex})">
+            Prepare / upload parcel photo
+          </button>
+
+          ${pickupProofSubmitted
+            ?`<button class="primary" onclick="confirmHandover(${actualIndex})">Confirm physical handover</button>`
+            :""}
+
+          ${coming&&!pickupProofSubmitted
+            ?`<span class="proof">Wait for the rider to arrive and submit pickup proof before confirming.</span>`
+            :""}
         </div>
+
         <div id="prepare-${actualIndex}" class="hidden">
           <div class="field">
             <label>Parcel photo</label>
             <input type="file" accept="image/*" id="photo-${actualIndex}">
           </div>
+
           <div class="field">
             <label>Package note (optional)</label>
             <textarea id="note-${actualIndex}" rows="2" placeholder="Describe the package or number of parcels"></textarea>
           </div>
-          <button class="primary" onclick="savePreparation(${actualIndex})">Save parcel preparation</button>
+
+          <button class="primary" onclick="savePreparation(${actualIndex})">
+            Save parcel preparation
+          </button>
         </div>
       </div>
     `;
@@ -391,17 +437,27 @@ function savePreparation(index){
     return;
   }
 
+  if(!file.type.startsWith("image/")){
+    alert("Please select an image file.");
+    return;
+  }
+
   if(file.size>2*1024*1024){
     alert("Please choose an image smaller than 2 MB.");
     return;
   }
 
   const reader=new FileReader();
+
   reader.onload=()=>{
     order.vendorParcelPhoto=reader.result;
     saveNote();
   };
-  reader.onerror=()=>alert("Could not read the selected image.");
+
+  reader.onerror=()=>{
+    alert("Could not read the selected image.");
+  };
+
   reader.readAsDataURL(file);
 }
 
@@ -409,8 +465,10 @@ function confirmHandover(index){
   const order=orders[index];
   if(!order)return;
 
-  if(!needsHandover(order)){
-    alert("This order is not currently awaiting rider pickup.");
+  if(orderStatus(order)!=="pickup_proof_submitted"){
+    alert(
+      "You can confirm handover only after the assigned rider has submitted pickup proof. Do not confirm before the parcel is physically handed over."
+    );
     return;
   }
 
@@ -419,7 +477,8 @@ function confirmHandover(index){
   const confirmed=confirm(
     "Confirm that you have physically handed order "+
     (order.orderId||order.id||"")+
-    " to "+rider+"? Only confirm after the parcel has actually been handed over."
+    " to "+rider+
+    "?\n\nOnly confirm after the parcel has actually been handed over."
   );
 
   if(!confirmed)return;
@@ -427,8 +486,23 @@ function confirmHandover(index){
   const now=new Date().toISOString();
 
   order.status="vendor_handover_confirmed";
+  order.orderStatus="vendor_handover_confirmed";
   order.vendorHandoverConfirmedAt=now;
   order.vendorHandoverConfirmed=true;
+  order.pickedUpAt=now;
+  order.updatedAt=now;
+
+  order.handoverHistory=Array.isArray(order.handoverHistory)
+    ?order.handoverHistory
+    :[];
+
+  order.handoverHistory.push({
+    stage:"vendor_handover_confirmed",
+    actor:getVendorName(),
+    time:now,
+    riderName:rider,
+    note:"Vendor confirmed physical handover after rider pickup proof."
+  });
 
   const record={
     orderId:order.orderId||order.id||"",
@@ -436,15 +510,20 @@ function confirmHandover(index){
     riderName:rider,
     confirmedAt:now,
     status:"vendor_handover_confirmed",
-    note:"Vendor confirmed physical handover."
+    riderPickupProofFileName:order.pickupProofFileName||"",
+    note:"Rider submitted pickup proof and vendor confirmed physical handover."
   };
 
   history.push(record);
+
   saveOrders();
   saveHistory();
 
   render();
-  alert("Handover confirmation recorded in this browser.");
+
+  alert(
+    "Physical handover confirmed. The order is now marked as handed over to the rider in this browser demo."
+  );
 }
 
 function renderHistory(list){
@@ -480,11 +559,16 @@ function showTab(tab,button){
   ["active","history","help"].forEach(name=>{
     document.getElementById(name+"Tab").classList.toggle("hidden",name!==tab);
   });
-  document.querySelectorAll(".tabs button").forEach(item=>item.classList.remove("active"));
+
+  document.querySelectorAll(".tabs button").forEach(item=>{
+    item.classList.remove("active");
+  });
+
   button.classList.add("active");
 }
 
 document.getElementById("year").textContent=new Date().getFullYear();
+
 render();
 </script>
 </body>
