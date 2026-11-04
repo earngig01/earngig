@@ -3,273 +3,187 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#160b2d">
 <title>Games | EarnGig</title>
 <style>
-:root{
-  --bg:#100820;--panel:#1d1035;--purple:#8b5cf6;
-  --lime:#c5ff4a;--gold:#ffc857;--white:#fff;--muted:#b9a9d1;
-}
+:root{--bg:#100820;--panel:#1d1035;--purple:#8b5cf6;--lime:#c5ff4a;--gold:#ffc857;--white:#fff;--muted:#b9a9d1}
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(--white);
-  background:radial-gradient(ellipse at 50% -15%,#482477 0%,transparent 48%),
-  linear-gradient(145deg,#100820,#1b0d31 55%,#100820);
-}
-a{color:inherit;text-decoration:none}
-button,input{font:inherit}
-.topbar{
-  position:sticky;top:0;z-index:20;display:flex;align-items:center;
-  justify-content:space-between;gap:15px;padding:15px 5%;
-  background:rgba(16,8,32,.94);border-bottom:1px solid #c5ff4a26;
-  backdrop-filter:blur(12px)
-}
+body{min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(--white);background:radial-gradient(ellipse at 50% -15%,#482477 0%,transparent 48%),linear-gradient(145deg,#100820,#1b0d31 55%,#100820)}
+a{color:inherit;text-decoration:none}button,input{font:inherit}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 5%;background:rgba(16,8,32,.96);border-bottom:1px solid #c5ff4a26}
 .brand{font-size:24px;font-weight:900;letter-spacing:-.8px;white-space:nowrap}
 .crown{display:inline-flex;width:25px;height:21px;margin-right:4px;vertical-align:-3px;color:var(--gold)}
 .crown svg{width:100%;height:100%;display:block}
 .menu-button{border:1px solid #67449b;background:var(--panel);color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold}
-.side-menu{display:none;position:absolute;right:5%;top:68px;width:210px;padding:10px;border:1px solid #67449b;border-radius:14px;background:#211239;box-shadow:0 12px 35px #0008}
-.side-menu.open{display:grid}
-.side-menu a{padding:12px;border-radius:8px;color:#eee5ff}
-.side-menu a:hover{background:#39225b;color:var(--lime)}
+.side-menu{display:none;position:absolute;right:5%;top:68px;width:210px;padding:10px;border:1px solid #67449b;border-radius:14px;background:#211239}
+.side-menu.open{display:grid}.side-menu a{padding:12px;border-radius:8px;color:#eee5ff}.side-menu a:hover{background:#39225b;color:var(--lime)}
 .nav{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:22px;padding:14px 5%;border-bottom:1px solid #ffffff12;color:#d7c8ed;font-size:14px}
 .nav a:hover,.nav a.active{color:var(--lime)}
 .container{width:min(1150px,92%);margin:auto;padding:35px 0 65px}
-.hero{text-align:center;padding:25px 10px 30px}
-.eyebrow{color:var(--lime);text-transform:uppercase;letter-spacing:3px;font-size:11px;font-weight:800;margin-bottom:12px}
+.hero{text-align:center;padding:25px 10px 30px}.eyebrow{color:var(--lime);text-transform:uppercase;letter-spacing:3px;font-size:11px;font-weight:800;margin-bottom:12px}
 h1{font-size:clamp(32px,6vw,49px);margin-bottom:12px;letter-spacing:-1.5px}
-.hero p{color:var(--muted);line-height:1.6;max-width:590px;margin:auto;font-size:15px}
-.highlight{color:var(--lime)}
+.hero p{color:var(--muted);line-height:1.6;max-width:590px;margin:auto;font-size:15px}.highlight{color:var(--lime)}
 .stats{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0 30px}
 .stat{min-width:125px;padding:13px 20px;background:#ffffff09;border:1px solid #ffffff16;border-radius:13px;text-align:center}
-.stat strong{display:block;color:var(--lime);font-size:20px;margin-bottom:4px}
-.stat span{color:var(--muted);font-size:11px}
+.stat strong{display:block;color:var(--lime);font-size:20px;margin-bottom:4px}.stat span{color:var(--muted);font-size:11px}
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
-.toolbar h2{font-size:21px}
-.search{width:min(100%,310px);padding:13px 15px;border-radius:11px;outline:none;border:1px solid #67449b;background:#1d1035;color:white}
-.search:focus{border-color:var(--lime)}
-.search::placeholder{color:#a995c4}
+.toolbar h2{font-size:21px}.search{width:min(100%,310px);padding:13px 15px;border-radius:11px;outline:none;border:1px solid #67449b;background:#1d1035;color:white}
+.search:focus{border-color:var(--lime)}.search::placeholder{color:#a995c4}
 .filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:16px;margin-bottom:8px}
 .filter{flex:0 0 auto;padding:9px 15px;border-radius:30px;border:1px solid #614184;background:transparent;color:#d9cbed;cursor:pointer;font-size:12px}
 .filter.active,.filter:hover{background:var(--lime);color:#18200a;border-color:var(--lime);font-weight:bold}
 .games-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
-.game-card{position:relative;overflow:hidden;min-width:0;background:linear-gradient(150deg,#2a1946,#1b1030);border:1px solid #ffffff16;border-radius:17px;transition:transform .2s,border-color .2s}
+.game-card{position:relative;overflow:hidden;min-width:0;background:linear-gradient(150deg,#2a1946,#1b1030);border:1px solid #ffffff16;border-radius:17px;transition:transform .2s}
 .game-card:hover{transform:translateY(-4px);border-color:#a879ff}
-.game-art{min-height:135px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 60%,#7444a8 0%,transparent 65%),linear-gradient(135deg,#38205c,#211039)}
-.game-art:before{content:"";position:absolute;width:145px;height:145px;border:1px solid #ffffff16;border-radius:50%}
-.game-icon{position:relative;font-size:62px;filter:drop-shadow(0 8px 12px #0008)}
-.game-info{padding:15px}
-.game-info h3{font-size:15px;margin-bottom:7px}
+.game-art{min-height:135px;display:grid;place-items:center;background:radial-gradient(circle at 50% 60%,#7444a8 0%,transparent 65%),linear-gradient(135deg,#38205c,#211039)}
+.game-icon{font-size:62px;filter:drop-shadow(0 8px 12px #0008)}
+.game-info{padding:15px}.game-info h3{font-size:15px;margin-bottom:7px}
 .game-info p{color:var(--muted);font-size:11px;line-height:1.5;min-height:34px;margin-bottom:10px}
-.prize{font-size:11px;color:#fff;margin:8px 0 12px;line-height:1.5}
-.prize strong{color:var(--lime)}
+.prize{font-size:11px;color:#fff;margin:8px 0 12px;line-height:1.5}.prize strong{color:var(--lime)}
 .game-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.status{color:var(--lime);font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:.6px}
-.play-button{
-  display:inline-block;border:none;border-radius:8px;padding:9px 12px;
-  background:var(--lime);color:#18200a;font-size:11px;font-weight:900;
-  cursor:pointer;text-align:center;transition:transform .2s,background .2s;
-}
-.play-button:hover{background:#d8ff83;transform:scale(1.04)}
-.variable{color:#d8b8ff}
-.empty{display:none;text-align:center;padding:40px 10px;color:var(--muted)}
+.status{color:var(--gold);font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:.6px}
+.play-button{border:none;border-radius:8px;padding:9px 12px;background:var(--lime);color:#18200a;font-size:11px;font-weight:bold;cursor:pointer}
+.variable{color:#d8b8ff}.empty{display:none;text-align:center;padding:40px 10px;color:var(--muted)}
 .note{margin-top:30px;padding:17px;border:1px solid #a879ff35;background:#8b5cf610;border-radius:13px;color:#cbbbe0;text-align:center;font-size:12px;line-height:1.7}
 footer{padding:22px 5%;text-align:center;border-top:1px solid #ffffff12;color:#927fae;font-size:12px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#000b;z-index:100;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}
+.modal{width:min(420px,100%);background:#211239;border:1px solid #8b5cf6;border-radius:17px;padding:23px;box-shadow:0 20px 60px #0009}
+.modal h2{font-size:21px;margin-bottom:10px}.modal p{font-size:13px;color:#d1c3e2;line-height:1.6;margin-bottom:13px}
+.modal input{width:100%;padding:12px;border-radius:8px;border:1px solid #67449b;background:#130b21;color:white;margin:6px 0 14px}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.modal-actions button,.modal-actions a{border:0;border-radius:8px;padding:12px 15px;font-weight:bold;font-size:13px}
+.confirm-button{background:var(--lime);color:#18200a}.cancel-button{background:#49345f;color:white}
+.wallet-link{background:#ffc857;color:#241600}
+.modal-message{color:#ffc857;font-size:12px;min-height:18px;margin-bottom:10px}
 @media(max-width:900px){.games-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){
-  .topbar{padding:13px 4%}.brand{font-size:21px}
-  .nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;gap:19px;padding:13px 4%}
-  .container{width:92%;padding-top:20px}
-  .games-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-  .game-art{min-height:110px}.game-icon{font-size:49px}
-  .game-info{padding:12px}.game-info h3{font-size:13px}
-  .game-info p,.prize{font-size:10px}
-  .play-button{padding:8px;font-size:10px}
-  .toolbar{align-items:stretch}.search{width:100%}
-}
+@media(max-width:600px){.topbar{padding:13px 4%}.brand{font-size:21px}.nav{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;gap:19px;padding:13px 4%}.container{width:92%;padding-top:20px}.games-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.game-art{min-height:110px}.game-icon{font-size:49px}.game-info{padding:12px}.game-info h3{font-size:13px}.game-info p,.prize{font-size:10px}.play-button{padding:8px;font-size:10px}.toolbar{align-items:stretch}.search{width:100%}}
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="index.html">
-    <span class="crown"><svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><circle cx="3" cy="6" r="1.5" fill="currentColor"/><circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/><circle cx="29" cy="6" r="1.5" fill="currentColor"/></svg></span>EarnGig
-  </a>
-  <button class="menu-button" id="menuButton" type="button">☰ Menu</button>
-  <div class="side-menu" id="sideMenu">
-    <a href="index.html">Home</a>
-    <a href="games.html">Games</a>
-    <a href="novels.html">Novels</a>
-    <a href="marketplace.html">Marketplace</a>
-    <a href="wallet.html">My Wallet</a>
-    <a href="advertise.html">Advertise</a>
-    <a href="storefront.html">My Store</a>
-  </div>
+<a class="brand" href="index.html">
+<span class="crown"><svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><circle cx="3" cy="6" r="1.5" fill="currentColor"/><circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/><circle cx="29" cy="6" r="1.5" fill="currentColor"/></svg></span>EarnGig
+</a>
+<button class="menu-button" id="menuButton" type="button">☰ Menu</button>
+<div class="side-menu" id="sideMenu">
+<a href="index.html">Home</a><a href="games.html">Games</a><a href="novels.html">Novels</a><a href="marketplace.html">Marketplace</a><a href="wallet.html">My Wallet</a><a href="advertise.html">Advertise</a><a href="storefront.html">My Store</a>
+</div>
 </header>
 
 <nav class="nav">
-  <a href="index.html">Home</a>
-  <a href="games.html" class="active">Games</a>
-  <a href="novels.html">Novels</a>
-  <a href="marketplace.html">Marketplace</a>
-  <a href="index.html#earn-more">Earn More</a>
-  <a href="advertise.html">Advertise</a>
-  <a href="storefront.html">Storefront</a>
+<a href="index.html">Home</a><a href="games.html" class="active">Games</a><a href="novels.html">Novels</a><a href="marketplace.html">Marketplace</a><a href="index.html#earn-more">Earn More</a><a href="advertise.html">Advertise</a><a href="storefront.html">Storefront</a>
 </nav>
 
 <main class="container">
 <section class="hero">
-  <div class="eyebrow">Play • Challenge • Earn</div>
-  <h1>Welcome to <span class="highlight">EarnGig Games</span></h1>
-  <p>Explore exciting games, challenge your skills and win EarnGig coins. Entry fees and winning prizes are displayed clearly for every game.</p>
-  <div class="stats">
-    <div class="stat"><strong>17</strong><span>Games available</span></div>
-    <div class="stat"><strong>EarnGig</strong><span>Your gaming destination</span></div>
-  </div>
+<div class="eyebrow">Play • Challenge • Earn</div>
+<h1>Welcome to <span class="highlight">EarnGig Games</span></h1>
+<p>Explore exciting games, challenge your skills and win EarnGig coins. Entry fees and winning prizes are displayed clearly for every game.</p>
+<div class="stats"><div class="stat"><strong>17</strong><span>Games planned</span></div><div class="stat"><strong>EarnGig</strong><span>Your gaming destination</span></div></div>
 </section>
 
 <section>
-<div class="toolbar">
-  <h2>Explore Games</h2>
-  <input class="search" type="search" id="gameSearch" placeholder="Search for a game..." aria-label="Search games">
-</div>
-
+<div class="toolbar"><h2>Explore Games</h2><input class="search" type="search" id="gameSearch" placeholder="Search for a game..." aria-label="Search games"></div>
 <div class="filters">
-  <button class="filter active" data-filter="all">All Games</button>
-  <button class="filter" data-filter="puzzle">Puzzle</button>
-  <button class="filter" data-filter="strategy">Strategy</button>
-  <button class="filter" data-filter="action">Action</button>
-  <button class="filter" data-filter="sports">Sports</button>
-  <button class="filter" data-filter="memory">Memory</button>
-  <button class="filter" data-filter="chance">Spin & Chance</button>
+<button class="filter active" data-filter="all">All Games</button><button class="filter" data-filter="puzzle">Puzzle</button><button class="filter" data-filter="strategy">Strategy</button><button class="filter" data-filter="action">Action</button><button class="filter" data-filter="sports">Sports</button><button class="filter" data-filter="memory">Memory</button><button class="filter" data-filter="chance">Spin & Chance</button>
 </div>
 
 <div class="games-grid" id="gamesGrid">
 
-<article class="game-card" data-name="word search" data-category="puzzle">
-<div class="game-art"><span class="game-icon">🔤</span></div><div class="game-info">
-<h3>Word Search</h3><p>Find hidden words and test your vocabulary.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="word-search.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="word search" data-category="puzzle" data-fee="100" data-url="word-search.html">
+<div class="game-art"><span class="game-icon">🔤</span></div><div class="game-info"><h3>Word Search</h3><p>Find hidden words and test your vocabulary.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="sudoku" data-category="puzzle">
-<div class="game-art"><span class="game-icon">🔢</span></div><div class="game-info">
-<h3>Sudoku</h3><p>Complete the number grid using logic and focus.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="sudoku.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="sudoku" data-category="puzzle" data-fee="100" data-url="sudoku.html">
+<div class="game-art"><span class="game-icon">🔢</span></div><div class="game-info"><h3>Sudoku</h3><p>Complete the number grid using logic and focus.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="candy match" data-category="puzzle">
-<div class="game-art"><span class="game-icon">🍬</span></div><div class="game-info">
-<h3>Candy Match</h3><p>Match colourful candies and clear the board.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="candy-match.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="candy match" data-category="puzzle" data-fee="100" data-url="candy-match.html">
+<div class="game-art"><span class="game-icon">🍬</span></div><div class="game-info"><h3>Candy Match</h3><p>Match colourful candies and clear the board.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="chess" data-category="strategy">
-<div class="game-art"><span class="game-icon">♟️</span></div><div class="game-info">
-<h3>Chess</h3><p>Plan your moves and outsmart your opponent.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="chess.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="chess" data-category="strategy" data-fee="100" data-url="chess.html">
+<div class="game-art"><span class="game-icon">♟️</span></div><div class="game-info"><h3>Chess</h3><p>Plan your moves and outsmart your opponent.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="car racing" data-category="action">
-<div class="game-art"><span class="game-icon">🏎️</span></div><div class="game-info">
-<h3>Car Racing</h3><p>Race against other players or computer opponents.</p>
-<div class="prize">Entry: <strong>200 coins per player</strong><br>1st: <strong>500</strong> · 2nd: <strong>300</strong> · 3rd: <strong>200 coins</strong><br><span class="variable">Computer opponents fill empty places.</span></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="car-racing.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="car racing" data-category="action" data-fee="200" data-url="car-racing.html">
+<div class="game-art"><span class="game-icon">🏎️</span></div><div class="game-info"><h3>Car Racing</h3><p>Race against other players or computer opponents.</p><div class="prize">Entry: <strong>200 coins per player</strong><br>1st: <strong>500</strong> · 2nd: <strong>300</strong> · 3rd: <strong>200 coins</strong><br><span class="variable">Computer opponents fill empty places.</span></div><div class="game-bottom"><span class="status">200 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="survival game" data-category="action">
-<div class="game-art"><span class="game-icon">🛡️</span></div><div class="game-info">
-<h3>Survival Game</h3><p>Stay alive, overcome challenges and survive.</p>
-<div class="prize">Entry: <strong>150 coins</strong><br>Winner receives: <strong>700 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="survival-game.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="survival game" data-category="action" data-fee="150" data-url="survival-game.html">
+<div class="game-art"><span class="game-icon">🛡️</span></div><div class="game-info"><h3>Survival Game</h3><p>Stay alive, overcome challenges and survive.</p><div class="prize">Entry: <strong>150 coins</strong><br>Winner receives: <strong>700 coins</strong></div><div class="game-bottom"><span class="status">150 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="bubble shooter" data-category="puzzle">
-<div class="game-art"><span class="game-icon">🫧</span></div><div class="game-info">
-<h3>Bubble Shooter</h3><p>Shoot and match bubbles to clear the screen.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="bubble-shooter.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="bubble shooter" data-category="puzzle" data-fee="100" data-url="bubble-shooter.html">
+<div class="game-art"><span class="game-icon">🫧</span></div><div class="game-info"><h3>Bubble Shooter</h3><p>Shoot and match bubbles to clear the screen.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="fruit slice" data-category="action">
-<div class="game-art"><span class="game-icon">🍉</span></div><div class="game-info">
-<h3>Fruit Slice</h3><p>Slice flying fruits and avoid dangerous objects.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="fruit-slice.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="fruit slice" data-category="action" data-fee="100" data-url="fruit-slice.html">
+<div class="game-art"><span class="game-icon">🍉</span></div><div class="game-info"><h3>Fruit Slice</h3><p>Slice flying fruits and avoid dangerous objects.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="block puzzle" data-category="puzzle">
-<div class="game-art"><span class="game-icon">🧩</span></div><div class="game-info">
-<h3>Block Puzzle</h3><p>Fit blocks together and complete the rows.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="block-puzzle.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="block puzzle" data-category="puzzle" data-fee="100" data-url="block-puzzle.html">
+<div class="game-art"><span class="game-icon">🧩</span></div><div class="game-info"><h3>Block Puzzle</h3><p>Fit blocks together and complete the rows.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="ludo battle" data-category="strategy">
-<div class="game-art"><span class="game-icon">🎲</span></div><div class="game-info">
-<h3>Ludo Battle</h3><p>Roll the dice, make smart moves and compete.</p>
-<div class="prize">Entry: <strong>100 coins per player</strong><br>1st: <strong>250</strong> · 2nd: <strong>150</strong> · 3rd: <strong>100</strong> · 4th: <strong>0 coins</strong><br><span class="variable">Computer opponents fill empty places.</span></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="ludo-battle.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="ludo battle" data-category="strategy" data-fee="100" data-url="ludo-battle.html">
+<div class="game-art"><span class="game-icon">🎲</span></div><div class="game-info"><h3>Ludo Battle</h3><p>Roll the dice, make smart moves and compete.</p><div class="prize">Entry: <strong>100 coins per player</strong><br>1st: <strong>250</strong> · 2nd: <strong>150</strong> · 3rd: <strong>100</strong> · 4th: <strong>0 coins</strong><br><span class="variable">Computer opponents fill empty places.</span></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="penalty shoot" data-category="sports">
-<div class="game-art"><span class="game-icon">⚽</span></div><div class="game-info">
-<h3>Penalty Shoot</h3><p>Take your shot and try to score a goal.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="penalty-shoot.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="penalty shoot" data-category="sports" data-fee="100" data-url="penalty-shoot.html">
+<div class="game-art"><span class="game-icon">⚽</span></div><div class="game-info"><h3>Penalty Shoot</h3><p>Take your shot and try to score a goal.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="tic tac toe" data-category="strategy">
-<div class="game-art"><span class="game-icon">❎</span></div><div class="game-info">
-<h3>Tic-Tac-Toe</h3><p>Get three in a row before your opponent does.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="tic-tac-toe.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="tic tac toe" data-category="strategy" data-fee="100" data-url="tic-tac-toe.html">
+<div class="game-art"><span class="game-icon">❎</span></div><div class="game-info"><h3>Tic-Tac-Toe</h3><p>Get three in a row before your opponent does.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="memory showdown" data-category="memory">
-<div class="game-art"><span class="game-icon">🧠</span></div><div class="game-info">
-<h3>Memory Showdown</h3><p>Remember the cards and match the hidden pairs.</p>
-<div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="memory-showdown.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="memory showdown" data-category="memory" data-fee="100" data-url="memory-showdown.html">
+<div class="game-art"><span class="game-icon">🧠</span></div><div class="game-info"><h3>Memory Showdown</h3><p>Remember the cards and match the hidden pairs.</p><div class="prize">Entry: <strong>100 coins</strong><br>Winner receives: <strong>500 coins</strong></div><div class="game-bottom"><span class="status">100 coins to play</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="hi lo hilo" data-category="chance">
-<div class="game-art"><span class="game-icon">🃏</span></div><div class="game-info">
-<h3>Hi-Lo</h3><p>Predict whether the next card will be higher or lower.</p>
-<div class="prize variable">Choose your coin stake each round. Payout is shown before play.</div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="hi-lo.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="hi lo hilo" data-category="chance" data-variable="true" data-url="hi-lo.html">
+<div class="game-art"><span class="game-icon">🃏</span></div><div class="game-info"><h3>Hi-Lo</h3><p>Predict whether the next card will be higher or lower.</p><div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div><div class="game-bottom"><span class="status">Choose stake</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="spin2win spin to win" data-category="chance">
-<div class="game-art"><span class="game-icon">🎡</span></div><div class="game-info">
-<h3>Spin2Win</h3><p>Spin the wheel and see where your turn takes you.</p>
-<div class="prize variable">Choose your coin stake each round. Payout is shown before play.</div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="spin2win.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="spin2win spin to win" data-category="chance" data-variable="true" data-url="spin2win.html">
+<div class="game-art"><span class="game-icon">🎡</span></div><div class="game-info"><h3>Spin2Win</h3><p>Spin the wheel and see where your turn takes you.</p><div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div><div class="game-bottom"><span class="status">Choose stake</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="spin da bottle" data-category="chance">
-<div class="game-art"><span class="game-icon">🍾</span></div><div class="game-info">
-<h3>Spin da Bottle</h3><p>Join the spin and take on fun challenges.</p>
-<div class="prize variable">Choose your coin stake each round. Payout is shown before play.</div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="spin-da-bottle.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="spin da bottle" data-category="chance" data-variable="true" data-url="spin-da-bottle.html">
+<div class="game-art"><span class="game-icon">🍾</span></div><div class="game-info"><h3>Spin da Bottle</h3><p>Join the spin and take on fun challenges.</p><div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div><div class="game-bottom"><span class="status">Choose stake</span><button class="play-button">Play Now</button></div></div></article>
 
-<article class="game-card" data-name="spin match" data-category="chance">
-<div class="game-art"><span class="game-icon">🎯</span></div><div class="game-info">
-<h3>Spin Match</h3><p>Spin, match the symbols and aim for a winning result.</p>
-<div class="prize variable">Choose your coin stake each round. Payout is shown before play.</div>
-<div class="game-bottom"><span class="status">Available</span><a class="play-button" href="spin-match.html">PLAY NOW</a></div></div></article>
+<article class="game-card" data-name="spin match" data-category="chance" data-variable="true" data-url="spin-match.html">
+<div class="game-art"><span class="game-icon">🎯</span></div><div class="game-info"><h3>Spin Match</h3><p>Spin, match the symbols and aim for a winning result.</p><div class="prize variable">Choose your coin stake each round. Payout will be shown before play.</div><div class="game-bottom"><span class="status">Choose stake</span><button class="play-button">Play Now</button></div></div></article>
 
 </div>
 <div class="empty" id="emptyMessage">No games found. Try another search.</div>
 </section>
 
 <div class="note">
-  All 17 game pages are linked from this games directory. Game entry fees and prizes are displayed on each game card. Demo play does not connect to or transfer real wallet funds.
+Game entry fees are deducted once per round. The fee is deducted before the game opens. A winning player receives exactly the prize displayed — the entry fee is not added back separately. Computer opponents do not contribute entry fees or create artificial prize-pool money.
 </div>
 </main>
+
+<div class="modal-backdrop" id="paymentModal">
+<div class="modal">
+<h2 id="modalTitle">Confirm game entry</h2>
+<p id="modalDescription">Your entry fee will be deducted from your EarnGig wallet before the game opens.</p>
+<div id="stakeArea" hidden>
+<label for="stakeInput">Choose your coin stake</label>
+<input id="stakeInput" type="number" min="1" step="1" placeholder="Enter coin stake">
+</div>
+<p id="modalBalance"></p>
+<div class="modal-message" id="modalMessage"></div>
+<div class="modal-actions">
+<button class="confirm-button" id="confirmPayment">Pay and Play</button>
+<button class="cancel-button" id="cancelPayment">Cancel</button>
+<a class="wallet-link" id="walletLink" href="wallet.html" hidden>Open Wallet</a>
+</div>
+</div>
+</div>
 
 <footer>© <span id="year"></span> EarnGig. All rights reserved.</footer>
 
 <script>
+const WALLET_KEY="earngig_wallet_balance";
+const TRANSACTIONS_KEY="earngig_wallet_transactions";
+const GAME_ACCESS_KEY="earngig_game_access";
+const COINS_PER_NAIRA=10;
+
 const menuButton=document.getElementById("menuButton");
 const sideMenu=document.getElementById("sideMenu");
-
 menuButton.addEventListener("click",()=>sideMenu.classList.toggle("open"));
-
 document.addEventListener("click",event=>{
-  if(!sideMenu.contains(event.target)&&!menuButton.contains(event.target)){
-    sideMenu.classList.remove("open");
-  }
+ if(!sideMenu.contains(event.target)&&!menuButton.contains(event.target))sideMenu.classList.remove("open");
 });
 
 const search=document.getElementById("gameSearch");
@@ -277,33 +191,133 @@ const cards=[...document.querySelectorAll(".game-card")];
 const filters=[...document.querySelectorAll(".filter")];
 const emptyMessage=document.getElementById("emptyMessage");
 let activeFilter="all";
+let selectedGame=null;
+
+function readJSON(key,fallback){
+ try{return JSON.parse(localStorage.getItem(key))??fallback}catch(e){return fallback}
+}
+function getWallet(){
+ const data=readJSON(WALLET_KEY,{totalCoins:0,eligibleCoins:0});
+ const total=Math.max(0,Number(data.totalCoins)||0);
+ const eligible=Math.max(0,Number(data.eligibleCoins)||0);
+ return {totalCoins:total,eligibleCoins:Math.min(total,eligible)};
+}
+function saveWallet(data){localStorage.setItem(WALLET_KEY,JSON.stringify(data))}
+function formatCoins(n){return Number(n).toLocaleString("en-NG")+" coins"}
 
 function filterGames(){
-  const query=search.value.trim().toLowerCase();
-  let visibleCount=0;
+ const query=search.value.trim().toLowerCase();
+ let count=0;
+ cards.forEach(card=>{
+  const visible=card.dataset.name.includes(query)&&(activeFilter==="all"||card.dataset.category===activeFilter);
+  card.style.display=visible?"":"none";
+  if(visible)count++;
+ });
+ emptyMessage.style.display=count?"none":"block";
+}
+search.addEventListener("input",filterGames);
+filters.forEach(button=>button.addEventListener("click",()=>{
+ filters.forEach(item=>item.classList.remove("active"));
+ button.classList.add("active");
+ activeFilter=button.dataset.filter;
+ filterGames();
+}));
 
-  cards.forEach(card=>{
-    const name=card.dataset.name;
-    const category=card.dataset.category;
-    const matchesSearch=name.includes(query);
-    const matchesFilter=activeFilter==="all"||category===activeFilter;
-    const visible=matchesSearch&&matchesFilter;
-    card.style.display=visible?"":"none";
-    if(visible)visibleCount++;
-  });
+const modal=document.getElementById("paymentModal");
+const modalTitle=document.getElementById("modalTitle");
+const modalDescription=document.getElementById("modalDescription");
+const modalBalance=document.getElementById("modalBalance");
+const modalMessage=document.getElementById("modalMessage");
+const stakeArea=document.getElementById("stakeArea");
+const stakeInput=document.getElementById("stakeInput");
+const confirmButton=document.getElementById("confirmPayment");
+const walletLink=document.getElementById("walletLink");
 
-  emptyMessage.style.display=visibleCount?"none":"block";
+function openPayment(game){
+ selectedGame=game;
+ const wallet=getWallet();
+ const variable=game.dataset.variable==="true";
+ const fee=Number(game.dataset.fee||0);
+
+ modalTitle.textContent="Play "+game.querySelector("h3").textContent;
+ modalDescription.textContent=variable
+  ?"Choose your stake. The selected amount will be deducted before the game opens."
+  ?"Entry fee: "+formatCoins(fee)+". This amount will be deducted before the game opens.";
+ stakeArea.hidden=!variable;
+ stakeInput.value="";
+ modalBalance.textContent="Available balance: "+formatCoins(wallet.eligibleCoins);
+ modalMessage.textContent="";
+ walletLink.hidden=true;
+ confirmButton.hidden=false;
+ modal.classList.add("open");
+ if(variable)stakeInput.focus();
 }
 
-search.addEventListener("input",filterGames);
+function closePayment(){
+ modal.classList.remove("open");
+ selectedGame=null;
+}
 
-filters.forEach(button=>{
-  button.addEventListener("click",()=>{
-    filters.forEach(item=>item.classList.remove("active"));
-    button.classList.add("active");
-    activeFilter=button.dataset.filter;
-    filterGames();
-  });
+cards.forEach(card=>{
+ card.querySelector(".play-button").addEventListener("click",()=>openPayment(card));
+});
+
+document.getElementById("cancelPayment").addEventListener("click",closePayment);
+modal.addEventListener("click",event=>{
+ if(event.target===modal)closePayment();
+});
+
+confirmButton.addEventListener("click",()=>{
+ if(!selectedGame)return;
+
+ const wallet=getWallet();
+ const variable=selectedGame.dataset.variable==="true";
+ const stake=variable?Number(stakeInput.value):Number(selectedGame.dataset.fee||0);
+ const gameName=selectedGame.querySelector("h3").textContent;
+ const gameUrl=selectedGame.dataset.url;
+
+ modalMessage.textContent="";
+ walletLink.hidden=true;
+
+ if(!Number.isSafeInteger(stake)||stake<1){
+  modalMessage.textContent="Enter a valid whole-number coin stake.";
+  return;
+ }
+ if(wallet.eligibleCoins<stake){
+  modalMessage.textContent="Insufficient eligible coins. Please add coins to your wallet before playing.";
+  walletLink.hidden=false;
+  confirmButton.hidden=true;
+  return;
+ }
+
+ // FRONTEND DEMO ONLY: localStorage deductions are not secure.
+ wallet.totalCoins=Math.max(0,wallet.totalCoins-stake);
+ wallet.eligibleCoins=Math.max(0,wallet.eligibleCoins-stake);
+ saveWallet(wallet);
+
+ const transactions=readJSON(TRANSACTIONS_KEY,[]);
+ const list=Array.isArray(transactions)?transactions:[];
+ list.push({
+  id:"EGG-"+Date.now(),
+  description:"Game entry: "+gameName,
+  amount:"-"+formatCoins(stake),
+  coins:stake,
+  date:new Date().toLocaleString("en-NG"),
+  status:"Demo deduction"
+ });
+ localStorage.setItem(TRANSACTIONS_KEY,JSON.stringify(list));
+
+ // The game page must validate this ticket before allowing play.
+ sessionStorage.setItem(GAME_ACCESS_KEY,JSON.stringify({
+  gameUrl:gameUrl,
+  gameName:gameName,
+  entryCoins:stake,
+  createdAt:Date.now(),
+  used:false
+ }));
+
+ closePayment();
+ window.location.href=gameUrl;
 });
 
 document.getElementById("year").textContent=new Date().getFullYear();
