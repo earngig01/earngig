@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#170329">
+<title>G-Coins Mining | EarnGig</title>
+
+<style>
+:root{
+  --bg:#10021e;
+  --panel:#210638;
+  --panel2:#2c0a45;
+  --lime:#caff19;
+  --gold:#ffd12d;
+  --purple:#a52bff;
+  --muted:#c9b7d9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%,#3b075d 0%,transparent 45%),
+    linear-gradient(135deg,#10021e,#19032c 60%,#10021e);
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+.topbar{
+  min-height:70px;
+  padding:12px 4%;
+  background:#18032c;
+  border-bottom:1px solid #a32be655;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+.brand{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  white-space:nowrap;
+}
+.gig{color:var(--lime)}
+.crown{
+  display:inline-flex;
+  width:25px;
+  height:21px;
+  margin-right:3px;
+  color:#e8bd55;
+  vertical-align:-2px;
+}
+.crown svg{width:100%;height:100%}
+.back-link{
+  color:#e5a6ff;
+  font-size:13px;
+  font-weight:bold;
+}
+.container{
+  width:94%;
+  max-width:1150px;
+  margin:28px auto 55px;
+}
+.page-heading{margin-bottom:23px}
+.page-heading h1{font-size:30px;margin-bottom:8px}
+.page-heading p{color:var(--muted);font-size:14px;line-height:1.6}
+
+.hero{
+  padding:25px;
+  border:1px solid #a83cda;
+  border-radius:20px;
+  background:linear-gradient(120deg,#42116b,#210638 70%);
+  margin-bottom:22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.hero h2{font-size:24px;color:var(--lime);margin-bottom:9px}
+.hero p{font-size:13px;color:#eadcf4;line-height:1.6;max-width:650px}
+.hero-icon{
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  background:#ffffff13;
+  border:1px solid #d47aff;
+  display:grid;
+  place-items:center;
+  font-size:53px;
+  flex-shrink:0;
+}
+
+.section{
+  margin-top:28px;
+  padding:22px;
+  border:1px solid #78349c;
+  border-radius:18px;
+  background:linear-gradient(145deg,#210638,#19042c);
+}
+.section-title{
+  font-size:20px;
+  margin-bottom:8px;
+}
+.section-description{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+.wallet-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.wallet-card{
+  padding:20px;
+  border:1px solid #a64bd0;
+  border-radius:15px;
+  background:linear-gradient(145deg,#351052,#1c0731);
+}
+.wallet-card.main{border-color:#bd9940}
+.wallet-card h3{font-size:14px;color:#e8d7f4;margin-bottom:15px}
+.wallet-card .amount{
+  font-size:29px;
+  font-weight:900;
+  color:var(--lime);
+  margin-bottom:7px;
+  overflow-wrap:anywhere;
+}
+.wallet-card.main .amount{color:var(--gold)}
+.wallet-card p{font-size:12px;color:var(--muted);line-height:1.5}
+
+.wallet-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:17px;
+}
+.primary-button,.secondary-button{
+  border:0;
+  border-radius:10px;
+  padding:12px 17px;
+  font-size:13px;
+  font-weight:900;
+}
+.primary-button{background:var(--lime);color:#1b0b27}
+.secondary-button{
+  background:#43135f;
+  color:#fff;
+  border:1px solid #b04bdd;
+}
+.notice{
+  margin-top:15px;
+  padding:13px;
+  background:#ffffff0b;
+  border:1px solid #ffffff20;
+  border-radius:10px;
+  color:#d9c8e6;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.manual-box{
+  text-align:center;
+  padding:23px;
+  border:1px solid #a54bd2;
+  border-radius:16px;
+  background:radial-gradient(circle at 50% 0%,#48136a,#210638 75%);
+}
+.tap-circle{
+  width:155px;
+  height:155px;
+  margin:15px auto;
+  border-radius:50%;
+  border:5px solid #d9a7ff;
+  background:radial-gradient(circle at 35% 25%,#a52bff,#4a0c79 65%,#210638);
+  box-shadow:0 0 30px #a52bff66;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:52px;
+  transition:transform .08s;
+}
+.tap-circle:active{transform:scale(.94)}
+.tap-circle span{font-size:12px;font-weight:bold;display:block;margin-top:5px}
+.tap-count{
+  font-size:34px;
+  font-weight:900;
+  color:var(--lime);
+  margin:8px 0;
+}
+.tap-label{font-size:12px;color:var(--muted)}
+.tap-reset{
+  background:none;
+  border:1px solid #9e54c0;
+  color:#eadcf4;
+  border-radius:9px;
+  padding:9px 14px;
+  font-size:12px;
+  margin-top:14px;
+}
+
+.plan-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:13px;
+}
+.plan-card{
+  padding:18px;
+  border:1px solid #8640aa;
+  border-radius:14px;
+  background:linear-gradient(145deg,#351052,#1b0630);
+}
+.plan-card.featured{
+  border:2px solid var(--gold);
+}
+.plan-card h3{font-size:17px;margin-bottom:8px}
+.multiplier{
+  font-size:30px;
+  font-weight:900;
+  color:var(--lime);
+  margin-bottom:8px;
+}
+.plan-card p{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.plan-price{
+  font-size:14px;
+  font-weight:bold;
+  margin:13px 0;
+  color:var(--gold);
+}
+.plan-card button{
+  width:100%;
+  border:0;
+  border-radius:9px;
+  padding:11px;
+  background:#592078;
+  color:#fff;
+  font-weight:bold;
+  font-size:12px;
+}
+.plan-card button:disabled{background:#442257;color:#d6c3e2}
+.plan-note{
+  margin-top:15px;
+  color:#d9c8e6;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.history-empty{
+  padding:22px;
+  border:1px dashed #8950a8;
+  border-radius:12px;
+  color:var(--muted);
+  text-align:center;
+  font-size:13px;
+  line-height:1.6;
+}
+
+footer{
+  text-align:center;
+  padding:24px;
+  border-top:1px solid #8b35b855;
+  color:#bda9ce;
+  font-size:12px;
+}
+
+@media(max-width:650px){
+  .container{width:92%;margin-top:22px}
+  .page-heading h1{font-size:25px}
+  .hero{padding:19px}
+  .hero h2{font-size:20px}
+  .hero-icon{width:65px;height:65px;font-size:37px}
+  .wallet-grid,.plan-grid{grid-template-columns:1fr}
+  .section{padding:16px}
+  .tap-circle{width:140px;height:140px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <span class="crown">
+      <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+        <circle cx="3" cy="6" r="1.5" fill="currentColor"/>
+        <circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/>
+        <circle cx="29" cy="6" r="1.5" fill="currentColor"/>
+      </svg>
+    </span>
+    Earn<span class="gig">Gig</span>
+  </a>
+  <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+</header>
+
+<main class="container">
+
+  <div class="page-heading">
+    <h1>⛏️ G-Coins Mining</h1>
+    <p>Mine G-Coins manually for free or activate an automatic mining plan.</p>
+  </div>
+
+  <section class="hero">
+    <div>
+      <h2>Welcome to EarnGig Mining</h2>
+      <p>
+        Build your Mining Wallet through manual or automatic mining.
+        Your mined G-Coins remain separate from your main wallet until
+        you decide to transfer them.
+      </p>
+    </div>
+    <div class="hero-icon">⛏️</div>
+  </section>
+
+  <!-- SEPARATE WALLETS -->
+  <section class="section">
+    <h2 class="section-title">My Mining Wallet</h2>
+    <p class="section-description">
+      Your mining rewards are stored separately from your main G-Coin wallet.
+    </p>
+
+    <div class="wallet-grid">
+      <div class="wallet-card">
+        <h3>⛏️ Mining Wallet</h3>
+        <div class="amount" id="miningBalance">—</div>
+        <p>G-Coins accumulated through mining.</p>
+      </div>
+
+      <div class="wallet-card main">
+        <h3>👛 Main G-Coin Wallet</h3>
+        <div class="amount" id="mainBalance">—</div>
+        <p>Your main wallet balance, separate from mining rewards.</p>
+      </div>
+    </div>
+
+    <div class="wallet-actions">
+      <button class="primary-button" id="transferButton" disabled>
+        Transfer to Main Wallet
+      </button>
+      <a href="wallet.html" class="secondary-button">Open Main Wallet</a>
+    </div>
+
+    <div class="notice">
+      Mining Wallet transfers will be available once the secure wallet
+      service is connected. A transfer must debit the Mining Wallet and
+      credit the main wallet as one verified transaction.
+    </div>
+  </section>
+
+  <!-- MANUAL MINING -->
+  <section class="section">
+    <h2 class="section-title">Free Manual Mining</h2>
+    <p class="section-description">
+      Tap the mining button to record your manual mining activity.
+      Manual mining is free.
+    </p>
+
+    <div class="manual-box">
+      <div class="tap-label">Your manual mining taps in this session</div>
+      <div class="tap-count" id="tapCount">0</div>
+
+      <button class="tap-circle" id="mineButton" aria-label="Tap to mine">
+        ⛏️
+        <span>TAP TO MINE</span>
+      </button>
+
+      <p class="tap-label">
+        Keep mining to build your activity.
+      </p>
+
+      <button class="tap-reset" id="resetButton">
+        Reset session counter
+      </button>
+    </div>
+
+    <div class="notice">
+      This page currently demonstrates the tap interface only.
+      Tap counts are not yet converted into withdrawable G-Coins.
+      The final mining conversion and server-side reward verification
+      must be connected before launch.
+    </div>
+  </section>
+
+  <!-- AUTOMATIC MINING -->
+  <section class="section">
+    <h2 class="section-title">Automatic Mining Plans</h2>
+    <p class="section-description">
+      Pay in Naira to activate automatic mining for seven days.
+      Automatic mining stops when the seven-day period expires.
+    </p>
+
+    <div class="plan-grid">
+
+      <article class="plan-card">
+        <h3>Automatic Basic</h3>
+        <div class="multiplier">1×</div>
+        <p>
+          Automatic mining at the normal base mining rate.
+          The system continues mining while you are away.
+        </p>
+        <div class="plan-price">Price to be configured</div>
+        <button disabled>Payment setup pending</button>
+      </article>
+
+      <article class="plan-card">
+        <h3>Bronze</h3>
+        <div class="multiplier">2×</div>
+        <p>
+          Double the base mining output during the active plan period.
+        </p>
+        <div class="plan-price">Price to be configured</div>
+        <button disabled>Payment setup pending</button>
+      </article>
+
+      <article class="plan-card">
+        <h3>Silver</h3>
+        <div class="multiplier">3×</div>
+        <p>
+          Triple the base mining output during the active plan period.
+        </p>
+        <div class="plan-price">Price to be configured</div>
+        <button disabled>Payment setup pending</button>
+      </article>
+
+      <article class="plan-card">
+        <h3>Gold</h3>
+        <div class="multiplier">5×</div>
+        <p>
+          Five times the base mining output during the active plan period.
+        </p>
+        <div class="plan-price">Price to be configured</div>
+        <button disabled>Payment setup pending</button>
+      </article>
+
+      <article class="plan-card featured">
+        <h3>Diamond</h3>
+        <div class="multiplier">10×</div>
+        <p>
+          Ten times the base mining output during the active plan period.
+        </p>
+        <div class="plan-price">Price to be configured</div>
+        <button disabled>Payment setup pending</button>
+      </article>
+
+    </div>
+
+    <div class="plan-note">
+      <strong>Automatic mining rules:</strong>
+      <br>• Every automatic plan lasts seven days.
+      <br>• Payment is made in Naira, not G-Coins.
+      <br>• Automatic mining stops automatically at expiry.
+      <br>• Users must pay again to activate another seven-day period.
+      <br>• Multipliers apply to the same base mining rate.
+    </div>
+  </section>
+
+  <!-- MINING HISTORY -->
+  <section class="section">
+    <h2 class="section-title">Mining Activity History</h2>
+    <p class="section-description">
+      Review your manual mining activity, automatic plan activity and
+      Mining Wallet transfers.
+    </p>
+
+    <div class="history-empty">
+      Your verified mining activity history will appear here
+      when the mining service is connected.
+    </div>
+  </section>
+
+  <!-- WITHDRAWAL INFORMATION -->
+  <section class="section">
+    <h2 class="section-title">When Can I Withdraw?</h2>
+    <p class="section-description">
+      Mining rewards are accumulated in your Mining Wallet. You can
+      transfer them to your main wallet when the transfer service is enabled.
+    </p>
+
+    <div class="notice">
+      Normal G-Coin wallet withdrawal requests are accepted on the
+      27th and 28th of each month. The applicable withdrawal fee
+      will be deducted according to EarnGig's withdrawal rules.
+    </div>
+
+    <div class="wallet-actions">
+      <a href="wallet.html" class="primary-button">Go to Main Wallet</a>
+      <a href="transactions.html" class="secondary-button">Transaction History</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 EarnGig. All rights reserved.
+</footer>
+
+<script>
+/*
+  FRONTEND PROTOTYPE
+
+  This page does not create real G-Coins or process payments.
+  Mining rewards, plan purchases, automatic expiry, and wallet
+  transfers must be verified and calculated by a secure backend.
+*/
+
+let sessionTaps = 0;
+
+const tapCount = document.getElementById("tapCount");
+const mineButton = document.getElementById("mineButton");
+const resetButton = document.getElementById("resetButton");
+
+mineButton.addEventListener("click",()=>{
+  sessionTaps += 1;
+  tapCount.textContent = sessionTaps.toLocaleString("en-NG");
+});
+
+resetButton.addEventListener("click",()=>{
+  sessionTaps = 0;
+  tapCount.textContent = "0";
+});
+</script>
+
+</body>
+</html>
