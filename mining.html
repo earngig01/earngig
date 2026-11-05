@@ -6,26 +6,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EarnGig Mining</title>
 <style>
-:root{--bg:#100d20;--panel:#1d1833;--gold:#f5c75e;--purple:#8b6cff;--muted:#aaa3bd}
+:root{--bg:#100d20;--panel:#1d1833;--gold:#f5c75e;--muted:#aaa3bd}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:white;font-family:Arial,sans-serif;min-height:100vh}
 button{font:inherit;cursor:pointer}
 .app{max-width:520px;min-height:100vh;margin:auto;padding:15px;display:flex;flex-direction:column}
-header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+header{display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:7px;font-weight:800;font-size:18px}
 .crown{width:27px;height:25px}
-.demo{font-size:10px;color:var(--gold);border:1px solid #80652f;padding:5px 8px;border-radius:20px}
 .top-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
 .wallet,.automatic{background:var(--panel);border:1px solid #39304f;border-radius:14px;padding:12px;color:white;text-align:left}
 .wallet small,.automatic small{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
 .wallet strong{font-size:19px;color:var(--gold)}
 .automatic strong{font-size:15px}
 .automatic{border-color:#80652f}
-.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px 0}
+.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 0}
 .eyebrow{font-size:12px;color:var(--muted);letter-spacing:1px}
 h1{font-size:25px;margin:8px 0 5px}
 .subtitle{color:var(--muted);font-size:12px;margin:0}
-.tap-button{width:190px;height:190px;border-radius:50%;margin:30px 0 18px;border:7px solid #57458a;background:radial-gradient(circle at 35% 28%,#b29aff,#7651d5 55%,#402b80);box-shadow:0 0 35px #7956d766,inset 0 0 20px #ffffff30;color:white;font-size:27px;font-weight:900;transition:transform .08s}
+.tap-button{width:190px;height:190px;border-radius:50%;margin:27px 0 18px;border:7px solid #57458a;background:radial-gradient(circle at 35% 28%,#b29aff,#7651d5 55%,#402b80);box-shadow:0 0 35px #7956d766,inset 0 0 20px #ffffff30;color:white;font-size:30px;font-weight:900;transition:transform .08s}
 .tap-button:active{transform:scale(.94)}
 .tap-button span{display:block;font-size:12px;font-weight:500;margin-top:5px}
 .tap-count{font-size:25px;font-weight:800;color:var(--gold)}
@@ -45,13 +44,12 @@ footer{text-align:center;color:#777087;font-size:10px;padding:8px}
 .balance small{color:var(--muted)}
 .balance strong{display:block;color:var(--gold);font-size:25px;margin-top:5px}
 .action{width:100%;padding:13px;border:0;border-radius:11px;background:var(--gold);color:#20172a;font-weight:800;margin-top:10px}
-.action.secondary{background:#40365b;color:white}
 .note{font-size:11px;line-height:1.5;color:var(--muted);margin-top:12px}
 .plan{border:1px solid #40365b;border-radius:12px;padding:13px;margin:9px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .plan strong{display:block;font-size:14px}
 .plan small{color:var(--muted);font-size:11px}
 .plan button{background:#40365b;color:white;border:0;border-radius:8px;padding:9px 11px;font-size:11px}
-@media(min-height:750px){.main{padding-top:35px;padding-bottom:35px}}
+@media(max-height:650px){.main{padding:8px 0}.tap-button{width:150px;height:150px;margin:15px 0}}
 </style>
 </head>
 <body>
@@ -61,17 +59,18 @@ footer{text-align:center;color:#777087;font-size:10px;padding:8px}
     <svg class="crown" viewBox="0 0 64 54" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M7 15L19 25L31 7L44 25L57 15L51 43H13L7 15Z" stroke="#F5C75E" stroke-width="4" stroke-linejoin="round"/>
       <path d="M14 49H50" stroke="#F5C75E" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="7" cy="12" r="4" fill="#F5C75E"/><circle cx="31" cy="6" r="4" fill="#F5C75E"/><circle cx="57" cy="12" r="4" fill="#F5C75E"/>
+      <circle cx="7" cy="12" r="4" fill="#F5C75E"/>
+      <circle cx="31" cy="6" r="4" fill="#F5C75E"/>
+      <circle cx="57" cy="12" r="4" fill="#F5C75E"/>
     </svg>
     EarnGig
   </div>
-  <span class="demo">DEMO</span>
 </header>
 
 <div class="top-actions">
   <button class="wallet" onclick="openSheet('walletSheet')">
-    <small>MINING WALLET · TAP TO VIEW</small>
-    <strong id="walletBalance">0 G-Coins</strong>
+    <small>MINING WALLET · VIEW</small>
+    <strong id="walletBalance">0.00 G-Coins</strong>
   </button>
   <button class="automatic" onclick="openSheet('autoSheet')">
     <small>MINING MODE</small>
@@ -82,7 +81,7 @@ footer{text-align:center;color:#777087;font-size:10px;padding:8px}
 <main class="main">
   <div class="eyebrow">YOUR MINING SPACE</div>
   <h1>Tap to Mine</h1>
-  <p class="subtitle">Tap the coin to start your mining activity</p>
+  <p class="subtitle">Tap the coin to earn mining points</p>
 
   <button class="tap-button" id="tapButton" onclick="tapCoin()">
     G
@@ -90,23 +89,22 @@ footer{text-align:center;color:#777087;font-size:10px;padding:8px}
   </button>
 
   <div class="tap-count" id="tapCount">0</div>
-  <div class="tap-label">TAPS THIS SESSION</div>
+  <div class="tap-label">TOTAL TAPS</div>
 </main>
 
 <div class="bottom">
   <div class="stat">
-    <small>MINING STATUS</small>
-    <strong id="miningStatus">Active</strong>
+    <small>MINING POINTS</small>
+    <strong id="pointsBalance">0</strong>
   </div>
   <div class="stat">
-    <small>MINING MODE</small>
-    <strong>Manual</strong>
+    <small>G-COINS EARNED</small>
+    <strong id="coinsEarned">0.00</strong>
   </div>
 </div>
-<footer>EarnGig Mining · Demo interface</footer>
+<footer>1,000 taps = 100 points = 1 G-Coin</footer>
 </div>
 
-<!-- Mining wallet popup -->
 <div class="overlay" id="walletSheet" onclick="outsideClose(event,'walletSheet')">
   <section class="sheet">
     <div class="sheet-head">
@@ -114,39 +112,81 @@ footer{text-align:center;color:#777087;font-size:10px;padding:8px}
       <button class="close" onclick="closeSheet('walletSheet')">×</button>
     </div>
     <div class="balance">
-      <small>Available mining balance</small>
-      <strong id="popupBalance">0 G-Coins</strong>
+      <small>Mining Wallet Balance</small>
+      <strong id="popupBalance">0.00 G-Coins</strong>
+    </div>
+    <div class="balance">
+      <small>Total Mining Points</small>
+      <strong id="popupPoints">0</strong>
     </div>
     <button class="action" onclick="transferNotice()">Transfer to Main G-Coin Wallet</button>
-    <p class="note">Your mined G-Coins will appear here when the live mining wallet is connected. Transfers will move coins to your normal G-Coin Wallet.</p>
+    <p class="note">Your mining balance is calculated using your taps. Wallet transfers will be enabled when the secure wallet service is connected.</p>
   </section>
 </div>
 
-<!-- Automatic popup -->
 <div class="overlay" id="autoSheet" onclick="outsideClose(event,'autoSheet')">
   <section class="sheet">
     <div class="sheet-head">
       <h2>Automatic Mining</h2>
       <button class="close" onclick="closeSheet('autoSheet')">×</button>
     </div>
-    <p class="note">Choose an automatic mining level. Each plan runs for 7 days and stops automatically when its period expires.</p>
-
+    <p class="note">Each automatic plan runs for 7 days and stops automatically when its period expires.</p>
     <div class="plan"><div><strong>Automatic 1×</strong><small>Base mining rate</small></div><button onclick="planNotice()">Select</button></div>
     <div class="plan"><div><strong>Bronze 2×</strong><small>2 times base rate</small></div><button onclick="planNotice()">Select</button></div>
     <div class="plan"><div><strong>Silver 3×</strong><small>3 times base rate</small></div><button onclick="planNotice()">Select</button></div>
     <div class="plan"><div><strong>Gold 5×</strong><small>5 times base rate</small></div><button onclick="planNotice()">Select</button></div>
     <div class="plan"><div><strong>Diamond 10×</strong><small>10 times base rate</small></div><button onclick="planNotice()">Select</button></div>
-
-    <p class="note">Plan prices and secure payment activation will appear when the payment system is connected. Automatic mining is not activated in this demo.</p>
+    <p class="note">Plan prices and activation will be connected to the secure payment system.</p>
   </section>
 </div>
 
 <script>
-let taps = 0;
+const STORAGE_KEY = 'earngig_mining_preview_v2';
+
+let mining = { taps: 0 };
+
+function loadMining(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(saved && Number.isFinite(saved.taps) && saved.taps >= 0){
+      mining.taps = Math.floor(saved.taps);
+    }
+  } catch(e) {
+    mining.taps = 0;
+  }
+  updateDisplay();
+}
+
+function saveMining(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(mining));
+}
+
+function getPoints(){
+  return mining.taps / 10;
+}
+
+function getCoins(){
+  return mining.taps / 1000;
+}
+
+function updateDisplay(){
+  const points = getPoints();
+  const coins = getCoins();
+  const formattedCoins = coins.toFixed(2);
+
+  document.getElementById('tapCount').textContent = mining.taps.toLocaleString();
+  document.getElementById('pointsBalance').textContent = points.toLocaleString(undefined,{maximumFractionDigits:1});
+  document.getElementById('coinsEarned').textContent = formattedCoins;
+  document.getElementById('walletBalance').textContent = formattedCoins + ' G-Coins';
+  document.getElementById('popupBalance').textContent = formattedCoins + ' G-Coins';
+  document.getElementById('popupPoints').textContent = points.toLocaleString(undefined,{maximumFractionDigits:1});
+}
 
 function tapCoin(){
-  taps++;
-  document.getElementById('tapCount').textContent = taps;
+  mining.taps++;
+  saveMining();
+  updateDisplay();
+
   const button = document.getElementById('tapButton');
   button.style.transform = 'scale(.95)';
   setTimeout(()=>button.style.transform='',80);
@@ -162,11 +202,13 @@ function outsideClose(event,id){
   if(event.target.id===id) closeSheet(id);
 }
 function transferNotice(){
-  alert('Mining wallet transfers will be available when the secure wallet system is connected.');
+  alert('Secure wallet transfers are not connected yet.');
 }
 function planNotice(){
-  alert('Automatic mining activation and payment will be available when the secure payment system is connected.');
+  alert('Automatic mining activation and payment are not connected yet.');
 }
+
+loadMining();
 </script>
 </body>
 </html>
