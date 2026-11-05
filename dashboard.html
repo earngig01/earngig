@@ -6,83 +6,344 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#170329">
 <title>EarnGig Dashboard</title>
+
 <style>
-:root{--bg:#10021e;--panel:#210638;--lime:#caff19;--gold:#ffd12d;--purple:#a52bff}
+:root{
+  --bg:#10021e;
+  --panel:#210638;
+  --lime:#caff19;
+  --gold:#ffd12d;
+  --purple:#a52bff;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:radial-gradient(ellipse at 50% 0%,#3b075d 0%,transparent 45%),linear-gradient(135deg,#10021e,#19032c 60%,#10021e);color:#fff;font-family:Arial,sans-serif;min-height:100vh}
+body{
+  background:radial-gradient(ellipse at 50% 0%,#3b075d 0%,transparent 45%),
+  linear-gradient(135deg,#10021e,#19032c 60%,#10021e);
+  color:#fff;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+}
 a{text-decoration:none;color:inherit}
 button{font:inherit;cursor:pointer}
-.topbar{min-height:72px;padding:10px 3%;background:#18032c;border-bottom:1px solid #a32be655;display:flex;align-items:center;justify-content:space-between;gap:17px;position:sticky;top:0;z-index:50}
-.brand{font-size:27px;font-weight:900;letter-spacing:-1.5px;white-space:nowrap}
-.crown{display:inline-flex;align-items:center;justify-content:center;width:25px;height:21px;margin-right:3px;vertical-align:-2px;color:#e8bd55}
+
+.topbar{
+  min-height:72px;
+  padding:10px 3%;
+  background:#18032c;
+  border-bottom:1px solid #a32be655;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:17px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.brand{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  white-space:nowrap;
+}
+.crown{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:25px;
+  height:21px;
+  margin-right:3px;
+  vertical-align:-2px;
+  color:#e8bd55;
+}
 .crown svg{width:100%;height:100%;display:block;overflow:visible}
 .gig{color:var(--lime)}
-.navlinks{display:flex;align-items:center;justify-content:center;gap:19px}
-.navlinks a{font-size:12px;font-weight:700;color:#f2e7fa;padding:15px 0;white-space:nowrap}
+.navlinks{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:19px;
+}
+.navlinks a{
+  font-size:12px;
+  font-weight:700;
+  color:#f2e7fa;
+  padding:15px 0;
+  white-space:nowrap;
+}
 .navlinks a:hover,.navlinks a.active{color:var(--lime)}
 .navright{display:flex;align-items:center;gap:13px}
-.nav-icon{font-size:21px;background:none;border:0;color:white;position:relative;padding:5px}
-.notification-dot{position:absolute;top:-3px;right:-3px;background:#ff315a;color:white;min-width:17px;height:17px;padding:0 4px;border-radius:20px;font-size:10px;display:grid;place-items:center}
-.user-avatar{width:36px;height:36px;display:grid;place-items:center;background:linear-gradient(135deg,#a52bff,#5b16a2);border:2px solid var(--gold);border-radius:50%}
-.menu-button{width:39px;height:39px;border:1px solid #a33bd0;background:#31094d;color:white;border-radius:10px;font-size:22px}
+.nav-icon{
+  font-size:21px;
+  background:none;
+  border:0;
+  color:white;
+  position:relative;
+  padding:5px;
+}
+.notification-dot{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  background:#ff315a;
+  color:white;
+  min-width:17px;
+  height:17px;
+  padding:0 4px;
+  border-radius:20px;
+  font-size:10px;
+  display:grid;
+  place-items:center;
+}
+.user-avatar{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#a52bff,#5b16a2);
+  border:2px solid var(--gold);
+  border-radius:50%;
+}
+.menu-button{
+  width:39px;
+  height:39px;
+  border:1px solid #a33bd0;
+  background:#31094d;
+  color:white;
+  border-radius:10px;
+  font-size:22px;
+}
 .container{max-width:1500px;width:94%;margin:22px auto 50px}
-.menu-overlay{position:fixed;inset:0;background:#0009;z-index:80;display:none}
+
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:80;
+  display:none;
+}
 .menu-overlay.open{display:block}
-.side-menu{position:fixed;top:0;right:-340px;width:min(330px,88vw);height:100%;overflow-y:auto;z-index:90;background:#1b0430;border-left:1px solid #a32be6;padding:23px 18px;transition:right .25s}
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-340px;
+  width:min(330px,88vw);
+  height:100%;
+  overflow-y:auto;
+  z-index:90;
+  background:#1b0430;
+  border-left:1px solid #a32be6;
+  padding:23px 18px;
+  transition:right .25s;
+}
 .side-menu.open{right:0}
-.menu-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #ffffff20;margin-bottom:20px}
-.close-menu{background:#391052;color:white;border:0;border-radius:8px;width:36px;height:36px;font-size:22px}
-.menu-label{color:#a991bd;font-size:11px;font-weight:bold;letter-spacing:1px;margin:20px 8px 10px}
-.side-menu a{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:9px;font-size:13px;font-weight:bold;color:#eee2f6}
-.side-menu a:hover,.side-menu a.current{background:#4a126b;color:var(--lime)}
+.menu-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:20px;
+  border-bottom:1px solid #ffffff20;
+  margin-bottom:20px;
+}
+.close-menu{
+  background:#391052;
+  color:white;
+  border:0;
+  border-radius:8px;
+  width:36px;
+  height:36px;
+  font-size:22px;
+}
+.menu-label{
+  color:#a991bd;
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+  margin:20px 8px 10px;
+}
+.side-menu a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 10px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:bold;
+  color:#eee2f6;
+}
+.side-menu a:hover,.side-menu a.current{
+  background:#4a126b;
+  color:var(--lime);
+}
 .side-menu a span{font-size:18px}
-.search-overlay{position:fixed;inset:0;background:#090012df;z-index:150;display:none;padding:10vh 16px 20px}
+
+.search-overlay{
+  position:fixed;
+  inset:0;
+  background:#090012df;
+  z-index:150;
+  display:none;
+  padding:10vh 16px 20px;
+}
 .search-overlay.open{display:block}
-.search-box{max-width:650px;margin:auto;background:#210638;border:1px solid #b83cff;border-radius:19px;padding:22px}
-.search-top{display:flex;justify-content:space-between;margin-bottom:17px}
-.search-close{width:35px;height:35px;border:0;border-radius:9px;background:#451260;color:#fff;font-size:23px}
-.search-input{width:100%;padding:15px;background:#130222;border:1px solid #9e42c7;border-radius:12px;color:white;font-size:16px}
+.search-box{
+  max-width:650px;
+  margin:auto;
+  background:#210638;
+  border:1px solid #b83cff;
+  border-radius:19px;
+  padding:22px;
+}
+.search-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:17px;
+}
+.search-close{
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:9px;
+  background:#451260;
+  color:#fff;
+  font-size:23px;
+}
+.search-input{
+  width:100%;
+  padding:15px;
+  background:#130222;
+  border:1px solid #9e42c7;
+  border-radius:12px;
+  color:white;
+  font-size:16px;
+}
 .search-results{display:grid;gap:8px;margin-top:12px}
-.search-result{display:flex;align-items:center;gap:12px;padding:13px;background:#35104f;border-radius:11px}
+.search-result{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  background:#35104f;
+  border-radius:11px;
+}
 .search-result:hover{background:#4c176d}
 .result-icon{font-size:24px}
 .result-text{flex:1}
 .result-text strong,.result-text small{display:block}
 .result-text small{color:#cbb9d9;font-size:11px;margin-top:4px}
 .no-results{padding:22px;text-align:center;color:#cbb9d9}
-.billboard{border:2px solid #b72aff;border-radius:21px;overflow:hidden;background:#23043f;box-shadow:0 0 28px #9e1bff55;margin-bottom:25px}
-.billboard-top{padding:11px 18px;background:linear-gradient(90deg,#31074e,#531080);font-size:14px;font-weight:900}
-.ad-stage{position:relative;min-height:270px;background:linear-gradient(105deg,#17052e,#470a7c 65%,#19052c)}
-.ad-slide{min-height:270px;padding:30px 8%;display:none;align-items:center;justify-content:space-between;gap:25px}
+
+.billboard{
+  border:2px solid #b72aff;
+  border-radius:21px;
+  overflow:hidden;
+  background:#23043f;
+  box-shadow:0 0 28px #9e1bff55;
+  margin-bottom:25px;
+}
+.billboard-top{
+  padding:11px 18px;
+  background:linear-gradient(90deg,#31074e,#531080);
+  font-size:14px;
+  font-weight:900;
+}
+.ad-stage{
+  position:relative;
+  min-height:270px;
+  background:linear-gradient(105deg,#17052e,#470a7c 65%,#19052c);
+}
+.ad-slide{
+  min-height:270px;
+  padding:30px 8%;
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+}
 .ad-slide.active{display:flex}
 .ad-copy{max-width:570px}
-.ad-tag{display:inline-block;padding:7px 13px;background:#ffffff20;border:1px solid #ffffff55;border-radius:30px;font-size:11px;margin-bottom:15px}
+.ad-tag{
+  display:inline-block;
+  padding:7px 13px;
+  background:#ffffff20;
+  border:1px solid #ffffff55;
+  border-radius:30px;
+  font-size:11px;
+  margin-bottom:15px;
+}
 .ad-copy h2{font-size:clamp(28px,4vw,48px);margin-bottom:13px}
 .ad-copy h2 span{color:var(--lime)}
 .ad-copy p{color:#f0e1fa;line-height:1.5;margin-bottom:20px}
 .ad-visual{width:35%;min-width:190px;display:grid;place-items:center}
-.ad-orb{width:180px;height:180px;border-radius:50%;display:grid;place-items:center;font-size:90px;background:radial-gradient(circle at 35% 30%,#fff,#e7a8ff 15%,#8e20d9 55%,#310052);border:4px solid #e7a1ff;box-shadow:0 0 35px #e04cff90}
+.ad-orb{
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:90px;
+  background:radial-gradient(circle at 35% 30%,#fff,#e7a8ff 15%,#8e20d9 55%,#310052);
+  border:4px solid #e7a1ff;
+  box-shadow:0 0 35px #e04cff90;
+}
 .ad-slide:nth-child(2){background:linear-gradient(105deg,#26083d,#66310c 70%,#21052e)}
 .ad-slide:nth-child(3){background:linear-gradient(105deg,#16052f,#083c62 70%,#16052f)}
 .ad-controls{display:flex;justify-content:center;gap:9px;padding:11px;background:#1b052f}
 .ad-dot{width:10px;height:10px;border:0;border-radius:50%;background:#78459b}
 .ad-dot.active{background:var(--lime)}
-.ad-arrow{position:absolute;top:45%;width:39px;height:39px;border-radius:50%;border:2px solid white;background:#16032bba;color:white;font-size:23px}
-.ad-arrow.prev{left:15px}.ad-arrow.next{right:15px}
-.shortcut-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:13px;margin-bottom:30px}
-.shortcut{text-align:center;background:linear-gradient(145deg,#351052,#1c0731);border:1px solid #7f36a8;border-radius:16px;padding:17px 9px;min-height:112px;transition:.2s}
+.ad-arrow{
+  position:absolute;
+  top:45%;
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  border:2px solid white;
+  background:#16032bba;
+  color:white;
+  font-size:23px;
+}
+.ad-arrow.prev{left:15px}
+.ad-arrow.next{right:15px}
+
+.shortcut-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:13px;
+  margin-bottom:30px;
+}
+.shortcut{
+  text-align:center;
+  background:linear-gradient(145deg,#351052,#1c0731);
+  border:1px solid #7f36a8;
+  border-radius:16px;
+  padding:17px 9px;
+  min-height:112px;
+  transition:.2s;
+}
 .shortcut:hover{transform:translateY(-4px);border-color:var(--lime)}
 .shortcut-icon{display:block;font-size:32px;margin-bottom:9px}
 .shortcut strong{display:block;font-size:13px;margin-bottom:5px}
 .shortcut small{color:#c9b7d9;font-size:10px;line-height:1.3}
+
 .section{margin:30px 0}
-.section-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}
+.section-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:16px;
+}
 .section-heading h2{font-size:23px}
 .section-heading h2 span{color:var(--lime)}
 .view-all{color:#e5a6ff;font-size:13px;font-weight:800}
+
 .game-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.game-card{overflow:hidden;border-radius:16px;border:1px solid #a642d8;background:#280842}
+.game-card{
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid #a642d8;
+  background:#280842;
+}
 .game-art{min-height:125px;display:grid;place-items:center;font-size:67px}
 .art-candy{background:linear-gradient(135deg,#ed328e,#6312b8)}
 .art-bubble{background:linear-gradient(135deg,#009be8,#162c9a)}
@@ -91,11 +352,32 @@ button{font:inherit;cursor:pointer}
 .art-puzzle{background:linear-gradient(135deg,#b52cff,#4410a4)}
 .game-info{padding:12px;text-align:center}
 .game-info h3{font-size:14px;margin-bottom:10px}
-.play-button{display:block;background:var(--lime);color:#180a24;border-radius:20px;padding:9px 8px;font-size:12px;font-weight:900}
+.play-button{
+  display:block;
+  background:var(--lime);
+  color:#180a24;
+  border-radius:20px;
+  padding:9px 8px;
+  font-size:12px;
+  font-weight:900;
+}
+
 .content-columns{display:grid;grid-template-columns:1fr 280px;gap:17px}
 .novel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
-.novel-card{overflow:hidden;border-radius:12px;background:#26083e;border:1px solid #a34cce}
-.novel-cover{min-height:150px;padding:12px 7px;display:flex;flex-direction:column;justify-content:space-between;text-align:center}
+.novel-card{
+  overflow:hidden;
+  border-radius:12px;
+  background:#26083e;
+  border:1px solid #a34cce;
+}
+.novel-cover{
+  min-height:150px;
+  padding:12px 7px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  text-align:center;
+}
 .novel-cover .cover-symbol{font-size:38px}
 .novel-cover h3{font-family:Georgia,serif;font-size:16px}
 .novel-cover small{font-size:9px;letter-spacing:1px;text-transform:uppercase}
@@ -106,351 +388,869 @@ button{font:inherit;cursor:pointer}
 .cover-five{background:linear-gradient(150deg,#9e398f,#301044)}
 .novel-meta{padding:9px 7px;text-align:center}
 .novel-meta p{font-size:10px;margin-bottom:7px}
-.novel-meta a{display:block;background:#a52ad6;border-radius:7px;padding:7px 3px;font-size:10px;font-weight:800}
-.wallet-panel{border:1px solid #bd53f0;border-radius:17px;padding:19px;background:linear-gradient(145deg,#38105c,#1c0631);display:flex;flex-direction:column;justify-content:center}
+.novel-meta a{
+  display:block;
+  background:#a52ad6;
+  border-radius:7px;
+  padding:7px 3px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.wallet-panel{
+  border:1px solid #bd53f0;
+  border-radius:17px;
+  padding:19px;
+  background:linear-gradient(145deg,#38105c,#1c0631);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
 .wallet-heading{font-size:18px;font-weight:900;margin-bottom:20px}
 .wallet-coin{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.wallet-coin-icon{width:60px;height:60px;display:grid;place-items:center;font-size:39px;background:#ffffff16;border-radius:50%}
+.wallet-coin-icon{
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  font-size:39px;
+  background:#ffffff16;
+  border-radius:50%;
+}
 .wallet-label{color:#ddc9eb;font-size:12px;margin-bottom:5px}
 .wallet-amount{color:var(--lime);font-size:32px;font-weight:900}
 .wallet-naira{font-size:14px;color:#e5d4f0;margin:8px 0 18px}
-.wallet-button{display:block;text-align:center;padding:12px;border-radius:10px;background:var(--lime);color:#1b0b27;font-size:13px;font-weight:900;margin-bottom:9px}
-.wallet-history{display:block;text-align:center;border:1px solid #d46aff;color:white;padding:11px;border-radius:10px;font-size:12px}
-.welcome-panel{border:1px solid #e4bd38;border-radius:16px;padding:18px;background:linear-gradient(120deg,#46225f,#28103e);display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
-.welcome-panel h2{color:var(--gold);font-size:20px;margin-bottom:7px}
-.welcome-panel p{font-size:13px;color:#eadcf4;line-height:1.5}
-.welcome-panel a{background:var(--gold);color:#24102f;padding:10px 15px;border-radius:9px;font-weight:900;font-size:12px;white-space:nowrap}
-.how-panel{padding:23px;border:1px solid #c56bfa;border-radius:19px;background:linear-gradient(115deg,#42116b,#e7d5ff,#45106d);color:#29113e}
+.wallet-button{
+  display:block;
+  text-align:center;
+  padding:12px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#1b0b27;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:9px;
+}
+.wallet-history{
+  display:block;
+  text-align:center;
+  border:1px solid #d46aff;
+  color:white;
+  padding:11px;
+  border-radius:10px;
+  font-size:12px;
+}
+
+.mining-panel{
+  border:1px solid #b34bdf;
+  border-radius:17px;
+  padding:20px;
+  background:linear-gradient(120deg,#30104e,#1c0631);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.mining-panel h3{font-size:19px;margin-bottom:8px;color:var(--lime)}
+.mining-panel p{font-size:13px;color:#dfcce9;line-height:1.6}
+.mining-panel a{
+  flex-shrink:0;
+  display:inline-block;
+  padding:12px 19px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#1b0b27;
+  font-size:13px;
+  font-weight:900;
+}
+
+.how-panel{
+  padding:23px;
+  border:1px solid #c56bfa;
+  border-radius:19px;
+  background:linear-gradient(115deg,#42116b,#e7d5ff,#45106d);
+  color:#29113e;
+}
 .how-panel h2{color:white;font-size:23px;margin-bottom:20px}
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .how-step{text-align:center;padding:13px 9px}
-.how-icon{width:65px;height:65px;margin:0 auto 12px;display:grid;place-items:center;background:#fff;border-radius:50%;font-size:32px}
+.how-icon{
+  width:65px;
+  height:65px;
+  margin:0 auto 12px;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  border-radius:50%;
+  font-size:32px;
+}
 .how-step h3{font-size:16px;margin-bottom:7px}
 .how-step p{font-size:12px;line-height:1.5}
-footer{border-top:1px solid #8b35b855;padding:25px 4%;color:#bda9ce;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font-size:12px}
+
+footer{
+  border-top:1px solid #8b35b855;
+  padding:25px 4%;
+  color:#bda9ce;
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  font-size:12px;
+}
 .footer-links{display:flex;flex-wrap:wrap;gap:18px}
-@media(max-width:1100px){.navlinks{gap:10px}.navlinks a{font-size:10px}.game-grid{grid-template-columns:repeat(5,1fr)}}
+
+@media(max-width:1100px){
+  .navlinks{gap:10px}
+  .navlinks a{font-size:10px}
+  .game-grid{grid-template-columns:repeat(5,1fr)}
+}
 @media(max-width:800px){
- .topbar{padding:12px 4%}.navlinks{display:none}.shortcut-grid{grid-template-columns:repeat(3,1fr)}
- .game-grid{grid-template-columns:repeat(3,1fr)}.content-columns{grid-template-columns:1fr}
- .novel-grid{grid-template-columns:repeat(5,1fr)}
+  .topbar{padding:12px 4%}
+  .navlinks{display:none}
+  .shortcut-grid{grid-template-columns:repeat(3,1fr)}
+  .game-grid{grid-template-columns:repeat(3,1fr)}
+  .content-columns{grid-template-columns:1fr}
+  .novel-grid{grid-template-columns:repeat(5,1fr)}
 }
 @media(max-width:540px){
- .brand{font-size:24px}.ad-stage,.ad-slide{min-height:260px}
- .ad-slide{padding:25px 43px;text-align:center;flex-direction:column;justify-content:center;gap:8px}
- .ad-copy h2{font-size:28px}.ad-copy p{font-size:13px;margin-bottom:12px}
- .ad-visual{min-height:85px;width:100%;min-width:0}.ad-orb{width:85px;height:85px;font-size:45px}
- .ad-arrow{width:30px;height:30px;font-size:19px}
- .shortcut-grid{gap:8px}.shortcut{min-height:100px;padding:13px 5px}
- .shortcut-icon{font-size:27px}.shortcut strong{font-size:11px}.shortcut small{font-size:9px}
- .game-grid{grid-template-columns:repeat(2,1fr)}.novel-grid{grid-template-columns:repeat(2,1fr)}
- .novel-cover{min-height:165px}.how-grid{grid-template-columns:repeat(2,1fr)}
- .welcome-panel{align-items:flex-start;flex-direction:column}
- footer{justify-content:center;text-align:center}.footer-links{justify-content:center}
+  .brand{font-size:24px}
+  .ad-stage,.ad-slide{min-height:260px}
+  .ad-slide{
+    padding:25px 43px;
+    text-align:center;
+    flex-direction:column;
+    justify-content:center;
+    gap:8px;
+  }
+  .ad-copy h2{font-size:28px}
+  .ad-copy p{font-size:13px;margin-bottom:12px}
+  .ad-visual{min-height:85px;width:100%;min-width:0}
+  .ad-orb{width:85px;height:85px;font-size:45px}
+  .ad-arrow{width:30px;height:30px;font-size:19px}
+  .shortcut-grid{gap:8px}
+  .shortcut{min-height:100px;padding:13px 5px}
+  .shortcut-icon{font-size:27px}
+  .shortcut strong{font-size:11px}
+  .shortcut small{font-size:9px}
+  .game-grid{grid-template-columns:repeat(2,1fr)}
+  .novel-grid{grid-template-columns:repeat(2,1fr)}
+  .novel-cover{min-height:165px}
+  .how-grid{grid-template-columns:repeat(2,1fr)}
+  .mining-panel{align-items:flex-start;flex-direction:column}
+  footer{justify-content:center;text-align:center}
+  .footer-links{justify-content:center}
 }
 </style>
 </head>
+
 <body>
 
 <header class="topbar">
-<a href="index.html" class="brand"><span class="crown" aria-label="EarnGig crown"><svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><circle cx="3" cy="6" r="1.5" fill="currentColor"/><circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/><circle cx="29" cy="6" r="1.5" fill="currentColor"/></svg></span> Earn<span class="gig">Gig</span></a>
-<nav class="navlinks">
-<a href="dashboard.html" class="active">Dashboard</a>
-<a href="games.html">Games</a>
-<a href="novels.html">Novels</a>
-<a href="marketplace.html">Marketplace</a>
-<a href="earn-more.html">Earn More</a>
-<a href="advertise.html">Advertise</a>
-<a href="storefront.html">Storefront</a>
-</nav>
-<div class="navright">
-<button class="nav-icon" id="openSearch" aria-label="Search">⌕</button>
-<a href="notifications.html" class="nav-icon" aria-label="Notifications">♧<span class="notification-dot" id="notificationCount" style="display:none">0</span></a>
-<a href="profile.html" class="user-avatar" aria-label="My profile">👤</a>
-<button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
-</div>
+  <a href="index.html" class="brand">
+    <span class="crown" aria-label="EarnGig crown">
+      <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+        <circle cx="3" cy="6" r="1.5" fill="currentColor"/>
+        <circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/>
+        <circle cx="29" cy="6" r="1.5" fill="currentColor"/>
+      </svg>
+    </span>
+    Earn<span class="gig">Gig</span>
+  </a>
+
+  <nav class="navlinks">
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="games.html">Games</a>
+    <a href="novels.html">Novels</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="mining.html">Mining</a>
+    <a href="business.html">Business</a>
+    <a href="advertise.html">Advertise</a>
+  </nav>
+
+  <div class="navright">
+    <button class="nav-icon" id="openSearch" aria-label="Search">⌕</button>
+    <a href="notifications.html" class="nav-icon" aria-label="Notifications">
+      ♧<span class="notification-dot" id="notificationCount" style="display:none">0</span>
+    </a>
+    <a href="profile.html" class="user-avatar" aria-label="My profile">👤</a>
+    <button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
+  </div>
 </header>
 
 <div class="search-overlay" id="searchOverlay">
-<div class="search-box">
-<div class="search-top"><h2>🔎 Search EarnGig</h2><button class="search-close" id="closeSearch">×</button></div>
-<input class="search-input" id="searchInput" type="search" placeholder="Search EarnGig features..." autocomplete="off">
-<div class="search-results" id="searchResults"><div class="no-results">Start typing to search.</div></div>
-</div>
+  <div class="search-box">
+    <div class="search-top">
+      <h2>🔎 Search EarnGig</h2>
+      <button class="search-close" id="closeSearch">×</button>
+    </div>
+    <input class="search-input" id="searchInput" type="search"
+      placeholder="Search EarnGig features..." autocomplete="off">
+    <div class="search-results" id="searchResults">
+      <div class="no-results">Start typing to search.</div>
+    </div>
+  </div>
 </div>
 
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
 <aside class="side-menu" id="sideMenu">
-<div class="menu-header">
-<a href="index.html" class="brand"><span class="crown" aria-label="EarnGig crown"><svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><circle cx="3" cy="6" r="1.5" fill="currentColor"/><circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/><circle cx="29" cy="6" r="1.5" fill="currentColor"/></svg></span> Earn<span class="gig">Gig</span></a>
-<button class="close-menu" onclick="closeMenu()">×</button>
-</div>
+  <div class="menu-header">
+    <a href="index.html" class="brand">
+      <span class="crown" aria-label="EarnGig crown">
+        <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+          <circle cx="3" cy="6" r="1.5" fill="currentColor"/>
+          <circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/>
+          <circle cx="29" cy="6" r="1.5" fill="currentColor"/>
+        </svg>
+      </span>
+      Earn<span class="gig">Gig</span>
+    </a>
+    <button class="close-menu" onclick="closeMenu()">×</button>
+  </div>
 
-<div class="menu-label">DASHBOARD</div>
-<a class="current" href="dashboard.html"><span>🏠</span> Dashboard</a>
-<a href="wallet.html"><span>👛</span> My Wallet</a>
-<a href="buy-coins.html"><span>🪙</span> Buy Coins</a>
-<a href="transfer-coins.html"><span>💸</span> Transfer Coins</a>
-<a href="profile.html"><span>👤</span> My Profile</a>
-<a href="transactions.html"><span>📜</span> Transaction History</a>
+  <div class="menu-label">DASHBOARD</div>
+  <a class="current" href="dashboard.html"><span>🏠</span> Dashboard</a>
+  <a href="wallet.html"><span>👛</span> My G-Coin Wallet</a>
+  <a href="buy-coins.html"><span>🪙</span> Buy G-Coins</a>
+  <a href="transfer-coins.html"><span>💸</span> Transfer G-Coins</a>
+  <a href="mining.html"><span>⛏️</span> Mining</a>
+  <a href="business.html"><span>🏢</span> Business</a>
+  <a href="profile.html"><span>👤</span> My Profile</a>
+  <a href="transactions.html"><span>📜</span> Transaction History</a>
 
-<div class="menu-label">WELCOME AND REWARDS</div>
-<a href="wallet.html#welcome-bonus"><span>🎁</span> Welcome Bonus — 1,000 Coins</a>
-<a href="games.html"><span>🎮</span> Play Games</a>
-<a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
-<a href="referrals.html"><span>👥</span> Refer Friends</a>
-<a href="novels.html"><span>📚</span> Read Novels</a>
-<a href="leaderboard.html"><span>🏆</span> Leaderboard</a>
+  <div class="menu-label">EARNGIG ACTIVITIES</div>
+  <a href="games.html"><span>🎮</span> Play Games</a>
+  <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
+  <a href="referrals.html"><span>👥</span> Refer Friends</a>
+  <a href="novels.html"><span>📚</span> Read Novels</a>
+  <a href="leaderboard.html"><span>🏆</span> Leaderboard</a>
 
-<div class="menu-label">EARNGIG SOCIAL</div>
-<a href="earngig-community.html"><span>🌍</span> EarnGig Community</a>
-<a href="interest-groups.html"><span>👥</span> Interest Groups</a>
-<a href="messages.html"><span>💬</span> Private Messages</a>
-<a href="meeting-rooms.html"><span>🎙️</span> Meeting Rooms</a>
-<a href="virtual-gifts.html"><span>🎁</span> Virtual Gifts</a>
+  <div class="menu-label">COMMUNITY</div>
+  <a href="earngig-community.html"><span>🌍</span> EarnGig Community</a>
+  <a href="messages.html"><span>💬</span> Private Messages</a>
+  <a href="meeting-rooms.html"><span>🎙️</span> Meeting Rooms</a>
 
-<div class="menu-label">WORK AND OPPORTUNITIES</div>
-<a href="delivery.html"><span>🚚</span> Delivery Service</a>
-<a href="writer-studio.html"><span>✍️</span> Writer Studio</a>
+  <div class="menu-label">SHOPPING AND BUSINESS</div>
+  <a href="marketplace.html"><span>🛍️</span> Marketplace</a>
+  <a href="storefront.html"><span>🏪</span> Storefront</a>
+  <a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
+  <a href="business.html"><span>🏢</span> Business Registration</a>
+  <a href="advertise.html"><span>📣</span> Advertise</a>
+  <a href="writer-studio.html"><span>✍️</span> Writer Studio</a>
 
-<div class="menu-label">SHOPPING AND BUSINESS</div>
-<a href="marketplace.html"><span>🛍️</span> Marketplace</a>
-<a href="storefront.html"><span>🏪</span> Storefront</a>
-<a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
-<a href="advertise.html"><span>📣</span> Advertise</a>
-
-<div class="menu-label">ACCOUNT AND HELP</div>
-<a href="notifications.html"><span>🔔</span> Notifications</a>
-<a href="settings.html"><span>⚙️</span> Account Settings</a>
-<a href="support.html"><span>🛟</span> Support</a>
-<a href="help.html"><span>❓</span> Help Centre</a>
-<a href="login.html"><span>↪</span> Log Out</a>
+  <div class="menu-label">ACCOUNT AND HELP</div>
+  <a href="notifications.html"><span>🔔</span> Notifications</a>
+  <a href="settings.html"><span>⚙️</span> Account Settings</a>
+  <a href="support.html"><span>🛟</span> Support</a>
+  <a href="help.html"><span>❓</span> Help Centre</a>
+  <a href="login.html"><span>↪</span> Log Out</a>
 </aside>
 
 <main class="container">
 
-<section class="welcome-panel">
-<div>
-<h2>🎉 Welcome to EarnGig!</h2>
-<p>New members receive a one-time welcome bonus of 1,000 coins after account verification. Check your wallet and notifications for your bonus status.</p>
-</div>
-<a href="wallet.html#welcome-bonus">View My Wallet</a>
-</section>
+  <section class="billboard">
+    <div class="billboard-top">📣 Sponsored Billboard</div>
+    <div class="ad-stage">
+      <button class="ad-arrow prev" onclick="changeSlide(-1)" aria-label="Previous advert">‹</button>
 
-<section class="billboard">
-<div class="billboard-top">📣 Sponsored Billboard</div>
-<div class="ad-stage">
-<button class="ad-arrow prev" onclick="changeSlide(-1)" aria-label="Previous advert">‹</button>
-<article class="ad-slide active">
-<div class="ad-copy">
-<div class="ad-tag">FEATURED ADVERT</div>
-<h2>Put Your Brand<br>In The <span>Spotlight.</span></h2>
-<p>Reach the EarnGig community. Promote your business, products and services on our platform.</p>
-<a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Advertise Now →</a>
-</div>
-<div class="ad-visual"><div class="ad-orb">📢</div></div>
-</article>
-<article class="ad-slide">
-<div class="ad-copy">
-<div class="ad-tag">BUSINESS PROMOTION</div>
-<h2>Make Your Next<br>Big <span>Move.</span></h2>
-<p>Showcase your products and services to people discovering new opportunities every day.</p>
-<a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Promote Your Business →</a>
-</div>
-<div class="ad-visual"><div class="ad-orb">🛍️</div></div>
-</article>
-<article class="ad-slide">
-<div class="ad-copy">
-<div class="ad-tag">EARNGIG ADVERTISING</div>
-<h2>More Eyes.<br>More <span>Attention.</span></h2>
-<p>Book a billboard slot and give your campaign a prominent place on EarnGig.</p>
-<a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Book a Billboard →</a>
-</div>
-<div class="ad-visual"><div class="ad-orb">🚀</div></div>
-</article>
-<button class="ad-arrow next" onclick="changeSlide(1)" aria-label="Next advert">›</button>
-</div>
-<div class="ad-controls">
-<button class="ad-dot active" onclick="showSlide(0)" aria-label="Advert 1"></button>
-<button class="ad-dot" onclick="showSlide(1)" aria-label="Advert 2"></button>
-<button class="ad-dot" onclick="showSlide(2)" aria-label="Advert 3"></button>
-</div>
-</section>
+      <article class="ad-slide active">
+        <div class="ad-copy">
+          <div class="ad-tag">FEATURED ADVERT</div>
+          <h2>Put Your Brand<br>In The <span>Spotlight.</span></h2>
+          <p>Reach the EarnGig community. Promote your business, products and services on our platform.</p>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Advertise Now →</a>
+        </div>
+        <div class="ad-visual"><div class="ad-orb">📢</div></div>
+      </article>
 
-<section class="shortcut-grid">
-<a class="shortcut" href="games.html"><span class="shortcut-icon">🎮</span><strong>Play Games</strong><small>Have fun and earn coins</small></a>
-<a class="shortcut" href="novels.html"><span class="shortcut-icon">📖</span><strong>Read Novels</strong><small>Enjoy great stories</small></a>
-<a class="shortcut" href="marketplace.html"><span class="shortcut-icon">🛒</span><strong>Marketplace</strong><small>Buy, sell and earn</small></a>
-<a class="shortcut" href="earn-more.html"><span class="shortcut-icon">🪙</span><strong>Earn More</strong><small>Discover activities</small></a>
-<a class="shortcut" href="buy-coins.html"><span class="shortcut-icon">💰</span><strong>Buy Coins</strong><small>Top up your balance</small></a>
-<a class="shortcut" href="wallet.html"><span class="shortcut-icon">👛</span><strong>My Wallet</strong><small>Balance and withdrawals</small></a>
+      <article class="ad-slide">
+        <div class="ad-copy">
+          <div class="ad-tag">BUSINESS PROMOTION</div>
+          <h2>Make Your Next<br>Big <span>Move.</span></h2>
+          <p>Showcase your products and services to people discovering new opportunities every day.</p>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Promote Your Business →</a>
+        </div>
+        <div class="ad-visual"><div class="ad-orb">🛍️</div></div>
+      </article>
 
-<a class="shortcut" href="transfer-coins.html"><span class="shortcut-icon">💸</span><strong>Transfer Coins</strong><small>Send coins to members</small></a>
-<a class="shortcut" href="earngig-community.html"><span class="shortcut-icon">🌍</span><strong>Community</strong><small>Connect and share</small></a>
-<a class="shortcut" href="interest-groups.html"><span class="shortcut-icon">👥</span><strong>Interest Groups</strong><small>Meet people like you</small></a>
-<a class="shortcut" href="messages.html"><span class="shortcut-icon">💬</span><strong>Messages</strong><small>Chat with members</small></a>
-<a class="shortcut" href="virtual-gifts.html"><span class="shortcut-icon">🎁</span><strong>Virtual Gifts</strong><small>Send gifts with coins</small></a>
-<a class="shortcut" href="delivery.html"><span class="shortcut-icon">🚚</span><strong>Delivery Service</strong><small>Become a delivery rider</small></a>
-</section>
+      <article class="ad-slide">
+        <div class="ad-copy">
+          <div class="ad-tag">EARNGIG ADVERTISING</div>
+          <h2>More Eyes.<br>More <span>Attention.</span></h2>
+          <p>Book a billboard slot and give your campaign a prominent place on EarnGig.</p>
+          <a class="play-button" style="display:inline-block;padding:12px 20px" href="advertise.html">Book a Billboard →</a>
+        </div>
+        <div class="ad-visual"><div class="ad-orb">🚀</div></div>
+      </article>
 
-<section class="section">
-<div class="section-heading"><h2>🎮 Popular <span>Games</span></h2><a class="view-all" href="games.html">View All →</a></div>
-<div class="game-grid">
-<article class="game-card"><div class="game-art art-candy">🍬</div><div class="game-info"><h3>Candy Match</h3><a class="play-button" href="candy-match.html">Play & Earn</a></div></article>
-<article class="game-card"><div class="game-art art-bubble">🫧</div><div class="game-info"><h3>Bubble Shooter</h3><a class="play-button" href="bubble-shooter.html">Play & Earn</a></div></article>
-<article class="game-card"><div class="game-art art-sudoku">🔢</div><div class="game-info"><h3>Sudoku</h3><a class="play-button" href="sudoku.html">Play & Earn</a></div></article>
-<article class="game-card"><div class="game-art art-word">🔠</div><div class="game-info"><h3>Word Search</h3><a class="play-button" href="word-search.html">Play & Earn</a></div></article>
-<article class="game-card"><div class="game-art art-puzzle">🧩</div><div class="game-info"><h3>Block Puzzle</h3><a class="play-button" href="block-puzzle.html">Play & Earn</a></div></article>
-</div>
-</section>
+      <button class="ad-arrow next" onclick="changeSlide(1)" aria-label="Next advert">›</button>
+    </div>
 
-<section class="section">
-<div class="content-columns">
-<div>
-<div class="section-heading"><h2>📖 Featured <span>Novels</span></h2><a class="view-all" href="novels.html">View All →</a></div>
-<div class="novel-grid">
-<article class="novel-card"><div class="novel-cover cover-one"><small>Romance</small><span class="cover-symbol">🌹</span><h3>The CEO's<br>Secret Wife</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
-<article class="novel-card"><div class="novel-cover cover-two"><small>Drama</small><span class="cover-symbol">🥀</span><h3>Bound by<br>Revenge</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
-<article class="novel-card"><div class="novel-cover cover-three"><small>Teen</small><span class="cover-symbol">🎓</span><h3>Campus<br>Crush</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
-<article class="novel-card"><div class="novel-cover cover-four"><small>Royal</small><span class="cover-symbol">👑</span><h3>The Royal<br>Promise</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
-<article class="novel-card"><div class="novel-cover cover-five"><small>Love</small><span class="cover-symbol">💜</span><h3>Love<br>Again</h3></div><div class="novel-meta"><p>Featured Story</p><a href="novels.html">Read Now</a></div></article>
-</div>
-</div>
-<aside class="wallet-panel">
-<div class="wallet-heading">👛 My Wallet</div>
-<div class="wallet-coin"><div class="wallet-coin-icon">🪙</div><div><div class="wallet-label">My Coins</div><div class="wallet-amount" id="coinBalance">—</div></div></div>
-<div class="wallet-naira">Your available coin balance</div>
-<a href="wallet.html" class="wallet-button">Open Wallet</a>
-<a href="buy-coins.html" class="wallet-history">Buy More Coins</a>
-</aside>
-</div>
-</section>
+    <div class="ad-controls">
+      <button class="ad-dot active" onclick="showSlide(0)" aria-label="Advert 1"></button>
+      <button class="ad-dot" onclick="showSlide(1)" aria-label="Advert 2"></button>
+      <button class="ad-dot" onclick="showSlide(2)" aria-label="Advert 3"></button>
+    </div>
+  </section>
 
-<section class="section">
-<div class="section-heading"><h2>🌍 EarnGig <span>Social</span></h2><a class="view-all" href="earngig-community.html">Explore Community →</a></div>
-<div class="shortcut-grid">
-<a class="shortcut" href="earngig-community.html"><span class="shortcut-icon">🌍</span><strong>EarnGig Community</strong><small>Share posts and connect</small></a>
-<a class="shortcut" href="interest-groups.html"><span class="shortcut-icon">👥</span><strong>Interest Groups</strong><small>Join communities</small></a>
-<a class="shortcut" href="messages.html"><span class="shortcut-icon">💬</span><strong>Private Messages</strong><small>Talk to other members</small></a>
-<a class="shortcut" href="meeting-rooms.html"><span class="shortcut-icon">🎙️</span><strong>Meeting Rooms</strong><small>Meet using room codes</small></a>
-<a class="shortcut" href="virtual-gifts.html"><span class="shortcut-icon">🎁</span><strong>Virtual Gifts</strong><small>Send gifts with coins</small></a>
-<a class="shortcut" href="referrals.html"><span class="shortcut-icon">🤝</span><strong>Invite Friends</strong><small>Earn referral rewards</small></a>
-</div>
-</section>
+  <!-- MAIN DASHBOARD SHORTCUTS -->
+  <section class="shortcut-grid">
+    <a class="shortcut" href="games.html">
+      <span class="shortcut-icon">🎮</span>
+      <strong>Play Games</strong>
+      <small>Explore available games</small>
+    </a>
 
-<section class="section how-panel">
-<h2>✨ How EarnGig Works</h2>
-<div class="how-grid">
-<article class="how-step"><div class="how-icon">👤</div><h3>1. Sign Up</h3><p>Create your free account and join the EarnGig community.</p></article>
-<article class="how-step"><div class="how-icon">🎮</div><h3>2. Do Activities</h3><p>Play games, read novels, watch ads, refer friends and shop.</p></article>
-<article class="how-step"><div class="how-icon">🪙</div><h3>3. Earn Coins</h3><p>Receive eligible rewards for qualifying activities.</p></article>
-<article class="how-step"><div class="how-icon">🏦</div><h3>4. Withdraw</h3><p>Request withdrawals using eligible coins, subject to platform rules.</p></article>
-</div>
-</section>
+    <a class="shortcut" href="novels.html">
+      <span class="shortcut-icon">📖</span>
+      <strong>Read Novels</strong>
+      <small>Enjoy great stories</small>
+    </a>
+
+    <a class="shortcut" href="marketplace.html">
+      <span class="shortcut-icon">🛒</span>
+      <strong>Marketplace</strong>
+      <small>Explore G-Store and Vendor Haul</small>
+    </a>
+
+    <a class="shortcut" href="mining.html">
+      <span class="shortcut-icon">⛏️</span>
+      <strong>Mining</strong>
+      <small>Mine and accumulate G-Coins</small>
+    </a>
+
+    <a class="shortcut" href="business.html">
+      <span class="shortcut-icon">🏢</span>
+      <strong>Business</strong>
+      <small>Register to receive G-Coin payments</small>
+    </a>
+
+    <a class="shortcut" href="buy-coins.html">
+      <span class="shortcut-icon">🪙</span>
+      <strong>Buy G-Coins</strong>
+      <small>Purchase G-Coins to get started</small>
+    </a>
+
+    <a class="shortcut" href="wallet.html">
+      <span class="shortcut-icon">👛</span>
+      <strong>My Wallet</strong>
+      <small>Balance and withdrawals</small>
+    </a>
+
+    <a class="shortcut" href="transfer-coins.html">
+      <span class="shortcut-icon">💸</span>
+      <strong>Transfer G-Coins</strong>
+      <small>Send G-Coins to members</small>
+    </a>
+
+    <a class="shortcut" href="earngig-community.html">
+      <span class="shortcut-icon">🌍</span>
+      <strong>Community</strong>
+      <small>Connect and share</small>
+    </a>
+
+    <a class="shortcut" href="messages.html">
+      <span class="shortcut-icon">💬</span>
+      <strong>Messages</strong>
+      <small>Chat with members</small>
+    </a>
+
+    <a class="shortcut" href="referrals.html">
+      <span class="shortcut-icon">🤝</span>
+      <strong>Refer Friends</strong>
+      <small>Earn referral rewards</small>
+    </a>
+
+    <a class="shortcut" href="advertise.html">
+      <span class="shortcut-icon">📣</span>
+      <strong>Advertise</strong>
+      <small>Promote your business</small>
+    </a>
+  </section>
+
+  <!-- POPULAR GAMES -->
+  <section class="section">
+    <div class="section-heading">
+      <h2>🎮 Popular <span>Games</span></h2>
+      <a class="view-all" href="games.html">View All →</a>
+    </div>
+
+    <div class="game-grid">
+      <article class="game-card">
+        <div class="game-art art-candy">🍬</div>
+        <div class="game-info">
+          <h3>Candy Match</h3>
+          <a class="play-button" href="candy-match.html">Play</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-art art-bubble">🫧</div>
+        <div class="game-info">
+          <h3>Bubble Shooter</h3>
+          <a class="play-button" href="bubble-shooter.html">Play</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-art art-sudoku">🔢</div>
+        <div class="game-info">
+          <h3>Sudoku</h3>
+          <a class="play-button" href="sudoku.html">Play</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-art art-word">🔠</div>
+        <div class="game-info">
+          <h3>Word Search</h3>
+          <a class="play-button" href="word-search.html">Play</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-art art-puzzle">🧩</div>
+        <div class="game-info">
+          <h3>Block Puzzle</h3>
+          <a class="play-button" href="block-puzzle.html">Play</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- NOVELS AND MAIN WALLET -->
+  <section class="section">
+    <div class="content-columns">
+      <div>
+        <div class="section-heading">
+          <h2>📖 Featured <span>Novels</span></h2>
+          <a class="view-all" href="novels.html">View All →</a>
+        </div>
+
+        <div class="novel-grid">
+          <article class="novel-card">
+            <div class="novel-cover cover-one">
+              <small>Romance</small>
+              <span class="cover-symbol">🌹</span>
+              <h3>The CEO's<br>Secret Wife</h3>
+            </div>
+            <div class="novel-meta">
+              <p>Featured Story</p>
+              <a href="novels.html">Read Now</a>
+            </div>
+          </article>
+
+          <article class="novel-card">
+            <div class="novel-cover cover-two">
+              <small>Drama</small>
+              <span class="cover-symbol">🥀</span>
+              <h3>Bound by<br>Revenge</h3>
+            </div>
+            <div class="novel-meta">
+              <p>Featured Story</p>
+              <a href="novels.html">Read Now</a>
+            </div>
+          </article>
+
+          <article class="novel-card">
+            <div class="novel-cover cover-three">
+              <small>Teen</small>
+              <span class="cover-symbol">🎓</span>
+              <h3>Campus<br>Crush</h3>
+            </div>
+            <div class="novel-meta">
+              <p>Featured Story</p>
+              <a href="novels.html">Read Now</a>
+            </div>
+          </article>
+
+          <article class="novel-card">
+            <div class="novel-cover cover-four">
+              <small>Royal</small>
+              <span class="cover-symbol">👑</span>
+              <h3>The Royal<br>Promise</h3>
+            </div>
+            <div class="novel-meta">
+              <p>Featured Story</p>
+              <a href="novels.html">Read Now</a>
+            </div>
+          </article>
+
+          <article class="novel-card">
+            <div class="novel-cover cover-five">
+              <small>Love</small>
+              <span class="cover-symbol">💜</span>
+              <h3>Love<br>Again</h3>
+            </div>
+            <div class="novel-meta">
+              <p>Featured Story</p>
+              <a href="novels.html">Read Now</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="wallet-panel">
+        <div class="wallet-heading">👛 My G-Coin Wallet</div>
+
+        <div class="wallet-coin">
+          <div class="wallet-coin-icon">🪙</div>
+          <div>
+            <div class="wallet-label">Main G-Coin Balance</div>
+            <div class="wallet-amount" id="coinBalance">—</div>
+          </div>
+        </div>
+
+        <div class="wallet-naira">
+          Your available main wallet balance
+        </div>
+
+        <a href="wallet.html" class="wallet-button">Open Wallet</a>
+        <a href="buy-coins.html" class="wallet-history">Buy More G-Coins</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- MINING PROMOTION -->
+  <section class="section">
+    <div class="mining-panel">
+      <div>
+        <h3>⛏️ Start Mining G-Coins</h3>
+        <p>
+          Visit your Mining page to mine manually or activate an automatic
+          mining plan. Your mined G-Coins are kept in a separate Mining Wallet.
+          Transfer them to your main wallet whenever you are ready.
+        </p>
+      </div>
+      <a href="mining.html">Open Mining →</a>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="section">
+    <div class="section-heading">
+      <h2>🌍 EarnGig <span>Community</span></h2>
+      <a class="view-all" href="earngig-community.html">Explore Community →</a>
+    </div>
+
+    <div class="shortcut-grid">
+      <a class="shortcut" href="earngig-community.html">
+        <span class="shortcut-icon">🌍</span>
+        <strong>EarnGig Community</strong>
+        <small>Share posts and connect</small>
+      </a>
+
+      <a class="shortcut" href="messages.html">
+        <span class="shortcut-icon">💬</span>
+        <strong>Private Messages</strong>
+        <small>Talk to other members</small>
+      </a>
+
+      <a class="shortcut" href="meeting-rooms.html">
+        <span class="shortcut-icon">🎙️</span>
+        <strong>Meeting Rooms</strong>
+        <small>Meet using room codes</small>
+      </a>
+
+      <a class="shortcut" href="referrals.html">
+        <span class="shortcut-icon">🤝</span>
+        <strong>Invite Friends</strong>
+        <small>Earn referral rewards</small>
+      </a>
+
+      <a class="shortcut" href="writer-studio.html">
+        <span class="shortcut-icon">✍️</span>
+        <strong>Writer Studio</strong>
+        <small>Write and submit novels</small>
+      </a>
+
+      <a class="shortcut" href="leaderboard.html">
+        <span class="shortcut-icon">🏆</span>
+        <strong>Leaderboard</strong>
+        <small>View member rankings</small>
+      </a>
+    </div>
+  </section>
+
+  <!-- HOW EARNGIG WORKS -->
+  <section class="section how-panel">
+    <h2>✨ How EarnGig Works</h2>
+
+    <div class="how-grid">
+      <article class="how-step">
+        <div class="how-icon">👤</div>
+        <h3>1. Create Account</h3>
+        <p>Create your EarnGig account and complete your profile.</p>
+      </article>
+
+      <article class="how-step">
+        <div class="how-icon">🪙</div>
+        <h3>2. Buy G-Coins</h3>
+        <p>Purchase G-Coins to fund eligible activities on the platform.</p>
+      </article>
+
+      <article class="how-step">
+        <div class="how-icon">🎮</div>
+        <h3>3. Explore EarnGig</h3>
+        <p>Play games, read novels, mine, shop and explore other features.</p>
+      </article>
+
+      <article class="how-step">
+        <div class="how-icon">🏦</div>
+        <h3>4. Manage Your Wallet</h3>
+        <p>Manage your G-Coins and submit eligible withdrawal requests.</p>
+      </article>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-<a href="index.html" class="brand"><span class="crown" aria-label="EarnGig crown"><svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/><circle cx="3" cy="6" r="1.5" fill="currentColor"/><circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/><circle cx="29" cy="6" r="1.5" fill="currentColor"/></svg></span> Earn<span class="gig">Gig</span></a>
-<div class="footer-links">
-<a href="index.html">Home</a><a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="help.html">Help</a><a href="support.html">Support</a><a href="contact.html">Contact</a><a href="leaderboard.html">Leaderboard</a>
-</div>
-<span>© 2026 EarnGig. All rights reserved.</span>
+  <a href="index.html" class="brand">
+    <span class="crown" aria-label="EarnGig crown">
+      <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 23H26" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+        <circle cx="3" cy="6" r="1.5" fill="currentColor"/>
+        <circle cx="15.8" cy="2.5" r="1.5" fill="currentColor"/>
+        <circle cx="29" cy="6" r="1.5" fill="currentColor"/>
+      </svg>
+    </span>
+    Earn<span class="gig">Gig</span>
+  </a>
+
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="help.html">Help</a>
+    <a href="support.html">Support</a>
+    <a href="contact.html">Contact</a>
+    <a href="leaderboard.html">Leaderboard</a>
+  </div>
+
+  <span>© 2026 EarnGig. All rights reserved.</span>
 </footer>
 
 <script>
-const NOTIFICATION_KEY="earngig_notifications";
-const DEFAULT_NOTIFICATIONS=[
-{id:"welcome",icon:"🎉",title:"Welcome to EarnGig!",message:"Welcome! Explore games, novels, earning opportunities and our community.",date:"Just now",category:"updates",read:false},
-{id:"welcome-bonus",icon:"🎁",title:"Your 1,000-coin welcome bonus",message:"New verified accounts are eligible for a one-time welcome bonus of 1,000 coins. Your bonus will be credited after account verification.",date:"Just now",category:"wallet",read:false},
-{id:"profile",icon:"👤",title:"Complete Your Profile",message:"Add your profile information to personalise your EarnGig experience.",date:"Today",category:"account",read:false},
-{id:"games",icon:"🎮",title:"Explore EarnGig Games",message:"Visit the Games section to discover available games.",date:"Yesterday",category:"updates",read:false}
+const NOTIFICATION_KEY = "earngig_notifications";
+
+const DEFAULT_NOTIFICATIONS = [
+  {
+    id:"welcome",
+    icon:"🎉",
+    title:"Welcome to EarnGig!",
+    message:"Welcome! Explore games, novels, mining, shopping and our community.",
+    date:"Just now",
+    category:"updates",
+    read:false
+  },
+  {
+    id:"profile",
+    icon:"👤",
+    title:"Complete your profile",
+    message:"Add your profile information to personalise your EarnGig experience.",
+    date:"Today",
+    category:"account",
+    read:false
+  },
+  {
+    id:"games",
+    icon:"🎮",
+    title:"Explore EarnGig Games",
+    message:"Visit the Games section to discover available games.",
+    date:"Yesterday",
+    category:"updates",
+    read:false
+  }
 ];
 
 function getNotifications(){
- try{
-   const saved=localStorage.getItem(NOTIFICATION_KEY);
-   if(saved===null){localStorage.setItem(NOTIFICATION_KEY,JSON.stringify(DEFAULT_NOTIFICATIONS));return DEFAULT_NOTIFICATIONS;}
-   const parsed=JSON.parse(saved);
-   return Array.isArray(parsed)?parsed:DEFAULT_NOTIFICATIONS;
-  }catch(e){return DEFAULT_NOTIFICATIONS;}
+  try{
+    const saved = localStorage.getItem(NOTIFICATION_KEY);
+
+    if(saved === null){
+      localStorage.setItem(
+        NOTIFICATION_KEY,
+        JSON.stringify(DEFAULT_NOTIFICATIONS)
+      );
+      return DEFAULT_NOTIFICATIONS;
+    }
+
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : DEFAULT_NOTIFICATIONS;
+  }catch(e){
+    return DEFAULT_NOTIFICATIONS;
+  }
 }
+
 function updateNotificationCount(){
- const badge=document.getElementById("notificationCount");
- const unread=getNotifications().filter(n=>!n.read).length;
- badge.textContent=unread>99?"99+":String(unread);
- badge.style.display=unread?"grid":"none";
+  const badge = document.getElementById("notificationCount");
+  const unread = getNotifications().filter(n => !n.read).length;
+
+  badge.textContent = unread > 99 ? "99+" : String(unread);
+  badge.style.display = unread ? "grid" : "none";
 }
+
 updateNotificationCount();
-window.addEventListener("storage",e=>{if(e.key===NOTIFICATION_KEY)updateNotificationCount();});
-window.addEventListener("pageshow",updateNotificationCount);
-window.addEventListener("focus",updateNotificationCount);
 
-function openMenu(){document.getElementById("sideMenu").classList.add("open");document.getElementById("menuOverlay").classList.add("open");}
-function closeMenu(){document.getElementById("sideMenu").classList.remove("open");document.getElementById("menuOverlay").classList.remove("open");}
+window.addEventListener("storage", e => {
+  if(e.key === NOTIFICATION_KEY) updateNotificationCount();
+});
 
-const searchPages=[
-["Dashboard","Main page","🏠","dashboard.html","home main account"],
-["Wallet","Account","👛","wallet.html","coins balance money withdraw"],
-["Buy Coins","Wallet","🪙","buy-coins.html","purchase buy top up coins"],
-["Transfer Coins","Wallet","💸","transfer-coins.html","send transfer coins username"],
-["Welcome Bonus","Rewards","🎁","wallet.html#welcome-bonus","welcome free bonus new account"],
-["Games","Games","🎮","games.html","play gaming earn"],
-["Novels","Reading","📚","novels.html","books stories read"],
-["Marketplace","Shopping","🛍️","marketplace.html","shop buy sell products"],
-["Earn More","Rewards","🪙","earn-more.html","earn rewards"],
-["Advertise","Business","📣","advertise.html","ads advertising promote billboard"],
-["Delivery Service","Work","🚚","delivery.html","rider delivery driver"],
-["EarnGig Community","Social","🌍","earngig-community.html","community social posts feed"],
-["Interest Groups","Social","👥","interest-groups.html","groups communities"],
-["Private Messages","Social","💬","messages.html","chat inbox messages"],
-["Meeting Rooms","Social","🎙️","meeting-rooms.html","meeting room code voice"],
-["Virtual Gifts","Social","🎁","virtual-gifts.html","gifts coins send receive"],
-["Writer Studio","Writer Programme","✍️","writer-studio.html","writer author chapters"],
-["My Profile","Account","👤","profile.html","profile personal"],
-["Notifications","Account","🔔","notifications.html","alerts bonus"],
-["Refer Friends","Rewards","🤝","referrals.html","referral invite friends"],
-["Leaderboard","Rewards","🏆","leaderboard.html","rankings winners"],
-["Settings","Account","⚙️","settings.html","settings preferences"],
-["Support","Help","🛟","support.html","help assistance"]
+window.addEventListener("pageshow", updateNotificationCount);
+window.addEventListener("focus", updateNotificationCount);
+
+function openMenu(){
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("menuOverlay").classList.add("open");
+}
+
+function closeMenu(){
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("menuOverlay").classList.remove("open");
+}
+
+/* Searchable platform pages */
+const searchPages = [
+  ["Dashboard","Main page","🏠","dashboard.html","home main account"],
+  ["My Wallet","Account","👛","wallet.html","coins balance money withdraw"],
+  ["Buy G-Coins","Wallet","🪙","buy-coins.html","purchase buy top up coins"],
+  ["Transfer G-Coins","Wallet","💸","transfer-coins.html","send transfer coins username"],
+  ["Mining","Mining","⛏️","mining.html","manual automatic mining rewards"],
+  ["Business","Business","🏢","business.html","business registration business username payments"],
+  ["Games","Games","🎮","games.html","play gaming"],
+  ["Novels","Reading","📚","novels.html","books stories read"],
+  ["Marketplace","Shopping","🛍️","marketplace.html","G-Store Vendor Haul shop products"],
+  ["Advertise","Business","📣","advertise.html","ads advertising promote billboard"],
+  ["EarnGig Community","Social","🌍","earngig-community.html","community social posts feed"],
+  ["Private Messages","Social","💬","messages.html","chat inbox messages"],
+  ["Meeting Rooms","Social","🎙️","meeting-rooms.html","meeting room code voice"],
+  ["Writer Studio","Writer Programme","✍️","writer-studio.html","writer author chapters"],
+  ["My Profile","Account","👤","profile.html","profile personal"],
+  ["Notifications","Account","🔔","notifications.html","alerts updates"],
+  ["Refer Friends","Rewards","🤝","referrals.html","referral invite friends"],
+  ["Leaderboard","Rewards","🏆","leaderboard.html","rankings winners"],
+  ["Settings","Account","⚙️","settings.html","settings preferences"],
+  ["Support","Help","🛟","support.html","help assistance"]
 ];
-const overlay=document.getElementById("searchOverlay");
-const input=document.getElementById("searchInput");
-const results=document.getElementById("searchResults");
-function openSearch(){closeMenu();overlay.classList.add("open");document.body.style.overflow="hidden";input.focus();}
-function closeSearch(){overlay.classList.remove("open");document.body.style.overflow="";input.value="";results.innerHTML='<div class="no-results">Start typing to search.</div>';}
+
+const overlay = document.getElementById("searchOverlay");
+const input = document.getElementById("searchInput");
+const results = document.getElementById("searchResults");
+
+function openSearch(){
+  closeMenu();
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  input.focus();
+}
+
+function closeSearch(){
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+  input.value = "";
+  results.innerHTML =
+    '<div class="no-results">Start typing to search.</div>';
+}
+
 document.getElementById("openSearch").addEventListener("click",openSearch);
 document.getElementById("closeSearch").addEventListener("click",closeSearch);
+
 input.addEventListener("input",()=>{
- const q=input.value.trim().toLowerCase();
- if(!q){results.innerHTML='<div class="no-results">Start typing to search.</div>';return;}
- const matches=searchPages.filter(p=>(p.join(" ")).toLowerCase().includes(q));
- results.innerHTML=matches.length?matches.map(p=>`<a class="search-result" href="${p[3]}"><span class="result-icon">${p[2]}</span><span class="result-text"><strong>${p[0]}</strong><small>${p[1]}</small></span>→</a>`).join(""):'<div class="no-results">No matching pages found.</div>';
-});
-overlay.addEventListener("click",e=>{if(e.target===overlay)closeSearch();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSearch();closeMenu();}});
+  const q = input.value.trim().toLowerCase();
 
-let currentSlide=0;
-const slides=document.querySelectorAll(".ad-slide");
-const dots=document.querySelectorAll(".ad-dot");
+  if(!q){
+    results.innerHTML =
+      '<div class="no-results">Start typing to search.</div>';
+    return;
+  }
+
+  const matches = searchPages.filter(p =>
+    p.join(" ").toLowerCase().includes(q)
+  );
+
+  results.innerHTML = matches.length
+    ? matches.map(p =>
+      `<a class="search-result" href="${p[3]}">
+        <span class="result-icon">${p[2]}</span>
+        <span class="result-text">
+          <strong>${p[0]}</strong>
+          <small>${p[1]}</small>
+        </span>
+        →
+      </a>`
+    ).join("")
+    : '<div class="no-results">No matching pages found.</div>';
+});
+
+overlay.addEventListener("click",e=>{
+  if(e.target === overlay) closeSearch();
+});
+
+document.addEventListener("keydown",e=>{
+  if(e.key === "Escape"){
+    closeSearch();
+    closeMenu();
+  }
+});
+
+/* Sponsored billboard slider */
+let currentSlide = 0;
+const slides = document.querySelectorAll(".ad-slide");
+const dots = document.querySelectorAll(".ad-dot");
+
 function showSlide(index){
- currentSlide=(index+slides.length)%slides.length;
- slides.forEach((s,i)=>s.classList.toggle("active",i===currentSlide));
- dots.forEach((d,i)=>d.classList.toggle("active",i===currentSlide));
+  currentSlide = (index + slides.length) % slides.length;
+
+  slides.forEach((slide,i)=>{
+    slide.classList.toggle("active",i === currentSlide);
+  });
+
+  dots.forEach((dot,i)=>{
+    dot.classList.toggle("active",i === currentSlide);
+  });
 }
-function changeSlide(direction){showSlide(currentSlide+direction);}
-let sliderTimer=setInterval(()=>showSlide(currentSlide+1),6000);
+
+function changeSlide(direction){
+  showSlide(currentSlide + direction);
+}
+
+let sliderTimer = setInterval(()=>{
+  showSlide(currentSlide + 1);
+},6000);
+
 document.addEventListener("visibilitychange",()=>{
- clearInterval(sliderTimer);
- if(!document.hidden)sliderTimer=setInterval(()=>showSlide(currentSlide+1),6000);
+  clearInterval(sliderTimer);
+
+  if(!document.hidden){
+    sliderTimer = setInterval(()=>{
+      showSlide(currentSlide + 1);
+    },6000);
+  }
 });
 
-/* Wallet balance display only. Actual balance must come from the secure backend. */
+/*
+  Main wallet balance display only.
+  Actual balances must come from the secure EarnGig backend.
+  Mining Wallet balance is deliberately not included here.
+*/
 try{
- const possible=JSON.parse(localStorage.getItem("earngig_wallet")||"null");
- if(possible&&typeof possible.coins==="number"){
-  document.getElementById("coinBalance").textContent=possible.coins.toLocaleString("en-NG");
- }
+  const possible = JSON.parse(
+    localStorage.getItem("earngig_wallet") || "null"
+  );
+
+  if(possible && typeof possible.coins === "number"){
+    document.getElementById("coinBalance").textContent =
+      possible.coins.toLocaleString("en-NG");
+  }
 }catch(e){}
 </script>
+
 </body>
 </html>
