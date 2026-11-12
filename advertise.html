@@ -6,10 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
+
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
-:root {
+:root{
   --bg:#10091f;
   --panel:#1d1234;
   --panel2:#261741;
@@ -107,6 +108,31 @@ input[type=file]{padding:10px}
   flex-wrap:wrap;gap:10px;
 }
 .week-select{max-width:230px}
+.booking-info{
+  padding:15px;border-radius:14px;
+  border:1px solid rgba(183,243,74,.25);
+  background:linear-gradient(120deg,#2b2140,#26351e);
+  margin-top:15px;
+}
+.booking-info .booking-label{
+  color:var(--lime);font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:1.5px;
+}
+.booking-info strong{
+  display:block;font-size:17px;margin-top:7px;
+}
+.booking-info p{
+  margin:7px 0 0;color:#d2c8e1;
+  font-size:12px;line-height:1.6;
+}
+.booking-state{
+  display:inline-block;margin-top:10px;padding:7px 10px;
+  border-radius:20px;background:#42345a;
+  color:#e4d7ff;font-size:11px;font-weight:700;
+}
+.booking-state.open{
+  background:#31451e;color:#d8ff9b;
+}
 .slot-grid{
   display:grid;grid-template-columns:repeat(5,1fr);
   gap:9px;margin-top:17px;
@@ -179,6 +205,7 @@ footer{
 </head>
 
 <body>
+
 <header>
   <div class="container header-inner">
     <a class="logo" href="index.html">Earn<span>Gig</span></a>
@@ -198,14 +225,21 @@ footer{
   </section>
 
   <div class="tabs">
-    <button class="tab active" id="timeTab" type="button">Watch and Earn Ads</button>
-    <button class="tab" id="billboardTab" type="button">Homepage Billboard</button>
+    <button class="tab active" id="timeTab" type="button">
+      Watch and Earn Ads
+    </button>
+    <button class="tab" id="billboardTab" type="button">
+      Homepage Billboard
+    </button>
   </div>
 
-  <!-- TIME-BASED ADVERTISING -->
+  <!-- WATCH AND EARN ADVERTISING -->
+
   <section class="panel" id="timePanel">
     <h2>Watch and Earn Advertising</h2>
-    <p class="sub">Choose how long you want your advert to run. Payment is required when you submit.</p>
+    <p class="sub">
+      Choose how long you want your advert to run. Payment is required when you submit.
+    </p>
 
     <div class="package-grid">
       <button class="package selected" type="button" data-days="1" data-price="10000">
@@ -213,21 +247,25 @@ footer{
         <div class="price">₦10,000</div>
         <small>1-day campaign</small>
       </button>
+
       <button class="package" type="button" data-days="3" data-price="25000">
         <div class="duration">72 Hours</div>
         <div class="price">₦25,000</div>
         <small>3-day campaign</small>
       </button>
+
       <button class="package" type="button" data-days="7" data-price="50000">
         <div class="duration">7 Days</div>
         <div class="price">₦50,000</div>
         <small>1-week campaign</small>
       </button>
+
       <button class="package" type="button" data-days="14" data-price="85000">
         <div class="duration">14 Days</div>
         <div class="price">₦85,000</div>
         <small>2-week campaign</small>
       </button>
+
       <button class="package" type="button" data-days="30" data-price="150000">
         <div class="duration">30 Days</div>
         <div class="price">₦150,000</div>
@@ -240,26 +278,32 @@ footer{
         <label for="timeBusiness">Business / Advertiser Name</label>
         <input id="timeBusiness" name="businessName" required maxlength="100">
       </div>
+
       <div class="field">
         <label for="timeEmail">Email Address</label>
         <input id="timeEmail" name="email" type="email" required>
       </div>
+
       <div class="field">
         <label for="timePhone">Phone Number</label>
         <input id="timePhone" name="phone" type="tel" required>
       </div>
+
       <div class="field">
         <label for="timeTitle">Advert Title</label>
         <input id="timeTitle" name="title" required maxlength="120">
       </div>
+
       <div class="field">
         <label for="timeDescription">Advert Description</label>
         <textarea id="timeDescription" name="description" required maxlength="1000"></textarea>
       </div>
+
       <div class="field">
         <label for="timeLink">Website / Social Media Link</label>
         <input id="timeLink" name="link" type="url" placeholder="https://">
       </div>
+
       <div class="field">
         <label for="timeMedia">Upload Advert Media</label>
         <input id="timeMedia" name="media" type="file" accept="image/*,video/*" required>
@@ -271,27 +315,46 @@ footer{
         <strong id="timeTotal">₦10,000</strong>
       </div>
 
-      <button class="primary" id="timeSubmit" type="submit">Pay & Submit →</button>
+      <button class="primary" id="timeSubmit" type="submit">
+        Pay & Submit →
+      </button>
     </form>
+
     <div class="status" id="timeStatus" role="status"></div>
   </section>
 
-  <!-- BILLBOARD ADVERTISING -->
+  <!-- HOMEPAGE BILLBOARD -->
+
   <section class="panel hidden" id="billboardPanel">
+
     <div class="billboard-head">
       <div>
         <h2>Homepage Billboard</h2>
         <p class="sub">10 slots per campaign week · Monday to Sunday</p>
       </div>
+
       <div class="week-select">
         <label for="campaignWeek">Campaign week</label>
         <select id="campaignWeek"></select>
       </div>
     </div>
 
+    <!-- BOOKING OPENING INFORMATION -->
+
+    <div class="booking-info">
+      <div class="booking-label">Billboard booking schedule</div>
+      <strong id="campaignDates">Loading campaign dates...</strong>
+      <p id="bookingOpening">
+        Booking opens every Saturday at 12:00 AM Nigeria time.
+      </p>
+      <span class="booking-state" id="bookingState">
+        Checking booking schedule
+      </span>
+    </div>
+
     <div class="notice">
-      Select one or more available slots. Payment is required to complete your booking.
-      A slot becomes booked only after successful payment verification.
+      Choose one or more available slots. Each slot costs ₦100,000.
+      Your booking is confirmed after successful payment verification.
     </div>
 
     <div class="slot-grid" id="slotGrid"></div>
@@ -312,26 +375,32 @@ footer{
         <label for="billBusiness">Business / Advertiser Name</label>
         <input id="billBusiness" name="businessName" required maxlength="100">
       </div>
+
       <div class="field">
         <label for="billEmail">Email Address</label>
         <input id="billEmail" name="email" type="email" required>
       </div>
+
       <div class="field">
         <label for="billPhone">Phone Number</label>
         <input id="billPhone" name="phone" type="tel" required>
       </div>
+
       <div class="field">
         <label for="billTitle">Advert Title</label>
         <input id="billTitle" name="title" required maxlength="120">
       </div>
+
       <div class="field">
         <label for="billDescription">Advert Description</label>
         <textarea id="billDescription" name="description" required maxlength="1000"></textarea>
       </div>
+
       <div class="field">
         <label for="billLink">Website / Social Media Link</label>
         <input id="billLink" name="link" type="url" placeholder="https://">
       </div>
+
       <div class="field">
         <label for="billMedia">Upload Billboard Media</label>
         <input id="billMedia" name="media" type="file" accept="image/*,video/*" required>
@@ -341,14 +410,10 @@ footer{
         Select a slot to continue
       </button>
     </form>
+
     <div class="status" id="billStatus" role="status"></div>
   </section>
 
-  <div class="notice">
-    <strong>Secure payment:</strong> Payments are processed through Flutterwave.
-    A campaign or billboard booking is confirmed only after EarnGig's server
-    verifies the successful payment.
-  </div>
 </main>
 
 <footer>
@@ -356,16 +421,18 @@ footer{
 </footer>
 
 <script>
-/*
-  FLUTTERWAVE PUBLIC TEST KEY.
-  Replace with your live public key when switching to live mode.
-*/
+
+/* CONFIGURATION */
+
 const FLUTTERWAVE_PUBLIC_KEY =
-  "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
+"FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
 /*
-  Enter your deployed backend URL here.
-  Do not put your Flutterwave secret key in this file.
+  IMPORTANT:
+  Put your deployed backend address here.
+  Example: https://your-api.example.com
+
+  Do not put your Flutterwave secret key here.
 */
 const API_BASE = "";
 
@@ -378,22 +445,22 @@ const $ = id => document.getElementById(id);
 
 $("year").textContent = new Date().getFullYear();
 
-function naira(amount) {
+function naira(amount){
   return "₦" + Number(amount).toLocaleString("en-NG");
 }
 
-function showStatus(id,message,type="info") {
+function showStatus(id,message,type="info"){
   const el = $(id);
   el.textContent = message;
   el.className = "status show " + type;
 }
 
-function clearStatus(id) {
+function clearStatus(id){
   $(id).textContent = "";
   $(id).className = "status";
 }
 
-async function request(path,options={}) {
+async function request(path,options={}){
   const response = await fetch(
     API_BASE.replace(/\/$/,"") + path,
     {
@@ -403,16 +470,182 @@ async function request(path,options={}) {
   );
 
   let data = {};
-  try { data = await response.json(); } catch {}
 
-  if (!response.ok) {
-    throw new Error(data.message || "Request failed. Please try again.");
+  try{
+    data = await response.json();
+  }catch{}
+
+  if(!response.ok){
+    throw new Error(
+      data.message || "Unable to complete request. Please try again."
+    );
   }
 
   return data;
 }
 
-/* TABS */
+/* NIGERIA TIME */
+
+function nigeriaNow(){
+  return new Date(
+    new Date().toLocaleString("en-US",{
+      timeZone:"Africa/Lagos"
+    })
+  );
+}
+
+function formatDate(date){
+  return date.toLocaleDateString("en-NG",{
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
+}
+
+function formatShortDate(date){
+  return date.toLocaleDateString("en-CA",{
+    timeZone:"Africa/Lagos"
+  });
+}
+
+function mondayOf(date){
+  const result = new Date(date);
+  result.setHours(0,0,0,0);
+
+  const day = result.getDay();
+
+  result.setDate(
+    result.getDate() + (day===0 ? -6 : 1-day)
+  );
+
+  return result;
+}
+
+/*
+  Booking opens Saturday at 12:00 AM Nigeria time.
+  Each campaign runs Monday through Sunday.
+*/
+function bookingOpeningForCampaign(monday){
+  const opening = new Date(monday);
+  opening.setDate(opening.getDate()-2);
+  opening.setHours(0,0,0,0);
+  return opening;
+}
+
+function campaignSunday(monday){
+  const sunday = new Date(monday);
+  sunday.setDate(sunday.getDate()+6);
+  return sunday;
+}
+
+function updateBookingInformation(){
+  const now = nigeriaNow();
+  const todayMonday = mondayOf(now);
+
+  let campaignMonday = new Date(todayMonday);
+
+  /*
+    Find the next campaign whose booking window is
+    currently open or is the next campaign to open.
+  */
+  let opening = bookingOpeningForCampaign(campaignMonday);
+
+  if(now < opening){
+    campaignMonday.setDate(campaignMonday.getDate()+7);
+    opening = bookingOpeningForCampaign(campaignMonday);
+  }
+
+  const sunday = campaignSunday(campaignMonday);
+
+  $("campaignDates").textContent =
+    formatDate(campaignMonday) + " – " + formatDate(sunday);
+
+  $("bookingOpening").textContent =
+    "Booking opens " + formatDate(opening) +
+    " at 12:00 AM Nigeria time.";
+
+  const state = $("bookingState");
+
+  if(now >= opening){
+    state.textContent = "Booking is OPEN";
+    state.classList.add("open");
+  }else{
+    state.textContent = "Booking opens soon";
+    state.classList.remove("open");
+  }
+}
+
+/* WEEK SELECTOR */
+
+function populateWeeks(){
+  const select = $("campaignWeek");
+  const now = nigeriaNow();
+  const currentMonday = mondayOf(now);
+
+  select.innerHTML = "";
+
+  for(let i=0;i<12;i++){
+    const monday = new Date(currentMonday);
+    monday.setDate(monday.getDate()+i*7);
+
+    const opening = bookingOpeningForCampaign(monday);
+
+    const option = document.createElement("option");
+    option.value = formatShortDate(monday);
+
+    option.textContent =
+      formatDate(monday) + " campaign";
+
+    option.dataset.opening = opening.toISOString();
+
+    select.appendChild(option);
+  }
+
+  /*
+    Choose the first campaign whose booking window
+    has opened, or the next campaign if none has opened.
+  */
+  let chosen = 0;
+
+  for(let i=0;i<select.options.length;i++){
+    const opening = new Date(select.options[i].dataset.opening);
+
+    if(now >= opening){
+      chosen = i;
+    }else{
+      break;
+    }
+  }
+
+  select.selectedIndex = chosen;
+}
+
+function updateSelectedCampaignInfo(){
+  const monday = new Date($("campaignWeek").value+"T00:00:00");
+  const sunday = campaignSunday(monday);
+  const opening = bookingOpeningForCampaign(monday);
+  const now = nigeriaNow();
+
+  $("campaignDates").textContent =
+    formatDate(monday)+" – "+formatDate(sunday);
+
+  $("bookingOpening").textContent =
+    "Booking opens "+formatDate(opening)+
+    " at 12:00 AM Nigeria time.";
+
+  const state = $("bookingState");
+
+  if(now >= opening){
+    state.textContent = "Booking is OPEN";
+    state.classList.add("open");
+  }else{
+    state.textContent = "Booking has not opened yet";
+    state.classList.remove("open");
+  }
+}
+
+/* TAB SWITCHING */
 
 $("timeTab").addEventListener("click",()=>{
   $("timeTab").classList.add("active");
@@ -426,10 +659,12 @@ $("billboardTab").addEventListener("click",()=>{
   $("timeTab").classList.remove("active");
   $("billboardPanel").classList.remove("hidden");
   $("timePanel").classList.add("hidden");
+
+  updateSelectedCampaignInfo();
   loadBillboardAvailability();
 });
 
-/* PACKAGES */
+/* TIME PACKAGE SELECTION */
 
 document.querySelectorAll(".package").forEach(button=>{
   button.addEventListener("click",()=>{
@@ -444,20 +679,24 @@ document.querySelectorAll(".package").forEach(button=>{
       price:Number(button.dataset.price)
     };
 
-    $("timeTotal").textContent = naira(selectedPackage.price);
+    $("timeTotal").textContent =
+      naira(selectedPackage.price);
   });
 });
 
-/* CHECKOUT REQUEST */
+/* BACKEND CHECKOUT */
 
-async function prepareCheckout(form,type,extra={}) {
+async function prepareCheckout(form,type,extra={}){
   const data = new FormData(form);
+
   data.set("type",type);
 
   Object.entries(extra).forEach(([key,value])=>{
     data.set(
       key,
-      typeof value === "object" ? JSON.stringify(value) : String(value)
+      typeof value==="object"
+        ? JSON.stringify(value)
+        : String(value)
     );
   });
 
@@ -467,15 +706,20 @@ async function prepareCheckout(form,type,extra={}) {
   });
 }
 
-/* FLUTTERWAVE PAYMENT POPUP */
+/* FLUTTERWAVE POPUP */
 
-function openFlutterwave(order,statusId) {
-  if (typeof FlutterwaveCheckout !== "function") {
+function openFlutterwave(order,statusId){
+  if(typeof FlutterwaveCheckout!=="function"){
     throw new Error("Flutterwave could not load. Refresh and try again.");
   }
 
-  if (!order.orderId || !order.txRef || !order.amount || !order.customerEmail) {
-    throw new Error("Payment details could not be prepared by the server.");
+  if(
+    !order.orderId ||
+    !order.txRef ||
+    !order.amount ||
+    !order.customerEmail
+  ){
+    throw new Error("The server returned incomplete payment information.");
   }
 
   FlutterwaveCheckout({
@@ -493,14 +737,17 @@ function openFlutterwave(order,statusId) {
 
     customizations:{
       title:"EarnGig Advertising",
-      description:"Payment for EarnGig advertising",
-      logo:""
+      description:"Payment for EarnGig advertising"
     },
 
-    callback:async function(payment) {
-      showStatus(statusId,"Verifying your payment...","info");
+    callback:async function(payment){
+      showStatus(
+        statusId,
+        "Payment received. Verifying your transaction...",
+        "info"
+      );
 
-      try {
+      try{
         const result = await request(
           "/api/advertising/payment/verify",
           {
@@ -514,50 +761,51 @@ function openFlutterwave(order,statusId) {
           }
         );
 
-        if (
-          result.status === "successful" &&
-          result.submissionStatus === "confirmed"
-        ) {
+        if(
+          result.status==="successful" &&
+          result.submissionStatus==="confirmed"
+        ){
           showStatus(
             statusId,
             "Payment successful! Your advertising submission is confirmed.",
             "success"
           );
 
-          if (statusId === "billStatus") {
+          if(statusId==="billStatus"){
             selectedSlots.clear();
+            $("billboardForm").reset();
             updateBillboardTotal();
             loadBillboardAvailability();
-            $("billboardForm").reset();
-          } else {
+          }else{
             $("timeForm").reset();
           }
-        } else {
+        }else{
           showStatus(
             statusId,
-            "Payment has not yet been verified. Your advert is not confirmed.",
+            "Your payment is not yet verified. Your advert is not confirmed.",
             "info"
           );
         }
-      } catch(error) {
+
+      }catch(error){
         showStatus(
           statusId,
-          "We could not verify this payment. Please contact EarnGig support with reference " + order.txRef,
+          "Payment verification failed. Please contact EarnGig support with reference "+order.txRef,
           "error"
         );
       }
     },
 
-    onclose:function() {
+    onclose:function(){
       /*
-        Closing the popup does not confirm an advert.
-        The server must automatically expire unpaid billboard holds.
+        Closing the payment popup does not confirm an advert.
+        Backend must expire unpaid billboard holds automatically.
       */
     }
   });
 }
 
-/* TIME-BASED PAYMENT */
+/* TIME ADVERT PAYMENT */
 
 $("timeForm").addEventListener("submit",async event=>{
   event.preventDefault();
@@ -567,121 +815,63 @@ $("timeForm").addEventListener("submit",async event=>{
   button.disabled = true;
   button.textContent = "Preparing payment...";
 
-  try {
+  try{
     const order = await prepareCheckout(
       event.target,
       "time_based",
       {durationDays:selectedPackage.days}
     );
 
-    if (Number(order.amount) !== selectedPackage.price) {
-      throw new Error("The payment amount does not match your selected package.");
+    if(Number(order.amount)!==selectedPackage.price){
+      throw new Error("Payment amount does not match your selected package.");
     }
 
     openFlutterwave(order,"timeStatus");
 
-  } catch(error) {
+  }catch(error){
     showStatus("timeStatus",error.message,"error");
-  } finally {
+  }finally{
     button.disabled = false;
     button.textContent = "Pay & Submit →";
   }
 });
 
-/* CAMPAIGN WEEKS */
-
-function dateString(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,"0");
-  const d = String(date.getDate()).padStart(2,"0");
-  return `${y}-${m}-${d}`;
-}
-
-function mondayOf(date) {
-  const result = new Date(date);
-  result.setHours(0,0,0,0);
-  const day = result.getDay();
-  result.setDate(result.getDate() + (day===0 ? -6 : 1-day));
-  return result;
-}
-
-function populateWeeks() {
-  const select = $("campaignWeek");
-  const today = new Date();
-  const firstMonday = mondayOf(today);
-
-  select.innerHTML = "";
-
-  for (let i=0;i<12;i++) {
-    const monday = new Date(firstMonday);
-    monday.setDate(monday.getDate()+i*7);
-
-    const bookingOpens = new Date(monday);
-    bookingOpens.setDate(bookingOpens.getDate()-2);
-
-    if (today < bookingOpens) continue;
-
-    const option = document.createElement("option");
-    option.value = dateString(monday);
-    option.textContent = dateString(monday)+" campaign week";
-    select.appendChild(option);
-  }
-
-  if (!select.options.length) {
-    const next = new Date(firstMonday);
-    next.setDate(next.getDate()+7);
-
-    const option = document.createElement("option");
-    option.value = dateString(next);
-    option.textContent = dateString(next)+" campaign week";
-    select.appendChild(option);
-  }
-}
-
-populateWeeks();
-
 /* BILLBOARD SLOT DISPLAY */
 
-/*
-  Every slot has only two visible states:
-  AVAILABLE or BOOKED.
-
-  Any server status other than "available", including
-  "held", is displayed as BOOKED.
-*/
-function renderSlots(slots) {
+function renderSlots(slots){
   const grid = $("slotGrid");
   grid.innerHTML = "";
   selectedSlots.clear();
 
-  for (let number=1;number<=10;number++) {
-    const info = (slots || []).find(
-      item => Number(item.slot) === number
+  for(let number=1;number<=10;number++){
+    const info = (slots||[]).find(
+      item=>Number(item.slot)===number
     );
 
-    const available = info?.status === "available";
+    const available = info?.status==="available";
 
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "slot " + (available ? "available" : "booked");
+    button.className =
+      "slot "+(available?"available":"booked");
 
     const strong = document.createElement("strong");
     strong.textContent = number;
 
     const small = document.createElement("small");
-    small.textContent = available ? "Available" : "Booked";
+    small.textContent = available?"Available":"Booked";
 
     button.append(strong,small);
     button.disabled = !available;
 
     button.addEventListener("click",()=>{
-      if (!available) return;
+      if(!available)return;
 
-      if (selectedSlots.has(number)) {
+      if(selectedSlots.has(number)){
         selectedSlots.delete(number);
         button.classList.remove("selected");
         small.textContent = "Available";
-      } else {
+      }else{
         selectedSlots.add(number);
         button.classList.add("selected");
         small.textContent = "Selected";
@@ -693,65 +883,83 @@ function renderSlots(slots) {
     grid.appendChild(button);
   }
 
-  const availableCount = (slots || []).filter(
-    item => item.status === "available"
+  const availableCount = (slots||[]).filter(
+    item=>item.status==="available"
   ).length;
 
-  if (availableCount === 0) {
+  if(availableCount===0){
     showStatus(
       "billStatus",
       "All slots for this week have been booked. Please check the next available week.",
       "info"
     );
-  } else {
+  }else{
     clearStatus("billStatus");
   }
 
   updateBillboardTotal();
 }
 
-/* LOAD AVAILABILITY */
+/* LOAD LIVE BILLBOARD AVAILABILITY */
 
-async function loadBillboardAvailability() {
+async function loadBillboardAvailability(){
   /*
-    Show ten booked slots immediately while availability loads.
-    The server will replace them with the actual statuses.
+    Display all ten immediately.
+    Unknown availability is not offered for selection.
   */
   renderSlots([]);
 
-  try {
-    const week = $("campaignWeek").value;
+  const week = $("campaignWeek").value;
+  const monday = new Date(week+"T00:00:00");
+  const opening = bookingOpeningForCampaign(monday);
+  const now = nigeriaNow();
 
+  if(now < opening){
+    showStatus(
+      "billStatus",
+      "Booking for this campaign has not opened yet. You can book from Saturday at 12:00 AM Nigeria time.",
+      "info"
+    );
+    return;
+  }
+
+  showStatus(
+    "billStatus",
+    "Loading billboard availability...",
+    "info"
+  );
+
+  try{
     const result = await request(
       "/api/advertising/billboard/availability?week="+
       encodeURIComponent(week)
     );
 
-    if (!Array.isArray(result.slots)) {
+    if(!Array.isArray(result.slots)){
       throw new Error("Invalid availability response.");
     }
 
     renderSlots(result.slots);
 
-  } catch(error) {
+  }catch(error){
     renderSlots([]);
 
     showStatus(
       "billStatus",
-      "Billboard availability could not be loaded. Please refresh and try again.",
+      "Availability could not be loaded. Please try again. Slots are not selectable until availability is confirmed.",
       "error"
     );
   }
 }
 
-$("campaignWeek").addEventListener(
-  "change",
-  loadBillboardAvailability
-);
+$("campaignWeek").addEventListener("change",()=>{
+  updateSelectedCampaignInfo();
+  loadBillboardAvailability();
+});
 
-/* TOTAL */
+/* BILLBOARD TOTAL */
 
-function updateBillboardTotal() {
+function updateBillboardTotal(){
   const count = selectedSlots.size;
 
   $("slotCount").textContent =
@@ -761,6 +969,7 @@ function updateBillboardTotal() {
     naira(count*BILLBOARD_SLOT_PRICE);
 
   const button = $("billSubmit");
+
   button.disabled = count===0;
 
   button.textContent = count===0
@@ -774,8 +983,12 @@ $("billboardForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearStatus("billStatus");
 
-  if (selectedSlots.size===0) {
-    showStatus("billStatus","Please select at least one available slot.","error");
+  if(selectedSlots.size===0){
+    showStatus(
+      "billStatus",
+      "Please select at least one available slot.",
+      "error"
+    );
     return;
   }
 
@@ -783,7 +996,7 @@ $("billboardForm").addEventListener("submit",async event=>{
   button.disabled = true;
   button.textContent = "Securing selected slots...";
 
-  try {
+  try{
     const slots = [...selectedSlots].sort((a,b)=>a-b);
 
     const order = await prepareCheckout(
@@ -795,32 +1008,37 @@ $("billboardForm").addEventListener("submit",async event=>{
       }
     );
 
-    const expectedAmount = slots.length*BILLBOARD_SLOT_PRICE;
+    const expectedAmount =
+      slots.length*BILLBOARD_SLOT_PRICE;
 
-    if (Number(order.amount)!==expectedAmount) {
-      throw new Error("The payment amount does not match your selected slots.");
+    if(Number(order.amount)!==expectedAmount){
+      throw new Error("Payment amount does not match selected slots.");
     }
 
     showStatus(
       "billStatus",
-      "Your selected slots are temporarily reserved. Complete payment in Flutterwave to confirm your booking.",
+      "Your selected slots are reserved temporarily. Complete payment in Flutterwave to confirm your booking.",
       "info"
     );
 
     openFlutterwave(order,"billStatus");
 
-  } catch(error) {
+  }catch(error){
     showStatus("billStatus",error.message,"error");
     loadBillboardAvailability();
-  } finally {
+  }finally{
     updateBillboardTotal();
   }
 });
 
-/* INITIAL DISPLAY */
+/* INITIALIZE */
 
-renderSlots([]);
+populateWeeks();
+updateBookingInformation();
+updateSelectedCampaignInfo();
 updateBillboardTotal();
+renderSlots([]);
+
 </script>
 </body>
 </html>
