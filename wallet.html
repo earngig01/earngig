@@ -4,270 +4,822 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#160329">
 <title>My Wallet | EarnGig</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-:root{
-  --purple:#7026a5;
-  --purple-dark:#4c1675;
-  --lavender:#f5effb;
-  --border:#e5d7f1;
-  --text:#241b2b;
-  --muted:#786d80;
-  --gold:#d6a82b;
+:root {
+  --bg:#120322;
+  --purple:#260644;
+  --purple2:#4b087f;
+  --purple3:#7026a5;
+  --lime:#caff19;
+  --gold:#ffc928;
+  --white:#fff;
+  --muted:#a99ab8;
+  --border:#ffffff19;
+  --card:#28103f;
+  --success:#a9f5b9;
+  --danger:#ff9ba9;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#fff;color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;min-height:100vh
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
-a{text-decoration:none;color:inherit}
-button,input{font:inherit}
-button{cursor:pointer}
-header{
-  min-height:70px;padding:10px 4%;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);
-  background:#fff;position:sticky;top:0;z-index:50
+
+html {scroll-behavior:smooth}
+
+body {
+  font-family:'Nunito',Arial,sans-serif;
+  min-height:100vh;
+  color:#fff;
+  background:
+    radial-gradient(ellipse at 90% 0%,#4c087a 0%,transparent 35%),
+    radial-gradient(ellipse at 0% 55%,#3d0961 0%,transparent 30%),
+    linear-gradient(135deg,#10021d,#23063e 55%,#10021d);
 }
-.brand{font-size:26px;font-weight:900;letter-spacing:-1px}
-.crown{color:var(--gold);display:inline-flex;vertical-align:middle}
-.crown svg{width:25px;height:25px}
-.gig{color:var(--purple)}
-.header-right{display:flex;align-items:center;gap:12px}
-.avatar{
-  width:38px;height:38px;border-radius:50%;
-  display:grid;place-items:center;background:var(--lavender);
-  border:1px solid var(--border)
+
+a {
+  color:inherit;
+  text-decoration:none;
 }
-.menu-button{
-  width:40px;height:40px;border:1px solid var(--border);
-  background:#fff;color:var(--purple);border-radius:9px;font-size:22px
+
+button,input {
+  font:inherit;
 }
-.overlay{position:fixed;inset:0;background:#0007;z-index:80;display:none}
-.overlay.open{display:block}
-.side-menu{
-  position:fixed;top:0;right:-320px;width:min(310px,85vw);
-  height:100%;overflow-y:auto;z-index:90;background:#fff;
-  border-left:1px solid var(--border);padding:22px 18px;
-  transition:right .25s
+
+button {cursor:pointer}
+
+/* HEADER */
+
+header {
+  min-height:72px;
+  padding:12px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #a72cff45;
+  background:#160329ed;
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter:blur(15px);
 }
-.side-menu.open{right:0}
-.menu-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-bottom:18px;border-bottom:1px solid var(--border)
+
+.brand {
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  display:flex;
+  align-items:center;
+  gap:4px;
 }
-.close-menu{
-  background:var(--lavender);color:var(--purple);border:0;
-  border-radius:8px;width:36px;height:36px;font-size:22px
+
+.crown {color:var(--gold)}
+.gig {color:var(--lime)}
+
+.header-right {
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.menu-label{
-  color:var(--muted);font-size:11px;font-weight:bold;
-  letter-spacing:1px;margin:20px 8px 9px
+
+.avatar {
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#4b087f;
+  border:1px solid #d35cff70;
+  font-size:18px;
 }
-.side-menu a:not(.brand){
-  display:flex;align-items:center;gap:12px;padding:12px 10px;
-  border-radius:9px;font-size:14px;font-weight:bold;color:var(--text)
+
+.menu-button {
+  width:40px;
+  height:40px;
+  border:1px solid #ffffff30;
+  background:#2a1042;
+  color:white;
+  border-radius:11px;
+  font-size:21px;
 }
-.side-menu a:hover,.side-menu a.current{
-  background:var(--lavender);color:var(--purple)
+
+/* SIDE MENU */
+
+.overlay {
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:80;
+  display:none;
 }
-.side-menu a span{font-size:19px}
-.container{width:93%;max-width:1100px;margin:30px auto 55px}
-.page-heading{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:15px;margin-bottom:23px
+
+.overlay.open {display:block}
+
+.side-menu {
+  position:fixed;
+  top:0;
+  right:-330px;
+  width:min(310px,85vw);
+  height:100%;
+  overflow-y:auto;
+  z-index:90;
+  background:#1b0730;
+  border-left:1px solid #a72cff55;
+  padding:22px 18px;
+  transition:right .25s;
 }
-.page-heading h1{font-size:29px;margin-bottom:7px}
-.page-heading p{color:var(--muted);font-size:14px;line-height:1.5}
-.back-link{color:var(--purple);font-size:13px;font-weight:bold}
-.balance-card{
-  padding:28px;border-radius:18px;
-  background:linear-gradient(120deg,#542078,#813bb1);
-  color:#fff;margin-bottom:20px;position:relative;overflow:hidden
+
+.side-menu.open {right:0}
+
+.menu-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:18px;
+  border-bottom:1px solid #ffffff20;
 }
-.balance-card:after{
-  content:"🪙";position:absolute;right:25px;top:15px;
-  font-size:85px;opacity:.16
+
+.close-menu {
+  background:#351052;
+  color:white;
+  border:0;
+  border-radius:9px;
+  width:36px;
+  height:36px;
+  font-size:22px;
 }
-.balance-label{font-size:13px;color:#eee0f8;margin-bottom:12px}
-.balance-number{
-  font-size:clamp(38px,7vw,53px);font-weight:900;
-  color:#fff;margin-bottom:8px
+
+.menu-label {
+  color:#ad91c3;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  margin:22px 8px 9px;
 }
-.balance-subtitle{font-size:13px;color:#eadcf3}
-.balance-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.btn{
-  display:inline-flex;justify-content:center;align-items:center;
-  padding:12px 18px;border-radius:9px;font-weight:800;border:0
+
+.side-menu a:not(.brand) {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 10px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:800;
+  color:#f4eafa;
 }
-.btn-primary{background:var(--purple);color:white}
-.btn-light{background:#fff;color:var(--purple);border:1px solid var(--border)}
-.btn-white{background:#fff;color:var(--purple-dark)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.demo-banner{
-  background:#fff8e8;border:1px solid #f0d99b;color:#76551a;
-  padding:13px 15px;border-radius:10px;font-size:12px;
-  line-height:1.6;margin-bottom:22px
+
+.side-menu a:hover,
+.side-menu a.current {
+  background:#45166a;
+  color:var(--lime);
 }
-.available-card,.referral-card,.panel{
-  padding:23px;border:1px solid var(--border);
-  border-radius:16px;background:#fff;margin-bottom:24px
+
+.side-menu a span {font-size:19px}
+
+/* PAGE LAYOUT */
+
+.container {
+  width:92%;
+  max-width:1050px;
+  margin:28px auto 55px;
 }
-.available-title{font-size:14px;font-weight:bold;margin-bottom:16px}
-.available-main{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:15px;flex-wrap:wrap
+
+.page-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:22px;
 }
-.available-coins{font-size:clamp(27px,5vw,36px);color:var(--purple);font-weight:900}
-.available-naira{font-size:clamp(22px,4vw,29px);font-weight:900}
-.available-caption{color:var(--muted);font-size:12px;margin-top:6px}
-.conversion-note{
-  margin-top:17px;padding-top:14px;border-top:1px solid var(--border);
-  color:var(--muted);font-size:12px;line-height:1.7
+
+.page-heading h1 {
+  font-size:27px;
+  font-weight:900;
+  margin-bottom:5px;
 }
-.referral-heading{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;margin-bottom:16px
+
+.page-heading p {
+  color:#d0c1dc;
+  font-size:13px;
+  line-height:1.5;
 }
-.referral-heading h2{font-size:20px}
-.reward-tag{
-  background:#f5effb;color:var(--purple);padding:8px 12px;
-  border-radius:20px;font-size:11px;font-weight:900
+
+.back-link {
+  color:var(--lime);
+  font-size:13px;
+  font-weight:900;
+  white-space:nowrap;
 }
-.referral-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.referral-stat{
-  background:#faf7fd;border:1px solid var(--border);
-  border-radius:11px;padding:16px
+
+/* DEMO NOTICE */
+
+.demo-banner {
+  background:#38234a;
+  border:1px solid #b78bdb55;
+  color:#eee0fa;
+  padding:13px 15px;
+  border-radius:12px;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:19px;
 }
-.referral-stat strong{
-  display:block;color:var(--purple);font-size:24px;
-  margin-bottom:7px;overflow-wrap:anywhere
+
+/* MAIN BALANCE */
+
+.balance-card {
+  padding:26px;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 90% 10%,#a329db55,transparent 35%),
+    linear-gradient(120deg,#401064,#7025a3 60%,#4b087f);
+  border:1px solid #d45cff75;
+  box-shadow:0 12px 35px #0002,0 0 25px #a72cff20;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
 }
-.referral-stat span{font-size:12px;color:var(--muted)}
-.referral-description{
-  font-size:13px;color:var(--muted);line-height:1.7;margin-top:16px
+
+.balance-card:after {
+  content:"🪙";
+  position:absolute;
+  right:24px;
+  top:15px;
+  font-size:75px;
+  opacity:.15;
+  pointer-events:none;
 }
-.referral-link{
-  display:inline-block;color:var(--purple);font-size:13px;
-  font-weight:bold;margin-top:13px
+
+.balance-label {
+  color:#ead7f8;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:12px;
 }
-.referral-note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:12px}
-.section{margin:27px 0}
-.section-title{font-size:20px;font-weight:900;margin-bottom:14px}
-.panel-description{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:18px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.field{display:flex;flex-direction:column;gap:8px}
-.field.full{grid-column:1/-1}
-.field label{font-size:13px;font-weight:bold}
-.field input{
-  width:100%;padding:13px;border-radius:9px;
-  border:1px solid var(--border);background:#fff;color:var(--text);
-  outline:none
+
+.balance-number {
+  font-size:clamp(36px,7vw,52px);
+  font-weight:900;
+  color:var(--lime);
+  line-height:1.1;
+  margin-bottom:8px;
+  overflow-wrap:anywhere;
 }
-.field input:focus{border-color:var(--purple);box-shadow:0 0 0 2px #7026a515}
-.field input::placeholder{color:#a69bac}
-.bank-picker{position:relative}
-.bank-trigger{
-  width:100%;padding:13px;text-align:left;border-radius:9px;
-  border:1px solid var(--border);background:#fff;color:var(--text);
-  display:flex;justify-content:space-between;align-items:center
+
+.balance-subtitle {
+  font-size:12px;
+  color:#eadcf3;
 }
-.bank-trigger .placeholder{color:#a69bac}
-.bank-dropdown{
-  display:none;position:absolute;top:calc(100% + 6px);
-  left:0;right:0;z-index:30;background:#fff;
-  border:1px solid var(--border);border-radius:10px;padding:10px;
-  box-shadow:0 10px 25px #241b2b18
+
+.balance-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:22px;
+  position:relative;
+  z-index:2;
 }
-.bank-dropdown.open{display:block}
-.bank-search{
-  width:100%;padding:11px;border-radius:8px;
-  border:1px solid var(--border);margin-bottom:8px
+
+.btn {
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:12px 17px;
+  border-radius:11px;
+  font-weight:900;
+  border:0;
+  transition:.2s;
 }
-.bank-list{max-height:220px;overflow-y:auto}
-.bank-option{
-  width:100%;padding:11px;background:transparent;border:0;
-  border-radius:7px;color:var(--text);text-align:left;
-  display:flex;justify-content:space-between;font-size:13px
+
+.btn:hover {transform:translateY(-2px)}
+
+.btn-primary {
+  background:var(--lime);
+  color:#190b25;
+  box-shadow:0 0 18px #caff1930;
 }
-.bank-option:hover,.bank-option.selected{background:var(--lavender);color:var(--purple)}
-.no-bank{padding:14px;text-align:center;color:var(--muted);font-size:13px}
-.amount-preview{
-  grid-column:1/-1;background:#faf7fd;border:1px solid var(--border);
-  padding:15px;border-radius:10px;display:grid;
-  grid-template-columns:repeat(2,1fr);gap:14px
+
+.btn-light {
+  background:#ffffff17;
+  color:white;
+  border:1px solid #ffffff50;
 }
-.preview-item span{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-.preview-item strong{font-size:19px;color:var(--purple)}
-.preview-item.net strong{color:#16834a}
-.preview-item.total{grid-column:1/-1;border-top:1px solid var(--border);padding-top:12px}
-.preview-item.total strong{color:var(--text)}
-.notice{
-  padding:13px 15px;border-radius:10px;background:#faf7fd;
-  border:1px solid var(--border);color:#5f5269;
-  font-size:12px;line-height:1.8;margin-top:17px
+
+.btn:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
 }
-.window-status{
-  padding:14px;border-radius:10px;margin-bottom:17px;
-  font-size:13px;line-height:1.7
+
+/* AVAILABLE BALANCE */
+
+.available-card {
+  padding:21px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:linear-gradient(135deg,#29103e,#1d0b30);
+  margin-bottom:19px;
 }
-.window-status.open{background:#eaf8ef;border:1px solid #b7e5c5;color:#176b36}
-.window-status.closed{background:#fff2f3;border:1px solid #f0c5cc;color:#9b3345}
-.form-actions{margin-top:17px}
-.form-message{
-  display:none;margin-top:13px;padding:12px;border-radius:9px;
-  font-size:13px;line-height:1.6
+
+.available-title {
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:17px;
+  color:#eee1fa;
 }
-.form-message.show{display:block}
-.form-message.error{background:#fff0f2;color:#a52e42}
-.form-message.info{background:#eaf8ef;color:#176b36}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:600px}
-th,td{padding:13px 11px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
-th{color:var(--muted);font-size:11px;text-transform:uppercase}
-td{color:var(--text)}
-.status-pending{color:#a56b13}
-.status-approved{color:#16834a}
-.status-rejected{color:#b83248}
-.empty{padding:25px 10px;text-align:center;color:var(--muted);font-size:13px}
-footer{
-  border-top:1px solid var(--border);padding:23px 4%;
-  text-align:center;color:var(--muted);font-size:12px
+
+.available-main {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
-@media(max-width:650px){
-  header{padding:10px 4%}
-  .brand{font-size:24px}
-  .container{margin-top:22px}
-  .page-heading h1{font-size:25px}
-  .balance-card{padding:22px}
-  .available-card,.referral-card,.panel{padding:17px}
-  .form-grid{grid-template-columns:1fr}
-  .field.full,.amount-preview{grid-column:auto}
-  .available-main{align-items:flex-start;flex-direction:column}
-  .referral-grid{grid-template-columns:1fr}
-  .amount-preview{grid-template-columns:1fr}
-  .preview-item.total{grid-column:auto}
+
+.available-coins {
+  font-size:clamp(25px,5vw,34px);
+  color:var(--lime);
+  font-weight:900;
+  overflow-wrap:anywhere;
+}
+
+.available-naira {
+  font-size:clamp(22px,4vw,29px);
+  font-weight:900;
+  color:white;
+  overflow-wrap:anywhere;
+}
+
+.available-caption {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.conversion-note {
+  margin-top:17px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  color:#c9b9d6;
+  font-size:12px;
+  line-height:1.8;
+}
+
+/* REFERRALS */
+
+.referral-card {
+  padding:21px;
+  border:1px solid var(--border);
+  border-radius:17px;
+  background:#28103f;
+  margin-bottom:25px;
+}
+
+.referral-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+
+.referral-heading h2 {
+  font-size:18px;
+  font-weight:900;
+}
+
+.reward-tag {
+  background:#caff1920;
+  color:var(--lime);
+  border:1px solid #caff1940;
+  padding:7px 11px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.referral-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.referral-stat {
+  background:#35164e;
+  border:1px solid #ffffff12;
+  border-radius:12px;
+  padding:14px;
+}
+
+.referral-stat strong {
+  display:block;
+  color:var(--lime);
+  font-size:23px;
+  margin-bottom:5px;
+  overflow-wrap:anywhere;
+}
+
+.referral-stat span {
+  font-size:11px;
+  color:#c8b8d4;
+}
+
+.referral-description {
+  font-size:12px;
+  color:#d4c4df;
+  line-height:1.7;
+  margin-top:15px;
+}
+
+.referral-link {
+  display:inline-block;
+  color:var(--lime);
+  font-size:12px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.referral-note {
+  font-size:11px;
+  color:#a99ab8;
+  line-height:1.6;
+  margin-top:10px;
+}
+
+/* GENERAL SECTIONS */
+
+.section {margin:27px 0}
+
+.section-title {
+  font-size:19px;
+  font-weight:900;
+  margin-bottom:13px;
+}
+
+.panel {
+  padding:22px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:#26103a;
+}
+
+.panel-description {
+  color:#c7b8d3;
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:17px;
+}
+
+/* WITHDRAWAL DATE */
+
+.window-status {
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:18px;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.window-status.open {
+  background:#193b2a;
+  border:1px solid #5fce82;
+  color:#b9f5c8;
+}
+
+.window-status.closed {
+  background:#382344;
+  border:1px solid #a66ac9;
+  color:#e7d4f5;
+}
+
+.window-status strong {
+  display:block;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+/* FORMS */
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.field.full {grid-column:1/-1}
+
+.field label {
+  font-size:12px;
+  font-weight:900;
+  color:#eee3f7;
+}
+
+.field input {
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid #ffffff2a;
+  background:#19082a;
+  color:white;
+  outline:none;
+}
+
+.field input:focus {
+  border-color:var(--lime);
+  box-shadow:0 0 0 2px #caff1920;
+}
+
+.field input::placeholder {color:#9584a4}
+
+.bank-picker {position:relative}
+
+.bank-trigger {
+  width:100%;
+  padding:13px;
+  text-align:left;
+  border-radius:10px;
+  border:1px solid #ffffff2a;
+  background:#19082a;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.bank-trigger .placeholder {color:#9584a4}
+
+.bank-dropdown {
+  display:none;
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  right:0;
+  z-index:30;
+  background:#241037;
+  border:1px solid #a72cff65;
+  border-radius:11px;
+  padding:10px;
+  box-shadow:0 10px 25px #0005;
+}
+
+.bank-dropdown.open {display:block}
+
+.bank-search {
+  width:100%;
+  padding:11px;
+  border-radius:8px;
+  border:1px solid #ffffff25;
+  background:#170624;
+  color:white;
+  margin-bottom:8px;
+}
+
+.bank-list {
+  max-height:220px;
+  overflow-y:auto;
+}
+
+.bank-option {
+  width:100%;
+  padding:11px;
+  background:transparent;
+  border:0;
+  border-radius:7px;
+  color:white;
+  text-align:left;
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+}
+
+.bank-option:hover,
+.bank-option.selected {
+  background:#4b087f;
+  color:var(--lime);
+}
+
+.no-bank {
+  padding:14px;
+  text-align:center;
+  color:#bba9c9;
+  font-size:12px;
+}
+
+/* AMOUNT PREVIEW */
+
+.amount-preview {
+  grid-column:1/-1;
+  background:#1d0b30;
+  border:1px solid #ffffff20;
+  padding:15px;
+  border-radius:12px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.preview-item span {
+  display:block;
+  font-size:11px;
+  color:#b9a9c8;
+  margin-bottom:6px;
+}
+
+.preview-item strong {
+  font-size:17px;
+  color:white;
+}
+
+.preview-item.net strong {color:var(--lime)}
+
+.preview-item.total {
+  grid-column:1/-1;
+  border-top:1px solid #ffffff20;
+  padding-top:12px;
+}
+
+.preview-item.total strong {color:var(--lime)}
+
+.notice {
+  padding:14px;
+  border-radius:11px;
+  background:#321849;
+  border:1px solid #ffffff18;
+  color:#d9c9e5;
+  font-size:11px;
+  line-height:1.9;
+  margin-top:17px;
+}
+
+.form-actions {margin-top:17px}
+
+.form-message {
+  display:none;
+  margin-top:13px;
+  padding:12px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.form-message.show {display:block}
+
+.form-message.error {
+  background:#4a1c32;
+  color:#ffb7c3;
+  border:1px solid #e66a88;
+}
+
+.form-message.info {
+  background:#183b2a;
+  color:#baf5ca;
+  border:1px solid #5fce82;
+}
+
+/* TABLES */
+
+.table-wrap {overflow-x:auto}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:570px;
+}
+
+th,td {
+  padding:13px 11px;
+  text-align:left;
+  border-bottom:1px solid #ffffff18;
+  font-size:12px;
+}
+
+th {
+  color:#a997b7;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+}
+
+td {color:#eee3f7}
+
+.status-pending {color:#ffd36e}
+.status-approved {color:#a9f5b9}
+.status-rejected {color:#ff9ba9}
+
+.empty {
+  padding:25px 10px;
+  text-align:center;
+  color:#aa9ab9;
+  font-size:12px;
+}
+
+/* FOOTER */
+
+footer {
+  border-top:1px solid #ffffff18;
+  padding:23px 4%;
+  text-align:center;
+  color:#a99ab8;
+  font-size:11px;
+}
+
+/* MOBILE APP LAYOUT */
+
+@media(max-width:650px) {
+  header {padding:10px 4%}
+
+  .brand {font-size:24px}
+
+  .container {
+    width:92%;
+    margin-top:21px;
+  }
+
+  .page-heading h1 {font-size:24px}
+
+  .page-heading p {font-size:12px}
+
+  .balance-card {padding:22px}
+
+  .balance-actions .btn {
+    flex:1;
+    min-width:135px;
+    font-size:12px;
+  }
+
+  .available-card,
+  .referral-card,
+  .panel {padding:16px}
+
+  .form-grid {grid-template-columns:1fr}
+
+  .field.full,
+  .amount-preview {grid-column:auto}
+
+  .referral-grid {grid-template-columns:1fr}
+
+  .referral-stat {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+
+  .referral-stat strong {
+    font-size:20px;
+    margin:0;
+  }
+
+  .referral-stat span {text-align:right}
+
+  .amount-preview {grid-template-columns:1fr 1fr}
+
+  .preview-item.total {grid-column:1/-1}
+
+  .section-title {font-size:18px}
+
+  .panel {border-radius:13px}
+}
+
+@media(max-width:370px) {
+  .page-heading {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .available-main {grid-template-columns:1fr}
+
+  .balance-actions {flex-direction:column}
+
+  .balance-actions .btn {width:100%}
 }
 </style>
 </head>
+
 <body>
 
 <header>
   <a href="index.html" class="brand">
-    <span class="crown" aria-label="EarnGig crown">
-      <svg viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 7L9 13L15.8 3L23 13L29 7L26 22H6L3 7Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-        <path d="M7 25H25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <circle cx="3" cy="5" r="2" fill="currentColor"/>
-        <circle cx="16" cy="3" r="2" fill="currentColor"/>
-        <circle cx="29" cy="5" r="2" fill="currentColor"/>
-      </svg>
-    </span>
+    <span class="crown">👑</span>
     Earn<span class="gig">Gig</span>
   </a>
+
   <div class="header-right">
-    <a href="profile.html" class="avatar">👤</a>
+    <a href="profile.html" class="avatar" aria-label="My profile">👤</a>
     <button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
   </div>
 </header>
@@ -277,20 +829,24 @@ footer{
 <aside class="side-menu" id="sideMenu">
   <div class="menu-head">
     <a href="index.html" class="brand">
-      <span class="crown">♛</span> Earn<span class="gig">Gig</span>
+      <span class="crown">👑</span>
+      Earn<span class="gig">Gig</span>
     </a>
-    <button class="close-menu" onclick="closeMenu()">×</button>
+    <button class="close-menu" onclick="closeMenu()" aria-label="Close menu">×</button>
   </div>
+
   <div class="menu-label">MY ACCOUNT</div>
   <a href="dashboard.html"><span>🏠</span> Dashboard</a>
   <a href="wallet.html" class="current"><span>👛</span> My Wallet</a>
   <a href="transactions.html"><span>📊</span> Transactions</a>
   <a href="profile.html"><span>👤</span> My Profile</a>
+
   <div class="menu-label">EARN REWARDS</div>
   <a href="games.html"><span>🎮</span> Games</a>
   <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
   <a href="referrals.html"><span>👥</span> Refer Friends</a>
   <a href="novels.html"><span>📚</span> Novels</a>
+
   <div class="menu-label">SHOP AND BUSINESS</div>
   <a href="marketplace.html"><span>🛍️</span> Marketplace</a>
   <a href="storefront.html"><span>🏪</span> Storefront</a>
@@ -299,186 +855,300 @@ footer{
 </aside>
 
 <main class="container">
+
   <div class="page-heading">
     <div>
       <h1>👛 My Wallet</h1>
-      <p>Manage your EarnGig coins, withdrawals and transactions.</p>
+      <p>Your EarnGig coins, withdrawal balance and activity.</p>
     </div>
     <a href="dashboard.html" class="back-link">← Dashboard</a>
   </div>
 
   <div class="demo-banner">
-    <strong>Frontend preview:</strong> Wallet balances and withdrawal requests are currently stored in this browser for demonstration only. They are not secure account balances, and real payments or withdrawals are not yet connected.
+    <strong>Wallet preview:</strong>
+    This wallet currently uses browser storage for demonstration.
+    Real coin balances, withdrawals and bank payments require secure
+    server-side processing.
   </div>
 
+  <!-- MAIN BALANCE -->
   <section class="balance-card">
     <div class="balance-label">TOTAL COIN BALANCE</div>
+
     <div class="balance-number" id="totalBalance">0 Coins</div>
-    <div class="balance-subtitle">Your displayed EarnGig coin balance.</div>
+
+    <div class="balance-subtitle">
+      Your displayed EarnGig coin balance.
+    </div>
+
     <div class="balance-actions">
-      <a href="#withdraw" class="btn btn-white">Withdraw Funds →</a>
+      <a href="#withdraw" class="btn btn-primary">Withdraw Funds →</a>
       <a href="#transactions" class="btn btn-light">Transaction History</a>
     </div>
   </section>
 
+  <!-- AVAILABLE BALANCE -->
   <section class="available-card">
     <div class="available-title">💰 AVAILABLE TO WITHDRAW</div>
+
     <div class="available-main">
       <div>
         <div class="available-coins" id="eligibleCoins">0 Coins</div>
         <div class="available-caption">Eligible coins</div>
       </div>
+
       <div>
         <div class="available-naira" id="eligibleNaira">₦0.00</div>
         <div class="available-caption">Equivalent withdrawal value</div>
       </div>
     </div>
+
     <div class="conversion-note">
-      Only eligible coins count toward withdrawals. Pending or unqualified rewards are not included.
-      <br><strong>Conversion rate: 10 eligible coins = ₦1.</strong>
+      Only eligible coins count toward withdrawals.
+      Pending or unqualified rewards are not included.
+      <br>
+      <strong>Conversion rate: 10 eligible coins = ₦1.</strong>
     </div>
   </section>
 
+  <!-- REFERRAL REWARDS -->
   <section class="referral-card">
     <div class="referral-heading">
       <h2>👥 Referral Rewards</h2>
       <span class="reward-tag">5,000 COINS PER REFERRAL</span>
     </div>
+
     <div class="referral-grid">
       <div class="referral-stat">
         <strong id="walletReferralCount">0</strong>
         <span>Successful referrals</span>
       </div>
+
       <div class="referral-stat">
         <strong id="walletReferralCoins">0</strong>
         <span>Referral coins earned</span>
       </div>
+
       <div class="referral-stat">
         <strong>5,000</strong>
         <span>Coins per successful referral</span>
       </div>
     </div>
+
     <p class="referral-description">
-      Earn <strong>5,000 coins</strong> every time someone joins EarnGig using your referral link and completes the required verification.
+      Earn <strong>5,000 coins</strong> when someone joins EarnGig
+      through your referral link and completes the required verification.
     </p>
-    <a href="referrals.html" class="referral-link">View and share your referral link →</a>
+
+    <a href="referrals.html" class="referral-link">
+      View and share your referral link →
+    </a>
+
     <p class="referral-note">
-      Referral totals are currently a preview from locally saved referral records. Actual wallet crediting requires secure server-side verification.
+      Referral totals are currently displayed from locally saved records.
+      Actual wallet crediting requires secure server-side verification.
     </p>
   </section>
 
+  <!-- WITHDRAWAL -->
   <section class="section" id="withdraw">
     <h2 class="section-title">🏦 Request a Withdrawal</h2>
+
     <div class="panel">
       <p class="panel-description">
-        Convert your eligible EarnGig coins into naira and withdraw to your Nigerian bank account.
+        Withdraw your eligible EarnGig coin value to your Nigerian bank account.
+        Withdrawal requests are accepted once a month, on the 28th.
       </p>
+
       <div id="windowStatus" class="window-status"></div>
 
       <form id="withdrawForm">
+
         <div class="form-grid">
+
           <div class="field full">
-            <label for="amount">How much do you want to withdraw? (₦)</label>
-            <input id="amount" type="number" min="100" step="0.01"
-              placeholder="Minimum withdrawal is ₦100" required>
+            <label for="amount">Withdrawal amount (₦)</label>
+            <input
+              id="amount"
+              type="number"
+              min="100"
+              step="0.01"
+              placeholder="Minimum withdrawal is ₦100"
+              required
+            >
           </div>
 
           <div class="amount-preview">
+
             <div class="preview-item">
               <span>Coins required</span>
               <strong id="coinsRequired">0 Coins</strong>
             </div>
+
             <div class="preview-item">
               <span>Withdrawal amount</span>
               <strong id="grossAmount">₦0.00</strong>
             </div>
+
             <div class="preview-item">
               <span>2% service charge</span>
               <strong id="serviceCharge">₦0.00</strong>
             </div>
+
             <div class="preview-item net">
               <span>You will receive</span>
               <strong id="netAmount">₦0.00</strong>
             </div>
+
             <div class="preview-item total">
-              <span>Eligible naira balance after request</span>
+              <span>Eligible balance after request</span>
               <strong id="remainingBalance">₦0.00</strong>
             </div>
+
           </div>
 
           <div class="field">
             <label>Bank Name</label>
+
             <div class="bank-picker">
-              <button type="button" class="bank-trigger" id="bankTrigger" aria-expanded="false">
-                <span id="bankSelected" class="placeholder">Search and select your bank</span>
+              <button
+                type="button"
+                class="bank-trigger"
+                id="bankTrigger"
+                aria-expanded="false"
+              >
+                <span id="bankSelected" class="placeholder">
+                  Search and select your bank
+                </span>
                 <span>⌄</span>
               </button>
+
               <div class="bank-dropdown" id="bankDropdown">
-                <input class="bank-search" id="bankSearch" type="search" placeholder="Type your bank name...">
+                <input
+                  class="bank-search"
+                  id="bankSearch"
+                  type="search"
+                  placeholder="Type your bank name..."
+                >
                 <div class="bank-list" id="bankList"></div>
               </div>
+
               <input type="hidden" id="bank" required>
             </div>
           </div>
 
           <div class="field">
             <label for="accountName">Account Name</label>
-            <input id="accountName" type="text" placeholder="Name on bank account" required>
+            <input
+              id="accountName"
+              type="text"
+              placeholder="Name on bank account"
+              required
+            >
           </div>
 
           <div class="field full">
             <label for="accountNumber">Account Number</label>
-            <input id="accountNumber" type="text" inputmode="numeric"
-              maxlength="10" placeholder="Enter your 10-digit account number" required>
+            <input
+              id="accountNumber"
+              type="text"
+              inputmode="numeric"
+              maxlength="10"
+              placeholder="Enter your 10-digit account number"
+              required
+            >
           </div>
+
         </div>
 
         <div class="notice">
-          <strong>Withdrawal rules</strong><br>
-          • Withdrawals can only be requested on Fridays, Nigerian time.<br>
+          <strong>Monthly withdrawal rules</strong><br>
+          • Withdrawal requests are accepted only on the 28th of each month.<br>
+          • The withdrawal date follows Nigerian time.<br>
           • Minimum withdrawal amount is ₦100.<br>
-          • A 2% service charge is deducted from every withdrawal.<br>
-          • You receive the remaining 98% after the service charge.<br>
-          • You must have enough eligible coins to cover the full requested amount.
+          • A 2% service charge applies to each withdrawal.<br>
+          • You receive the remaining 98%.<br>
+          • Your eligible coin balance must cover the full withdrawal amount.
         </div>
+
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary" id="withdrawButton">Withdraw Funds →</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="withdrawButton"
+          >
+            Withdraw Funds →
+          </button>
         </div>
+
         <div class="form-message" id="formMessage"></div>
+
       </form>
     </div>
   </section>
 
+  <!-- TRANSACTIONS -->
   <section class="section" id="transactions">
     <h2 class="section-title">📊 Recent Transactions</h2>
+
     <div class="panel">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Description</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
           <tbody id="transactionRows">
-            <tr><td colspan="4" class="empty">No transactions yet. Your activity will appear here.</td></tr>
+            <tr>
+              <td colspan="4" class="empty">
+                No transactions yet. Your activity will appear here.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
+  <!-- WITHDRAWAL HISTORY -->
   <section class="section">
     <h2 class="section-title">📋 Withdrawal History</h2>
+
     <div class="panel">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Date</th><th>Requested</th><th>Service Charge</th><th>Net Amount</th><th>Status</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Requested</th>
+              <th>Service Charge</th>
+              <th>Net Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
           <tbody id="withdrawalRows">
-            <tr><td colspan="5" class="empty">You have not made any withdrawal requests yet.</td></tr>
+            <tr>
+              <td colspan="5" class="empty">
+                You have not made any withdrawal requests yet.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
+
 </main>
 
-<footer>© 2026 EarnGig. All rights reserved.</footer>
+<footer>
+  © 2026 EarnGig. All rights reserved.
+</footer>
 
 <script>
 /*
@@ -487,62 +1157,101 @@ footer{
   Shared demo balance key:
   earngig_wallet_balance
 
-  Expected data format:
+  Expected data:
   {
     "totalCoins": 0,
     "eligibleCoins": 0
   }
 
-  This browser storage is only for frontend testing.
-  Never use localStorage as the source of truth for real money,
-  coin deductions, withdrawals, or payment confirmation.
+  Local browser storage is not secure enough for real money.
+  Real balances, withdrawal limits, payment verification and
+  coin deductions must be handled by a secure backend.
 */
 
 const WALLET_KEY = "earngig_wallet_balance";
 const WITHDRAWALS_KEY = "earngig_main_wallet_withdrawals";
+
 const COINS_PER_NAIRA = 10;
 const WITHDRAWAL_FEE_RATE = 0.02;
 const MINIMUM_WITHDRAWAL = 100;
 const REFERRAL_REWARD = 5000;
 
 const banks = [
-  "Access Bank","Access Bank (Diamond)","Carbon","Citibank Nigeria",
-  "Ecobank Nigeria","Fidelity Bank","First Bank of Nigeria",
-  "First City Monument Bank (FCMB)","Globus Bank","GoMoney",
-  "Greenwich Merchant Bank","Guaranty Trust Bank (GTBank)","Heritage Bank",
-  "Jaiz Bank","Keystone Bank","Kuda Bank","Lotus Bank","Moniepoint",
-  "Mutual Trust Microfinance Bank","Nova Merchant Bank","Opay",
-  "Optimus Bank","Palmpay","Parallex Bank","Parkway Microfinance Bank",
-  "Polaris Bank","PremiumTrust Bank","Providus Bank","Rubies MFB",
-  "Safe Haven MFB","Signature Bank","Sparkle","Stanbic IBTC Bank",
-  "Standard Chartered Bank","Sterling Bank","SunTrust Bank","TajBank",
-  "Titan Trust Bank","Union Bank of Nigeria","United Bank for Africa (UBA)",
-  "Unity Bank","VFD Microfinance Bank","Wema Bank","Zenith Bank"
+  "Access Bank",
+  "Access Bank (Diamond)",
+  "Carbon",
+  "Citibank Nigeria",
+  "Ecobank Nigeria",
+  "Fidelity Bank",
+  "First Bank of Nigeria",
+  "First City Monument Bank (FCMB)",
+  "Globus Bank",
+  "GoMoney",
+  "Greenwich Merchant Bank",
+  "Guaranty Trust Bank (GTBank)",
+  "Heritage Bank",
+  "Jaiz Bank",
+  "Keystone Bank",
+  "Kuda Bank",
+  "Lotus Bank",
+  "Moniepoint",
+  "Mutual Trust Microfinance Bank",
+  "Nova Merchant Bank",
+  "Opay",
+  "Optimus Bank",
+  "Palmpay",
+  "Parallex Bank",
+  "Parkway Microfinance Bank",
+  "Polaris Bank",
+  "PremiumTrust Bank",
+  "Providus Bank",
+  "Rubies MFB",
+  "Safe Haven MFB",
+  "Signature Bank",
+  "Sparkle",
+  "Stanbic IBTC Bank",
+  "Standard Chartered Bank",
+  "Sterling Bank",
+  "SunTrust Bank",
+  "TajBank",
+  "Titan Trust Bank",
+  "Union Bank of Nigeria",
+  "United Bank for Africa (UBA)",
+  "Unity Bank",
+  "VFD Microfinance Bank",
+  "Wema Bank",
+  "Zenith Bank"
 ];
 
-function readJSON(key,fallback){
-  try{
+function readJSON(key,fallback) {
+  try {
     const value = JSON.parse(localStorage.getItem(key));
     return value ?? fallback;
-  }catch(error){
+  } catch(error) {
     return fallback;
   }
 }
 
-function saveJSON(key,value){
+function saveJSON(key,value) {
   localStorage.setItem(key,JSON.stringify(value));
 }
 
-function formatNaira(amount){
+function formatNaira(amount) {
   return "₦" + Number(amount || 0).toLocaleString("en-NG",{
-    minimumFractionDigits:2,maximumFractionDigits:2
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
   });
 }
 
-function getWalletData(){
-  const saved = readJSON(WALLET_KEY,{totalCoins:0,eligibleCoins:0});
+function getWalletData() {
+  const saved = readJSON(WALLET_KEY,{
+    totalCoins:0,
+    eligibleCoins:0
+  });
+
   const total = Math.max(0,Number(saved.totalCoins) || 0);
   const eligible = Math.max(0,Number(saved.eligibleCoins) || 0);
+
   return {
     totalCoins:total,
     eligibleCoins:Math.min(total,eligible)
@@ -551,80 +1260,130 @@ function getWalletData(){
 
 let walletData = getWalletData();
 
-function getNigeriaDate(){
+/* NIGERIAN DATE AND MONTHLY WITHDRAWAL WINDOW */
+
+function getNigeriaDate() {
   const parts = new Intl.DateTimeFormat("en-GB",{
-    timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",
-    day:"2-digit",weekday:"long"
+    timeZone:"Africa/Lagos",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    weekday:"long"
   }).formatToParts(new Date());
+
   const result = {};
-  parts.forEach(part=>result[part.type]=part.value);
+
+  parts.forEach(part=>{
+    result[part.type] = part.value;
+  });
+
   return result;
 }
 
-function isFriday(){
-  return getNigeriaDate().weekday === "Friday";
+function isWithdrawalDay() {
+  return getNigeriaDate().day === "28";
 }
 
-function updateWalletDisplay(){
-  walletData = getWalletData();
-  document.getElementById("totalBalance").textContent =
-    walletData.totalCoins.toLocaleString("en-NG") + " Coins";
-  document.getElementById("eligibleCoins").textContent =
-    walletData.eligibleCoins.toLocaleString("en-NG") + " Coins";
-  document.getElementById("eligibleNaira").textContent =
-    formatNaira(walletData.eligibleCoins / COINS_PER_NAIRA);
-  updateWithdrawalPreview();
-}
-
-function updateWindowStatus(){
+function updateWindowStatus() {
   const status = document.getElementById("windowStatus");
   const button = document.getElementById("withdrawButton");
 
-  if(isFriday()){
+  if(isWithdrawalDay()) {
     status.className = "window-status open";
+
     status.innerHTML =
-      "<strong>Friday withdrawal window is open.</strong><br>" +
-      "You can submit a demonstration request today. The window closes at midnight Nigerian time.";
+      "<strong>🟢 Monthly withdrawal window is open!</strong>" +
+      "Today is the 28th. You can submit your withdrawal request today, " +
+      "using Nigerian time. The window closes at midnight.";
+
     button.disabled = false;
-  }else{
+  } else {
+    const nigeriaDate = getNigeriaDate();
+
     status.className = "window-status closed";
+
     status.innerHTML =
-      "<strong>Withdrawal window is closed.</strong><br>" +
-      "Withdrawals are only accepted on Fridays, Nigerian time.";
+      "<strong>📅 Monthly withdrawal window is closed.</strong>" +
+      "Withdrawals are accepted only on the 28th of each month. " +
+      "Today's date in Nigeria is " +
+      nigeriaDate.day + "/" +
+      nigeriaDate.month + "/" +
+      nigeriaDate.year + ".";
+      
     button.disabled = true;
   }
 }
 
-function updateWithdrawalPreview(){
-  const amount = Number(document.getElementById("amount").value || 0);
-  const validAmount = Number.isFinite(amount) && amount > 0 ? amount : 0;
+/* WALLET DISPLAY */
+
+function updateWalletDisplay() {
+  walletData = getWalletData();
+
+  document.getElementById("totalBalance").textContent =
+    walletData.totalCoins.toLocaleString("en-NG") + " Coins";
+
+  document.getElementById("eligibleCoins").textContent =
+    walletData.eligibleCoins.toLocaleString("en-NG") + " Coins";
+
+  document.getElementById("eligibleNaira").textContent =
+    formatNaira(walletData.eligibleCoins / COINS_PER_NAIRA);
+
+  updateWithdrawalPreview();
+}
+
+/* WITHDRAWAL PREVIEW */
+
+function updateWithdrawalPreview() {
+  const amount = Number(
+    document.getElementById("amount").value || 0
+  );
+
+  const validAmount =
+    Number.isFinite(amount) && amount > 0 ? amount : 0;
+
   const fee = validAmount * WITHDRAWAL_FEE_RATE;
   const net = validAmount - fee;
   const coins = Math.ceil(validAmount * COINS_PER_NAIRA);
-  const availableNaira = walletData.eligibleCoins / COINS_PER_NAIRA;
+
+  const availableNaira =
+    walletData.eligibleCoins / COINS_PER_NAIRA;
 
   document.getElementById("coinsRequired").textContent =
     coins.toLocaleString("en-NG") + " Coins";
-  document.getElementById("grossAmount").textContent = formatNaira(validAmount);
-  document.getElementById("serviceCharge").textContent = formatNaira(fee);
-  document.getElementById("netAmount").textContent = formatNaira(net);
+
+  document.getElementById("grossAmount").textContent =
+    formatNaira(validAmount);
+
+  document.getElementById("serviceCharge").textContent =
+    formatNaira(fee);
+
+  document.getElementById("netAmount").textContent =
+    formatNaira(net);
+
   document.getElementById("remainingBalance").textContent =
     formatNaira(Math.max(0,availableNaira-validAmount));
 }
 
-function updateReferralWallet(){
+/* REFERRAL DISPLAY */
+
+function updateReferralWallet() {
   const referrals = readJSON("earngig_referrals",[]);
   const list = Array.isArray(referrals) ? referrals : [];
+
   const successful = list.filter(item=>
-    item && String(item.status || "").toLowerCase() === "successful"
+    item &&
+    String(item.status || "").toLowerCase() === "successful"
   );
+
   document.getElementById("walletReferralCount").textContent =
     successful.length.toLocaleString("en-NG");
+
   document.getElementById("walletReferralCoins").textContent =
     (successful.length * REFERRAL_REWARD).toLocaleString("en-NG");
 }
 
-/* SEARCHABLE BANK PICKER */
+/* BANK PICKER */
+
 const bankTrigger = document.getElementById("bankTrigger");
 const bankDropdown = document.getElementById("bankDropdown");
 const bankSearch = document.getElementById("bankSearch");
@@ -632,13 +1391,14 @@ const bankList = document.getElementById("bankList");
 const bankSelected = document.getElementById("bankSelected");
 const bankInput = document.getElementById("bank");
 
-function renderBanks(search=""){
+function renderBanks(search="") {
   const filtered = banks.filter(bank=>
     bank.toLowerCase().includes(search.trim().toLowerCase())
   );
+
   bankList.innerHTML = "";
 
-  if(!filtered.length){
+  if(!filtered.length) {
     const empty = document.createElement("div");
     empty.className = "no-bank";
     empty.textContent = "No matching bank found. Try another name.";
@@ -648,66 +1408,93 @@ function renderBanks(search=""){
 
   filtered.forEach(bank=>{
     const option = document.createElement("button");
+
     option.type = "button";
-    option.className = "bank-option" + (bankInput.value===bank ? " selected":"");
+    option.className =
+      "bank-option" +
+      (bankInput.value === bank ? " selected" : "");
+
     option.textContent = bank;
-    if(bankInput.value===bank){
+
+    if(bankInput.value === bank) {
       const check = document.createElement("span");
       check.textContent = "✓";
       option.appendChild(check);
     }
-    option.addEventListener("click",()=>selectBank(bank));
+
+    option.addEventListener("click",()=>{
+      selectBank(bank);
+    });
+
     bankList.appendChild(option);
   });
 }
 
-function selectBank(bank){
+function selectBank(bank) {
   bankInput.value = bank;
   bankSelected.textContent = bank;
   bankSelected.classList.remove("placeholder");
+
   bankDropdown.classList.remove("open");
   bankTrigger.setAttribute("aria-expanded","false");
+
   bankSearch.value = "";
   renderBanks();
 }
 
 bankTrigger.addEventListener("click",()=>{
   const opening = !bankDropdown.classList.contains("open");
+
   bankDropdown.classList.toggle("open",opening);
   bankTrigger.setAttribute("aria-expanded",String(opening));
-  if(opening){
+
+  if(opening) {
     bankSearch.value = "";
     renderBanks();
     bankSearch.focus();
   }
 });
 
-bankSearch.addEventListener("input",()=>renderBanks(bankSearch.value));
+bankSearch.addEventListener("input",()=>{
+  renderBanks(bankSearch.value);
+});
 
 document.addEventListener("click",event=>{
-  if(!event.target.closest(".bank-picker")){
+  if(!event.target.closest(".bank-picker")) {
     bankDropdown.classList.remove("open");
     bankTrigger.setAttribute("aria-expanded","false");
   }
 });
 
 /* SIDE MENU */
-function openMenu(){
+
+function openMenu() {
   document.getElementById("sideMenu").classList.add("open");
   document.getElementById("overlay").classList.add("open");
 }
-function closeMenu(){
+
+function closeMenu() {
   document.getElementById("sideMenu").classList.remove("open");
   document.getElementById("overlay").classList.remove("open");
 }
 
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape") {
+    closeMenu();
+    bankDropdown.classList.remove("open");
+    bankTrigger.setAttribute("aria-expanded","false");
+  }
+});
+
 /* WITHDRAWAL HISTORY */
-function renderWithdrawalHistory(){
+
+function renderWithdrawalHistory() {
   const withdrawals = readJSON(WITHDRAWALS_KEY,[]);
   const rows = document.getElementById("withdrawalRows");
+
   rows.innerHTML = "";
 
-  if(!Array.isArray(withdrawals) || !withdrawals.length){
+  if(!Array.isArray(withdrawals) || !withdrawals.length) {
     rows.innerHTML =
       '<tr><td colspan="5" class="empty">You have not made any withdrawal requests yet.</td></tr>';
     return;
@@ -715,6 +1502,7 @@ function renderWithdrawalHistory(){
 
   withdrawals.slice().reverse().forEach(item=>{
     const row = document.createElement("tr");
+
     const values = [
       item.date || "—",
       formatNaira(item.amount),
@@ -722,23 +1510,31 @@ function renderWithdrawalHistory(){
       formatNaira(item.netAmount),
       item.status || "Pending"
     ];
+
     values.forEach((value,index)=>{
       const cell = document.createElement("td");
       cell.textContent = value;
-      if(index===4) cell.className = "status-pending";
+
+      if(index === 4) {
+        cell.className = "status-pending";
+      }
+
       row.appendChild(cell);
     });
+
     rows.appendChild(row);
   });
 }
 
-/* RECENT TRANSACTIONS */
-function renderTransactions(){
+/* TRANSACTION HISTORY */
+
+function renderTransactions() {
   const rows = document.getElementById("transactionRows");
   const transactions = readJSON("earngig_wallet_transactions",[]);
+
   rows.innerHTML = "";
 
-  if(!Array.isArray(transactions) || !transactions.length){
+  if(!Array.isArray(transactions) || !transactions.length) {
     rows.innerHTML =
       '<tr><td colspan="4" class="empty">No transactions yet. Your activity will appear here.</td></tr>';
     return;
@@ -746,55 +1542,100 @@ function renderTransactions(){
 
   transactions.slice(-20).reverse().forEach(item=>{
     const row = document.createElement("tr");
-    [item.description || "Wallet activity",item.date || "—",
-      item.amount || "—",item.status || "Pending"].forEach(value=>{
+
+    [
+      item.description || "Wallet activity",
+      item.date || "—",
+      item.amount || "—",
+      item.status || "Pending"
+    ].forEach(value=>{
       const cell = document.createElement("td");
       cell.textContent = value;
       row.appendChild(cell);
     });
+
     rows.appendChild(row);
   });
 }
 
-/* WITHDRAWAL FORM */
-document.getElementById("amount").addEventListener("input",updateWithdrawalPreview);
+/* WITHDRAWAL SUBMISSION */
+
+document.getElementById("amount").addEventListener(
+  "input",
+  updateWithdrawalPreview
+);
+
+document.getElementById("accountNumber").addEventListener(
+  "input",
+  event=>{
+    event.target.value = event.target.value.replace(/\D/g,"").slice(0,10);
+  }
+);
 
 document.getElementById("withdrawForm").addEventListener("submit",event=>{
   event.preventDefault();
 
-  const amount = Number(document.getElementById("amount").value);
+  const amount = Number(
+    document.getElementById("amount").value
+  );
+
   const bank = bankInput.value;
-  const accountName = document.getElementById("accountName").value.trim();
-  const accountNumber = document.getElementById("accountNumber").value.trim();
+
+  const accountName =
+    document.getElementById("accountName").value.trim();
+
+  const accountNumber =
+    document.getElementById("accountNumber").value.trim();
+
   const message = document.getElementById("formMessage");
 
   message.className = "form-message show error";
 
-  if(!isFriday()){
-    message.textContent = "Withdrawal requests can only be submitted on Fridays, Nigerian time.";
+  /* Only the 28th of each month */
+
+  if(!isWithdrawalDay()) {
+    message.textContent =
+      "Withdrawal requests are only accepted on the 28th of each month, Nigerian time.";
     return;
   }
-  if(!Number.isFinite(amount) || amount < MINIMUM_WITHDRAWAL){
-    message.textContent = "The minimum withdrawal amount is ₦100.";
+
+  if(!Number.isFinite(amount) || amount < MINIMUM_WITHDRAWAL) {
+    message.textContent =
+      "The minimum withdrawal amount is ₦100.";
     return;
   }
 
   walletData = getWalletData();
-  const coinsNeeded = Math.ceil(amount * COINS_PER_NAIRA);
 
-  if(coinsNeeded > walletData.eligibleCoins){
-    message.textContent = "Your eligible coin balance is not enough for this withdrawal.";
+  const coinsNeeded =
+    Math.ceil(amount * COINS_PER_NAIRA);
+
+  if(coinsNeeded > walletData.eligibleCoins) {
+    message.textContent =
+      "Your eligible coin balance is not enough for this withdrawal.";
     return;
   }
-  if(!bank || !accountName || !/^\d{10}$/.test(accountNumber)){
-    message.textContent = "Please select your bank and enter your account name and correct 10-digit account number.";
+
+  if(!bank || !accountName || !/^\d{10}$/.test(accountNumber)) {
+    message.textContent =
+      "Please select your bank and enter your account name and correct 10-digit account number.";
     return;
   }
 
-  const fee = Number((amount * WITHDRAWAL_FEE_RATE).toFixed(2));
-  const netAmount = Number((amount-fee).toFixed(2));
+  const fee = Number(
+    (amount * WITHDRAWAL_FEE_RATE).toFixed(2)
+  );
+
+  const netAmount = Number(
+    (amount-fee).toFixed(2)
+  );
+
   const nigeriaDate = getNigeriaDate();
-  const dateString = nigeriaDate.day + "/" + nigeriaDate.month + "/" + nigeriaDate.year;
+
+  const dateString =
+    nigeriaDate.day + "/" +
+    nigeriaDate.month + "/" +
+    nigeriaDate.year;
 
   const request = {
     id:"EGW-" + Date.now(),
@@ -813,10 +1654,13 @@ document.getElementById("withdrawForm").addEventListener("submit",event=>{
 
   const withdrawals = readJSON(WITHDRAWALS_KEY,[]);
   const list = Array.isArray(withdrawals) ? withdrawals : [];
+
   list.push(request);
+
   saveJSON(WITHDRAWALS_KEY,list);
 
   message.className = "form-message show info";
+
   message.textContent =
     "Your withdrawal request has been saved as a frontend demonstration only. " +
     "Requested: " + formatNaira(amount) +
@@ -825,6 +1669,7 @@ document.getElementById("withdrawForm").addEventListener("submit",event=>{
     ". No coins have been deducted and no bank transfer has been made.";
 
   document.getElementById("withdrawForm").reset();
+
   bankInput.value = "";
   bankSelected.textContent = "Search and select your bank";
   bankSelected.classList.add("placeholder");
@@ -833,26 +1678,43 @@ document.getElementById("withdrawForm").addEventListener("submit",event=>{
   renderWithdrawalHistory();
 });
 
-/* REFRESH SHARED DEMO BALANCE IF ANOTHER TAB CHANGES IT */
+/* REFRESH WHEN OTHER TABS CHANGE DATA */
+
 window.addEventListener("storage",event=>{
-  if(event.key===WALLET_KEY){
+  if(event.key === WALLET_KEY) {
     updateWalletDisplay();
   }
-  if(event.key==="earngig_referrals"){
+
+  if(event.key === "earngig_referrals") {
     updateReferralWallet();
   }
-  if(event.key===WITHDRAWALS_KEY){
+
+  if(event.key === WITHDRAWALS_KEY) {
     renderWithdrawalHistory();
+  }
+
+  if(event.key === "earngig_wallet_transactions") {
+    renderTransactions();
   }
 });
 
 /* INITIALISE */
+
 renderBanks();
 updateWalletDisplay();
 updateReferralWallet();
 updateWindowStatus();
 renderWithdrawalHistory();
 renderTransactions();
+
+/* Recheck date when the page becomes active */
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden) {
+    updateWindowStatus();
+    updateWalletDisplay();
+  }
+});
 </script>
+
 </body>
 </html>
