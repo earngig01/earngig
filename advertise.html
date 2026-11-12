@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
 
+<!-- Flutterwave payment popup -->
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
@@ -337,7 +338,7 @@ footer{
       </div>
       <div class="field">
         <label for="billMedia">Upload Billboard Media</label>
-        <input id="billMedia" name="media" type="file" accept="image/*,video/*">
+        <input id="billMedia" name="media" type="file" accept="image/*,video/*" required>
       </div>
 
       <button class="primary" id="billSubmit" type="submit" disabled>
@@ -360,25 +361,17 @@ footer{
 </footer>
 
 <script>
-/*
-  FLUTTERWAVE TEST MODE PUBLIC KEY
-*/
+/* FLUTTERWAVE TEST PUBLIC KEY */
 const FLUTTERWAVE_PUBLIC_KEY =
   "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
 /*
-  BACKEND URL
-
-  Put your deployed backend URL here.
-  Example:
-  const API_BASE = "https://your-backend.example.com";
-
-  The secret key must NEVER be put in this HTML file.
+  Set this to your backend URL when deployed.
+  Do not put your Flutterwave secret key here.
 */
 const API_BASE = "";
 
 const BILLBOARD_SLOT_PRICE = 100000;
-
 const TIME_PACKAGES = [
   {days:1,price:10000},
   {days:3,price:25000},
@@ -427,148 +420,25 @@ async function request(path,options={}) {
   } catch {}
 
   if (!response.ok) {
-    throw new Error(
-      data.message || "Unable to complete your request."
-    );
+    throw new Error(data.message || "Unable to complete this request.");
   }
 
   return data;
 }
 
 /*
-  OPEN FLUTTERWAVE POPUP
+  PREPARE PAYMENT ORDER
 
-  The backend prepares the pending order and supplies
-  the unique reference and amount. Flutterwave opens
-  immediately after that preparation.
-*/
-function openFlutterwave(order,statusId) {
-
-  if (typeof FlutterwaveCheckout !== "function") {
-    throw new Error(
-      "Flutterwave could not load. Check your internet connection and refresh."
-    );
-  }
-
-  if (!order.txRef || !order.orderId || !order.amount ||
-      !order.customerEmail) {
-    throw new Error(
-      "The payment server returned incomplete payment details."
-    );
-  }
-
-  FlutterwaveCheckout({
-    public_key: FLUTTERWAVE_PUBLIC_KEY,
-
-    tx_ref: order.txRef,
-
-    amount: Number(order.amount),
-
-    currency: order.currency || "NGN",
-
-    payment_options: "card,banktransfer,ussd",
-
-    customer: {
-      email: order.customerEmail,
-      phone_number: order.customerPhone || "",
-      name: order.customerName || "EarnGig Advertiser"
-    },
-
-    customizations: {
-      title: "EarnGig Advertising",
-      description: "Payment for EarnGig advertising",
-      logo: ""
-    },
-
-    callback: async function(payment) {
-
-      showStatus(
-        statusId,
-        "Payment received. Verifying your transaction...",
-        "info"
-      );
-
-      try {
-
-        const result = await request(
-          "/api/advertising/payment/verify",
-          {
-            method:"POST",
-            headers: {
-              "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-              orderId: order.orderId,
-              txRef: order.txRef,
-              transactionId: payment.transaction_id
-            })
-          }
-        );
-
-        if (
-          result.status === "successful" &&
-          result.submissionStatus === "confirmed"
-        ) {
-
-          showStatus(
-            statusId,
-            "Payment successful! Your advertising submission is confirmed.",
-            "success"
-          );
-
-          if (statusId === "billStatus") {
-            selectedSlots.clear();
-            updateBillboardTotal();
-            loadBillboardAvailability();
-          }
-
-        } else {
-
-          showStatus(
-            statusId,
-            "Payment is not yet verified. Your advertising submission is not confirmed yet.",
-            "info"
-          );
-
-        }
-
-      } catch (error) {
-
-        showStatus(
-          statusId,
-          "We could not verify the payment yet. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
-          "error"
-        );
-
-      }
-    },
-
-    onclose: function() {
-      /*
-        Closing the payment window does not confirm an advert.
-        The backend must expire and release unpaid billboard holds.
-      */
-    }
-  });
-}
-
-/*
-  PREPARE CHECKOUT
-
-  Required backend endpoint:
   POST /api/advertising/checkout
 
-  Accepts multipart/form-data.
+  The backend must:
+  - Validate advertiser details and media.
+  - Calculate the amount itself.
+  - Create a pending order and unique txRef.
+  - Temporarily lock selected billboard slots.
+  - Return orderId, txRef, amount, currency and customer details.
 
-  For time advertising:
-  type, durationDays, businessName, email, phone,
-  title, description, link, media.
-
-  For billboard advertising:
-  type, campaignWeek, slots, businessName, email,
-  phone, title, description, link, media.
-
-  Expected response:
+  Example response:
   {
     "orderId":"order123",
     "txRef":"unique_reference",
@@ -578,13 +448,8 @@ function openFlutterwave(order,statusId) {
     "customerEmail":"customer@example.com",
     "customerPhone":"08000000000"
   }
-
-  The backend must calculate the amount and create a
-  pending order. For billboard bookings, it must lock
-  all selected slots atomically before returning.
 */
 async function prepareCheckout(form,type,extra={}) {
-
   const data = new FormData(form);
 
   data.set("type",type);
@@ -604,7 +469,110 @@ async function prepareCheckout(form,type,extra={}) {
   });
 }
 
-/* TAB SWITCHING */
+/*
+  OPEN FLUTTERWAVE INLINE POPUP
+*/
+function openFlutterwave(order,statusId) {
+
+  if (typeof FlutterwaveCheckout !== "function") {
+    throw new Error(
+      "Flutterwave could not load. Refresh the page and try again."
+    );
+  }
+
+  if (
+    !order.orderId ||
+    !order.txRef ||
+    !order.amount ||
+    !order.customerEmail
+  ) {
+    throw new Error("The payment server returned incomplete information.");
+  }
+
+  FlutterwaveCheckout({
+    public_key:FLUTTERWAVE_PUBLIC_KEY,
+    tx_ref:order.txRef,
+    amount:Number(order.amount),
+    currency:order.currency || "NGN",
+    payment_options:"card,banktransfer,ussd",
+
+    customer:{
+      email:order.customerEmail,
+      phone_number:order.customerPhone || "",
+      name:order.customerName || "EarnGig Advertiser"
+    },
+
+    customizations:{
+      title:"EarnGig Advertising",
+      description:"Payment for EarnGig advertising",
+      logo:""
+    },
+
+    callback:async function(payment) {
+
+      showStatus(
+        statusId,
+        "Payment received. Verifying your transaction...",
+        "info"
+      );
+
+      try {
+        const result = await request(
+          "/api/advertising/payment/verify",
+          {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              orderId:order.orderId,
+              txRef:order.txRef,
+              transactionId:payment.transaction_id
+            })
+          }
+        );
+
+        if (
+          result.status === "successful" &&
+          result.submissionStatus === "confirmed"
+        ) {
+          showStatus(
+            statusId,
+            "Payment successful! Your advertising submission is confirmed.",
+            "success"
+          );
+
+          if (statusId === "billStatus") {
+            selectedSlots.clear();
+            updateBillboardTotal();
+            loadBillboardAvailability();
+          }
+
+        } else {
+          showStatus(
+            statusId,
+            "Your payment is not yet verified. Your submission is not confirmed yet.",
+            "info"
+          );
+        }
+
+      } catch (error) {
+        showStatus(
+          statusId,
+          "Payment verification is pending. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
+          "error"
+        );
+      }
+    },
+
+    onclose:function() {
+      /*
+        Closing the popup is not a successful submission.
+        Backend expires unpaid billboard holds automatically.
+      */
+    }
+  });
+}
+
+/* SWITCH ADVERTISING TYPE */
 
 $("timeTab").addEventListener("click",() => {
   $("timeTab").classList.add("active");
@@ -621,14 +589,14 @@ $("billboardTab").addEventListener("click",() => {
   loadBillboardAvailability();
 });
 
-/* PACKAGE SELECTION */
+/* TIME PACKAGE SELECTION */
 
 document.querySelectorAll(".package").forEach(button => {
   button.addEventListener("click",() => {
 
-    document.querySelectorAll(".package").forEach(item => {
-      item.classList.remove("selected");
-    });
+    document.querySelectorAll(".package").forEach(p =>
+      p.classList.remove("selected")
+    );
 
     button.classList.add("selected");
 
@@ -645,62 +613,44 @@ document.querySelectorAll(".package").forEach(button => {
 /* TIME-BASED ADVERT PAYMENT */
 
 $("timeForm").addEventListener("submit",async event => {
-
   event.preventDefault();
   clearStatus("timeStatus");
 
   const button = $("timeSubmit");
-
-  button.disabled = true;
-  button.textContent = "Preparing payment...";
+  setBusy(button,true,"Preparing payment...");
 
   try {
-
     const order = await prepareCheckout(
       event.target,
       "time_based",
-      {
-        durationDays:selectedPackage.days
-      }
+      {durationDays:selectedPackage.days}
     );
 
     if (Number(order.amount) !== selectedPackage.price) {
-      throw new Error("The server payment amount does not match your selected package.");
+      throw new Error("The server amount does not match the selected package.");
     }
 
-    /*
-      Flutterwave popup opens here.
-      No redirect to another checkout page.
-    */
     openFlutterwave(order,"timeStatus");
 
   } catch (error) {
-
     showStatus("timeStatus",error.message,"error");
-
   } finally {
-
-    button.disabled = false;
-    button.textContent = "Continue to Payment →";
-
+    setBusy(button,false,"Pay & Submit →");
   }
 });
 
-/* BILLBOARD CAMPAIGN WEEKS */
+/* CAMPAIGN WEEK SELECTION */
 
 function dateString(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth()+1).padStart(2,"0");
   const d = String(date.getDate()).padStart(2,"0");
-
   return `${y}-${m}-${d}`;
 }
 
 function mondayOf(date) {
   const result = new Date(date);
-
   result.setHours(0,0,0,0);
-
   const day = result.getDay();
 
   result.setDate(
@@ -711,43 +661,34 @@ function mondayOf(date) {
 }
 
 function populateWeeks() {
-
   const select = $("campaignWeek");
   const today = new Date();
-  const monday = mondayOf(today);
+  const thisMonday = mondayOf(today);
 
   select.innerHTML = "";
 
   for (let i=0;i<12;i++) {
+    const monday = new Date(thisMonday);
+    monday.setDate(monday.getDate()+i*7);
 
-    const week = new Date(monday);
+    const bookingOpens = new Date(monday);
+    bookingOpens.setDate(bookingOpens.getDate()-2);
 
-    week.setDate(week.getDate()+i*7);
-
-    const opening = new Date(week);
-
-    opening.setDate(opening.getDate()-2);
-
-    if (today < opening) continue;
+    if (today < bookingOpens) continue;
 
     const option = document.createElement("option");
-
-    option.value = dateString(week);
-    option.textContent = dateString(week) + " campaign week";
-
+    option.value = dateString(monday);
+    option.textContent = dateString(monday)+" campaign week";
     select.appendChild(option);
   }
 
   if (!select.options.length) {
-
-    const next = new Date(monday);
+    const next = new Date(thisMonday);
     next.setDate(next.getDate()+7);
 
     const option = document.createElement("option");
-
     option.value = dateString(next);
-    option.textContent = dateString(next) + " campaign week";
-
+    option.textContent = dateString(next)+" campaign week";
     select.appendChild(option);
   }
 }
@@ -759,30 +700,24 @@ $("campaignWeek").addEventListener(
   loadBillboardAvailability
 );
 
-/* BILLBOARD SLOTS */
+/* BILLBOARD SLOT DISPLAY */
 
 function renderSlots(slots) {
-
   const grid = $("slotGrid");
-
   grid.innerHTML = "";
 
   selectedSlots.clear();
-
   currentSlots = slots || [];
 
   for (let number=1;number<=10;number++) {
-
     const info = currentSlots.find(
       item => Number(item.slot) === number
     );
 
     const state = info?.status || "unavailable";
-
     const available = state === "available";
 
     const button = document.createElement("button");
-
     button.type = "button";
     button.className = "slot";
 
@@ -795,82 +730,64 @@ function renderSlots(slots) {
     strong.textContent = String(number);
 
     const small = document.createElement("small");
-
-    small.textContent = available
-      ? "Available"
-      : state === "held"
-        ? "Temporarily held"
-        : state === "booked"
-          ? "Booked"
-          : "Unavailable";
+    small.textContent = available ? "Available" :
+      state === "held" ? "Temporarily held" :
+      state === "booked" ? "Booked" : "Unavailable";
 
     button.append(strong,small);
-
     button.disabled = !available;
 
     button.addEventListener("click",() => {
-
       if (!available) return;
 
       if (selectedSlots.has(number)) {
-
         selectedSlots.delete(number);
         button.classList.remove("selected");
         small.textContent = "Available";
-
       } else {
-
         selectedSlots.add(number);
         button.classList.add("selected");
         small.textContent = "Selected";
-
       }
 
       updateBillboardTotal();
-
     });
 
     grid.appendChild(button);
   }
 
   const availableCount = currentSlots.filter(
-    slot => slot.status === "available"
+    s => s.status === "available"
   ).length;
 
   if (availableCount === 0) {
-
     showStatus(
       "billStatus",
       "All slots for this week have been booked. Please check the next available week.",
       "info"
     );
-
   } else {
-
     clearStatus("billStatus");
-
   }
 
   updateBillboardTotal();
 }
 
 async function loadBillboardAvailability() {
-
   clearStatus("billStatus");
   $("slotGrid").innerHTML = "";
 
   showStatus(
     "billStatus",
-    "Loading billboard availability...",
+    "Loading live billboard availability...",
     "info"
   );
 
   try {
-
     const week = $("campaignWeek").value;
 
     const result = await request(
-      "/api/advertising/billboard/availability?week=" +
+      "/api/advertising/billboard/availability?week="+
       encodeURIComponent(week)
     );
 
@@ -881,62 +798,51 @@ async function loadBillboardAvailability() {
     renderSlots(result.slots);
 
   } catch (error) {
-
     showStatus("billStatus",error.message,"error");
-
     $("slotGrid").innerHTML = "";
     selectedSlots.clear();
-
     updateBillboardTotal();
-
   }
 }
 
 function updateBillboardTotal() {
-
   const count = selectedSlots.size;
 
   $("slotCount").textContent =
-    `${count} slot${count === 1 ? "" : "s"} selected`;
+    `${count} slot${count===1?"":"s"} selected`;
 
   $("billboardTotal").textContent =
-    naira(count * BILLBOARD_SLOT_PRICE);
+    naira(count*BILLBOARD_SLOT_PRICE);
 
   const button = $("billSubmit");
 
-  button.disabled = count === 0;
+  button.disabled = count===0;
 
-  button.textContent = count === 0
+  button.textContent = count===0
     ? "Select a slot to continue"
-    : `Pay ${naira(count * BILLBOARD_SLOT_PRICE)} and Submit`;
+    : `Pay ${naira(count*BILLBOARD_SLOT_PRICE)} and Submit`;
 }
 
 /* BILLBOARD PAYMENT */
 
 $("billboardForm").addEventListener("submit",async event => {
-
   event.preventDefault();
   clearStatus("billStatus");
 
-  if (selectedSlots.size === 0) {
-
+  if (selectedSlots.size===0) {
     showStatus(
       "billStatus",
       "Please select at least one available slot.",
       "error"
     );
-
     return;
   }
 
   const button = $("billSubmit");
-
-  button.disabled = true;
-  button.textContent = "Securing selected slots...";
+  setBusy(button,true,"Securing selected slots...");
 
   try {
-
-    const slots = [...selectedSlots].sort((a,b) => a-b);
+    const slots = [...selectedSlots].sort((a,b)=>a-b);
 
     const order = await prepareCheckout(
       event.target,
@@ -948,54 +854,34 @@ $("billboardForm").addEventListener("submit",async event => {
     );
 
     const expectedAmount =
-      slots.length * BILLBOARD_SLOT_PRICE;
+      slots.length*BILLBOARD_SLOT_PRICE;
 
-    if (Number(order.amount) !== expectedAmount) {
-      throw new Error("The server billboard price does not match your selected slots.");
+    if (Number(order.amount)!==expectedAmount) {
+      throw new Error("The server amount does not match the selected slots.");
     }
 
-    /*
-      Flutterwave popup opens here.
-      Backend must already have temporarily held
-      the requested slots atomically.
-    */
     openFlutterwave(order,"billStatus");
 
     showStatus(
       "billStatus",
-      "Your selected slots are temporarily held. Complete your payment in the Flutterwave popup.",
+      "Your selected slots are temporarily held. Complete payment in the Flutterwave popup.",
       "info"
     );
 
   } catch (error) {
-
     showStatus("billStatus",error.message,"error");
-
     loadBillboardAvailability();
-
   } finally {
-
     updateBillboardTotal();
-
   }
 });
 
-/*
-  PAYMENT VERIFICATION ENDPOINT
+/* INITIALIZE */
 
-  POST /api/advertising/payment/verify
-
-  Backend must verify the transaction directly with
-  Flutterwave using the SECRET KEY, confirm the amount,
-  currency, reference and successful payment status.
-
-  It must then confirm the advert submission and
-  permanently book billboard slots when applicable.
-
-  A Flutterwave browser callback by itself is NOT proof
-  of payment. A webhook should also process successful
-  transactions in case the advertiser closes the page.
-*/
+function setBusy(button,busy,label) {
+  button.disabled = busy;
+  button.textContent = label;
+}
 
 updateBillboardTotal();
 </script>
