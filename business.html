@@ -7,6 +7,9 @@
 <meta name="theme-color" content="#F3F8FD">
 <title>EarnGig Business</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode" defer></script>
 
@@ -23,7 +26,6 @@
   --muted:#8493A3;
   --border:#DFEAF4;
   --gold:#C49A45;
-  --lime:#caff19;
   --green:#23865A;
   --green-bg:#EAF8F0;
   --orange:#B77922;
@@ -33,54 +35,33 @@
   --shadow:0 7px 25px rgba(50,91,130,.065);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
 
 .topbar{
-  min-height:70px;padding:10px 5%;
-  background:white;border-bottom:1px solid var(--border);
+  min-height:68px;padding:10px 5%;background:#fff;
+  border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
-  gap:15px;position:sticky;top:0;z-index:30;
+  gap:15px;position:sticky;top:0;z-index:30
 }
-.brand{
-  display:flex;align-items:center;gap:5px;
-  font-family:Arial,sans-serif;font-size:27px;
-  font-weight:900;letter-spacing:-1.5px;
-  color:#30465D;white-space:nowrap;
-}
-.brand .gig{color:var(--lime)}
-.crown{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:25px;height:21px;margin-right:3px;flex-shrink:0;
-}
-.crown svg{width:100%;height:100%;display:block}
+.brand{display:flex;align-items:center;gap:9px;font-size:24px;font-weight:800;letter-spacing:-1.2px;color:var(--heading);white-space:nowrap}
+.brand .gig{color:var(--blue-dark)}
+.brand-mark{width:36px;height:34px;object-fit:contain;display:block}
 .top-nav{display:flex;gap:23px;align-items:center}
 .top-nav a{font-size:12px;font-weight:700;color:#74869A}
 .top-nav a:hover,.top-nav a.active{color:var(--blue-dark)}
-.header-profile{
-  width:36px;height:36px;display:grid;place-items:center;
-  background:var(--blue-light);border:1px solid #D1E5F6;
-  border-radius:50%;color:var(--blue-dark);
-}
+.header-profile{width:36px;height:36px;display:grid;place-items:center;background:var(--blue-light);border:1px solid #D1E5F6;border-radius:50%;color:var(--blue-dark)}
+
 .page{max-width:1050px;width:92%;margin:30px auto 60px}
-.page-heading{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:15px;margin-bottom:23px;
-}
+.page-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:23px}
 .page-heading h1{color:var(--heading);font-size:27px;letter-spacing:-.7px}
 .page-heading p{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.6}
-.card{
-  background:white;border:1px solid var(--border);
-  border-radius:16px;padding:22px;box-shadow:var(--shadow);
-  margin-bottom:17px;
-}
+.business-mark{width:55px;height:55px;display:grid;place-items:center;border-radius:15px;background:#fff;border:1px solid var(--border);color:var(--gold);font-size:31px;flex-shrink:0}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:17px}
 .card-title{font-size:16px;color:var(--heading);font-weight:800;margin-bottom:7px}
 .card-description{font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:17px}
 .badge{display:inline-flex;padding:6px 10px;border-radius:30px;font-size:10px;font-weight:800}
@@ -88,43 +69,52 @@ a{text-decoration:none;color:inherit}
 .badge.approved{background:var(--green-bg);color:var(--green)}
 .badge.active{background:var(--blue-light);color:var(--blue-dark)}
 .badge.rejected{background:var(--red-bg);color:var(--red)}
-.btn{
-  border:0;border-radius:10px;padding:12px 17px;font-size:12px;
-  font-weight:800;display:inline-flex;align-items:center;
-  justify-content:center;gap:7px;transition:.2s;
-}
-.btn-primary{color:white;background:var(--blue-button);box-shadow:0 4px 11px #4b84bb26}
+
+.btn{border:0;border-radius:10px;padding:12px 17px;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.btn-primary{color:white;background:var(--blue-button);box-shadow:0 4px 11px rgba(75,132,187,.15)}
 .btn-primary:hover{background:#4E88BE}
 .btn-gold{background:linear-gradient(135deg,#CBA85E,#A78034);color:white}
 .btn-secondary{background:var(--blue-light);color:var(--blue-dark);border:1px solid #D5E7F6}
 .btn-outline{background:white;color:var(--blue-dark);border:1px solid #C9DDEC}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .full-width{width:100%}
+
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .form-group{margin-bottom:14px;min-width:0}
 .form-group.full{grid-column:1/-1}
 .form-group label{display:block;color:var(--heading);font-size:11px;font-weight:750;margin-bottom:7px}
 .form-group input,.form-group select,.form-group textarea{
   width:100%;padding:12px 13px;border:1px solid #DCE6EF;
-  background:#FCFDFF;border-radius:9px;outline:none;
-  font-size:12px;color:var(--text);
+  background:#FCFDFF;border-radius:9px;outline:none;font-size:12px;color:var(--text)
 }
 .form-group textarea{min-height:90px;resize:vertical}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{
-  border-color:var(--blue);box-shadow:0 0 0 3px #78aee01f;
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(120,174,224,.12)
 }
-.form-hint{display:block;color:var(--muted);font-size:10px;margin-top:6px;line-height:1.5}
+.form-hint{display:block;color:var(--muted);font-size:10px;margin-top:6px;line-height:1.6}
 .username-input{position:relative}
 .username-input input{padding-left:29px}
 .username-prefix{position:absolute;left:12px;top:12px;color:var(--blue-dark);font-size:12px;font-weight:800}
 .field-message{display:block;font-size:10px;margin-top:6px;min-height:13px}
 .field-message.good{color:var(--green)}
 .field-message.bad{color:var(--red)}
+
+.photo-upload{
+  border:1.5px dashed #AFCBE3;background:#F7FBFF;
+  border-radius:12px;padding:17px
+}
+.photo-upload input{background:white}
+.photo-preview{display:none;margin-top:12px}
+.photo-preview img{display:block;max-width:100%;max-height:230px;object-fit:contain;border-radius:10px;border:1px solid var(--border)}
+.photo-preview.show{display:block}
+.photo-preview small{display:block;color:var(--green);font-size:10px;margin-top:7px}
+
 .notice{padding:13px 15px;border-radius:10px;margin-bottom:15px;font-size:11px;line-height:1.7}
 .notice.info{background:var(--blue-light);color:#426E96;border:1px solid #D6E7F5}
 .notice.success{background:var(--green-bg);color:var(--green);border:1px solid #D3ECDD}
 .notice.warning{background:var(--orange-bg);color:#95631E;border:1px solid #F0E0C2}
 .notice.error{background:var(--red-bg);color:var(--red);border:1px solid #F2D9DB}
+
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
 .step{background:#F5F8FC;border:1px solid var(--border);border-radius:10px;padding:11px 8px;text-align:center;color:#8493A3}
 .step-number{width:24px;height:24px;display:grid;place-items:center;margin:0 auto 6px;background:#E5EDF5;color:#71849A;border-radius:50%;font-size:10px;font-weight:800}
@@ -133,11 +123,11 @@ a{text-decoration:none;color:inherit}
 .step.active .step-number{background:var(--blue);color:white}
 .step.done{background:var(--green-bg);border-color:#D4ECDD;color:var(--green)}
 .step.done .step-number{background:var(--green);color:white}
-.wallet-hero{
-  background:linear-gradient(120deg,#DDEEFF,#F1F7FD 75%,#FAF6EA);
-  border:1px solid #D4E5F3;border-radius:18px;
-  padding:24px;margin-bottom:17px;
-}
+
+.wallet-hero{background:linear-gradient(120deg,#DDEEFF,#F1F7FD 75%,#FAF6EA);border:1px solid #D4E5F3;border-radius:18px;padding:24px;margin-bottom:17px;position:relative;overflow:hidden}
+.wallet-hero:after{content:"";position:absolute;right:-55px;top:-95px;width:230px;height:230px;background:rgba(255,255,255,.35);border-radius:50%}
+.wallet-content{position:relative;z-index:1}
+.wallet-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:23px}
 .wallet-label{color:#66809A;font-size:11px;font-weight:700;margin-bottom:8px}
 .wallet-balance{color:#274C70;font-size:clamp(27px,5vw,39px);font-weight:900;letter-spacing:-1px;overflow-wrap:anywhere}
 .wallet-naira{font-size:12px;color:#69829A;margin-top:7px}
@@ -147,14 +137,12 @@ a{text-decoration:none;color:inherit}
 .identity-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
 .identity-item strong{display:block;color:var(--heading);font-size:13px;overflow-wrap:anywhere}
 .action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.action-card{
-  border:1px solid var(--border);background:white;border-radius:13px;
-  padding:17px;display:flex;gap:12px;align-items:center;text-align:left;transition:.2s;
-}
+.action-card{border:1px solid var(--border);background:white;border-radius:13px;padding:17px;display:flex;gap:12px;align-items:center;text-align:left;transition:.2s}
 .action-card:hover{border-color:#B9D6ED;background:#F9FCFF;transform:translateY(-2px)}
 .action-icon{width:42px;height:42px;flex-shrink:0;border-radius:12px;background:var(--blue-light);color:var(--blue-dark);display:grid;place-items:center;font-size:21px}
 .action-card strong{display:block;color:var(--heading);font-size:12px;margin-bottom:4px}
 .action-card small{color:var(--muted);font-size:10px;line-height:1.5}
+
 .qr-panel{text-align:center}
 .qr-business{color:var(--heading);font-weight:800;font-size:17px;margin:8px 0 5px}
 .qr-username{color:var(--blue-dark);font-size:12px;font-weight:750}
@@ -170,7 +158,8 @@ td strong{color:var(--heading)}
 .amount-in{color:var(--green);font-weight:800}
 .amount-out{color:var(--red);font-weight:800}
 .empty-history{text-align:center;color:var(--muted);padding:30px 10px;font-size:12px}
-.modal{position:fixed;inset:0;z-index:100;background:#182b3e7a;display:none;align-items:center;justify-content:center;padding:15px;overflow-y:auto}
+
+.modal{position:fixed;inset:0;z-index:100;background:rgba(24,43,62,.48);display:none;align-items:center;justify-content:center;padding:15px;overflow-y:auto}
 .modal.show{display:flex}
 .modal-box{background:white;width:min(470px,100%);border-radius:17px;padding:22px;box-shadow:0 20px 70px #142c4430;max-height:90vh;overflow-y:auto}
 .modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
@@ -184,12 +173,12 @@ td strong{color:var(--heading)}
 #qrReader video{border-radius:12px}
 .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#30465D;color:white;padding:12px 18px;border-radius:10px;font-size:11px;z-index:200;max-width:90%;text-align:center;transition:.2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.hidden{display:none!important}
 footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-top:1px solid var(--border)}
+
 @media(max-width:700px){
   .topbar{padding:10px 4%;min-height:62px}
-  .brand{font-size:24px}
-  .crown{width:25px;height:21px}
+  .brand{font-size:21px}
+  .brand-mark{width:32px;height:30px}
   .top-nav{display:none}
   .page{margin-top:23px}
   .page-heading h1{font-size:23px}
@@ -216,17 +205,10 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
 </head>
 
 <body>
+
 <header class="topbar">
   <a href="dashboard.html" class="brand">
-    <span class="crown" aria-label="EarnGig crown">
-      <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="#C49A45" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M6 23H26" stroke="#C49A45" stroke-width="1.35" stroke-linecap="round"/>
-        <circle cx="3" cy="6" r="1.5" fill="#C49A45"/>
-        <circle cx="15.8" cy="2.5" r="1.5" fill="#C49A45"/>
-        <circle cx="29" cy="6" r="1.5" fill="#C49A45"/>
-      </svg>
-    </span>
+    <span class="brand-mark" aria-hidden="true">♛</span>
     Earn<span class="gig">Gig</span>
   </a>
   <nav class="top-nav">
@@ -243,6 +225,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
       <h1 id="pageTitle">EarnGig Business</h1>
       <p id="pageSubtitle">Register your business and receive G-Coin payments.</p>
     </div>
+    <div class="business-mark" aria-hidden="true">♛</div>
   </div>
 
   <div id="globalMessage"></div>
@@ -257,12 +240,14 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
     </div>
   </section>
 
-  <section id="registrationView" class="card">
+  <!-- BUSINESS REGISTRATION -->
+  <section id="registrationView" class="card hidden">
     <div class="card-title">Register your business</div>
     <p class="card-description">You can register a business even if you do not want a Vendor Haul storefront.</p>
 
-    <div class="notice info">Business registration costs ₦10,000. Submit your application first. Payment is requested only after Admin approval.</div>
-    <div id="backendNotice" class="notice warning hidden">The registration form is available, but online submission is temporarily unavailable because the EarnGig backend has not yet been connected. You can complete the form and return when the service is ready.</div>
+    <div class="notice info">
+      Business registration costs ₦10,000. Submit your application first. Payment is requested only after Admin approval.
+    </div>
 
     <form id="registrationForm">
       <div class="form-grid">
@@ -270,6 +255,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
           <label for="businessName">Business name *</label>
           <input id="businessName" required maxlength="100" placeholder="Enter your business name">
         </div>
+
         <div class="form-group">
           <label for="businessUsername">Preferred business username *</label>
           <div class="username-input">
@@ -279,60 +265,92 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
           <span class="form-hint">Letters, numbers and underscores only.</span>
           <span id="usernameMessage" class="field-message"></span>
         </div>
+
         <div class="form-group">
           <label for="businessCategory">Business category *</label>
           <select id="businessCategory" required>
             <option value="">Choose a category</option>
-            <option>Retail and Shopping</option><option>Food and Catering</option>
-            <option>Fashion and Beauty</option><option>Technology and Gadgets</option>
-            <option>Education and Training</option><option>Professional Services</option>
-            <option>Health and Wellness</option><option>Transport and Logistics</option>
-            <option>Entertainment and Media</option><option>Manufacturing</option>
-            <option>Agriculture</option><option>Other</option>
+            <option>Retail and Shopping</option>
+            <option>Food and Catering</option>
+            <option>Fashion and Beauty</option>
+            <option>Technology and Gadgets</option>
+            <option>Education and Training</option>
+            <option>Professional Services</option>
+            <option>Health and Wellness</option>
+            <option>Transport and Logistics</option>
+            <option>Entertainment and Media</option>
+            <option>Manufacturing</option>
+            <option>Agriculture</option>
+            <option>Other</option>
           </select>
         </div>
+
         <div class="form-group">
           <label for="businessPhone">Business phone number *</label>
           <input id="businessPhone" type="tel" required placeholder="08012345678">
         </div>
+
         <div class="form-group">
           <label for="businessEmail">Business email *</label>
           <input id="businessEmail" type="email" required placeholder="business@example.com">
         </div>
+
         <div class="form-group">
           <label for="businessLocation">Business location *</label>
           <input id="businessLocation" required placeholder="City and state">
         </div>
+
         <div class="form-group full">
           <label for="businessDescription">Tell us about your business *</label>
           <textarea id="businessDescription" maxlength="1000" required placeholder="Briefly describe what your business does."></textarea>
         </div>
+
         <div class="form-group full">
           <label for="businessWebsite">Website or social media link (optional)</label>
           <input id="businessWebsite" type="url" placeholder="https://...">
         </div>
+
+        <!-- REQUIRED BUSINESS PHOTO -->
         <div class="form-group full">
-          <label for="businessDocument">Supporting document (optional)</label>
-          <input id="businessDocument" type="file" accept=".pdf,.jpg,.jpeg,.png">
-          <span class="form-hint">PDF, JPG or PNG.</span>
+          <label for="businessPhoto">Business Photo *</label>
+          <div class="photo-upload">
+            <input
+              id="businessPhoto"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              required
+            >
+            <span class="form-hint">
+              This upload is compulsory. Upload either a clear picture of a product you sell or a picture of your physical shop/store. Accepted formats: JPG, JPEG, PNG and WEBP.
+            </span>
+            <div class="photo-preview" id="photoPreview">
+              <img id="photoPreviewImage" alt="Business photo preview">
+              <small id="photoPreviewName"></small>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="notice warning">Your Business Wallet will not be activated until your application is approved and your registration payment is verified.</div>
+      <div class="notice warning">
+        Your Business Wallet will not be activated until your application is approved and your ₦10,000 registration payment is verified.
+      </div>
+
       <label style="display:flex;gap:9px;align-items:flex-start;font-size:11px;line-height:1.6;margin:15px 0">
         <input type="checkbox" id="agreeTerms" required style="margin-top:2px">
         I confirm that the information supplied is accurate and that I am authorised to register this business.
       </label>
+
       <button class="btn btn-primary full-width" id="submitApplication">Submit Business Application →</button>
     </form>
   </section>
 
+  <!-- PENDING APPLICATION -->
   <section id="pendingView" class="card hidden">
     <div style="text-align:center;padding:17px 5px">
       <div style="font-size:48px;margin-bottom:13px">📋</div>
       <span class="badge pending">Pending Admin Review</span>
       <h2 style="font-size:21px;color:var(--heading);margin:14px 0 8px">Application submitted!</h2>
-      <p class="card-description" style="max-width:440px;margin:0 auto 20px">Your business application has been received. EarnGig Admin will review your information.</p>
+      <p class="card-description" style="max-width:440px;margin:0 auto 20px">Your business application and business photo have been received. EarnGig Admin will review your information.</p>
     </div>
     <div class="identity-grid">
       <div class="identity-item"><small>Business name</small><strong id="pendingName">—</strong></div>
@@ -343,6 +361,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
     <button class="btn btn-outline full-width" style="margin-top:17px" onclick="refreshBusinessStatus()">Check Application Status</button>
   </section>
 
+  <!-- REJECTED APPLICATION -->
   <section id="rejectedView" class="card hidden">
     <div style="text-align:center;padding:14px">
       <div style="font-size:43px">⚠️</div>
@@ -353,6 +372,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
     <button class="btn btn-primary full-width" onclick="editApplication()">Correct and Resubmit Application</button>
   </section>
 
+  <!-- APPROVED PAYMENT -->
   <section id="paymentView" class="card hidden">
     <div style="text-align:center;padding:10px 5px 17px">
       <div style="font-size:46px;margin-bottom:10px">🎉</div>
@@ -372,25 +392,22 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
     <button class="btn btn-gold full-width" id="payRegistration">Pay ₦10,000 and Activate Business</button>
   </section>
 
+  <!-- ACTIVE BUSINESS -->
   <section id="activeView" class="hidden">
     <div class="wallet-hero">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:23px">
-        <span class="badge active">● Active Business</span>
-        <span class="crown" aria-label="EarnGig crown">
-          <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 7.5L8.5 12L15.8 3.5L23.5 12L29 7.5L26 20H6L3 7.5Z" stroke="#C49A45" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6 23H26" stroke="#C49A45" stroke-width="1.35" stroke-linecap="round"/>
-            <circle cx="3" cy="6" r="1.5" fill="#C49A45"/><circle cx="15.8" cy="2.5" r="1.5" fill="#C49A45"/><circle cx="29" cy="6" r="1.5" fill="#C49A45"/>
-          </svg>
-        </span>
-      </div>
-      <div class="wallet-label">BUSINESS WALLET BALANCE</div>
-      <div class="wallet-balance" id="walletBalance">0 G-Coins</div>
-      <div class="wallet-naira" id="walletNaira">Equivalent value: ₦0</div>
-      <div class="wallet-actions">
-        <button class="btn btn-primary" onclick="openWithdrawModal()">↗ Withdraw Funds</button>
-        <button class="btn btn-outline" onclick="openReceiveModal()">↓ Receive Payment</button>
-        <button class="btn btn-secondary" onclick="openScanner()">▣ Scan QR</button>
+      <div class="wallet-content">
+        <div class="wallet-top">
+          <span class="badge active">● Active Business</span>
+          <span style="font-size:30px;color:var(--gold)">♛</span>
+        </div>
+        <div class="wallet-label">BUSINESS WALLET BALANCE</div>
+        <div class="wallet-balance" id="walletBalance">0 G-Coins</div>
+        <div class="wallet-naira" id="walletNaira">Equivalent value: ₦0</div>
+        <div class="wallet-actions">
+          <button class="btn btn-primary" onclick="openWithdrawModal()">↗ Withdraw Funds</button>
+          <button class="btn btn-outline" onclick="openReceiveModal()">↓ Receive Payment</button>
+          <button class="btn btn-secondary" onclick="openScanner()">▣ Scan QR</button>
+        </div>
       </div>
     </div>
 
@@ -425,13 +442,18 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
           <tbody id="transactionRows"></tbody>
         </table>
       </div>
-      <div id="emptyTransactions" class="empty-history">No business transactions yet.</div>
+      <div id="emptyTransactions" class="empty-history hidden">No business transactions yet.</div>
     </section>
   </section>
+
+  <div id="loadingView" class="card hidden">
+    <p style="text-align:center;color:var(--muted);font-size:12px">Loading your business account...</p>
+  </div>
 </main>
 
 <footer>© 2026 EarnGig. All rights reserved.<br><br>Business Wallet · Secure G-Coin Payments</footer>
 
+<!-- RECEIVE PAYMENT -->
 <div class="modal" id="receiveModal">
   <div class="modal-box">
     <div class="modal-header"><h2>Receive Business Payment</h2><button class="close-modal" onclick="closeModal('receiveModal')">×</button></div>
@@ -439,7 +461,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
       <p style="font-size:11px;color:var(--muted)">Scan this QR code to pay this business.</p>
       <div class="qr-business" id="qrBusinessName">Business Name</div>
       <div class="qr-username" id="qrBusinessUsername">@business</div>
-      <div class="qr-box" id="businessQr">Secure QR will appear here.</div>
+      <div class="qr-box" id="businessQr">Loading secure QR...</div>
       <p class="qr-note">Customers will see your verified business identity before confirming payment.</p>
       <div class="form-group" style="text-align:left"><label>Business payment address</label><input id="shareBusinessUsername" readonly></div>
       <div style="display:flex;gap:9px;flex-wrap:wrap">
@@ -450,6 +472,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
   </div>
 </div>
 
+<!-- WITHDRAWAL -->
 <div class="modal" id="withdrawModal">
   <div class="modal-box">
     <div class="modal-header"><h2>Withdraw Business Funds</h2><button class="close-modal" onclick="closeModal('withdrawModal')">×</button></div>
@@ -467,6 +490,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
   </div>
 </div>
 
+<!-- QR SCANNER -->
 <div class="modal" id="scannerModal">
   <div class="modal-box">
     <div class="modal-header"><h2>Scan EarnGig Payment QR</h2><button class="close-modal" onclick="closeScanner()">×</button></div>
@@ -476,6 +500,7 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
   </div>
 </div>
 
+<!-- SEND PAYMENT -->
 <div class="modal" id="sendModal">
   <div class="modal-box">
     <div class="modal-header"><h2>Send G-Coins</h2><button class="close-modal" onclick="closeModal('sendModal')">×</button></div>
@@ -484,73 +509,85 @@ footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-t
     <div class="form-group"><label>Recipient account</label><input id="sendRecipientType" readonly></div>
     <div class="form-group"><label for="sendAmount">G-Coins to send</label><input id="sendAmount" type="number" min="1" placeholder="Enter amount"></div>
     <div class="form-group"><label for="sendPin">Transaction PIN</label><input id="sendPin" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter transaction PIN"></div>
-    <div class="calculation">
-      <div class="calculation-row"><span>Transfer amount</span><strong id="sendAmountDisplay">0 G-Coins</strong></div>
-      <div class="calculation-row"><span>Recipient</span><strong id="sendRecipientDisplay">—</strong></div>
-    </div>
+    <div class="calculation"><div class="calculation-row"><span>Transfer amount</span><strong id="sendAmountDisplay">0 G-Coins</strong></div><div class="calculation-row"><span>Recipient</span><strong id="sendRecipientDisplay">—</strong></div></div>
     <button class="btn btn-primary full-width" id="confirmTransfer">Confirm G-Coin Transfer</button>
   </div>
 </div>
 
+<!-- BUSINESS PROFILE -->
 <div class="modal" id="profileModal">
   <div class="modal-box">
     <div class="modal-header"><h2>Business Profile</h2><button class="close-modal" onclick="closeModal('profileModal')">×</button></div>
     <div id="businessProfileDetails"></div>
   </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 /*
-  Set API_BASE to your real backend URL when it is ready.
-  Until then, the registration form remains visible.
-  Never place Flutterwave secret keys or trusted wallet balances here.
+  BACKEND CONFIGURATION
+
+  Replace API_BASE with your actual EarnGig API URL.
+  Do not put Flutterwave secret keys in this file.
+  The backend must validate uploads, usernames, payment status,
+  transfers, withdrawals and wallet balances.
 */
-const API_BASE="https://YOUR-BACKEND-DOMAIN/api";
-const COINS_PER_NAIRA=10;
-const WITHDRAWAL_FEE_RATE=.02;
 
-let business=null,qrCodeInstance=null,qrScanner=null,currentRecipient=null;
-let usernameCheckTimer=null;
+const API_BASE = "https://YOUR-BACKEND-DOMAIN/api";
+const COINS_PER_NAIRA = 10;
+const WITHDRAWAL_FEE_RATE = 0.02;
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
 
-const $=id=>document.getElementById(id);
-const backendConnected=!API_BASE.includes("YOUR-BACKEND-DOMAIN");
+let business = null;
+let qrCodeInstance = null;
+let qrScanner = null;
+let currentRecipient = null;
+let usernameCheckTimer = null;
+
+const $ = id => document.getElementById(id);
 
 function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[char]);
 }
+
 function formatCoins(value){
   const n=Number(value);
   return Number.isFinite(n)?n.toLocaleString("en-NG",{maximumFractionDigits:2}):"0";
 }
+
 function formatNaira(value){
   const n=Number(value);
-  return "₦"+(Number.isFinite(n)?n:0).toLocaleString("en-NG",{minimumFractionDigits:2,maximumFractionDigits:2});
+  return "₦"+(Number.isFinite(n)?n:0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,maximumFractionDigits:2
+  });
 }
+
 function showToast(message){
   $("toast").textContent=message;
   $("toast").classList.add("show");
   setTimeout(()=>$("toast").classList.remove("show"),3000);
 }
+
 function showMessage(message,type="info"){
   $("globalMessage").innerHTML=`<div class="notice ${type}">${escapeHTML(message)}</div>`;
 }
-async function apiRequest(path,options={}){
-  if(!backendConnected)throw new Error("EarnGig's backend is not connected yet. Your information has not been submitted.");
-  const response=await fetch(API_BASE.replace(/\/$/,"")+path,{
-    ...options,credentials:"include",
-    headers:{...(options.headers||{})}
-  });
-  const type=response.headers.get("content-type")||"";
-  const data=type.includes("application/json")?await response.json():{};
-  if(!response.ok)throw new Error(data.message||data.error||"Something went wrong.");
-  return data;
-}
+
 function showView(viewId){
-  ["registrationView","pendingView","rejectedView","paymentView","activeView"].forEach(id=>$(id).classList.add("hidden"));
+  ["registrationView","pendingView","rejectedView","paymentView","activeView"]
+    .forEach(id=>$(id).classList.add("hidden"));
   $(viewId).classList.remove("hidden");
+  $("loadingView").classList.add("hidden");
   $("progressSection").classList.remove("hidden");
 }
+
+function hideAllViews(){
+  ["registrationView","pendingView","rejectedView","paymentView","activeView","progressSection"]
+    .forEach(id=>$(id).classList.add("hidden"));
+}
+
 function updateSteps(current){
   for(let i=1;i<=3;i++){
     const step=$("step"+i);
@@ -559,29 +596,53 @@ function updateSteps(current){
     if(i===current)step.classList.add("active");
   }
 }
+
+async function apiRequest(path,options={}){
+  if(API_BASE.includes("YOUR-BACKEND-DOMAIN")){
+    throw new Error("The EarnGig backend has not been connected yet.");
+  }
+
+  const response=await fetch(API_BASE.replace(/\/$/,"")+path,{
+    ...options,
+    credentials:"include",
+    headers:{...(options.headers||{})}
+  });
+
+  const contentType=response.headers.get("content-type")||"";
+  const data=contentType.includes("application/json")?await response.json():{};
+
+  if(!response.ok)throw new Error(data.message||data.error||"Something went wrong.");
+  return data;
+}
+
 function normalizeStatus(data){
-  return String(data?.status||data?.applicationStatus||data?.application_status||"none").toLowerCase().replace(/[\s-]+/g,"_");
+  return String(data?.status||data?.applicationStatus||data?.application_status||"none")
+    .toLowerCase().replace(/[\s-]+/g,"_");
 }
-function renderBusinessState(){
-  const status=normalizeStatus(business);
-  if(["active","activated","paid","verified"].includes(status))showActiveDashboard();
-  else if(["rejected","declined"].includes(status))showRejected();
-  else if(["approved","payment_required","awaiting_payment"].includes(status))showPayment();
-  else if(["pending","under_review","submitted","in_review"].includes(status))showPending();
-  else{showView("registrationView");updateSteps(1);}
-}
+
+/*
+  If the backend has not been connected, show the registration form.
+  This allows visitors to see the registration page instead of a blank
+  connection-error screen. Submitting still requires a working backend.
+*/
+
 async function loadBusiness(){
+  $("loadingView").classList.remove("hidden");
+  hideAllViews();
   $("globalMessage").innerHTML="";
-  if(!backendConnected){
+
+  if(API_BASE.includes("YOUR-BACKEND-DOMAIN")){
     business=null;
-    $("backendNotice").classList.remove("hidden");
     showView("registrationView");
     updateSteps(1);
+    showMessage("Complete the form below to apply. Your application will be submitted when the EarnGig backend is connected.","info");
     return;
   }
+
   try{
     const data=await apiRequest("/business/me");
     business=data.business||data.application||data||null;
+
     if(!business||!business.id){
       showView("registrationView");
       updateSteps(1);
@@ -589,31 +650,68 @@ async function loadBusiness(){
     }
     renderBusinessState();
   }catch(error){
-    showView("registrationView");
-    updateSteps(1);
-    showMessage("Your registration form is available. We could not check an existing application right now. Please try again later.","warning");
+    hideAllViews();
+    $("loadingView").classList.remove("hidden");
+    $("loadingView").innerHTML=`
+      <div style="text-align:center;color:#8493A3;font-size:12px">
+        Unable to check your Business account.<br><br>
+        ${escapeHTML(error.message)}<br><br>
+        <button class="btn btn-primary" onclick="loadBusiness()">Try Again</button>
+        <button class="btn btn-outline" style="margin-top:8px" onclick="showRegistration()">Open Registration Form</button>
+      </div>`;
   }
 }
+
+function showRegistration(){
+  showView("registrationView");
+  updateSteps(1);
+}
+
+function renderBusinessState(){
+  const status=normalizeStatus(business);
+
+  if(["active","activated","paid","verified"].includes(status)){
+    showActiveDashboard();
+  }else if(["rejected","declined"].includes(status)){
+    showRejected();
+  }else if(["approved","payment_required","awaiting_payment"].includes(status)){
+    showPayment();
+  }else if(["pending","under_review","submitted","in_review"].includes(status)){
+    showPending();
+  }else{
+    showRegistration();
+  }
+}
+
 function showPending(){
-  showView("pendingView");updateSteps(2);
+  showView("pendingView");
+  updateSteps(2);
   $("pendingName").textContent=business.businessName||business.name||"—";
   $("pendingUsername").textContent="@"+String(business.username||"—").replace(/^@/,"");
   $("pendingReference").textContent=business.applicationReference||business.reference||business.id||"—";
 }
+
 function showRejected(){
-  showView("rejectedView");updateSteps(2);
+  showView("rejectedView");
+  updateSteps(2);
   $("rejectionReason").textContent=business.rejectionReason||business.rejection_reason||"Please review your application and contact support if you need clarification.";
 }
+
 function showPayment(){
-  showView("paymentView");updateSteps(3);
+  showView("paymentView");
+  updateSteps(3);
   $("approvedName").textContent=business.businessName||business.name||"—";
   $("approvedUsername").textContent="@"+String(business.username||"—").replace(/^@/,"");
 }
+
 function showActiveDashboard(){
-  showView("activeView");updateSteps(3);
+  showView("activeView");
+  updateSteps(3);
+
   const name=business.businessName||business.name||"My Business";
   const username="@"+String(business.username||"").replace(/^@/,"");
   const balance=Number(business.walletBalance??business.wallet_balance??business.businessWallet?.balance??0);
+
   $("pageTitle").textContent=name;
   $("pageSubtitle").textContent=username;
   $("walletBalance").textContent=formatCoins(balance)+" G-Coins";
@@ -621,25 +719,68 @@ function showActiveDashboard(){
   $("activeBusinessName").textContent=name;
   $("activeBusinessUsername").textContent=username;
   $("activeBusinessCategory").textContent=business.category||business.businessCategory||"—";
+
   loadTransactions();
 }
 
-/* Username availability */
+/* REQUIRED PHOTO PREVIEW AND VALIDATION */
+
+$("businessPhoto").addEventListener("change",()=>{
+  const file=$("businessPhoto").files[0];
+  const preview=$("photoPreview");
+  const image=$("photoPreviewImage");
+  const name=$("photoPreviewName");
+
+  preview.classList.remove("show");
+  image.removeAttribute("src");
+  name.textContent="";
+
+  if(!file)return;
+
+  const allowed=["image/jpeg","image/png","image/webp"];
+
+  if(!allowed.includes(file.type)){
+    $("businessPhoto").value="";
+    showToast("Upload a JPG, PNG or WEBP image.");
+    return;
+  }
+
+  if(file.size>MAX_PHOTO_SIZE){
+    $("businessPhoto").value="";
+    showToast("Your business photo must not exceed 5MB.");
+    return;
+  }
+
+  image.src=URL.createObjectURL(file);
+  name.textContent="Selected: "+file.name;
+  preview.classList.add("show");
+});
+
+/* USERNAME AVAILABILITY */
+
 $("businessUsername").addEventListener("input",()=>{
-  const input=$("businessUsername"),message=$("usernameMessage");
+  const input=$("businessUsername");
+  const message=$("usernameMessage");
   input.value=input.value.toLowerCase().replace(/[^a-z0-9_]/g,"");
   const username=input.value;
+
   clearTimeout(usernameCheckTimer);
+
   if(username.length<3){
     message.textContent="Username must contain at least 3 characters.";
-    message.className="field-message bad";return;
+    message.className="field-message bad";
+    return;
   }
-  if(!backendConnected){
-    message.textContent="Username availability will be checked when the service is connected.";
-    message.className="field-message";return;
+
+  if(API_BASE.includes("YOUR-BACKEND-DOMAIN")){
+    message.textContent="Username availability will be checked when the backend is connected.";
+    message.className="field-message";
+    return;
   }
+
   message.textContent="Checking username...";
   message.className="field-message";
+
   usernameCheckTimer=setTimeout(async()=>{
     try{
       const result=await apiRequest("/business/username/check?username="+encodeURIComponent(username));
@@ -652,49 +793,107 @@ $("businessUsername").addEventListener("input",()=>{
   },500);
 });
 
-/* Application submission */
+/* APPLICATION SUBMISSION */
+
 $("registrationForm").addEventListener("submit",submitApplication);
+
 async function submitApplication(event){
   event.preventDefault();
+
   const username=$("businessUsername").value.trim().toLowerCase();
-  if(!/^[a-z0-9_]{3,25}$/.test(username)){showToast("Please enter a valid business username.");return;}
-  if(!$("agreeTerms").checked){showToast("Please confirm your application information.");return;}
-  if(!backendConnected){
-    showMessage("Your form is complete, but it has NOT been submitted. EarnGig's backend is not connected yet. Please try again when online registration is available.","warning");
-    showToast("Online application submission is not available yet.");
+  const photo=$("businessPhoto").files[0];
+
+  if(!/^[a-z0-9_]{3,25}$/.test(username)){
+    showToast("Please enter a valid business username.");
+    $("businessUsername").focus();
     return;
   }
+
+  if(!photo){
+    showToast("Please upload a picture of your product or store.");
+    $("businessPhoto").focus();
+    return;
+  }
+
+  if(!["image/jpeg","image/png","image/webp"].includes(photo.type)){
+    showToast("Your business photo must be JPG, PNG or WEBP.");
+    return;
+  }
+
+  if(photo.size>MAX_PHOTO_SIZE){
+    showToast("Your business photo must not exceed 5MB.");
+    return;
+  }
+
+  if(!$("agreeTerms").checked){
+    showToast("Please confirm your application information.");
+    return;
+  }
+
+  if(API_BASE.includes("YOUR-BACKEND-DOMAIN")){
+    showMessage("Your registration form is ready, but applications cannot be submitted until the EarnGig backend is connected. Your business photo is required and will be included with the application.","warning");
+    return;
+  }
+
   const button=$("submitApplication");
-  button.disabled=true;button.textContent="Submitting Application...";
+  button.disabled=true;
+  button.textContent="Submitting Application...";
+
   try{
     const check=await apiRequest("/business/username/check?username="+encodeURIComponent(username));
     if(!check.available)throw new Error("This username is already taken.");
+
     const payload={
-      businessName:$("businessName").value.trim(),username,
-      category:$("businessCategory").value,phone:$("businessPhone").value.trim(),
-      email:$("businessEmail").value.trim(),location:$("businessLocation").value.trim(),
-      description:$("businessDescription").value.trim(),website:$("businessWebsite").value.trim()
+      businessName:$("businessName").value.trim(),
+      username,
+      category:$("businessCategory").value,
+      phone:$("businessPhone").value.trim(),
+      email:$("businessEmail").value.trim(),
+      location:$("businessLocation").value.trim(),
+      description:$("businessDescription").value.trim(),
+      website:$("businessWebsite").value.trim()
     };
+
     const formData=new FormData();
     Object.entries(payload).forEach(([key,value])=>formData.append(key,value));
-    const file=$("businessDocument").files[0];
-    if(file)formData.append("supportingDocument",file);
-    const result=await apiRequest("/business/applications",{method:"POST",body:formData});
+
+    /* This image is compulsory and is attached to the application. */
+    formData.append("businessPhoto",photo);
+
+    const result=await apiRequest("/business/applications",{
+      method:"POST",
+      body:formData
+    });
+
     business=result.business||result.application||result;
     if(!business.id)throw new Error("Application reference was not returned.");
-    renderBusinessState();showToast("Business application submitted.");
-  }catch(error){showMessage(error.message,"error");showToast(error.message);}
-  finally{button.disabled=false;button.textContent="Submit Business Application →";}
+
+    renderBusinessState();
+    showToast("Business application submitted successfully.");
+  }catch(error){
+    showMessage(error.message,"error");
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Submit Business Application →";
+  }
 }
+
 async function refreshBusinessStatus(){
   try{
     const data=await apiRequest("/business/me");
-    business=data.business||data.application||data;renderBusinessState();
+    business=data.business||data.application||data;
+    renderBusinessState();
     showToast("Application status refreshed.");
-  }catch(error){showToast(error.message);}
+  }catch(error){
+    showToast(error.message);
+  }
 }
+
 function editApplication(){
-  showView("registrationView");updateSteps(1);
+  showView("registrationView");
+  updateSteps(1);
+
   $("businessName").value=business.businessName||"";
   $("businessUsername").value=business.username||"";
   $("businessCategory").value=business.category||"";
@@ -703,74 +902,132 @@ function editApplication(){
   $("businessLocation").value=business.location||"";
   $("businessDescription").value=business.description||"";
   $("businessWebsite").value=business.website||"";
+
+  $("businessPhoto").required=true;
+
   $("registrationForm").removeEventListener("submit",submitApplication);
   $("registrationForm").addEventListener("submit",resubmitApplication);
 }
+
 async function resubmitApplication(event){
   event.preventDefault();
-  const payload={
-    businessName:$("businessName").value.trim(),
-    username:$("businessUsername").value.trim().toLowerCase(),
-    category:$("businessCategory").value,phone:$("businessPhone").value.trim(),
-    email:$("businessEmail").value.trim(),location:$("businessLocation").value.trim(),
-    description:$("businessDescription").value.trim(),website:$("businessWebsite").value.trim()
-  };
+
+  const photo=$("businessPhoto").files[0];
+  if(!photo){
+    showToast("Please upload a new picture of your product or store.");
+    $("businessPhoto").focus();
+    return;
+  }
+
+  if(!["image/jpeg","image/png","image/webp"].includes(photo.type)||photo.size>MAX_PHOTO_SIZE){
+    showToast("Upload a JPG, PNG or WEBP image up to 5MB.");
+    return;
+  }
+
   const button=$("submitApplication");
-  button.disabled=true;button.textContent="Resubmitting...";
+  button.disabled=true;
+  button.textContent="Resubmitting...";
+
   try{
+    const formData=new FormData();
+    formData.append("businessName",$("businessName").value.trim());
+    formData.append("username",$("businessUsername").value.trim().toLowerCase());
+    formData.append("category",$("businessCategory").value);
+    formData.append("phone",$("businessPhone").value.trim());
+    formData.append("email",$("businessEmail").value.trim());
+    formData.append("location",$("businessLocation").value.trim());
+    formData.append("description",$("businessDescription").value.trim());
+    formData.append("website",$("businessWebsite").value.trim());
+    formData.append("businessPhoto",photo);
+
     const result=await apiRequest(`/business/applications/${encodeURIComponent(business.id)}/resubmit`,{
-      method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)
+      method:"POST",
+      body:formData
     });
+
     business=result.business||result.application||result;
     $("registrationForm").removeEventListener("submit",resubmitApplication);
     $("registrationForm").addEventListener("submit",submitApplication);
-    renderBusinessState();showToast("Application resubmitted.");
-  }catch(error){showToast(error.message);}
-  finally{button.disabled=false;button.textContent="Submit Business Application →";}
+    renderBusinessState();
+    showToast("Application resubmitted.");
+  }catch(error){
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Submit Business Application →";
+  }
 }
 
-/* Payment */
+/* FLUTTERWAVE CHECKOUT */
+
 $("payRegistration").addEventListener("click",beginRegistrationPayment);
+
 async function beginRegistrationPayment(){
   const button=$("payRegistration");
-  button.disabled=true;button.textContent="Preparing Payment...";
+  button.disabled=true;
+  button.textContent="Preparing Payment...";
+
   try{
     const checkout=await apiRequest(`/business/applications/${encodeURIComponent(business.id)}/checkout`,{method:"POST"});
-    if(!checkout.checkoutUrl||!checkout.checkoutUrl.startsWith("https://"))throw new Error("A valid secure payment link was not returned.");
+
+    if(!checkout.checkoutUrl||!checkout.checkoutUrl.startsWith("https://")){
+      throw new Error("A valid secure payment link was not returned.");
+    }
+
     window.location.href=checkout.checkoutUrl;
-  }catch(error){showToast(error.message);button.disabled=false;button.textContent="Pay ₦10,000 and Activate Business";}
+  }catch(error){
+    showToast(error.message);
+    button.disabled=false;
+    button.textContent="Pay ₦10,000 and Activate Business";
+  }
 }
+
 async function verifyReturnedPayment(){
-  const params=new URLSearchParams(location.search);
+  const params=new URLSearchParams(window.location.search);
   const transactionId=params.get("transaction_id")||params.get("transactionId");
   const transactionReference=params.get("tx_ref")||params.get("reference");
+
   if(!transactionId&&!transactionReference)return;
+
   try{
     showMessage("Verifying your registration payment...","info");
+
     const result=await apiRequest("/business/payments/verify",{
-      method:"POST",headers:{"Content-Type":"application/json"},
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify({transactionId,transactionReference})
     });
+
     if(!result.verified||!result.business)throw new Error("Payment has not been verified.");
-    business=result.business;history.replaceState({},"","business.html");
-    renderBusinessState();showToast("Business successfully activated.");
+
+    business=result.business;
+    history.replaceState({},"","business.html");
+    renderBusinessState();
+    showToast("Business successfully activated.");
   }catch(error){
     showMessage("Payment verification is not complete. Please contact support if you have already paid.","warning");
   }
 }
 
-/* Transactions */
+/* TRANSACTIONS */
+
 async function loadTransactions(){
   $("transactionRows").innerHTML="";
-  $("emptyTransactions").classList.remove("hidden");
+  $("emptyTransactions").classList.add("hidden");
+
   try{
     const data=await apiRequest("/business/transactions");
     const transactions=Array.isArray(data)?data:data.transactions||[];
-    if(!transactions.length)return;
-    $("emptyTransactions").classList.add("hidden");
+
+    if(!transactions.length){
+      $("emptyTransactions").classList.remove("hidden");
+      return;
+    }
+
     $("transactionRows").innerHTML=transactions.map(tx=>{
       const incoming=["credit","incoming","received"].includes(String(tx.type||tx.direction).toLowerCase());
       const amount=Number(tx.amount||tx.coins||0);
+
       return `<tr>
         <td><strong>${escapeHTML(tx.reference||tx.transactionReference||"—")}</strong></td>
         <td>${escapeHTML(tx.description||tx.type||"Transaction")}</td>
@@ -779,151 +1036,232 @@ async function loadTransactions(){
         <td>${escapeHTML(tx.status||"completed")}</td>
       </tr>`;
     }).join("");
-  }catch(error){$("emptyTransactions").textContent="Transaction history could not be loaded.";}
+  }catch(error){
+    $("emptyTransactions").classList.remove("hidden");
+    $("emptyTransactions").textContent="Transaction history could not be loaded.";
+  }
 }
-function openTransactions(){$("transactionSection").scrollIntoView({behavior:"smooth",block:"start"});}
 
-/* Business profile */
+function openTransactions(){
+  $("transactionSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* BUSINESS PROFILE */
+
 function openBusinessProfile(){
   const details=[
     ["Business name",business.businessName||business.name],
     ["Business username","@"+String(business.username||"").replace(/^@/,"")],
-    ["Category",business.category],["Email",business.email],
-    ["Phone",business.phone],["Location",business.location],
+    ["Category",business.category],
+    ["Email",business.email],
+    ["Phone",business.phone],
+    ["Location",business.location],
     ["Description",business.description]
   ];
+
   $("businessProfileDetails").innerHTML=details.map(([label,value])=>`
     <div class="identity-item" style="margin-bottom:9px">
-      <small>${escapeHTML(label)}</small><strong>${escapeHTML(value||"Not provided")}</strong>
+      <small>${escapeHTML(label)}</small>
+      <strong>${escapeHTML(value||"Not provided")}</strong>
     </div>`).join("");
+
   openModal("profileModal");
 }
 
-/* Receive QR */
+/* RECEIVE PAYMENT QR */
+
 async function openReceiveModal(){
   openModal("receiveModal");
+
   $("qrBusinessName").textContent=business.businessName||business.name||"Business";
   const username="@"+String(business.username||"").replace(/^@/,"");
   $("qrBusinessUsername").textContent=username;
   $("shareBusinessUsername").value=username;
   $("businessQr").textContent="Generating secure payment QR...";
+
   try{
     const data=await apiRequest("/business/qr");
     if(!data.qrPayload)throw new Error("Secure payment QR was not returned.");
     $("businessQr").innerHTML="";
+
     if(typeof QRCode==="undefined")throw new Error("QR library unavailable.");
+
     qrCodeInstance=new QRCode($("businessQr"),{
       text:data.qrPayload,width:190,height:190,
       colorDark:"#263B50",colorLight:"#FFFFFF",
       correctLevel:QRCode.CorrectLevel.H
     });
-  }catch(error){$("businessQr").textContent="Secure QR unavailable: "+error.message;}
-}
-function copyBusinessUsername(){
-  const username=$("shareBusinessUsername").value;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(username).then(()=>showToast("Business username copied.")).catch(()=>showToast("Could not copy username."));
-  }else{
-    $("shareBusinessUsername").select();document.execCommand("copy");showToast("Business username copied.");
+  }catch(error){
+    $("businessQr").textContent="Secure QR could not be generated: "+error.message;
   }
 }
+
+function copyBusinessUsername(){
+  const username=$("shareBusinessUsername").value;
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(username)
+      .then(()=>showToast("Business username copied."))
+      .catch(()=>showToast("Could not copy username."));
+  }else{
+    $("shareBusinessUsername").select();
+    document.execCommand("copy");
+    showToast("Business username copied.");
+  }
+}
+
 function downloadBusinessQR(){
   const canvas=$("businessQr").querySelector("canvas");
   const image=$("businessQr").querySelector("img");
   const src=canvas?canvas.toDataURL("image/png"):image?.src;
+
   if(!src){showToast("QR code is not ready yet.");return;}
+
   const link=document.createElement("a");
-  link.href=src;link.download="earngig-business-payment-qr.png";link.click();
+  link.href=src;
+  link.download="earngig-business-payment-qr.png";
+  link.click();
 }
 
-/* Withdrawals */
+/* WITHDRAWALS */
+
 function openWithdrawModal(){
   $("withdrawAvailable").value=formatCoins(business.walletBalance??business.wallet_balance??0)+" G-Coins";
-  $("withdrawCoins").value="";calculateWithdrawal();loadBankAccounts();openModal("withdrawModal");
+  $("withdrawCoins").value="";
+  calculateWithdrawal();
+  loadBankAccounts();
+  openModal("withdrawModal");
 }
+
 function calculateWithdrawal(){
   const coins=Math.max(0,Number($("withdrawCoins").value||0));
-  const gross=coins/COINS_PER_NAIRA,fee=gross*WITHDRAWAL_FEE_RATE;
+  const gross=coins/COINS_PER_NAIRA;
+  const fee=gross*WITHDRAWAL_FEE_RATE;
+
   $("withdrawCoinDisplay").textContent=formatCoins(coins);
   $("withdrawGross").textContent=formatNaira(gross);
   $("withdrawFee").textContent=formatNaira(fee);
   $("withdrawNet").textContent=formatNaira(gross-fee);
 }
+
 $("withdrawCoins").addEventListener("input",calculateWithdrawal);
+
 async function loadBankAccounts(){
   const select=$("withdrawBank");
   select.innerHTML='<option value="">Loading bank accounts...</option>';
+
   try{
     const data=await apiRequest("/business/banks");
     const accounts=Array.isArray(data)?data:data.accounts||[];
+
     select.innerHTML='<option value="">Select saved bank account</option>';
+
     accounts.forEach(account=>{
       const option=document.createElement("option");
       option.value=account.id;
       option.textContent=`${account.bankName||account.bank_name} ••••${account.lastFour||account.last_four}`;
       select.appendChild(option);
     });
+
     if(!accounts.length)select.innerHTML='<option value="">No verified bank account found</option>';
-  }catch(error){select.innerHTML='<option value="">Unable to load bank accounts</option>';}
+  }catch(error){
+    select.innerHTML='<option value="">Unable to load bank accounts</option>';
+  }
 }
+
 $("submitWithdrawal").addEventListener("click",submitWithdrawal);
+
 async function submitWithdrawal(){
   const coins=Number($("withdrawCoins").value);
   const available=Number(business.walletBalance??business.wallet_balance??0);
+
   if(!Number.isFinite(coins)||coins<=0){showToast("Enter a valid withdrawal amount.");return;}
   if(coins>available){showToast("Insufficient Business Wallet balance.");return;}
   if(!$("withdrawBank").value){showToast("Please select a verified bank account.");return;}
+
   const button=$("submitWithdrawal");
-  button.disabled=true;button.textContent="Submitting Withdrawal...";
+  button.disabled=true;
+  button.textContent="Submitting Withdrawal...";
+
   try{
     const result=await apiRequest("/business/withdrawals",{
-      method:"POST",headers:{"Content-Type":"application/json"},
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify({coins,bankAccountId:$("withdrawBank").value})
     });
+
     closeModal("withdrawModal");
+
     if(result.business)business=result.business;
     if(result.balance!==undefined)business.walletBalance=result.balance;
+
     $("walletBalance").textContent=formatCoins(business.walletBalance??0)+" G-Coins";
     $("walletNaira").textContent="Equivalent value: "+formatNaira(Number(business.walletBalance??0)/COINS_PER_NAIRA);
-    showToast("Withdrawal request submitted.");loadTransactions();
-  }catch(error){showToast(error.message);}
-  finally{button.disabled=false;button.textContent="Request Withdrawal";}
+
+    showToast("Withdrawal request submitted.");
+    loadTransactions();
+  }catch(error){
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Request Withdrawal";
+  }
 }
 
-/* QR scanner and transfer */
+/* QR SCANNER */
+
 async function openScanner(){
   openModal("scannerModal");
   $("scanMessage").textContent="Starting camera...";
   $("scanMessage").className="notice info";
+
   if(!window.Html5Qrcode){
     $("scanMessage").textContent="QR scanner is unavailable. Refresh the page and try again.";
-    $("scanMessage").className="notice error";return;
+    $("scanMessage").className="notice error";
+    return;
   }
+
   try{
     qrScanner=new Html5Qrcode("qrReader");
-    await qrScanner.start({facingMode:"environment"},{fps:10,qrbox:{width:230,height:230}},onQrScanned,()=>{});
+    await qrScanner.start(
+      {facingMode:"environment"},
+      {fps:10,qrbox:{width:230,height:230}},
+      onQrScanned,
+      ()=>{}
+    );
     $("scanMessage").textContent="Point your camera at an EarnGig payment QR code.";
   }catch(error){
     $("scanMessage").textContent="Camera access failed. Allow camera permission and try again.";
     $("scanMessage").className="notice error";
   }
 }
+
 async function onQrScanned(decodedText){
   await closeScanner();
+
   try{
     const result=await apiRequest("/transfers/resolve-qr",{
-      method:"POST",headers:{"Content-Type":"application/json"},
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify({qrPayload:decodedText})
     });
+
     if(!result.recipient||!result.recipient.id)throw new Error("QR recipient could not be verified.");
+
     currentRecipient=result.recipient;
+
     $("sendRecipient").value=result.recipient.displayName||result.recipient.businessName||result.recipient.name||"Verified recipient";
     $("sendRecipientType").value=result.recipient.type==="business"?"EarnGig Business":"EarnGig User";
     $("sendRecipientDisplay").textContent=$("sendRecipient").value;
-    $("sendAmount").value="";$("sendPin").value="";
+    $("sendAmount").value="";
+    $("sendPin").value="";
+
     openModal("sendModal");
-  }catch(error){showToast(error.message);}
+  }catch(error){
+    showToast(error.message);
+  }
 }
+
 async function closeScanner(){
   if(qrScanner){
     try{await qrScanner.stop();await qrScanner.clear();}catch(e){}
@@ -931,34 +1269,66 @@ async function closeScanner(){
   }
   closeModal("scannerModal");
 }
+
+/* G-COIN TRANSFER */
+
 $("sendAmount").addEventListener("input",()=>{
   $("sendAmountDisplay").textContent=formatCoins($("sendAmount").value||0)+" G-Coins";
 });
+
 $("confirmTransfer").addEventListener("click",async()=>{
   if(!currentRecipient)return;
-  const amount=Number($("sendAmount").value),pin=$("sendPin").value;
+
+  const amount=Number($("sendAmount").value);
+  const pin=$("sendPin").value;
+
   if(!Number.isFinite(amount)||amount<=0){showToast("Enter a valid G-Coin amount.");return;}
   if(!pin){showToast("Enter your transaction PIN.");return;}
+
   if(!confirm(`Send ${formatCoins(amount)} G-Coins to ${$("sendRecipient").value}?`))return;
+
   const button=$("confirmTransfer");
-  button.disabled=true;button.textContent="Processing Transfer...";
+  button.disabled=true;
+  button.textContent="Processing Transfer...";
+
   try{
     const result=await apiRequest("/transfers",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({recipientId:currentRecipient.id,amount,transactionPin:pin})
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        recipientId:currentRecipient.id,
+        amount,
+        transactionPin:pin
+      })
     });
-    closeModal("sendModal");showToast("G-Coin transfer completed successfully.");
-    if(result.business){business=result.business;showActiveDashboard();}
-  }catch(error){showToast(error.message);}
-  finally{button.disabled=false;button.textContent="Confirm G-Coin Transfer";}
+
+    closeModal("sendModal");
+    showToast("G-Coin transfer completed successfully.");
+
+    if(result.business){
+      business=result.business;
+      showActiveDashboard();
+    }
+  }catch(error){
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Confirm G-Coin Transfer";
+  }
 });
 
-/* Modals */
-function openModal(id){$(id).classList.add("show");document.body.style.overflow="hidden";}
+/* MODALS */
+
+function openModal(id){
+  $(id).classList.add("show");
+  document.body.style.overflow="hidden";
+}
+
 function closeModal(id){
   $(id).classList.remove("show");
   if(!document.querySelector(".modal.show"))document.body.style.overflow="";
 }
+
 document.querySelectorAll(".modal").forEach(modal=>{
   modal.addEventListener("click",event=>{
     if(event.target===modal){
@@ -967,6 +1337,7 @@ document.querySelectorAll(".modal").forEach(modal=>{
     }
   });
 });
+
 document.addEventListener("keydown",event=>{
   if(event.key==="Escape"){
     document.querySelectorAll(".modal.show").forEach(modal=>{
@@ -976,7 +1347,8 @@ document.addEventListener("keydown",event=>{
   }
 });
 
-/* Start */
+/* START */
+
 loadBusiness().then(verifyReturnedPayment);
 </script>
 </body>
