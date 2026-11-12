@@ -305,9 +305,10 @@ button{font:inherit;cursor:pointer}
 .ad-arrow.prev{left:15px}
 .ad-arrow.next{right:15px}
 
+/* MAIN QUICK ACCESS - FOUR CARDS */
 .shortcut-grid{
   display:grid;
-  grid-template-columns:repeat(6,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:13px;
   margin-bottom:30px;
 }
@@ -316,14 +317,14 @@ button{font:inherit;cursor:pointer}
   background:linear-gradient(145deg,#351052,#1c0731);
   border:1px solid #7f36a8;
   border-radius:16px;
-  padding:17px 9px;
-  min-height:112px;
+  padding:20px 12px;
+  min-height:125px;
   transition:.2s;
 }
 .shortcut:hover{transform:translateY(-4px);border-color:var(--lime)}
 .shortcut-icon{display:block;font-size:32px;margin-bottom:9px}
 .shortcut strong{display:block;font-size:13px;margin-bottom:5px}
-.shortcut small{color:#c9b7d9;font-size:10px;line-height:1.3}
+.shortcut small{color:#c9b7d9;font-size:11px;line-height:1.4}
 
 .section{margin:30px 0}
 .section-heading{
@@ -504,14 +505,16 @@ footer{
   .navlinks a{font-size:10px}
   .game-grid{grid-template-columns:repeat(5,1fr)}
 }
+
 @media(max-width:800px){
   .topbar{padding:12px 4%}
   .navlinks{display:none}
-  .shortcut-grid{grid-template-columns:repeat(3,1fr)}
+  .shortcut-grid{grid-template-columns:repeat(2,1fr)}
   .game-grid{grid-template-columns:repeat(3,1fr)}
   .content-columns{grid-template-columns:1fr}
   .novel-grid{grid-template-columns:repeat(5,1fr)}
 }
+
 @media(max-width:540px){
   .brand{font-size:24px}
   .ad-stage,.ad-slide{min-height:260px}
@@ -527,11 +530,11 @@ footer{
   .ad-visual{min-height:85px;width:100%;min-width:0}
   .ad-orb{width:85px;height:85px;font-size:45px}
   .ad-arrow{width:30px;height:30px;font-size:19px}
-  .shortcut-grid{gap:8px}
-  .shortcut{min-height:100px;padding:13px 5px}
+  .shortcut-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .shortcut{min-height:110px;padding:15px 7px}
   .shortcut-icon{font-size:27px}
-  .shortcut strong{font-size:11px}
-  .shortcut small{font-size:9px}
+  .shortcut strong{font-size:12px}
+  .shortcut small{font-size:10px}
   .game-grid{grid-template-columns:repeat(2,1fr)}
   .novel-grid{grid-template-columns:repeat(2,1fr)}
   .novel-cover{min-height:165px}
@@ -651,6 +654,7 @@ footer{
 
 <main class="container">
 
+  <!-- SPONSORED BILLBOARD -->
   <section class="billboard">
     <div class="billboard-top">📣 Sponsored Billboard</div>
     <div class="ad-stage">
@@ -696,36 +700,25 @@ footer{
     </div>
   </section>
 
-  <!-- MAIN DASHBOARD SHORTCUTS -->
+  <!-- MAIN DASHBOARD SHORTCUTS: FOUR IMPORTANT FEATURES -->
   <section class="shortcut-grid">
-    <a class="shortcut" href="games.html">
-      <span class="shortcut-icon">🎮</span>
-      <strong>Play Games</strong>
-      <small>Explore available games</small>
-    </a>
-
-    <a class="shortcut" href="novels.html">
-      <span class="shortcut-icon">📖</span>
-      <strong>Read Novels</strong>
-      <small>Enjoy great stories</small>
-    </a>
 
     <a class="shortcut" href="marketplace.html">
-      <span class="shortcut-icon">🛒</span>
+      <span class="shortcut-icon">🛍️</span>
       <strong>Marketplace</strong>
       <small>Explore G-Store and Vendor Haul</small>
     </a>
 
-    <a class="shortcut" href="mining.html">
-      <span class="shortcut-icon">⛏️</span>
-      <strong>Mining</strong>
-      <small>Mine and accumulate G-Coins</small>
+    <a class="shortcut" href="wallet.html">
+      <span class="shortcut-icon">👛</span>
+      <strong>My Wallet</strong>
+      <small>Manage balances and withdrawals</small>
     </a>
 
     <a class="shortcut" href="business.html">
       <span class="shortcut-icon">🏢</span>
       <strong>Business</strong>
-      <small>Register to receive G-Coin payments</small>
+      <small>Register and manage your business</small>
     </a>
 
     <a class="shortcut" href="buy-coins.html">
@@ -734,41 +727,6 @@ footer{
       <small>Purchase G-Coins to get started</small>
     </a>
 
-    <a class="shortcut" href="wallet.html">
-      <span class="shortcut-icon">👛</span>
-      <strong>My Wallet</strong>
-      <small>Balance and withdrawals</small>
-    </a>
-
-    <a class="shortcut" href="transfer-coins.html">
-      <span class="shortcut-icon">💸</span>
-      <strong>Transfer G-Coins</strong>
-      <small>Send G-Coins to members</small>
-    </a>
-
-    <a class="shortcut" href="earngig-community.html">
-      <span class="shortcut-icon">🌍</span>
-      <strong>Community</strong>
-      <small>Connect and share</small>
-    </a>
-
-    <a class="shortcut" href="messages.html">
-      <span class="shortcut-icon">💬</span>
-      <strong>Messages</strong>
-      <small>Chat with members</small>
-    </a>
-
-    <a class="shortcut" href="referrals.html">
-      <span class="shortcut-icon">🤝</span>
-      <strong>Refer Friends</strong>
-      <small>Earn referral rewards</small>
-    </a>
-
-    <a class="shortcut" href="advertise.html">
-      <span class="shortcut-icon">📣</span>
-      <strong>Advertise</strong>
-      <small>Promote your business</small>
-    </a>
   </section>
 
   <!-- POPULAR GAMES -->
@@ -937,6 +895,7 @@ footer{
     </div>
 
     <div class="shortcut-grid">
+
       <a class="shortcut" href="earngig-community.html">
         <span class="shortcut-icon">🌍</span>
         <strong>EarnGig Community</strong>
@@ -966,6 +925,7 @@ footer{
         <strong>Leaderboard</strong>
         <small>View member rankings</small>
       </a>
+
     </div>
   </section>
 
