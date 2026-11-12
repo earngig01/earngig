@@ -8,27 +8,36 @@
 
 <style>
 :root{
-  --purple:#6427c7;
-  --deep:#48159b;
-  --lavender:#f5efff;
-  --lavender-2:#eee4fc;
-  --lavender-border:#e4d6f7;
+  --purple:#6427a8;
+  --deep:#381052;
+  --lavender:#f4eaff;
+  --lavender-light:#fbf8ff;
+  --border:#d9c3ed;
   --gold:#d6a62e;
-  --text:#29243a;
-  --muted:#777286;
+  --text:#32144b;
+  --muted:#71627f;
   --white:#ffffff;
-  --bg:#fcfbff;
 }
 
 *{
   box-sizing:border-box;
 }
 
+html{
+  min-height:100%;
+}
+
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--text);
+  min-height:100vh;
   font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 12% 20%,#f9f2ff 0%,transparent 40%),
+    radial-gradient(ellipse at 90% 65%,#f0e3ff 0%,transparent 42%),
+    linear-gradient(135deg,#fcfaff 0%,#f7f0ff 55%,#fcfaff 100%);
+  position:relative;
+  overflow-x:hidden;
 }
 
 a{
@@ -36,40 +45,82 @@ a{
   text-decoration:none;
 }
 
+button{
+  font:inherit;
+}
+
+/* BACKGROUND DECORATION */
+
+.background-wave{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:230px;
+  z-index:-1;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.background-wave svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
 /* HEADER */
 
 .topbar{
-  height:68px;
-  background:rgba(255,255,255,.96);
-  border-bottom:1px solid var(--lavender-border);
+  height:98px;
+  width:100%;
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   align-items:center;
-  padding:0 5%;
+  padding:0 4.5%;
+  background:rgba(255,255,255,.78);
+  border-bottom:1px solid #e8daf5;
+  box-shadow:0 3px 13px rgba(72,30,105,.055);
+  position:relative;
+  z-index:5;
+  backdrop-filter:blur(12px);
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:9px;
-  color:var(--purple);
-  font-size:23px;
-  font-weight:800;
+  gap:13px;
   width:max-content;
+  color:var(--purple);
+  font-size:43px;
+  font-weight:800;
+  letter-spacing:-1.5px;
+  white-space:nowrap;
 }
 
-/* Original EarnGig crown SVG */
 .brand svg{
-  width:43px;
-  height:43px;
+  width:57px;
+  height:57px;
   flex-shrink:0;
 }
 
+.header-divider{
+  width:1px;
+  height:48px;
+  background:#d9c7e9;
+  margin-left:15px;
+}
+
+.brand-wrap{
+  display:flex;
+  align-items:center;
+}
+
 .dashboard-link{
-  text-align:center;
-  color:var(--deep);
-  font-size:14px;
-  font-weight:700;
+  justify-self:center;
+  color:#562184;
+  font-size:29px;
+  font-weight:500;
+  transition:.2s;
 }
 
 .dashboard-link:hover{
@@ -80,110 +131,121 @@ a{
   justify-self:end;
   display:flex;
   align-items:center;
-  gap:8px;
-  background:var(--lavender);
-  border:1px solid var(--lavender-border);
-  padding:8px 15px;
-  border-radius:30px;
+  gap:12px;
+  padding:9px 23px;
+  min-width:170px;
+  justify-content:center;
+  background:#f0e2fc;
+  border:1px solid #ead8f8;
+  border-radius:35px;
   color:var(--deep);
-  font-size:14px;
+  font-size:25px;
   font-weight:800;
   white-space:nowrap;
 }
 
 .coin-icon{
-  width:25px;
-  height:25px;
+  width:39px;
+  height:39px;
   display:grid;
   place-items:center;
   border-radius:50%;
-  background:var(--gold);
+  background:linear-gradient(145deg,#f4cf70,#d99d26);
+  border:2px solid #fff5d9;
   color:white;
-  font-size:14px;
+  font-size:22px;
   font-weight:800;
-  box-shadow:inset 0 0 0 2px #ffffff70;
+  box-shadow:0 2px 5px #b47b2330;
 }
 
-/* PAGE */
+/* MAIN CONTENT */
 
 .container{
   width:100%;
-  max-width:1100px;
+  max-width:1300px;
   margin:0 auto;
-  padding:65px 28px 80px;
+  padding:95px 40px 180px;
 }
 
 .page-heading{
-  margin-bottom:42px;
+  margin-bottom:62px;
 }
 
 .page-heading h1{
-  color:#30134f;
-  font-size:35px;
-  margin:0 0 10px;
+  color:#35104f;
+  font-size:clamp(43px,6vw,72px);
+  line-height:1.08;
+  letter-spacing:-2px;
   font-weight:800;
-  letter-spacing:-.7px;
+  margin:0 0 17px;
 }
 
 .page-heading p{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.7;
+  color:#71617f;
+  font-size:clamp(17px,2vw,26px);
+  line-height:1.5;
   margin:0;
+  max-width:1100px;
 }
 
-/* THREE MARKETPLACE OPTIONS */
+/* MARKETPLACE OPTIONS */
 
 .market-options{
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:30px;
 }
 
 .market-option{
-  min-height:145px;
-  background:var(--white);
-  border:1px solid var(--lavender-border);
-  border-radius:17px;
+  width:100%;
+  min-height:184px;
   display:flex;
   align-items:center;
-  padding:23px 27px;
-  gap:25px;
-  box-shadow:0 5px 17px rgba(75,35,125,.045);
-  transition:border-color .2s, box-shadow .2s, transform .2s;
+  gap:30px;
+  padding:25px 38px;
+  border:2px solid var(--border);
+  border-radius:28px;
+  background:rgba(255,255,255,.73);
+  box-shadow:
+    0 8px 18px rgba(84,38,126,.075),
+    0 2px 4px rgba(84,38,126,.035);
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
 .market-option:hover{
-  border-color:#c8a8f0;
-  box-shadow:0 8px 24px rgba(75,35,125,.09);
-  transform:translateY(-2px);
+  transform:translateY(-3px);
+  border-color:#c7a3e5;
+  box-shadow:0 12px 25px rgba(84,38,126,.12);
 }
 
 .option-icon{
-  width:88px;
-  height:88px;
-  min-width:88px;
+  width:113px;
+  height:108px;
+  min-width:113px;
   display:grid;
   place-items:center;
-  border-radius:15px;
-  background:var(--lavender);
-  color:var(--purple);
+  border-radius:25px;
+  background:linear-gradient(145deg,#f0e1fc,#f6ecff);
+  color:#6423a5;
 }
 
 .option-icon svg{
-  width:43px;
-  height:43px;
-  stroke:currentColor;
+  width:68px;
+  height:68px;
   fill:none;
-  stroke-width:1.8;
+  stroke:currentColor;
+  stroke-width:2.5;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
 
 .option-divider{
-  width:1px;
+  width:2px;
   height:65px;
-  background:#e3d4f7;
+  background:#dfcbed;
   flex-shrink:0;
 }
 
@@ -193,34 +255,36 @@ a{
 }
 
 .option-content h2{
-  color:#351354;
-  font-size:23px;
-  margin:0 0 8px;
+  color:#35104f;
+  font-size:40px;
   font-weight:800;
+  letter-spacing:-1px;
+  margin:0 0 8px;
 }
 
 .option-content p{
-  color:#686176;
-  font-size:13px;
-  line-height:1.6;
+  color:#6f607e;
+  font-size:23px;
+  line-height:1.45;
   margin:0;
 }
 
 .option-status{
-  background:var(--lavender-2);
-  color:var(--deep);
-  padding:9px 15px;
-  border-radius:25px;
-  font-size:11px;
-  font-weight:700;
+  padding:13px 24px;
+  background:#f0e3fb;
+  border-radius:30px;
+  color:#57247d;
+  font-size:18px;
+  font-weight:500;
   white-space:nowrap;
 }
 
 .option-arrow{
-  width:25px;
-  height:25px;
-  color:var(--purple);
+  width:37px;
+  height:37px;
+  color:#6320a1;
   flex-shrink:0;
+  margin-left:4px;
 }
 
 .option-arrow svg{
@@ -228,181 +292,325 @@ a{
   height:100%;
   fill:none;
   stroke:currentColor;
-  stroke-width:2;
+  stroke-width:3;
   stroke-linecap:round;
   stroke-linejoin:round;
-}
-
-/* G-STORE ICON BACKGROUND */
-
-.gstore-option .option-icon{
-  background:#fff7e7;
-  color:var(--purple);
 }
 
 /* FOOTER */
 
 .footer{
-  border-top:1px solid var(--lavender-border);
-  background:white;
-  padding:23px 15px;
+  position:relative;
+  z-index:1;
+  padding:28px 15px;
   text-align:center;
-  color:var(--muted);
-  font-size:11px;
+  color:#81748d;
+  font-size:12px;
+  background:rgba(255,255,255,.35);
+  border-top:1px solid #eadcf6;
+}
+
+.footer p{
+  margin:0 0 12px;
 }
 
 .footer a{
-  color:var(--purple);
-  margin:0 8px;
+  color:#6324a5;
+  margin:0 10px;
+}
+
+/* TABLET */
+
+@media(max-width:850px){
+
+  .topbar{
+    height:78px;
+    padding:0 3%;
+  }
+
+  .brand{
+    font-size:29px;
+    gap:7px;
+  }
+
+  .brand svg{
+    width:43px;
+    height:43px;
+  }
+
+  .header-divider{
+    height:38px;
+    margin-left:7px;
+  }
+
+  .dashboard-link{
+    font-size:21px;
+  }
+
+  .coin-area{
+    min-width:130px;
+    padding:7px 15px;
+    font-size:19px;
+    gap:8px;
+  }
+
+  .coin-icon{
+    width:32px;
+    height:32px;
+    font-size:18px;
+  }
+
+  .container{
+    padding:75px 30px 140px;
+  }
+
+  .page-heading{
+    margin-bottom:45px;
+  }
+
+  .market-option{
+    min-height:150px;
+    padding:22px 25px;
+    gap:22px;
+    border-radius:22px;
+  }
+
+  .option-icon{
+    width:90px;
+    height:90px;
+    min-width:90px;
+  }
+
+  .option-icon svg{
+    width:56px;
+    height:56px;
+  }
+
+  .option-content h2{
+    font-size:31px;
+  }
+
+  .option-content p{
+    font-size:17px;
+  }
+
+  .option-status{
+    font-size:14px;
+    padding:10px 16px;
+  }
+
+  .option-arrow{
+    width:29px;
+    height:29px;
+  }
 }
 
 /* MOBILE */
 
-@media(max-width:650px){
+@media(max-width:600px){
 
   .topbar{
-    height:61px;
+    height:70px;
     padding:0 13px;
+    grid-template-columns:1fr 1fr 1fr;
   }
 
   .brand{
-    font-size:19px;
+    font-size:23px;
+    letter-spacing:-.8px;
     gap:5px;
   }
 
   .brand svg{
-    width:34px;
+    width:36px;
+    height:36px;
+  }
+
+  .header-divider{
     height:34px;
+    margin-left:5px;
   }
 
   .dashboard-link{
-    font-size:12px;
+    font-size:16px;
+    white-space:nowrap;
   }
 
   .coin-area{
-    padding:7px 9px;
-    gap:5px;
-    font-size:12px;
+    min-width:0;
+    padding:6px 11px;
+    gap:7px;
+    font-size:16px;
   }
 
   .coin-icon{
-    width:22px;
-    height:22px;
-    font-size:12px;
+    width:29px;
+    height:29px;
+    font-size:16px;
   }
 
   .container{
-    padding:38px 15px 55px;
+    padding:75px 22px 145px;
   }
 
   .page-heading{
-    margin-bottom:27px;
+    margin-bottom:55px;
   }
 
   .page-heading h1{
-    font-size:27px;
-    margin-bottom:8px;
+    font-size:48px;
+    letter-spacing:-1.5px;
+    margin-bottom:13px;
   }
 
   .page-heading p{
-    font-size:12px;
-    line-height:1.65;
+    font-size:17px;
+    line-height:1.55;
   }
 
   .market-options{
-    gap:13px;
+    gap:25px;
   }
 
   .market-option{
-    min-height:108px;
-    padding:15px 12px;
-    gap:11px;
-    border-radius:13px;
+    min-height:145px;
+    padding:19px 17px;
+    gap:15px;
+    border-radius:21px;
   }
 
   .option-icon{
-    width:53px;
-    height:53px;
-    min-width:53px;
-    border-radius:11px;
+    width:80px;
+    height:80px;
+    min-width:80px;
+    border-radius:19px;
   }
 
   .option-icon svg{
-    width:29px;
-    height:29px;
+    width:49px;
+    height:49px;
   }
 
   .option-divider{
-    height:46px;
+    height:65px;
   }
 
   .option-content h2{
-    font-size:16px;
-    margin-bottom:5px;
+    font-size:26px;
+    letter-spacing:-.5px;
+    margin-bottom:7px;
   }
 
   .option-content p{
-    font-size:10px;
+    font-size:14px;
     line-height:1.5;
   }
 
   .option-status{
-    padding:6px 8px;
-    font-size:9px;
+    font-size:11px;
+    padding:9px 12px;
   }
 
   .option-arrow{
-    width:18px;
-    height:18px;
+    width:26px;
+    height:26px;
+    margin-left:0;
+  }
+
+  .background-wave{
+    height:155px;
   }
 }
 
-@media(max-width:370px){
+/* SMALL MOBILE */
+
+@media(max-width:390px){
+
+  .topbar{
+    padding:0 9px;
+  }
 
   .brand{
-    font-size:16px;
+    font-size:19px;
   }
 
   .brand svg{
-    width:29px;
-    height:29px;
+    width:31px;
+    height:31px;
+  }
+
+  .header-divider{
+    margin-left:3px;
   }
 
   .dashboard-link{
-    font-size:11px;
-  }
-
-  .coin-area{
-    padding:6px 7px;
-    font-size:10px;
-  }
-
-  .market-option{
-    gap:8px;
-    padding:13px 9px;
-  }
-
-  .option-icon{
-    width:45px;
-    height:45px;
-    min-width:45px;
-  }
-
-  .option-divider{
-    height:40px;
-  }
-
-  .option-content h2{
     font-size:14px;
   }
 
+  .coin-area{
+    padding:5px 8px;
+    font-size:13px;
+    gap:5px;
+  }
+
+  .coin-icon{
+    width:25px;
+    height:25px;
+    font-size:14px;
+  }
+
+  .container{
+    padding:60px 14px 120px;
+  }
+
+  .page-heading h1{
+    font-size:39px;
+  }
+
+  .page-heading p{
+    font-size:14px;
+  }
+
+  .market-option{
+    min-height:119px;
+    padding:14px 10px;
+    gap:10px;
+    border-radius:16px;
+  }
+
+  .option-icon{
+    width:59px;
+    height:62px;
+    min-width:59px;
+    border-radius:14px;
+  }
+
+  .option-icon svg{
+    width:39px;
+    height:39px;
+  }
+
+  .option-divider{
+    height:48px;
+  }
+
+  .option-content h2{
+    font-size:20px;
+    margin-bottom:5px;
+  }
+
   .option-content p{
-    font-size:9px;
+    font-size:11px;
   }
 
   .option-status{
-    font-size:8px;
-    padding:5px 6px;
+    font-size:9px;
+    padding:7px 8px;
+  }
+
+  .option-arrow{
+    width:21px;
+    height:21px;
   }
 }
 </style>
@@ -410,28 +618,32 @@ a{
 
 <body>
 
+<!-- HEADER -->
+
 <header class="topbar">
 
-  <a href="dashboard.html" class="brand">
+  <div class="brand-wrap">
+    <a href="dashboard.html" class="brand">
 
-    <!-- Same crown artwork from your original EarnGig logo -->
-    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z"
-        fill="#D6A62E"
-        stroke="#B98716"
-        stroke-width="2.5"
-        stroke-linejoin="round"/>
-      <path d="M14 51H50"
-        stroke="#D6A62E"
-        stroke-width="5"
-        stroke-linecap="round"/>
-      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
-      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
-      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
-    </svg>
+      <!-- Fine outline EarnGig crown -->
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M7 19L20 34L31 10L44 34L57 19L51 49H13L7 19Z"
+          stroke="#D6A62E"
+          stroke-width="2.3"
+          stroke-linejoin="round"/>
+        <path d="M14 42H50"
+          stroke="#D6A62E"
+          stroke-width="1.7"/>
+        <circle cx="7" cy="17" r="3" fill="#D6A62E"/>
+        <circle cx="31" cy="8" r="3" fill="#D6A62E"/>
+        <circle cx="57" cy="17" r="3" fill="#D6A62E"/>
+      </svg>
 
-    EarnGig
-  </a>
+      EarnGig
+    </a>
+
+    <div class="header-divider"></div>
+  </div>
 
   <a href="dashboard.html" class="dashboard-link">
     Dashboard
@@ -439,16 +651,19 @@ a{
 
   <div class="coin-area">
     <span class="coin-icon">G</span>
-    <span id="coinBalance">0</span>
+    <span id="coinBalance">—</span>
   </div>
 
 </header>
 
 
+<!-- MAIN -->
+
 <main class="container">
 
   <section class="page-heading">
     <h1>Marketplace</h1>
+
     <p>
       Shop from EarnGig's official store, explore vendor stores,
       and manage your orders.
@@ -463,12 +678,12 @@ a{
     <a href="buyer-orders.html" class="market-option">
 
       <div class="option-icon">
-        <svg viewBox="0 0 48 48">
-          <path d="M7 15L24 6L41 15V35L24 43L7 35V15Z"/>
-          <path d="M7 15L24 24L41 15"/>
-          <path d="M24 24V43"/>
-          <path d="M15 11L32 20"/>
-          <path d="M20 17L28 13"/>
+        <svg viewBox="0 0 64 64">
+          <path d="M10 22L32 10L54 22V46L32 57L10 46V22Z"/>
+          <path d="M10 22L32 34L54 22"/>
+          <path d="M32 34V57"/>
+          <path d="M21 16L43 28"/>
+          <path d="M25 28L39 20"/>
         </svg>
       </div>
 
@@ -477,14 +692,13 @@ a{
       <div class="option-content">
         <h2>My Orders</h2>
         <p>
-          Track and manage your purchases from G-Store
-          and Vendor Haul.
+          Track and manage your purchases from G-Store and Vendor Haul.
         </p>
       </div>
 
       <div class="option-arrow">
         <svg viewBox="0 0 24 24">
-          <path d="M9 5L16 12L9 19"/>
+          <path d="M8 4L16 12L8 20"/>
         </svg>
       </div>
 
@@ -493,14 +707,16 @@ a{
 
     <!-- G-STORE -->
 
-    <a href="g-store.html" class="market-option gstore-option">
+    <a href="g-store.html" class="market-option">
 
       <div class="option-icon">
-        <svg viewBox="0 0 48 48">
-          <path d="M12 17H36L39 40H9L12 17Z"/>
-          <path d="M17 17V12A7 7 0 0 1 31 12V17"/>
-          <path d="M19 28L24 24L29 28"/>
-          <path d="M24 24V33"/>
+        <svg viewBox="0 0 64 64">
+          <path d="M18 24H46L50 53H14L18 24Z"/>
+          <path d="M23 24V17A9 9 0 0 1 41 17V24"/>
+          <path d="M32 34L34.5 39H40L35.5 42.5L37 48L32 44.5L27 48L28.5 42.5L24 39H29.5L32 34Z"
+            fill="#D6A62E"
+            stroke="#D6A62E"
+            stroke-width="1"/>
         </svg>
       </div>
 
@@ -517,7 +733,7 @@ a{
 
       <div class="option-arrow">
         <svg viewBox="0 0 24 24">
-          <path d="M9 5L16 12L9 19"/>
+          <path d="M8 4L16 12L8 20"/>
         </svg>
       </div>
 
@@ -529,11 +745,12 @@ a{
     <a href="vendor-haul.html" class="market-option">
 
       <div class="option-icon">
-        <svg viewBox="0 0 48 48">
-          <path d="M7 20L11 9H37L41 20"/>
-          <path d="M8 20V40H40V20"/>
-          <path d="M8 20C8 25 16 25 16 20C16 25 24 25 24 20C24 25 32 25 32 20C32 25 40 25 40 20"/>
-          <path d="M19 40V29H29V40"/>
+        <svg viewBox="0 0 64 64">
+          <path d="M10 27L16 12H48L54 27"/>
+          <path d="M10 27V53H54V27"/>
+          <path d="M10 27C10 34 20 34 20 27C20 34 30 34 30 27C30 34 40 34 40 27C40 34 54 34 54 27"/>
+          <path d="M25 53V39H39V53"/>
+          <path d="M30 39V53"/>
         </svg>
       </div>
 
@@ -541,14 +758,12 @@ a{
 
       <div class="option-content">
         <h2>Vendor Haul</h2>
-        <p>
-          Discover products from registered EarnGig vendors.
-        </p>
+        <p>Discover products from registered EarnGig vendors.</p>
       </div>
 
       <div class="option-arrow">
         <svg viewBox="0 0 24 24">
-          <path d="M9 5L16 12L9 19"/>
+          <path d="M8 4L16 12L8 20"/>
         </svg>
       </div>
 
@@ -559,8 +774,27 @@ a{
 </main>
 
 
+<!-- SOFT LAVENDER BOTTOM WAVE -->
+
+<div class="background-wave" aria-hidden="true">
+  <svg viewBox="0 0 1440 260" preserveAspectRatio="none">
+    <path
+      d="M0 120 C230 65 390 185 620 175 C900 165 1060 30 1240 20 C1330 12 1390 25 1440 35 L1440 260 L0 260 Z"
+      fill="#f0e2fc"
+      opacity=".65"
+    />
+    <path
+      d="M0 175 C250 115 420 225 680 218 C950 210 1110 90 1290 75 C1350 70 1400 80 1440 88 L1440 260 L0 260 Z"
+      fill="#f7efff"
+      opacity=".9"
+    />
+  </svg>
+</div>
+
+
 <footer class="footer">
   <p>EarnGig Marketplace</p>
+
   <a href="about.html">About</a>
   <a href="help.html">Help</a>
   <a href="terms.html">Terms</a>
@@ -570,37 +804,38 @@ a{
 
 
 <script>
-/*
-  G-COINS
 
-  Connect this display to your existing wallet balance key
-  when its exact storage key is confirmed.
-*/
-const COIN_BALANCE_KEYS = [
-  "earngig_gcoins",
-  "earngig_coin_balance",
-  "gcoins",
-  "coinBalance"
-];
+/* G-COINS BALANCE */
 
-function displayCoinBalance(){
+function getCoinBalance(){
 
-  let balance = null;
+  const keys = [
+    "earngig_gcoins",
+    "earngig_coin_balance",
+    "gcoins",
+    "coinBalance"
+  ];
 
-  for(const key of COIN_BALANCE_KEYS){
+  for(const key of keys){
 
     const value = localStorage.getItem(key);
 
     if(value !== null && value !== ""){
 
-      const parsed = Number(value);
+      const balance = Number(value);
 
-      if(Number.isFinite(parsed)){
-        balance = parsed;
-        break;
+      if(Number.isFinite(balance)){
+        return balance;
       }
     }
   }
+
+  return null;
+}
+
+function updateCoinBalance(){
+
+  const balance = getCoinBalance();
 
   document.getElementById("coinBalance").textContent =
     balance === null
@@ -609,15 +844,8 @@ function displayCoinBalance(){
 }
 
 
-/*
-  G-STORE BATCH STATUS
+/* G-STORE BATCH STATUS */
 
-  This only displays an active status when a valid,
-  unexpired batch record exists in this browser.
-
-  A shared backend will be required for the final
-  site-wide batch status.
-*/
 function updateGStoreStatus(){
 
   let batch = null;
@@ -638,7 +866,11 @@ function updateGStoreStatus(){
   }
 
   const start = new Date(batch.startDate).getTime();
-  const end = new Date(batch.endDate).getTime();
+
+  const end = batch.endDate
+    ? new Date(batch.endDate).getTime()
+    : start + (14 * 24 * 60 * 60 * 1000);
+
   const now = Date.now();
 
   if(
@@ -654,13 +886,17 @@ function updateGStoreStatus(){
   status.textContent = "Batch Open";
 }
 
-displayCoinBalance();
-updateGStoreStatus();
+
+/* REFRESH WHEN LOCAL DATA CHANGES */
 
 window.addEventListener("storage",()=>{
-  displayCoinBalance();
+  updateCoinBalance();
   updateGStoreStatus();
 });
+
+updateCoinBalance();
+updateGStoreStatus();
+
 </script>
 
 </body>
