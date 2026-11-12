@@ -2,567 +2,1624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Purchases | EarnGig</title>
-<style>
-:root{
-  --purple:#6427c7;--deep:#48159b;--light:#f2ebff;
-  --gold:#d6a62e;--text:#29243a;--muted:#777286;
-  --border:#ece8f3;--bg:#faf9fc;--green:#168653;
-  --red:#c43e3e;--orange:#bd7415;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-a{text-decoration:none;color:inherit}
-button{font:inherit;cursor:pointer}
-.topbar{
-  height:70px;background:white;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 5%;position:sticky;top:0;z-index:10
-}
-.brand{display:flex;align-items:center;gap:8px;color:var(--purple);font-size:23px;font-weight:800}
-.brand svg{width:25px;height:25px}
-.nav{display:flex;align-items:center;gap:19px;font-size:12px;font-weight:700;color:#625d71}
-.nav a:hover,.nav a.active{color:var(--purple)}
-.container{max-width:1150px;margin:auto;padding:30px 20px 55px}
-.heading{margin-bottom:22px}
-.heading h1{font-size:27px;margin:0 0 7px}
-.heading p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
-.stat{background:white;border:1px solid var(--border);border-radius:11px;padding:15px}
-.stat span{font-size:10px;color:var(--muted);font-weight:700}
-.stat strong{display:block;font-size:22px;margin-top:8px}
-.filters{display:flex;gap:8px;overflow-x:auto;margin-bottom:17px;padding-bottom:5px}
-.filter{
-  border:1px solid var(--border);background:white;color:#625d71;
-  border-radius:25px;padding:10px 14px;font-size:10px;font-weight:700;white-space:nowrap
-}
-.filter.active,.filter:hover{background:var(--light);color:var(--purple);border-color:#d9c8f1}
-.order-card{background:white;border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
-.order-header{padding:15px 17px;background:#fcfbfe;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-.order-reference{font-size:11px;font-weight:800}
-.order-date{font-size:10px;color:var(--muted);margin-top:5px}
-.status{font-size:9px;font-weight:800;padding:7px 10px;border-radius:20px;background:#f1eff5;color:#625d71}
-.status.accepted,.status.processing{background:#f0eaff;color:var(--purple)}
-.status.dispatched,.status.out-for-delivery{background:#fff4e5;color:var(--orange)}
-.status.completed{background:#e8f7ef;color:var(--green)}
-.status.cancelled,.status.rejected,.status.disputed{background:#fff0f0;color:var(--red)}
-.order-body{padding:16px 17px}
-.vendor-line{font-size:11px;margin-bottom:12px}
-.vendor-line a{color:var(--purple);font-weight:800}
-.items{display:flex;flex-direction:column;gap:10px}
-.item{display:flex;align-items:center;gap:11px}
-.item img{width:54px;height:54px;border-radius:8px;object-fit:cover;background:#f0edf5}
-.item-info{flex:1;min-width:0}
-.item-info strong{display:block;font-size:11px;margin-bottom:5px}
-.item-info span{font-size:9px;color:var(--muted)}
-.item-price{font-size:11px;font-weight:800;white-space:nowrap}
-.order-footer{border-top:1px solid var(--border);margin-top:15px;padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.order-total{font-size:10px;color:var(--muted)}
-.order-total strong{display:block;color:var(--purple);font-size:15px;margin-top:5px}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:0;border-radius:8px;padding:10px 13px;font-size:10px;font-weight:800;display:inline-block;text-align:center}
-.btn.primary{background:var(--purple);color:white}
-.btn.light{background:var(--light);color:var(--purple)}
-.btn.danger{background:#fff0f0;color:var(--red)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.empty{background:white;border:1px dashed #d9d1e4;border-radius:12px;padding:45px 20px;text-align:center}
-.empty h2{font-size:17px;margin:0 0 8px}
-.empty p{font-size:11px;color:var(--muted);line-height:1.7;margin:0 0 15px}
-.empty a{display:inline-block;background:var(--purple);color:white;padding:11px 16px;border-radius:8px;font-size:10px;font-weight:800}
-.modal-backdrop{display:none;position:fixed;inset:0;background:#17102088;z-index:30;padding:20px;overflow:auto}
-.modal-backdrop.show{display:flex;align-items:center;justify-content:center}
-.modal{background:white;border-radius:14px;width:100%;max-width:550px;padding:22px;max-height:90vh;overflow:auto}
-.modal h2{font-size:18px;margin:0 0 15px}
-.modal p{font-size:11px;color:var(--muted);line-height:1.7}
-.modal label{display:block;font-size:10px;font-weight:800;margin:13px 0 6px}
-.modal textarea,.modal select{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font:12px Arial;color:var(--text)}
-.modal textarea{min-height:85px;resize:vertical}
-.modal-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:18px}
-.detail-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #f0edf4;padding:10px 0;font-size:11px}
-.detail-row span{color:var(--muted)}
-.detail-row strong{text-align:right}
-.warning{background:#fff8e8;border:1px solid #f1e3c2;border-radius:9px;padding:12px;font-size:10px;color:#785b1c;line-height:1.7;margin:13px 0}
-.footer{border-top:1px solid var(--border);background:white;padding:25px 5%;text-align:center;color:var(--muted);font-size:10px}
-.footer a{color:var(--purple);margin:0 8px}
-@media(max-width:750px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .nav{gap:10px;font-size:10px}
-  .nav a:not(.active){display:none}
-}
-@media(max-width:600px){
-  .topbar{height:62px;padding:0 14px}
-  .brand{font-size:20px}
-  .container{padding:23px 13px 40px}
-  .heading h1{font-size:23px}
-  .order-header,.order-body{padding:13px}
-  .order-footer{align-items:flex-start}
-  .actions{width:100%}
-  .actions .btn{flex:1}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f1ff">
+  <title>My Orders | EarnGig</title>
+
+  <style>
+    :root {
+      --lavender-bg: #f6f3fc;
+      --lavender: #eee8fb;
+      --purple: #7650b8;
+      --purple-dark: #58368f;
+      --purple-light: #f3edff;
+      --white: #ffffff;
+      --text: #292435;
+      --muted: #898397;
+      --border: #ece8f2;
+      --green: #23865a;
+      --green-bg: #eaf8f0;
+      --orange: #b77922;
+      --orange-bg: #fff5e5;
+      --blue: #3974b8;
+      --blue-bg: #edf5ff;
+      --red: #c14d57;
+      --red-bg: #fff0f0;
+      --shadow: 0 5px 22px rgba(61, 42, 94, .045);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+      background: var(--lavender-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 66px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--purple-dark);
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.7px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: var(--purple-light);
+      color: var(--purple);
+      border-radius: 11px;
+      font-size: 19px;
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 13px;
+      color: #716b7d;
+    }
+
+    .top-links a:hover {
+      color: var(--purple);
+    }
+
+    .top-links .current {
+      color: var(--purple-dark);
+      font-weight: 700;
+    }
+
+    .page {
+      width: min(1100px, 92%);
+      margin: 32px auto 60px;
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 23px;
+    }
+
+    .page-heading h1 {
+      font-size: clamp(23px, 4vw, 29px);
+      letter-spacing: -.8px;
+      margin-bottom: 6px;
+    }
+
+    .page-heading p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .back-link {
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    /* Four-column order filters */
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .filter-card {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 15px 12px;
+      min-height: 91px;
+      background: var(--white);
+      text-align: left;
+      transition: .18s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .filter-card:hover {
+      border-color: #cdbbea;
+      transform: translateY(-1px);
+    }
+
+    .filter-card.active {
+      background: var(--purple-light);
+      border: 1.5px solid #bda5e3;
+      box-shadow: 0 4px 16px rgba(118, 80, 184, .08);
+    }
+
+    .filter-count {
+      display: block;
+      color: var(--purple-dark);
+      font-size: 23px;
+      line-height: 1.1;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .filter-name {
+      display: block;
+      color: #777184;
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 650;
+    }
+
+    .filter-card.active .filter-name {
+      color: var(--purple-dark);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 13px;
+      gap: 12px;
+    }
+
+    .section-heading h2 {
+      font-size: 17px;
+      letter-spacing: -.3px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .orders-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .order-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 17px 18px;
+      box-shadow: var(--shadow);
+      transition: .18s ease;
+    }
+
+    .order-card:hover {
+      border-color: #d5c8e9;
+    }
+
+    .order-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .order-ref {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .1px;
+      margin-bottom: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .order-source {
+      font-size: 12px;
+      color: #6e687b;
+      line-height: 1.6;
+    }
+
+    .order-source strong {
+      color: #4c4658;
+      font-weight: 700;
+    }
+
+    .order-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 17px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .order-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid #f1eef5;
+      padding-top: 12px;
+      margin-top: 13px;
+    }
+
+    .order-total {
+      font-size: 14px;
+      font-weight: 800;
+      color: #383144;
+    }
+
+    .view-order {
+      border: 0;
+      background: var(--purple-light);
+      color: var(--purple-dark);
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .view-order:hover {
+      background: #e8ddf9;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+      padding: 6px 9px;
+      font-size: 10px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .status.awaiting {
+      background: var(--orange-bg);
+      color: var(--orange);
+    }
+
+    .status.transit {
+      background: var(--blue-bg);
+      color: var(--blue);
+    }
+
+    .status.completed {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .status.issue {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .empty-state {
+      text-align: center;
+      background: var(--white);
+      border: 1px dashed #d9cfe8;
+      border-radius: 14px;
+      padding: 48px 18px;
+    }
+
+    .empty-icon {
+      width: 49px;
+      height: 49px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: var(--purple-light);
+      color: var(--purple);
+      margin: 0 auto 13px;
+      font-size: 23px;
+    }
+
+    .empty-state h3 {
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .empty-state p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .notice {
+      display: none;
+      background: #fff4e8;
+      color: #8b5b21;
+      border: 1px solid #f1dfc8;
+      border-radius: 9px;
+      padding: 11px 13px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* Order details */
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 23, 43, .48);
+      z-index: 50;
+      padding: 20px;
+      overflow-y: auto;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .details-modal {
+      width: min(680px, 100%);
+      background: var(--white);
+      border-radius: 17px;
+      margin: 25px auto;
+      overflow: hidden;
+      box-shadow: 0 20px 65px rgba(25, 16, 40, .2);
+    }
+
+    .modal-header {
+      padding: 19px 21px;
+      background: #faf8fe;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .modal-header h2 {
+      font-size: 17px;
+      margin-bottom: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .modal-header p {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .close-modal {
+      border: 0;
+      background: #eee9f5;
+      color: #635b70;
+      border-radius: 50%;
+      width: 31px;
+      height: 31px;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .modal-content {
+      padding: 20px 21px 23px;
+    }
+
+    .detail-section {
+      margin-bottom: 22px;
+    }
+
+    .detail-section h3 {
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .detail-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+      background: #faf9fc;
+      border: 1px solid #f0edf4;
+      border-radius: 11px;
+      padding: 14px;
+    }
+
+    .info-label {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 12px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .product-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .product-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border: 1px solid #efecf3;
+      border-radius: 10px;
+    }
+
+    .product-image {
+      width: 57px;
+      height: 57px;
+      border-radius: 9px;
+      background: #f4f0fa;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .product-placeholder {
+      display: grid;
+      place-items: center;
+      color: #a397b7;
+      font-size: 20px;
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-info strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .product-info span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .product-price {
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .total-box {
+      background: var(--purple-light);
+      border-radius: 10px;
+      padding: 13px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .total-box strong {
+      color: var(--purple-dark);
+      font-size: 15px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 0;
+      padding-left: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 17px 25px;
+      border-left: 2px solid #e8e2f1;
+      margin-left: 7px;
+    }
+
+    .timeline-item:last-child {
+      border-left-color: transparent;
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -7px;
+      top: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d8cce9;
+      border: 2px solid white;
+      box-shadow: 0 0 0 1px #d8cce9;
+    }
+
+    .timeline-item.done .timeline-dot {
+      background: var(--purple);
+      box-shadow: 0 0 0 1px var(--purple);
+    }
+
+    .timeline-item strong {
+      display: block;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item span {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 15px;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .btn-primary {
+      color: white;
+      background: var(--purple);
+    }
+
+    .btn-primary:hover {
+      background: var(--purple-dark);
+    }
+
+    .btn-secondary {
+      color: var(--purple-dark);
+      background: var(--purple-light);
+    }
+
+    .btn-danger {
+      color: var(--red);
+      background: var(--red-bg);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* Issue form */
+
+    .issue-form {
+      display: none;
+      background: #faf8fc;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 11px;
+      margin-top: 15px;
+    }
+
+    .issue-form.show {
+      display: block;
+    }
+
+    .issue-form label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .issue-form select,
+    .issue-form textarea {
+      width: 100%;
+      border: 1px solid #e5dfed;
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 11px;
+      outline: none;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .issue-form textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      background: #30263e;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 9px;
+      font-size: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.15);
+      transition: .2s ease;
+      width: max-content;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 35px 15px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        height: 59px;
+        padding: 0 4%;
+      }
+
+      .brand {
+        font-size: 19px;
+      }
+
+      .top-links {
+        gap: 12px;
+        font-size: 11px;
+      }
+
+      .page {
+        width: 92%;
+        margin-top: 25px;
+      }
+
+      .page-heading {
+        align-items: flex-start;
+      }
+
+      .page-heading p {
+        max-width: 240px;
+        line-height: 1.5;
+      }
+
+      .filter-grid {
+        gap: 7px;
+        margin-bottom: 21px;
+      }
+
+      .filter-card {
+        min-height: 79px;
+        padding: 11px 7px;
+        border-radius: 10px;
+      }
+
+      .filter-count {
+        font-size: 20px;
+        margin-bottom: 6px;
+      }
+
+      .filter-name {
+        font-size: 9px;
+      }
+
+      .order-card {
+        padding: 14px;
+        border-radius: 11px;
+      }
+
+      .order-ref {
+        font-size: 12px;
+      }
+
+      .order-source {
+        font-size: 11px;
+      }
+
+      .order-meta {
+        font-size: 10px;
+      }
+
+      .status {
+        font-size: 9px;
+        padding: 5px 7px;
+      }
+
+      .view-order {
+        padding: 8px 10px;
+      }
+
+      .modal-backdrop {
+        padding: 8px;
+      }
+
+      .details-modal {
+        margin: 12px auto;
+        border-radius: 14px;
+      }
+
+      .modal-header,
+      .modal-content {
+        padding: 16px;
+      }
+
+      .product-image {
+        width: 48px;
+        height: 48px;
+      }
+
+      .product-price {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .filter-grid {
+        gap: 5px;
+      }
+
+      .filter-card {
+        padding: 10px 5px;
+      }
+
+      .filter-name {
+        font-size: 8px;
+      }
+
+      .detail-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="topbar">
-  <a href="dashboard.html" class="brand">
-    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z" fill="#D6A62E" stroke="#B98716" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M14 51H50" stroke="#D6A62E" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
-      <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
-      <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
-    </svg>
-    EarnGig
-  </a>
-  <nav class="nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="marketplace.html">Marketplace</a>
-    <a href="cart.html">Cart</a>
-    <a href="buyer-orders.html" class="active">My Purchases</a>
-  </nav>
-</header>
+  <header class="topbar">
+    <a class="brand" href="dashboard.html">
+      <span class="brand-mark">♛</span>
+      EarnGig
+    </a>
 
-<main class="container">
-  <div class="heading">
-    <h1>My Purchases</h1>
-    <p>Track your orders, see seller updates and confirm when your packages arrive.</p>
-  </div>
+    <nav class="top-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="buyer-orders.html" class="current">My Orders</a>
+    </nav>
+  </header>
 
-  <section class="stats">
-    <div class="stat"><span>All Orders</span><strong id="allCount">0</strong></div>
-    <div class="stat"><span>Awaiting Delivery</span><strong id="pendingCount">0</strong></div>
-    <div class="stat"><span>Out for Delivery</span><strong id="deliveryCount">0</strong></div>
-    <div class="stat"><span>Completed</span><strong id="completedCount">0</strong></div>
-  </section>
+  <main class="page">
 
-  <div class="filters" id="filters">
-    <button class="filter active" data-filter="all">All Orders</button>
-    <button class="filter" data-filter="pending">Pending</button>
-    <button class="filter" data-filter="accepted">Accepted</button>
-    <button class="filter" data-filter="processing">Preparing</button>
-    <button class="filter" data-filter="dispatched">Out for Delivery</button>
-    <button class="filter" data-filter="completed">Completed</button>
-    <button class="filter" data-filter="cancelled">Cancelled</button>
-  </div>
-
-  <div id="ordersList"></div>
-</main>
-
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal" id="modalContent"></div>
-</div>
-
-<footer class="footer">
-  <p>EarnGig Marketplace</p>
-  <a href="help.html">Help</a>
-  <a href="support.html">Support</a>
-  <a href="contact.html">Contact</a>
-</footer>
-
-<script>
-const ORDERS_KEY = "earngig_buyer_orders";
-const EMAIL_KEY = "earngig_current_user_email";
-
-let activeFilter = "all";
-
-function readOrders(){
-  try{
-    const value = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
-    return Array.isArray(value) ? value : [];
-  }catch(error){
-    return [];
-  }
-}
-
-function saveOrders(orders){
-  localStorage.setItem(ORDERS_KEY,JSON.stringify(orders));
-}
-
-function money(value){
-  return "₦"+(Number(value)||0).toLocaleString("en-NG",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
-}
-
-function currentEmail(){
-  return (localStorage.getItem(EMAIL_KEY)||"").trim().toLowerCase();
-}
-
-function getMyOrders(){
-  const orders = readOrders();
-  const email = currentEmail();
-
-  if(!email) return orders;
-
-  return orders.filter(order=>
-    String(order.buyerEmail || order.delivery?.email || "")
-      .trim().toLowerCase() === email
-  );
-}
-
-function normalStatus(order){
-  const status = String(order.status || order.orderStatus || "pending").toLowerCase();
-
-  if(["new","awaiting_acceptance","pending","awaiting_vendor"].includes(status))return "pending";
-  if(["accepted","confirmed"].includes(status))return "accepted";
-  if(["processing","preparing","packed"].includes(status))return "processing";
-  if(["dispatched","out_for_delivery","shipped"].includes(status))return "dispatched";
-  if(["completed","delivered","received"].includes(status))return "completed";
-  if(["cancelled","canceled"].includes(status))return "cancelled";
-  if(["rejected"].includes(status))return "rejected";
-  if(["disputed"].includes(status))return "disputed";
-
-  return status;
-}
-
-function statusLabel(status){
-  const labels={
-    pending:"Awaiting Vendor Acceptance",
-    accepted:"Accepted",
-    processing:"Being Prepared",
-    dispatched:"Out for Delivery",
-    completed:"Completed",
-    cancelled:"Cancelled",
-    rejected:"Rejected",
-    disputed:"Under Dispute"
-  };
-  return labels[status] || status.replace(/_/g," ").toUpperCase();
-}
-
-function getItems(order){
-  if(Array.isArray(order.items))return order.items;
-  if(order.product)return [order.product];
-  return [];
-}
-
-function orderTotal(order){
-  if(order.total !== undefined)return Number(order.total)||0;
-  if(order.totalAmount !== undefined)return Number(order.totalAmount)||0;
-
-  const items=getItems(order);
-  const subtotal=items.reduce((sum,item)=>
-    sum+(Number(item.price)||0)*Math.max(1,Number(item.quantity)||1),0
-  );
-
-  return subtotal+(Number(order.serviceCharge)||250);
-}
-
-function dateText(value){
-  if(!value)return "Date unavailable";
-  const date=new Date(value);
-  return Number.isNaN(date.getTime())?"Date unavailable":date.toLocaleString("en-NG");
-}
-
-function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[char]);
-}
-
-function renderStats(orders){
-  document.getElementById("allCount").textContent=orders.length;
-
-  document.getElementById("pendingCount").textContent=orders.filter(o=>
-    ["pending","accepted","processing"].includes(normalStatus(o))
-  ).length;
-
-  document.getElementById("deliveryCount").textContent=orders.filter(o=>
-    normalStatus(o)==="dispatched"
-  ).length;
-
-  document.getElementById("completedCount").textContent=orders.filter(o=>
-    normalStatus(o)==="completed"
-  ).length;
-}
-
-function renderOrders(){
-  const orders=getMyOrders();
-  renderStats(orders);
-
-  const filtered=activeFilter==="all"
-    ?orders
-    :orders.filter(order=>normalStatus(order)===activeFilter);
-
-  const container=document.getElementById("ordersList");
-  container.innerHTML="";
-
-  if(!filtered.length){
-    container.innerHTML=`
-      <div class="empty">
-        <h2>No orders to show</h2>
-        <p>Your marketplace purchases will appear here after checkout.</p>
-        <a href="marketplace.html">Explore Marketplace</a>
-      </div>`;
-    return;
-  }
-
-  filtered.sort((a,b)=>
-    new Date(b.createdAt||b.date||0)-new Date(a.createdAt||a.date||0)
-  );
-
-  filtered.forEach(order=>{
-    const status=normalStatus(order);
-    const items=getItems(order);
-    const reference=order.reference||order.orderReference||order.id||"Order";
-    const seller=order.sellerName||order.vendorName||"EarnGig Seller";
-
-    const card=document.createElement("article");
-    card.className="order-card";
-
-    const header=document.createElement("div");
-    header.className="order-header";
-    header.innerHTML=`
+    <div class="page-heading">
       <div>
-        <div class="order-reference">Order: ${escapeHTML(reference)}</div>
-        <div class="order-date">${escapeHTML(dateText(order.createdAt||order.date))}</div>
+        <h1>My Orders</h1>
+        <p>Track your purchases and manage your deliveries.</p>
       </div>
-      <span class="status ${escapeHTML(status)}">${escapeHTML(statusLabel(status))}</span>
-    `;
+      <a href="marketplace.html" class="back-link">← Marketplace</a>
+    </div>
 
-    const body=document.createElement("div");
-    body.className="order-body";
+    <div id="notice" class="notice"></div>
 
-    const vendor=document.createElement("div");
-    vendor.className="vendor-line";
-    vendor.innerHTML=`Seller: <strong>${escapeHTML(seller)}</strong>`;
+    <section class="filter-grid" aria-label="Order filters">
 
-    const itemContainer=document.createElement("div");
-    itemContainer.className="items";
+      <button class="filter-card active" data-filter="all">
+        <span class="filter-count" id="countAll">0</span>
+        <span class="filter-name">All Orders</span>
+      </button>
 
-    items.forEach(item=>{
-      const row=document.createElement("div");
-      row.className="item";
+      <button class="filter-card" data-filter="awaiting_dispatch">
+        <span class="filter-count" id="countAwaiting">0</span>
+        <span class="filter-name">Awaiting Dispatch</span>
+      </button>
 
-      const img=document.createElement("img");
-      img.src=item.image||item.imageUrl||"";
-      img.alt=item.name||"Product";
-      img.onerror=()=>img.style.visibility="hidden";
+      <button class="filter-card" data-filter="in_transit">
+        <span class="filter-count" id="countTransit">0</span>
+        <span class="filter-name">In Transit</span>
+      </button>
 
-      const info=document.createElement("div");
-      info.className="item-info";
+      <button class="filter-card" data-filter="completed">
+        <span class="filter-count" id="countCompleted">0</span>
+        <span class="filter-name">Completed</span>
+      </button>
 
-      const name=document.createElement("strong");
-      name.textContent=item.name||item.title||"Product";
+    </section>
 
-      const quantity=document.createElement("span");
-      quantity.textContent="Quantity: "+Math.max(1,Number(item.quantity)||1);
+    <div class="section-heading">
+      <h2 id="listHeading">Active Orders</h2>
+      <span id="orderCount">0 orders</span>
+    </div>
 
-      info.append(name,quantity);
+    <section id="ordersList" class="orders-list">
+      <div class="loading">Loading your orders...</div>
+    </section>
 
-      const price=document.createElement("div");
-      price.className="item-price";
-      price.textContent=money(Number(item.price)*Math.max(1,Number(item.quantity)||1));
+  </main>
 
-      row.append(img,info,price);
-      itemContainer.appendChild(row);
+  <!-- Order details modal -->
+
+  <div class="modal-backdrop" id="detailsBackdrop">
+    <div class="details-modal" role="dialog" aria-modal="true"
+      aria-labelledby="modalOrderRef">
+
+      <div class="modal-header">
+        <div>
+          <h2 id="modalOrderRef">Order details</h2>
+          <p id="modalOrderDate"></p>
+        </div>
+        <button class="close-modal" id="closeModal" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-content" id="modalContent"></div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /*
+      EARNGIG BUYER ORDERS
+
+      Configure API_BASE with your real backend API address.
+
+      Expected endpoints:
+
+      GET  /orders/my
+           Returns orders belonging to the authenticated buyer.
+
+      POST /orders/:orderId/confirm-delivery
+           Verifies the order is in transit, records buyer confirmation,
+           completes the order and releases eligible seller proceeds.
+
+      POST /orders/:orderId/issues
+           Submits an issue linked to the specific order.
+
+      These actions must be authenticated and verified by the backend.
+      Do not use localStorage as the authority for payments, order status,
+      penalties or wallet balances.
+    */
+
+    const API_BASE = "https://YOUR-BACKEND-DOMAIN/api";
+
+    let orders = [];
+    let activeFilter = "all";
+    let selectedOrder = null;
+
+    const list = document.getElementById("ordersList");
+    const backdrop = document.getElementById("detailsBackdrop");
+    const modalContent = document.getElementById("modalContent");
+    const notice = document.getElementById("notice");
+
+    const money = value => {
+      const amount = Number(value);
+      if (!Number.isFinite(amount)) return "—";
+
+      return new Intl.NumberFormat("en-NG", {
+        style: "currency",
+        currency: "NGN",
+        maximumFractionDigits: 2
+      }).format(amount);
+    };
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function formatDate(value) {
+      if (!value) return "Date unavailable";
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+      return date.toLocaleDateString("en-NG", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    function getReference(order) {
+      return order.orderReference ||
+        order.order_reference ||
+        order.reference ||
+        order.orderNumber ||
+        order.order_number ||
+        order.id ||
+        "Order reference unavailable";
+    }
+
+    function getProducts(order) {
+      return Array.isArray(order.items)
+        ? order.items
+        : Array.isArray(order.products)
+          ? order.products
+          : [];
+    }
+
+    function getSource(order) {
+      const source = String(
+        order.source || order.marketplace || order.storeType || ""
+      ).toLowerCase();
+
+      if (source.includes("g-store") || source.includes("gstore")) {
+        return "G-Store";
+      }
+
+      if (source.includes("vendor")) {
+        return "Vendor Haul";
+      }
+
+      if (order.vendorName || order.vendor_name || order.storeName) {
+        return "Vendor Haul";
+      }
+
+      return order.storeName || order.store_name || "Shopping source unavailable";
+    }
+
+    function getVendor(order) {
+      return order.vendorName ||
+        order.vendor_name ||
+        order.storeName ||
+        order.store_name ||
+        order.vendor?.name ||
+        "Vendor information unavailable";
+    }
+
+    function normalStatus(order) {
+      const raw = String(
+        order.status || order.orderStatus || order.order_status || ""
+      ).toLowerCase().replace(/[\s-]+/g, "_");
+
+      if (
+        raw === "completed" ||
+        raw === "buyer_confirmed" ||
+        raw === "buyer_received" ||
+        raw === "delivered_confirmed"
+      ) {
+        return "completed";
+      }
+
+      if (
+        raw === "in_transit" ||
+        raw === "dispatched" ||
+        raw === "shipped" ||
+        raw === "out_for_delivery"
+      ) {
+        return "in_transit";
+      }
+
+      if (
+        raw === "awaiting_dispatch" ||
+        raw === "paid" ||
+        raw === "processing" ||
+        raw === "confirmed" ||
+        raw === "accepted"
+      ) {
+        return "awaiting_dispatch";
+      }
+
+      if (order.issueStatus || order.hasOpenIssue) {
+        return "issue";
+      }
+
+      return "awaiting_dispatch";
+    }
+
+    function statusLabel(status) {
+      return {
+        awaiting_dispatch: "Awaiting Dispatch",
+        in_transit: "In Transit",
+        completed: "Completed",
+        issue: "Under Review"
+      }[status] || "Awaiting Dispatch";
+    }
+
+    function statusClass(status) {
+      return {
+        awaiting_dispatch: "awaiting",
+        in_transit: "transit",
+        completed: "completed",
+        issue: "issue"
+      }[status] || "awaiting";
+    }
+
+    function orderTotal(order) {
+      const total = order.totalPaid ??
+        order.amountPaid ??
+        order.amount_paid ??
+        order.total ??
+        order.grandTotal ??
+        order.grand_total;
+
+      if (total !== undefined && total !== null) {
+        return Number(total);
+      }
+
+      return getProducts(order).reduce((sum, item) => {
+        const price = Number(item.price ?? item.unitPrice ?? item.unit_price ?? 0);
+        const quantity = Number(item.quantity ?? 1);
+        return sum + price * quantity;
+      }, 0);
+    }
+
+    function productCount(order) {
+      return getProducts(order).reduce(
+        (sum, item) => sum + Number(item.quantity || 1), 0
+      );
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    async function apiRequest(path, options = {}) {
+      if (API_BASE.includes("YOUR-BACKEND-DOMAIN")) {
+        throw new Error(
+          "The EarnGig backend address has not been configured yet."
+        );
+      }
+
+      const response = await fetch(
+        API_BASE.replace(/\/$/, "") + path,
+        {
+          ...options,
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {})
+          }
+        }
+      );
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || data.error || "The request could not be completed."
+        );
+      }
+
+      return data;
+    }
+
+    async function loadOrders() {
+      list.innerHTML = '<div class="loading">Loading your orders...</div>';
+
+      try {
+        const data = await apiRequest("/orders/my");
+
+        orders = Array.isArray(data)
+          ? data
+          : Array.isArray(data.orders)
+            ? data.orders
+            : [];
+
+        notice.style.display = "none";
+        updateCounts();
+        renderOrders();
+
+      } catch (error) {
+        orders = [];
+        updateCounts();
+
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">↻</div>
+            <h3>Unable to load your orders</h3>
+            <p>${escapeHTML(error.message)}<br>
+            Please try again when your connection is available.</p>
+            <br>
+            <button class="btn btn-secondary" onclick="loadOrders()">
+              Try Again
+            </button>
+          </div>
+        `;
+
+        if (API_BASE.includes("YOUR-BACKEND-DOMAIN")) {
+          notice.textContent =
+            "Backend connection still needs to be configured. Order information and delivery actions will become available after connecting the EarnGig API.";
+          notice.style.display = "block";
+        }
+      }
+    }
+
+    function updateCounts() {
+      const activeOrders = orders.filter(order =>
+        normalStatus(order) !== "completed"
+      );
+
+      document.getElementById("countAll").textContent =
+        activeOrders.length;
+
+      document.getElementById("countAwaiting").textContent =
+        orders.filter(order =>
+          normalStatus(order) === "awaiting_dispatch"
+        ).length;
+
+      document.getElementById("countTransit").textContent =
+        orders.filter(order =>
+          normalStatus(order) === "in_transit"
+        ).length;
+
+      document.getElementById("countCompleted").textContent =
+        orders.filter(order =>
+          normalStatus(order) === "completed"
+        ).length;
+    }
+
+    function getFilteredOrders() {
+      if (activeFilter === "all") {
+        // Completed purchases never appear in All Orders.
+        return orders.filter(order =>
+          normalStatus(order) !== "completed"
+        );
+      }
+
+      return orders.filter(order =>
+        normalStatus(order) === activeFilter
+      );
+    }
+
+    function renderOrders() {
+      const filtered = getFilteredOrders();
+
+      document.getElementById("listHeading").textContent = {
+        all: "Active Orders",
+        awaiting_dispatch: "Awaiting Dispatch",
+        in_transit: "In Transit",
+        completed: "Completed Orders"
+      }[activeFilter];
+
+      document.getElementById("orderCount").textContent =
+        `${filtered.length} ${filtered.length === 1 ? "order" : "orders"}`;
+
+      if (!filtered.length) {
+        const messages = {
+          all: ["No active orders", "Your unfinished purchases will appear here."],
+          awaiting_dispatch: ["Nothing awaiting dispatch", "Orders waiting for the vendor to send them out will appear here."],
+          in_transit: ["Nothing in transit", "Orders dispatched and travelling to you will appear here."],
+          completed: ["No completed orders yet", "Your completed purchases will be kept here."]
+        };
+
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">▤</div>
+            <h3>${messages[activeFilter][0]}</h3>
+            <p>${messages[activeFilter][1]}</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filtered
+        .slice()
+        .sort((a, b) => {
+          const dateA = new Date(a.createdAt || a.created_at || 0);
+          const dateB = new Date(b.createdAt || b.created_at || 0);
+          return dateB - dateA;
+        })
+        .map(order => {
+          const status = normalStatus(order);
+          const source = getSource(order);
+          const vendor = getVendor(order);
+          const count = productCount(order);
+          const reference = getReference(order);
+          const date = formatDate(order.createdAt || order.created_at);
+
+          return `
+            <article class="order-card">
+              <div class="order-main">
+                <div>
+                  <div class="order-ref">${escapeHTML(reference)}</div>
+                  <div class="order-source">
+                    Shopped from: <strong>${escapeHTML(source)}</strong>
+                    ${source === "Vendor Haul"
+                      ? `<br>Vendor: <strong>${escapeHTML(vendor)}</strong>`
+                      : ""}
+                  </div>
+                </div>
+
+                <span class="status ${statusClass(status)}">
+                  ${statusLabel(status)}
+                </span>
+              </div>
+
+              <div class="order-meta">
+                <span>${count} ${count === 1 ? "product" : "products"}</span>
+                <span>${escapeHTML(date)}</span>
+              </div>
+
+              <div class="order-bottom">
+                <div class="order-total">${money(orderTotal(order))}</div>
+                <button class="view-order"
+                  onclick="openOrder('${escapeHTML(String(order.id))}')">
+                  View Order Details →
+                </button>
+              </div>
+            </article>
+          `;
+        }).join("");
+    }
+
+    document.querySelectorAll(".filter-card").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".filter-card").forEach(card =>
+          card.classList.remove("active")
+        );
+
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderOrders();
+      });
     });
 
-    const footer=document.createElement("div");
-    footer.className="order-footer";
-
-    const total=document.createElement("div");
-    total.className="order-total";
-    total.innerHTML=`Order total<strong>${money(orderTotal(order))}</strong>`;
-
-    const actions=document.createElement("div");
-    actions.className="actions";
-
-    const details=document.createElement("button");
-    details.className="btn light";
-    details.textContent="View Details";
-    details.addEventListener("click",()=>showDetails(reference));
-    actions.appendChild(details);
-
-    // Track this specific vendor order
-    const track=document.createElement("a");
-    track.className="btn primary";
-    track.textContent="Track Delivery";
-    track.href="delivery-tracking.html?order="+encodeURIComponent(reference);
-    actions.appendChild(track);
-
-    if(status==="dispatched"){
-      const confirmBtn=document.createElement("button");
-      confirmBtn.className="btn primary";
-      confirmBtn.textContent="Confirm Receipt";
-      confirmBtn.addEventListener("click",()=>confirmReceipt(reference));
-      actions.appendChild(confirmBtn);
+    function findOrder(id) {
+      return orders.find(order => String(order.id) === String(id));
     }
 
-    if(!["completed","cancelled","rejected"].includes(status)){
-      const report=document.createElement("button");
-      report.className="btn danger";
-      report.textContent="Report Issue";
-      report.addEventListener("click",()=>showReport(reference));
-      actions.appendChild(report);
+    function openOrder(id) {
+      const order = findOrder(id);
+      if (!order) return;
+
+      selectedOrder = order;
+
+      const reference = getReference(order);
+      const status = normalStatus(order);
+      const source = getSource(order);
+      const vendor = getVendor(order);
+      const products = getProducts(order);
+
+      document.getElementById("modalOrderRef").textContent = reference;
+      document.getElementById("modalOrderDate").textContent =
+        "Placed on " + formatDate(order.createdAt || order.created_at);
+
+      const paymentMethod = order.paymentMethod ||
+        order.payment_method ||
+        order.payment?.method ||
+        "Payment details unavailable";
+
+      const deliveryAddress = order.deliveryAddress ||
+        order.delivery_address ||
+        order.delivery?.address ||
+        "Delivery address unavailable";
+
+      const trackingNumber = order.trackingNumber ||
+        order.tracking_number ||
+        order.delivery?.trackingNumber ||
+        "Not yet available";
+
+      const productHTML = products.length
+        ? products.map(item => {
+            const name = item.name || item.productName ||
+              item.product_name || "Product";
+
+            const quantity = Number(item.quantity || 1);
+            const price = Number(
+              item.price ?? item.unitPrice ?? item.unit_price ?? 0
+            );
+
+            const image = item.image || item.imageUrl ||
+              item.image_url || item.productImage || "";
+
+            return `
+              <div class="product-row">
+                ${image
+                  ? `<img class="product-image"
+                      src="${escapeHTML(image)}"
+                      alt="${escapeHTML(name)}"
+                      onerror="this.style.display='none'">`
+                  : `<div class="product-image product-placeholder">▧</div>`
+                }
+
+                <div class="product-info">
+                  <strong>${escapeHTML(name)}</strong>
+                  <span>Quantity: ${quantity}</span>
+                  <span>Unit price: ${money(price)}</span>
+                </div>
+
+                <div class="product-price">
+                  ${money(price * quantity)}
+                </div>
+              </div>
+            `;
+          }).join("")
+        : `<p style="font-size:12px;color:#898397">
+            Product details are not available for this order.
+          </p>`;
+
+      const awaitingDone = status !== "awaiting_dispatch";
+      const transitDone = status === "in_transit" || status === "completed";
+      const completedDone = status === "completed";
+
+      modalContent.innerHTML = `
+        <section class="detail-section">
+          <div class="detail-info">
+            <div>
+              <span class="info-label">Shopping source</span>
+              <span class="info-value">${escapeHTML(source)}</span>
+            </div>
+
+            ${source === "Vendor Haul" ? `
+              <div>
+                <span class="info-label">Vendor / Store</span>
+                <span class="info-value">${escapeHTML(vendor)}</span>
+              </div>
+            ` : ""}
+
+            <div>
+              <span class="info-label">Order status</span>
+              <span class="info-value">
+                ${statusLabel(status)}
+              </span>
+            </div>
+
+            <div>
+              <span class="info-label">Payment method</span>
+              <span class="info-value">${escapeHTML(paymentMethod)}</span>
+            </div>
+
+            <div>
+              <span class="info-label">Tracking number</span>
+              <span class="info-value">${escapeHTML(trackingNumber)}</span>
+            </div>
+
+            <div>
+              <span class="info-label">Delivery address</span>
+              <span class="info-value">${escapeHTML(deliveryAddress)}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h3>Products in this order (${productCount(order)})</h3>
+          <div class="product-list">${productHTML}</div>
+
+          <div class="total-box">
+            <span>Total amount paid</span>
+            <strong>${money(orderTotal(order))}</strong>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h3>Delivery progress</h3>
+
+          <div class="timeline">
+            <div class="timeline-item done">
+              <span class="timeline-dot"></span>
+              <strong>Payment confirmed</strong>
+              <span>Your payment has been verified and your order created.</span>
+            </div>
+
+            <div class="timeline-item ${awaitingDone ? "done" : ""}">
+              <span class="timeline-dot"></span>
+              <strong>Awaiting Dispatch</strong>
+              <span>The vendor has up to 48 hours from the order start time to dispatch.</span>
+            </div>
+
+            <div class="timeline-item ${transitDone ? "done" : ""}">
+              <span class="timeline-dot"></span>
+              <strong>In Transit</strong>
+              <span>After dispatch, delivery is expected within 3 days.</span>
+            </div>
+
+            <div class="timeline-item ${completedDone ? "done" : ""}">
+              <span class="timeline-dot"></span>
+              <strong>Completed</strong>
+              <span>Completed when you confirm that you have received your order.</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="modal-actions">
+          ${status === "in_transit" ? `
+            <button class="btn btn-primary" id="confirmDeliveryBtn">
+              Confirm Delivery
+            </button>
+          ` : ""}
+
+          ${status !== "completed" ? `
+            <button class="btn btn-danger" id="showIssueBtn">
+              Report an Issue
+            </button>
+          ` : `
+            <button class="btn btn-secondary" id="showIssueBtn">
+              Report an Issue
+            </button>
+          `}
+        </div>
+
+        <div class="issue-form" id="issueForm">
+          <label for="issueType">What is the problem?</label>
+
+          <select id="issueType">
+            <option value="">Select an issue</option>
+            <option value="not_received">I have not received my order</option>
+            <option value="missing_product">A product is missing</option>
+            <option value="wrong_product">I received the wrong product</option>
+            <option value="damaged_product">A product arrived damaged</option>
+            <option value="delivery_delay">Delivery is delayed</option>
+            <option value="other">Other issue</option>
+          </select>
+
+          <label for="issueDescription">Describe the issue</label>
+          <textarea id="issueDescription"
+            placeholder="Please explain what happened..."></textarea>
+
+          <button class="btn btn-primary" id="submitIssueBtn">
+            Submit Report
+          </button>
+        </div>
+      `;
+
+      backdrop.classList.add("show");
+      document.body.style.overflow = "hidden";
+
+      document.getElementById("confirmDeliveryBtn")
+        ?.addEventListener("click", confirmDelivery);
+
+      document.getElementById("showIssueBtn")
+        ?.addEventListener("click", () => {
+          document.getElementById("issueForm").classList.toggle("show");
+        });
+
+      document.getElementById("submitIssueBtn")
+        ?.addEventListener("click", submitIssue);
     }
 
-    footer.append(total,actions);
-    body.append(vendor,itemContainer,footer);
-    card.append(header,body);
-    container.appendChild(card);
-  });
-}
+    async function confirmDelivery() {
+      if (!selectedOrder) return;
 
-function findOrder(reference){
-  return readOrders().find(order=>
-    String(order.reference||order.orderReference||order.id||"")===String(reference)
-  );
-}
+      const confirmed = window.confirm(
+        "Please confirm that you have physically received all the products in this order. This will complete the order."
+      );
 
-function updateOrder(reference,updates){
-  const orders=readOrders();
-  const index=orders.findIndex(order=>
-    String(order.reference||order.orderReference||order.id||"")===String(reference)
-  );
+      if (!confirmed) return;
 
-  if(index===-1)return false;
+      const button = document.getElementById("confirmDeliveryBtn");
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Confirming...";
+      }
 
-  orders[index]={...orders[index],...updates};
-  saveOrders(orders);
-  renderOrders();
-  return true;
-}
+      try {
+        await apiRequest(
+          `/orders/${encodeURIComponent(selectedOrder.id)}/confirm-delivery`,
+          {
+            method: "POST",
+            body: JSON.stringify({ confirmation: true })
+          }
+        );
 
-function confirmReceipt(reference){
-  const order=findOrder(reference);
-  if(!order)return;
+        showToast("Delivery confirmed. Your order is completed.");
+        await loadOrders();
 
-  if(normalStatus(order)!=="dispatched"){
-    alert("Only dispatched orders can be confirmed as received.");
-    return;
-  }
+        const updated = findOrder(selectedOrder.id);
+        if (updated) {
+          openOrder(updated.id);
+        } else {
+          closeModal();
+        }
 
-  const accepted=confirm(
-    "Please confirm that you have physically received this package and checked your order. This confirmation may release the seller's pending proceeds."
-  );
+      } catch (error) {
+        showToast(error.message);
 
-  if(!accepted)return;
-
-  updateOrder(reference,{
-    buyerReceived:true,
-    buyerConfirmedAt:new Date().toISOString(),
-    buyerConfirmationStatus:"confirmed",
-    status:"buyer_received",
-    orderStatus:"buyer_received"
-  });
-
-  alert("Your receipt confirmation has been recorded. The order will be completed when the seller also confirms successful delivery.");
-}
-
-function showDetails(reference){
-  const order=findOrder(reference);
-  if(!order)return;
-
-  const delivery=order.delivery||{};
-  const status=normalStatus(order);
-  const backdrop=document.getElementById("modalBackdrop");
-  const content=document.getElementById("modalContent");
-
-  content.innerHTML=`
-    <h2>Order Details</h2>
-    <div class="detail-row"><span>Order reference</span><strong>${escapeHTML(reference)}</strong></div>
-    <div class="detail-row"><span>Seller</span><strong>${escapeHTML(order.sellerName||order.vendorName||"EarnGig Seller")}</strong></div>
-    <div class="detail-row"><span>Order status</span><strong>${escapeHTML(statusLabel(status))}</strong></div>
-    <div class="detail-row"><span>Payment status</span><strong>${escapeHTML(order.paymentStatus||"Not available")}</strong></div>
-    <div class="detail-row"><span>Order total</span><strong>${money(orderTotal(order))}</strong></div>
-    <div class="detail-row"><span>Delivery recipient</span><strong>${escapeHTML(delivery.fullName||"Not provided")}</strong></div>
-    <div class="detail-row"><span>Phone</span><strong>${escapeHTML(delivery.phone||"Not provided")}</strong></div>
-    <div class="detail-row"><span>Delivery address</span><strong>${escapeHTML(delivery.address||"Not provided")}</strong></div>
-    <div class="detail-row"><span>City / State</span><strong>${escapeHTML([delivery.city,delivery.state].filter(Boolean).join(", ")||"Not provided")}</strong></div>
-    <div class="warning">Keep your order reference. Contact EarnGig Support if your order is delayed, incomplete or disputed.</div>
-    <div class="modal-actions"><button class="btn light" onclick="closeModal()">Close</button></div>
-  `;
-
-  backdrop.classList.add("show");
-}
-
-function showReport(reference){
-  const content=document.getElementById("modalContent");
-
-  content.innerHTML=`
-    <h2>Report an Order Issue</h2>
-    <p>Order reference: <strong>${escapeHTML(reference)}</strong></p>
-    <p>Explain what happened. EarnGig support can review the order and contact the relevant party.</p>
-    <label for="reportReason">Issue type</label>
-    <select id="reportReason">
-      <option value="not_received">I have not received my order</option>
-      <option value="wrong_item">I received the wrong product</option>
-      <option value="damaged">The product arrived damaged</option>
-      <option value="seller_not_responding">The seller is not responding</option>
-      <option value="other">Other issue</option>
-    </select>
-    <label for="reportDescription">Describe the issue</label>
-    <textarea id="reportDescription" maxlength="1000" placeholder="Provide details about your issue..." required></textarea>
-    <div class="modal-actions">
-      <button class="btn light" onclick="closeModal()">Cancel</button>
-      <button class="btn primary" onclick="submitReport('${escapeHTML(reference)}')">Submit Report</button>
-    </div>
-  `;
-
-  document.getElementById("modalBackdrop").classList.add("show");
-}
-
-function submitReport(reference){
-  const description=document.getElementById("reportDescription").value.trim();
-  const reason=document.getElementById("reportReason").value;
-
-  if(!description){
-    alert("Please describe the problem before submitting.");
-    return;
-  }
-
-  const reports=(()=>{
-    try{
-      const value=JSON.parse(localStorage.getItem("earngig_order_disputes")||"[]");
-      return Array.isArray(value)?value:[];
-    }catch(error){
-      return [];
+        if (button) {
+          button.disabled = false;
+          button.textContent = "Confirm Delivery";
+        }
+      }
     }
-  })();
 
-  reports.push({
-    id:"DISPUTE-"+Date.now(),
-    orderReference:reference,
-    reason,
-    description,
-    raisedBy:currentEmail(),
-    status:"pending",
-    createdAt:new Date().toISOString()
-  });
+    async function submitIssue() {
+      if (!selectedOrder) return;
 
-  localStorage.setItem("earngig_order_disputes",JSON.stringify(reports));
+      const type = document.getElementById("issueType").value;
+      const description =
+        document.getElementById("issueDescription").value.trim();
 
-  updateOrder(reference,{
-    disputeStatus:"pending",
-    disputeRaised:true
-  });
+      if (!type) {
+        showToast("Please select the issue type.");
+        return;
+      }
 
-  closeModal();
-  alert("Your report has been saved in this browser. Contact EarnGig Support to have the issue formally reviewed.");
-}
+      if (description.length < 5) {
+        showToast("Please provide more details about the issue.");
+        return;
+      }
 
-function closeModal(){
-  document.getElementById("modalBackdrop").classList.remove("show");
-}
+      const button = document.getElementById("submitIssueBtn");
+      button.disabled = true;
+      button.textContent = "Submitting...";
 
-document.querySelectorAll(".filter").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll(".filter").forEach(item=>item.classList.remove("active"));
-    button.classList.add("active");
-    activeFilter=button.dataset.filter;
-    renderOrders();
-  });
-});
+      try {
+        await apiRequest(
+          `/orders/${encodeURIComponent(selectedOrder.id)}/issues`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              type,
+              description
+            })
+          }
+        );
 
-document.getElementById("modalBackdrop").addEventListener("click",event=>{
-  if(event.target.id==="modalBackdrop")closeModal();
-});
+        showToast("Your issue report has been submitted.");
+        closeModal();
+        await loadOrders();
 
-renderOrders();
-</script>
+      } catch (error) {
+        showToast(error.message);
+        button.disabled = false;
+        button.textContent = "Submit Report";
+      }
+    }
+
+    function closeModal() {
+      backdrop.classList.remove("show");
+      document.body.style.overflow = "";
+      selectedOrder = null;
+    }
+
+    document.getElementById("closeModal")
+      .addEventListener("click", closeModal);
+
+    backdrop.addEventListener("click", event => {
+      if (event.target === backdrop) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeModal();
+    });
+
+    loadOrders();
+  </script>
 
 </body>
 </html>
