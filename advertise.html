@@ -6,206 +6,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
-
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
 :root{
-  --bg:#10091f;
-  --panel:#1d1234;
-  --panel2:#261741;
-  --purple:#8b5cf6;
-  --purple2:#a78bfa;
-  --lime:#b7f34a;
-  --gold:#f5c75e;
-  --white:#fff;
-  --muted:#b9aecb;
+  --bg:#10091f;--panel:#1d1234;--panel2:#261741;
+  --purple:#8b5cf6;--purple2:#a78bfa;--lime:#b7f34a;
+  --gold:#f5c75e;--white:#fff;--muted:#b9aecb;
   --border:rgba(255,255,255,.1);
 }
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--white);
-  font-family:Inter,Arial,sans-serif;
-}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 .container{width:min(100% - 28px,1000px);margin:auto}
-header{
-  position:sticky;top:0;z-index:10;
-  background:rgba(16,9,31,.94);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
-.header-inner{
-  min-height:65px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
-}
+header{position:sticky;top:0;z-index:10;background:rgba(16,9,31,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.header-inner{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .logo{font-size:23px;font-weight:900;letter-spacing:-1px}
 .logo span{color:var(--lime)}
-.back{
-  color:var(--muted);font-size:13px;
-  padding:10px 14px;border:1px solid var(--border);
-  border-radius:12px;
-}
+.back{color:var(--muted);font-size:13px;padding:10px 14px;border:1px solid var(--border);border-radius:12px}
 main{padding:28px 0 55px}
-.hero{
-  padding:25px 22px;border:1px solid var(--border);
-  border-radius:23px;
-  background:linear-gradient(120deg,#30165b,#1b1031 65%,#263c19);
-  overflow:hidden;
-}
-.eyebrow{
-  color:var(--lime);font-size:11px;font-weight:800;
-  letter-spacing:2px;text-transform:uppercase;
-}
+.hero{padding:25px 22px;border:1px solid var(--border);border-radius:23px;background:linear-gradient(120deg,#30165b,#1b1031 65%,#263c19);overflow:hidden}
+.eyebrow{color:var(--lime);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
 h1{font-size:clamp(27px,5vw,43px);line-height:1.08;margin:12px 0}
 .hero p{color:#d2c8e1;max-width:620px;line-height:1.65;margin:0}
-.tabs{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;
-}
-.tab{
-  border:1px solid var(--border);border-radius:14px;
-  background:#211537;color:var(--muted);
-  padding:14px 10px;font-weight:800;
-}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.tab{border:1px solid var(--border);border-radius:14px;background:#211537;color:var(--muted);padding:14px 10px;font-weight:800}
 .tab.active{background:var(--lime);color:#18220d;border-color:var(--lime)}
-.panel{
-  margin-top:15px;padding:19px;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:20px;
-}
+.panel{margin-top:15px;padding:19px;background:var(--panel);border:1px solid var(--border);border-radius:20px}
 .panel h2{font-size:20px;margin:0 0 7px}
 .sub{font-size:13px;color:var(--muted);line-height:1.55}
-.package-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:10px;margin-top:17px;
-}
-.package{
-  padding:15px;border:1px solid var(--border);
-  background:#261a3c;border-radius:15px;text-align:left;color:white;
-}
-.package.selected{
-  border:2px solid var(--lime);
-  background:#2b3b1d;padding:14px;
-}
+.package-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:17px}
+.package{padding:15px;border:1px solid var(--border);background:#261a3c;border-radius:15px;text-align:left;color:white}
+.package.selected{border:2px solid var(--lime);background:#2b3b1d;padding:14px}
 .package .duration{font-size:13px;color:#ddd}
 .package .price{font-size:21px;font-weight:900;margin-top:8px}
 .package small{display:block;color:var(--muted);margin-top:5px}
 .field{margin-top:15px}
 label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-input,select,textarea{
-  width:100%;padding:13px 14px;border-radius:12px;
-  background:#120b20;border:1px solid #49375e;
-  color:white;outline:none;
-}
+input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;background:#120b20;border:1px solid #49375e;color:white;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--purple2)}
 textarea{min-height:95px;resize:vertical}
 input[type=file]{padding:10px}
 .hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
-.billboard-head{
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:10px;
-}
-.week-select{max-width:230px}
-.booking-info{
-  padding:15px;border-radius:14px;
-  border:1px solid rgba(183,243,74,.25);
-  background:linear-gradient(120deg,#2b2140,#26351e);
-  margin-top:15px;
-}
-.booking-info .booking-label{
-  color:var(--lime);font-size:10px;font-weight:800;
-  text-transform:uppercase;letter-spacing:1.5px;
-}
-.booking-info strong{
-  display:block;font-size:17px;margin-top:7px;
-}
-.booking-info p{
-  margin:7px 0 0;color:#d2c8e1;
-  font-size:12px;line-height:1.6;
-}
-.booking-state{
-  display:inline-block;margin-top:10px;padding:7px 10px;
-  border-radius:20px;background:#42345a;
-  color:#e4d7ff;font-size:11px;font-weight:700;
-}
-.booking-state.open{
-  background:#31451e;color:#d8ff9b;
-}
-.slot-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  gap:9px;margin-top:17px;
-}
-.slot{
-  min-height:76px;border:1px solid var(--border);
-  background:#291d40;border-radius:13px;color:white;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:5px;
-}
+.billboard-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.week-select{max-width:260px;width:100%}
+.booking-info{padding:15px;border-radius:14px;border:1px solid rgba(183,243,74,.25);background:linear-gradient(120deg,#2b2140,#26351e);margin-top:15px}
+.booking-label{color:var(--lime);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
+.booking-info strong{display:block;font-size:17px;margin-top:7px}
+.booking-info p{margin:7px 0 0;color:#d2c8e1;font-size:12px;line-height:1.6}
+.booking-state{display:inline-block;margin-top:10px;padding:7px 10px;border-radius:20px;background:#493b50;color:#ffdada;font-size:11px;font-weight:700}
+.booking-state.open{background:#31451e;color:#d8ff9b}
+.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:17px}
+.slot{min-height:76px;border:1px solid var(--border);background:#291d40;border-radius:13px;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .slot strong{font-size:19px}
 .slot small{font-size:10px;color:var(--muted)}
 .slot.available{border-color:#536b39;background:#26391f}
 .slot.selected{background:#31451e;border:2px solid var(--lime)}
-.slot.booked{
-  background:#493b50;border-color:#81758d;
-  opacity:.75;cursor:not-allowed;
-}
+.slot.booked{background:#493b50;border-color:#81758d;opacity:.75;cursor:not-allowed}
+.slot.closed{opacity:.65;cursor:not-allowed}
 .legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:13px}
 .legend span{font-size:11px;color:var(--muted)}
-.dot{
-  display:inline-block;width:8px;height:8px;
-  border-radius:50%;margin-right:5px;
-}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
 .available-dot{background:var(--lime)}
 .booked-dot{background:#81758d}
 .selected-dot{background:#a78bfa}
-.total{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:15px;background:#120b20;border-radius:13px;
-  margin-top:17px;font-size:14px;
-}
+.total{display:flex;justify-content:space-between;gap:10px;padding:15px;background:#120b20;border-radius:13px;margin-top:17px;font-size:14px}
 .total strong{color:var(--lime);font-size:19px}
-.primary{
-  width:100%;border:0;border-radius:13px;
-  background:var(--lime);color:#18220d;
-  font-weight:900;padding:15px;margin-top:17px;
-}
+.primary{width:100%;border:0;border-radius:13px;background:var(--lime);color:#18220d;font-weight:900;padding:15px;margin-top:17px}
 .primary:disabled{opacity:.45;cursor:not-allowed}
-.notice{
-  padding:12px 14px;border-radius:12px;
-  background:#2b2140;color:#d7c9ee;
-  font-size:12px;line-height:1.55;margin-top:15px;
-}
-.status{
-  display:none;padding:13px;border-radius:12px;
-  margin-top:15px;font-size:13px;line-height:1.5;
-}
+.notice{padding:12px 14px;border-radius:12px;background:#2b2140;color:#d7c9ee;font-size:12px;line-height:1.55;margin-top:15px}
+.status{display:none;padding:13px;border-radius:12px;margin-top:15px;font-size:13px;line-height:1.5}
 .status.show{display:block}
 .status.error{background:#47212b;color:#ffd5d5}
 .status.success{background:#1e3c2a;color:#c8ffd4}
 .status.info{background:#30234b;color:#e1d5ff}
 .hidden{display:none!important}
-footer{
-  border-top:1px solid var(--border);
-  padding:22px 0;color:var(--muted);
-  font-size:12px;text-align:center;
-}
-@media(min-width:700px){
-  .package-grid{grid-template-columns:repeat(5,1fr)}
-  .panel{padding:24px}
-}
-@media(max-width:420px){
-  .slot-grid{grid-template-columns:repeat(2,1fr)}
-  .tabs{gap:7px}
-  .tab{font-size:12px;padding:13px 5px}
-  .hero{padding:21px 17px}
-}
+footer{border-top:1px solid var(--border);padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
+@media(min-width:700px){.package-grid{grid-template-columns:repeat(5,1fr)}.panel{padding:24px}}
+@media(max-width:420px){.slot-grid{grid-template-columns:repeat(2,1fr)}.tabs{gap:7px}.tab{font-size:12px;padding:13px 5px}.hero{padding:21px 17px}}
 </style>
 </head>
 
 <body>
-
 <header>
   <div class="container header-inner">
     <a class="logo" href="index.html">Earn<span>Gig</span></a>
@@ -214,147 +98,77 @@ footer{
 </header>
 
 <main class="container">
-
   <section class="hero">
     <div class="eyebrow">Grow your audience</div>
     <h1>Put your business<br>in the spotlight.</h1>
-    <p>
-      Promote your brand to the EarnGig community. Choose a Watch and Earn
-      advert or reserve a homepage billboard slot.
-    </p>
+    <p>Promote your brand to the EarnGig community. Choose a Watch and Earn advert or reserve a homepage billboard slot.</p>
   </section>
 
   <div class="tabs">
-    <button class="tab active" id="timeTab" type="button">
-      Watch and Earn Ads
-    </button>
-    <button class="tab" id="billboardTab" type="button">
-      Homepage Billboard
-    </button>
+    <button class="tab active" id="timeTab" type="button">Watch and Earn Ads</button>
+    <button class="tab" id="billboardTab" type="button">Homepage Billboard</button>
   </div>
 
-  <!-- WATCH AND EARN ADVERTISING -->
-
+  <!-- WATCH AND EARN -->
   <section class="panel" id="timePanel">
     <h2>Watch and Earn Advertising</h2>
-    <p class="sub">
-      Choose how long you want your advert to run. Payment is required when you submit.
-    </p>
+    <p class="sub">Choose how long you want your advert to run. Payment is required when you submit.</p>
 
     <div class="package-grid">
       <button class="package selected" type="button" data-days="1" data-price="10000">
-        <div class="duration">24 Hours</div>
-        <div class="price">₦10,000</div>
-        <small>1-day campaign</small>
+        <div class="duration">24 Hours</div><div class="price">₦10,000</div><small>1-day campaign</small>
       </button>
-
       <button class="package" type="button" data-days="3" data-price="25000">
-        <div class="duration">72 Hours</div>
-        <div class="price">₦25,000</div>
-        <small>3-day campaign</small>
+        <div class="duration">72 Hours</div><div class="price">₦25,000</div><small>3-day campaign</small>
       </button>
-
       <button class="package" type="button" data-days="7" data-price="50000">
-        <div class="duration">7 Days</div>
-        <div class="price">₦50,000</div>
-        <small>1-week campaign</small>
+        <div class="duration">7 Days</div><div class="price">₦50,000</div><small>1-week campaign</small>
       </button>
-
       <button class="package" type="button" data-days="14" data-price="85000">
-        <div class="duration">14 Days</div>
-        <div class="price">₦85,000</div>
-        <small>2-week campaign</small>
+        <div class="duration">14 Days</div><div class="price">₦85,000</div><small>2-week campaign</small>
       </button>
-
       <button class="package" type="button" data-days="30" data-price="150000">
-        <div class="duration">30 Days</div>
-        <div class="price">₦150,000</div>
-        <small>Monthly campaign</small>
+        <div class="duration">30 Days</div><div class="price">₦150,000</div><small>Monthly campaign</small>
       </button>
     </div>
 
     <form id="timeForm">
-      <div class="field">
-        <label for="timeBusiness">Business / Advertiser Name</label>
-        <input id="timeBusiness" name="businessName" required maxlength="100">
-      </div>
-
-      <div class="field">
-        <label for="timeEmail">Email Address</label>
-        <input id="timeEmail" name="email" type="email" required>
-      </div>
-
-      <div class="field">
-        <label for="timePhone">Phone Number</label>
-        <input id="timePhone" name="phone" type="tel" required>
-      </div>
-
-      <div class="field">
-        <label for="timeTitle">Advert Title</label>
-        <input id="timeTitle" name="title" required maxlength="120">
-      </div>
-
-      <div class="field">
-        <label for="timeDescription">Advert Description</label>
-        <textarea id="timeDescription" name="description" required maxlength="1000"></textarea>
-      </div>
-
-      <div class="field">
-        <label for="timeLink">Website / Social Media Link</label>
-        <input id="timeLink" name="link" type="url" placeholder="https://">
-      </div>
-
-      <div class="field">
-        <label for="timeMedia">Upload Advert Media</label>
-        <input id="timeMedia" name="media" type="file" accept="image/*,video/*" required>
-        <div class="hint">Upload an image or video.</div>
-      </div>
-
-      <div class="total">
-        <span>Selected campaign price</span>
-        <strong id="timeTotal">₦10,000</strong>
-      </div>
-
-      <button class="primary" id="timeSubmit" type="submit">
-        Pay & Submit →
-      </button>
+      <div class="field"><label for="timeBusiness">Business / Advertiser Name</label><input id="timeBusiness" name="businessName" required maxlength="100"></div>
+      <div class="field"><label for="timeEmail">Email Address</label><input id="timeEmail" name="email" type="email" required></div>
+      <div class="field"><label for="timePhone">Phone Number</label><input id="timePhone" name="phone" type="tel" required></div>
+      <div class="field"><label for="timeTitle">Advert Title</label><input id="timeTitle" name="title" required maxlength="120"></div>
+      <div class="field"><label for="timeDescription">Advert Description</label><textarea id="timeDescription" name="description" required maxlength="1000"></textarea></div>
+      <div class="field"><label for="timeLink">Website / Social Media Link</label><input id="timeLink" name="link" type="url" placeholder="https://"></div>
+      <div class="field"><label for="timeMedia">Upload Advert Media</label><input id="timeMedia" name="media" type="file" accept="image/*,video/*" required><div class="hint">Upload an image or video.</div></div>
+      <div class="total"><span>Selected campaign price</span><strong id="timeTotal">₦10,000</strong></div>
+      <button class="primary" id="timeSubmit" type="submit">Pay & Submit →</button>
     </form>
-
     <div class="status" id="timeStatus" role="status"></div>
   </section>
 
-  <!-- HOMEPAGE BILLBOARD -->
-
+  <!-- BILLBOARD -->
   <section class="panel hidden" id="billboardPanel">
-
     <div class="billboard-head">
       <div>
         <h2>Homepage Billboard</h2>
         <p class="sub">10 slots per campaign week · Monday to Sunday</p>
       </div>
-
       <div class="week-select">
         <label for="campaignWeek">Campaign week</label>
         <select id="campaignWeek"></select>
       </div>
     </div>
 
-    <!-- BOOKING OPENING INFORMATION -->
-
     <div class="booking-info">
       <div class="booking-label">Billboard booking schedule</div>
       <strong id="campaignDates">Loading campaign dates...</strong>
-      <p id="bookingOpening">
-        Booking opens every Saturday at 12:00 AM Nigeria time.
-      </p>
-      <span class="booking-state" id="bookingState">
-        Checking booking schedule
-      </span>
+      <p id="bookingOpening">Bookings are open every Saturday and Sunday only.</p>
+      <span class="booking-state" id="bookingState">Booking closed</span>
     </div>
 
     <div class="notice">
-      Choose one or more available slots. Each slot costs ₦100,000.
-      Your booking is confirmed after successful payment verification.
+      Billboard bookings are available on Saturdays and Sundays only.
+      All 10 slots remain visible throughout the week. Each slot costs ₦100,000.
     </div>
 
     <div class="slot-grid" id="slotGrid"></div>
@@ -371,405 +185,269 @@ footer{
     </div>
 
     <form id="billboardForm">
-      <div class="field">
-        <label for="billBusiness">Business / Advertiser Name</label>
-        <input id="billBusiness" name="businessName" required maxlength="100">
-      </div>
-
-      <div class="field">
-        <label for="billEmail">Email Address</label>
-        <input id="billEmail" name="email" type="email" required>
-      </div>
-
-      <div class="field">
-        <label for="billPhone">Phone Number</label>
-        <input id="billPhone" name="phone" type="tel" required>
-      </div>
-
-      <div class="field">
-        <label for="billTitle">Advert Title</label>
-        <input id="billTitle" name="title" required maxlength="120">
-      </div>
-
-      <div class="field">
-        <label for="billDescription">Advert Description</label>
-        <textarea id="billDescription" name="description" required maxlength="1000"></textarea>
-      </div>
-
-      <div class="field">
-        <label for="billLink">Website / Social Media Link</label>
-        <input id="billLink" name="link" type="url" placeholder="https://">
-      </div>
-
-      <div class="field">
-        <label for="billMedia">Upload Billboard Media</label>
-        <input id="billMedia" name="media" type="file" accept="image/*,video/*" required>
-      </div>
-
-      <button class="primary" id="billSubmit" type="submit" disabled>
-        Select a slot to continue
-      </button>
+      <div class="field"><label for="billBusiness">Business / Advertiser Name</label><input id="billBusiness" name="businessName" required maxlength="100"></div>
+      <div class="field"><label for="billEmail">Email Address</label><input id="billEmail" name="email" type="email" required></div>
+      <div class="field"><label for="billPhone">Phone Number</label><input id="billPhone" name="phone" type="tel" required></div>
+      <div class="field"><label for="billTitle">Advert Title</label><input id="billTitle" name="title" required maxlength="120"></div>
+      <div class="field"><label for="billDescription">Advert Description</label><textarea id="billDescription" name="description" required maxlength="1000"></textarea></div>
+      <div class="field"><label for="billLink">Website / Social Media Link</label><input id="billLink" name="link" type="url" placeholder="https://"></div>
+      <div class="field"><label for="billMedia">Upload Billboard Media</label><input id="billMedia" name="media" type="file" accept="image/*,video/*" required></div>
+      <button class="primary" id="billSubmit" type="submit" disabled>Select a slot to continue</button>
     </form>
-
     <div class="status" id="billStatus" role="status"></div>
   </section>
-
 </main>
 
-<footer>
-  © <span id="year"></span> EarnGig. All rights reserved.
-</footer>
+<footer>© <span id="year"></span> EarnGig. All rights reserved.</footer>
 
 <script>
-
 /* CONFIGURATION */
-
 const FLUTTERWAVE_PUBLIC_KEY =
 "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
-/*
-  IMPORTANT:
-  Put your deployed backend address here.
-  Example: https://your-api.example.com
-
-  Do not put your Flutterwave secret key here.
-*/
+/* Replace with your deployed backend URL */
 const API_BASE = "";
 
 const BILLBOARD_SLOT_PRICE = 100000;
-
 let selectedPackage = {days:1,price:10000};
 let selectedSlots = new Set();
+let liveSlots = [];
+let bookingIsOpen = false;
 
 const $ = id => document.getElementById(id);
-
 $("year").textContent = new Date().getFullYear();
 
-function naira(amount){
-  return "₦" + Number(amount).toLocaleString("en-NG");
+function naira(value){
+  return "₦"+Number(value).toLocaleString("en-NG");
 }
-
 function showStatus(id,message,type="info"){
-  const el = $(id);
-  el.textContent = message;
-  el.className = "status show " + type;
+  const el=$(id);
+  el.textContent=message;
+  el.className="status show "+type;
 }
-
 function clearStatus(id){
-  $(id).textContent = "";
-  $(id).className = "status";
+  $(id).textContent="";
+  $(id).className="status";
 }
-
 async function request(path,options={}){
-  const response = await fetch(
-    API_BASE.replace(/\/$/,"") + path,
-    {
-      credentials:"include",
-      ...options
-    }
-  );
-
-  let data = {};
-
-  try{
-    data = await response.json();
-  }catch{}
-
-  if(!response.ok){
-    throw new Error(
-      data.message || "Unable to complete request. Please try again."
-    );
-  }
-
+  const response=await fetch(API_BASE.replace(/\/$/,"")+path,{
+    credentials:"include",...options
+  });
+  let data={};
+  try{data=await response.json()}catch{}
+  if(!response.ok)throw new Error(data.message||"Unable to complete request.");
   return data;
 }
 
-/* NIGERIA TIME */
+/* NIGERIA DATE AND TIME */
+function nigeriaParts(){
+  const parts=new Intl.DateTimeFormat("en-GB",{
+    timeZone:"Africa/Lagos",
+    weekday:"short",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    hour:"2-digit",
+    minute:"2-digit",
+    hourCycle:"h23"
+  }).formatToParts(new Date());
 
-function nigeriaNow(){
-  return new Date(
-    new Date().toLocaleString("en-US",{
-      timeZone:"Africa/Lagos"
-    })
-  );
-}
-
-function formatDate(date){
-  return date.toLocaleDateString("en-NG",{
-    weekday:"long",
-    day:"numeric",
-    month:"long",
-    year:"numeric"
-  });
-}
-
-function formatShortDate(date){
-  return date.toLocaleDateString("en-CA",{
-    timeZone:"Africa/Lagos"
-  });
-}
-
-function mondayOf(date){
-  const result = new Date(date);
-  result.setHours(0,0,0,0);
-
-  const day = result.getDay();
-
-  result.setDate(
-    result.getDate() + (day===0 ? -6 : 1-day)
-  );
-
+  const result={};
+  parts.forEach(p=>result[p.type]=p.value);
   return result;
 }
-
-/*
-  Booking opens Saturday at 12:00 AM Nigeria time.
-  Each campaign runs Monday through Sunday.
-*/
-function bookingOpeningForCampaign(monday){
-  const opening = new Date(monday);
-  opening.setDate(opening.getDate()-2);
-  opening.setHours(0,0,0,0);
-  return opening;
+function nigeriaDate(){
+  const p=nigeriaParts();
+  return new Date(Number(p.year),Number(p.month)-1,Number(p.day));
 }
-
+function nigeriaDay(){
+  const p=nigeriaParts();
+  return p.weekday;
+}
+function dateKey(date){
+  return date.getFullYear()+"-"+
+    String(date.getMonth()+1).padStart(2,"0")+"-"+
+    String(date.getDate()).padStart(2,"0");
+}
+function formatDate(date){
+  return date.toLocaleDateString("en-NG",{
+    weekday:"long",day:"numeric",month:"long",year:"numeric"
+  });
+}
+function mondayOf(date){
+  const d=new Date(date);
+  d.setHours(0,0,0,0);
+  const day=d.getDay();
+  d.setDate(d.getDate()+(day===0?-6:1-day));
+  return d;
+}
+function isWeekendBookingDay(){
+  const day=nigeriaDay();
+  return day==="Sat"||day==="Sun";
+}
+function bookingOpening(monday){
+  const d=new Date(monday);
+  d.setDate(d.getDate()-2);
+  d.setHours(0,0,0,0);
+  return d;
+}
 function campaignSunday(monday){
-  const sunday = new Date(monday);
-  sunday.setDate(sunday.getDate()+6);
-  return sunday;
+  const d=new Date(monday);
+  d.setDate(d.getDate()+6);
+  return d;
 }
 
-function updateBookingInformation(){
-  const now = nigeriaNow();
-  const todayMonday = mondayOf(now);
-
-  let campaignMonday = new Date(todayMonday);
-
-  /*
-    Find the next campaign whose booking window is
-    currently open or is the next campaign to open.
-  */
-  let opening = bookingOpeningForCampaign(campaignMonday);
-
-  if(now < opening){
-    campaignMonday.setDate(campaignMonday.getDate()+7);
-    opening = bookingOpeningForCampaign(campaignMonday);
-  }
-
-  const sunday = campaignSunday(campaignMonday);
-
-  $("campaignDates").textContent =
-    formatDate(campaignMonday) + " – " + formatDate(sunday);
-
-  $("bookingOpening").textContent =
-    "Booking opens " + formatDate(opening) +
-    " at 12:00 AM Nigeria time.";
-
-  const state = $("bookingState");
-
-  if(now >= opening){
-    state.textContent = "Booking is OPEN";
-    state.classList.add("open");
-  }else{
-    state.textContent = "Booking opens soon";
-    state.classList.remove("open");
-  }
-}
-
-/* WEEK SELECTOR */
-
+/* CAMPAIGN WEEKS */
 function populateWeeks(){
-  const select = $("campaignWeek");
-  const now = nigeriaNow();
-  const currentMonday = mondayOf(now);
-
-  select.innerHTML = "";
+  const select=$("campaignWeek");
+  const today=nigeriaDate();
+  const thisMonday=mondayOf(today);
+  select.innerHTML="";
 
   for(let i=0;i<12;i++){
-    const monday = new Date(currentMonday);
+    const monday=new Date(thisMonday);
     monday.setDate(monday.getDate()+i*7);
 
-    const opening = bookingOpeningForCampaign(monday);
-
-    const option = document.createElement("option");
-    option.value = formatShortDate(monday);
-
-    option.textContent =
-      formatDate(monday) + " campaign";
-
-    option.dataset.opening = opening.toISOString();
-
+    const option=document.createElement("option");
+    option.value=dateKey(monday);
+    option.textContent=formatDate(monday)+" campaign";
     select.appendChild(option);
   }
 
-  /*
-    Choose the first campaign whose booking window
-    has opened, or the next campaign if none has opened.
-  */
-  let chosen = 0;
-
-  for(let i=0;i<select.options.length;i++){
-    const opening = new Date(select.options[i].dataset.opening);
-
-    if(now >= opening){
-      chosen = i;
-    }else{
-      break;
-    }
+  /* On Saturday/Sunday, select the following Monday campaign */
+  if(isWeekendBookingDay()){
+    const next=new Date(thisMonday);
+    next.setDate(next.getDate()+7);
+    const option=[...select.options].find(o=>o.value===dateKey(next));
+    if(option)select.value=option.value;
   }
-
-  select.selectedIndex = chosen;
 }
 
-function updateSelectedCampaignInfo(){
-  const monday = new Date($("campaignWeek").value+"T00:00:00");
-  const sunday = campaignSunday(monday);
-  const opening = bookingOpeningForCampaign(monday);
-  const now = nigeriaNow();
+/* WEEKEND-ONLY BOOKING GATE */
+function updateBookingWindow(){
+  const now=nigeriaDate();
+  const monday=mondayOf(now);
+  const day=nigeriaDay();
 
-  $("campaignDates").textContent =
-    formatDate(monday)+" – "+formatDate(sunday);
+  bookingIsOpen=isWeekendBookingDay();
 
-  $("bookingOpening").textContent =
-    "Booking opens "+formatDate(opening)+
-    " at 12:00 AM Nigeria time.";
+  let targetMonday=new Date(monday);
 
-  const state = $("bookingState");
+  if(bookingIsOpen){
+    targetMonday.setDate(targetMonday.getDate()+7);
+  }else{
+    targetMonday.setDate(targetMonday.getDate()+7);
+  }
 
-  if(now >= opening){
-    state.textContent = "Booking is OPEN";
+  const selected=$("campaignWeek").value;
+  if(selected){
+    targetMonday=new Date(selected+"T00:00:00");
+  }
+
+  const sunday=campaignSunday(targetMonday);
+  const opening=bookingOpening(targetMonday);
+
+  $("campaignDates").textContent=
+    formatDate(targetMonday)+" – "+formatDate(sunday);
+
+  $("bookingOpening").textContent=
+    "Bookings for this campaign open on Saturday, "+
+    formatDate(opening)+", at 12:00 AM Nigeria time, and close Sunday at 11:59 PM.";
+
+  const state=$("bookingState");
+
+  if(bookingIsOpen){
+    state.textContent="Booking is OPEN";
     state.classList.add("open");
   }else{
-    state.textContent = "Booking has not opened yet";
+    state.textContent="Booking is CLOSED";
     state.classList.remove("open");
   }
+
+  updateBillboardTotal();
 }
 
 /* TAB SWITCHING */
-
 $("timeTab").addEventListener("click",()=>{
   $("timeTab").classList.add("active");
   $("billboardTab").classList.remove("active");
   $("timePanel").classList.remove("hidden");
   $("billboardPanel").classList.add("hidden");
 });
-
 $("billboardTab").addEventListener("click",()=>{
   $("billboardTab").classList.add("active");
   $("timeTab").classList.remove("active");
   $("billboardPanel").classList.remove("hidden");
   $("timePanel").classList.add("hidden");
-
-  updateSelectedCampaignInfo();
+  updateBookingWindow();
   loadBillboardAvailability();
 });
 
-/* TIME PACKAGE SELECTION */
-
+/* TIME PACKAGES */
 document.querySelectorAll(".package").forEach(button=>{
   button.addEventListener("click",()=>{
-    document.querySelectorAll(".package").forEach(item=>{
-      item.classList.remove("selected");
-    });
-
+    document.querySelectorAll(".package").forEach(p=>p.classList.remove("selected"));
     button.classList.add("selected");
-
-    selectedPackage = {
+    selectedPackage={
       days:Number(button.dataset.days),
       price:Number(button.dataset.price)
     };
-
-    $("timeTotal").textContent =
-      naira(selectedPackage.price);
+    $("timeTotal").textContent=naira(selectedPackage.price);
   });
 });
 
-/* BACKEND CHECKOUT */
-
-async function prepareCheckout(form,type,extra={}){
-  const data = new FormData(form);
-
+/* CHECKOUT ORDER FROM YOUR BACKEND */
+async function createOrder(form,type,extra={}){
+  const data=new FormData(form);
   data.set("type",type);
-
   Object.entries(extra).forEach(([key,value])=>{
-    data.set(
-      key,
-      typeof value==="object"
-        ? JSON.stringify(value)
-        : String(value)
-    );
+    data.set(key,typeof value==="object"?JSON.stringify(value):String(value));
   });
-
   return request("/api/advertising/checkout",{
-    method:"POST",
-    body:data
+    method:"POST",body:data
   });
 }
 
 /* FLUTTERWAVE POPUP */
-
 function openFlutterwave(order,statusId){
   if(typeof FlutterwaveCheckout!=="function"){
-    throw new Error("Flutterwave could not load. Refresh and try again.");
+    throw new Error("Flutterwave could not load. Please refresh.");
   }
 
-  if(
-    !order.orderId ||
-    !order.txRef ||
-    !order.amount ||
-    !order.customerEmail
-  ){
-    throw new Error("The server returned incomplete payment information.");
+  if(!order.orderId||!order.txRef||!order.amount||!order.customerEmail){
+    throw new Error("The payment server returned incomplete payment information.");
   }
 
   FlutterwaveCheckout({
     public_key:FLUTTERWAVE_PUBLIC_KEY,
     tx_ref:order.txRef,
     amount:Number(order.amount),
-    currency:order.currency || "NGN",
+    currency:order.currency||"NGN",
     payment_options:"card,banktransfer,ussd",
-
     customer:{
       email:order.customerEmail,
-      phone_number:order.customerPhone || "",
-      name:order.customerName || "EarnGig Advertiser"
+      phone_number:order.customerPhone||"",
+      name:order.customerName||"EarnGig Advertiser"
     },
-
     customizations:{
       title:"EarnGig Advertising",
       description:"Payment for EarnGig advertising"
     },
-
     callback:async function(payment){
-      showStatus(
-        statusId,
-        "Payment received. Verifying your transaction...",
-        "info"
-      );
-
+      showStatus(statusId,"Verifying your Flutterwave payment...","info");
       try{
-        const result = await request(
-          "/api/advertising/payment/verify",
-          {
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-              orderId:order.orderId,
-              txRef:order.txRef,
-              transactionId:payment.transaction_id
-            })
-          }
-        );
+        const result=await request("/api/advertising/payment/verify",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({
+            orderId:order.orderId,
+            txRef:order.txRef,
+            transactionId:payment.transaction_id
+          })
+        });
 
-        if(
-          result.status==="successful" &&
-          result.submissionStatus==="confirmed"
-        ){
-          showStatus(
-            statusId,
-            "Payment successful! Your advertising submission is confirmed.",
-            "success"
-          );
+        if(result.status==="successful"&&result.submissionStatus==="confirmed"){
+          showStatus(statusId,"Payment successful! Your advertising submission is confirmed.","success");
 
           if(statusId==="billStatus"){
             selectedSlots.clear();
@@ -780,226 +458,184 @@ function openFlutterwave(order,statusId){
             $("timeForm").reset();
           }
         }else{
-          showStatus(
-            statusId,
-            "Your payment is not yet verified. Your advert is not confirmed.",
-            "info"
-          );
+          showStatus(statusId,"Payment has not yet been verified. Your advert is not confirmed.","info");
         }
-
       }catch(error){
-        showStatus(
-          statusId,
-          "Payment verification failed. Please contact EarnGig support with reference "+order.txRef,
-          "error"
-        );
+        showStatus(statusId,"Payment verification failed. Contact EarnGig support with reference "+order.txRef,"error");
       }
     },
-
-    onclose:function(){
-      /*
-        Closing the payment popup does not confirm an advert.
-        Backend must expire unpaid billboard holds automatically.
-      */
-    }
+    onclose:function(){}
   });
 }
 
-/* TIME ADVERT PAYMENT */
-
+/* TIME ADVERT SUBMISSION */
 $("timeForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearStatus("timeStatus");
-
-  const button = $("timeSubmit");
-  button.disabled = true;
-  button.textContent = "Preparing payment...";
+  const button=$("timeSubmit");
+  button.disabled=true;
+  button.textContent="Preparing payment...";
 
   try{
-    const order = await prepareCheckout(
-      event.target,
-      "time_based",
-      {durationDays:selectedPackage.days}
-    );
+    const order=await createOrder(event.target,"time_based",{
+      durationDays:selectedPackage.days
+    });
 
     if(Number(order.amount)!==selectedPackage.price){
-      throw new Error("Payment amount does not match your selected package.");
+      throw new Error("The payment amount does not match your selected package.");
     }
 
     openFlutterwave(order,"timeStatus");
-
   }catch(error){
     showStatus("timeStatus",error.message,"error");
   }finally{
-    button.disabled = false;
-    button.textContent = "Pay & Submit →";
+    button.disabled=false;
+    button.textContent="Pay & Submit →";
   }
 });
 
-/* BILLBOARD SLOT DISPLAY */
-
+/* RENDER ALL TEN SLOTS */
 function renderSlots(slots){
-  const grid = $("slotGrid");
-  grid.innerHTML = "";
+  const grid=$("slotGrid");
+  grid.innerHTML="";
   selectedSlots.clear();
+  liveSlots=slots||[];
 
   for(let number=1;number<=10;number++){
-    const info = (slots||[]).find(
-      item=>Number(item.slot)===number
-    );
+    const info=liveSlots.find(item=>Number(item.slot)===number);
+    const isAvailable=info?.status==="available";
 
-    const available = info?.status==="available";
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="slot "+(isAvailable?"available":"booked");
 
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className =
-      "slot "+(available?"available":"booked");
+    if(!bookingIsOpen)button.classList.add("closed");
 
-    const strong = document.createElement("strong");
-    strong.textContent = number;
+    const strong=document.createElement("strong");
+    strong.textContent=number;
 
-    const small = document.createElement("small");
-    small.textContent = available?"Available":"Booked";
+    const small=document.createElement("small");
+    small.textContent=isAvailable?"Available":"Booked";
 
     button.append(strong,small);
-    button.disabled = !available;
+
+    button.disabled=!isAvailable||!bookingIsOpen;
 
     button.addEventListener("click",()=>{
-      if(!available)return;
+      if(!bookingIsOpen||!isAvailable)return;
 
       if(selectedSlots.has(number)){
         selectedSlots.delete(number);
         button.classList.remove("selected");
-        small.textContent = "Available";
+        small.textContent="Available";
       }else{
         selectedSlots.add(number);
         button.classList.add("selected");
-        small.textContent = "Selected";
+        small.textContent="Selected";
       }
-
       updateBillboardTotal();
     });
 
     grid.appendChild(button);
   }
 
-  const availableCount = (slots||[]).filter(
-    item=>item.status==="available"
-  ).length;
-
-  if(availableCount===0){
-    showStatus(
-      "billStatus",
-      "All slots for this week have been booked. Please check the next available week.",
-      "info"
-    );
-  }else{
-    clearStatus("billStatus");
-  }
-
   updateBillboardTotal();
 }
 
-/* LOAD LIVE BILLBOARD AVAILABILITY */
-
+/* LOAD AVAILABILITY */
 async function loadBillboardAvailability(){
-  /*
-    Display all ten immediately.
-    Unknown availability is not offered for selection.
-  */
   renderSlots([]);
+  clearStatus("billStatus");
 
-  const week = $("campaignWeek").value;
-  const monday = new Date(week+"T00:00:00");
-  const opening = bookingOpeningForCampaign(monday);
-  const now = nigeriaNow();
-
-  if(now < opening){
-    showStatus(
-      "billStatus",
-      "Booking for this campaign has not opened yet. You can book from Saturday at 12:00 AM Nigeria time.",
-      "info"
-    );
-    return;
-  }
-
-  showStatus(
-    "billStatus",
-    "Loading billboard availability...",
-    "info"
-  );
+  const week=$("campaignWeek").value;
+  if(!week)return;
 
   try{
-    const result = await request(
-      "/api/advertising/billboard/availability?week="+
-      encodeURIComponent(week)
+    const result=await request(
+      "/api/advertising/billboard/availability?week="+encodeURIComponent(week)
     );
 
     if(!Array.isArray(result.slots)){
-      throw new Error("Invalid availability response.");
+      throw new Error("Invalid slot information.");
     }
 
     renderSlots(result.slots);
 
+    if(!bookingIsOpen){
+      showStatus(
+        "billStatus",
+        "Booking is closed. You can view the slots, but selection and payment are available on Saturdays and Sundays only.",
+        "info"
+      );
+    }else if(result.slots.every(s=>s.status!=="available")){
+      showStatus(
+        "billStatus",
+        "All slots for this week have been booked. Please check the next available week.",
+        "info"
+      );
+    }
   }catch(error){
     renderSlots([]);
-
     showStatus(
       "billStatus",
-      "Availability could not be loaded. Please try again. Slots are not selectable until availability is confirmed.",
+      "Billboard availability could not be loaded. Please refresh and try again.",
       "error"
     );
   }
 }
 
+/* TOTAL AND BUTTON STATE */
+function updateBillboardTotal(){
+  const count=selectedSlots.size;
+  $("slotCount").textContent=count+" slot"+(count===1?"":"s")+" selected";
+  $("billboardTotal").textContent=naira(count*BILLBOARD_SLOT_PRICE);
+
+  const button=$("billSubmit");
+
+  if(!bookingIsOpen){
+    button.disabled=true;
+    button.textContent="Billboard booking is closed";
+  }else if(count===0){
+    button.disabled=true;
+    button.textContent="Select a slot to continue";
+  }else{
+    button.disabled=false;
+    button.textContent="Pay "+naira(count*BILLBOARD_SLOT_PRICE)+" and Submit";
+  }
+}
+
+/* CAMPAIGN CHANGE */
 $("campaignWeek").addEventListener("change",()=>{
-  updateSelectedCampaignInfo();
+  selectedSlots.clear();
+  updateBookingWindow();
   loadBillboardAvailability();
 });
 
-/* BILLBOARD TOTAL */
-
-function updateBillboardTotal(){
-  const count = selectedSlots.size;
-
-  $("slotCount").textContent =
-    count+" slot"+(count===1?"":"s")+" selected";
-
-  $("billboardTotal").textContent =
-    naira(count*BILLBOARD_SLOT_PRICE);
-
-  const button = $("billSubmit");
-
-  button.disabled = count===0;
-
-  button.textContent = count===0
-    ? "Select a slot to continue"
-    : "Pay "+naira(count*BILLBOARD_SLOT_PRICE)+" and Submit";
-}
-
 /* BILLBOARD PAYMENT */
-
 $("billboardForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearStatus("billStatus");
 
-  if(selectedSlots.size===0){
-    showStatus(
-      "billStatus",
-      "Please select at least one available slot.",
-      "error"
-    );
+  /* Client-side weekend restriction */
+  if(!isWeekendBookingDay()){
+    showStatus("billStatus","Billboard booking is closed. Please return on Saturday or Sunday.","error");
+    updateBookingWindow();
     return;
   }
 
-  const button = $("billSubmit");
-  button.disabled = true;
-  button.textContent = "Securing selected slots...";
+  if(selectedSlots.size===0){
+    showStatus("billStatus","Please select at least one available slot.","error");
+    return;
+  }
+
+  const button=$("billSubmit");
+  button.disabled=true;
+  button.textContent="Preparing payment...";
 
   try{
-    const slots = [...selectedSlots].sort((a,b)=>a-b);
+    const slots=[...selectedSlots].sort((a,b)=>a-b);
 
-    const order = await prepareCheckout(
+    const order=await createOrder(
       event.target,
       "homepage_billboard",
       {
@@ -1008,21 +644,13 @@ $("billboardForm").addEventListener("submit",async event=>{
       }
     );
 
-    const expectedAmount =
-      slots.length*BILLBOARD_SLOT_PRICE;
+    const expected=slots.length*BILLBOARD_SLOT_PRICE;
 
-    if(Number(order.amount)!==expectedAmount){
-      throw new Error("Payment amount does not match selected slots.");
+    if(Number(order.amount)!==expected){
+      throw new Error("The payment amount does not match your selected slots.");
     }
 
-    showStatus(
-      "billStatus",
-      "Your selected slots are reserved temporarily. Complete payment in Flutterwave to confirm your booking.",
-      "info"
-    );
-
     openFlutterwave(order,"billStatus");
-
   }catch(error){
     showStatus("billStatus",error.message,"error");
     loadBillboardAvailability();
@@ -1032,11 +660,8 @@ $("billboardForm").addEventListener("submit",async event=>{
 });
 
 /* INITIALIZE */
-
 populateWeeks();
-updateBookingInformation();
-updateSelectedCampaignInfo();
-updateBillboardTotal();
+updateBookingWindow();
 renderSlots([]);
 
 </script>
