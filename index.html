@@ -17,8 +17,15 @@
   --pink:#d92cff;
   --white:#fff;
 }
-* {box-sizing:border-box;margin:0;padding:0}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
 html {scroll-behavior:smooth}
+
 body {
   font-family:Arial,Helvetica,sans-serif;
   color:white;
@@ -28,10 +35,18 @@ body {
     linear-gradient(135deg,#10021d,#23063e 55%,#10021d);
   overflow-x:hidden;
 }
-a {color:inherit;text-decoration:none}
-button {font:inherit;cursor:pointer}
 
-/* NAVIGATION */
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+button {
+  font:inherit;
+  cursor:pointer;
+}
+
+/* HEADER */
 header {
   min-height:76px;
   padding:12px 4%;
@@ -44,6 +59,7 @@ header {
   position:relative;
   z-index:20;
 }
+
 .logo {
   font-size:32px;
   font-weight:900;
@@ -53,6 +69,7 @@ header {
   align-items:center;
   gap:3px;
 }
+
 .logo .crown {
   font-size:1em;
   color:var(--gold);
@@ -61,20 +78,15 @@ header {
   letter-spacing:0;
   line-height:1;
 }
+
 .logo span {color:var(--lime)}
-nav {
+
+.header-actions {
   display:flex;
+  gap:9px;
   align-items:center;
-  gap:17px;
 }
-nav a {
-  font-size:13px;
-  font-weight:bold;
-  color:#f5eaff;
-  transition:.2s;
-}
-nav a:hover {color:var(--lime)}
-.header-actions {display:flex;gap:9px;align-items:center}
+
 .btn {
   display:inline-flex;
   align-items:center;
@@ -86,23 +98,22 @@ nav a:hover {color:var(--lime)}
   transition:.25s;
   text-align:center;
 }
-.btn:hover {transform:translateY(-3px);filter:brightness(1.12)}
+
+.btn:hover {
+  transform:translateY(-3px);
+  filter:brightness(1.12);
+}
+
 .btn-lime {
   background:var(--lime);
   color:#160b21;
   box-shadow:0 0 22px #caff1950;
 }
+
 .btn-outline {
   border:2px solid #dc55ff;
   color:white;
   background:#23083d80;
-}
-.menu-toggle {
-  display:none;
-  background:none;
-  border:0;
-  color:white;
-  font-size:28px;
 }
 
 /* HERO */
@@ -115,7 +126,12 @@ nav a:hover {color:var(--lime)}
   align-items:center;
   gap:10px;
 }
-.hero-copy {position:relative;z-index:2}
+
+.hero-copy {
+  position:relative;
+  z-index:2;
+}
+
 .welcome {
   display:inline-block;
   padding:11px 20px;
@@ -125,6 +141,7 @@ nav a:hover {color:var(--lime)}
   font-weight:800;
   margin-bottom:20px;
 }
+
 .hero h1 {
   font-size:clamp(48px,6vw,82px);
   line-height:.99;
@@ -133,11 +150,13 @@ nav a:hover {color:var(--lime)}
   font-style:italic;
   text-shadow:0 0 25px #ffffff25;
 }
+
 .hero h1 span {
   color:var(--lime);
   display:block;
   text-shadow:0 0 25px #caff1960;
 }
+
 .hero-copy p {
   color:#eee2f7;
   font-size:18px;
@@ -145,15 +164,21 @@ nav a:hover {color:var(--lime)}
   max-width:480px;
   margin:23px 0;
 }
-.hero-buttons {display:flex;gap:13px;flex-wrap:wrap}
 
-/* CASH AND COINS ILLUSTRATION */
+.hero-buttons {
+  display:flex;
+  gap:13px;
+  flex-wrap:wrap;
+}
+
+/* MONEY ILLUSTRATION */
 .hero-art {
   width:100%;
   max-width:760px;
   margin:auto;
   position:relative;
 }
+
 .hero-art:before {
   content:"";
   position:absolute;
@@ -163,6 +188,7 @@ nav a:hover {color:var(--lime)}
   filter:blur(90px);
   opacity:.32;
 }
+
 .money-svg {
   width:100%;
   height:auto;
@@ -172,37 +198,46 @@ nav a:hover {color:var(--lime)}
   filter:drop-shadow(0 0 25px #a51cff55);
   animation:artFloat 5s ease-in-out infinite;
 }
+
 .cash-note {
   transform-box:fill-box;
   transform-origin:center;
   animation:cashFloat 4s ease-in-out infinite;
 }
+
 .cash-note.delay1 {animation-delay:1s}
 .cash-note.delay2 {animation-delay:2s}
+
 .gold-coin {
   transform-box:fill-box;
   transform-origin:center;
   animation:coinFloat 3s ease-in-out infinite;
 }
+
 .gold-coin.delay1 {animation-delay:1s}
 .gold-coin.delay2 {animation-delay:1.7s}
+
 .sparkle {
   animation:sparkle 2s ease-in-out infinite alternate;
   transform-box:fill-box;
   transform-origin:center;
 }
+
 @keyframes artFloat {
   0%,100% {transform:translateY(0)}
   50% {transform:translateY(-9px)}
 }
+
 @keyframes cashFloat {
   0%,100% {transform:translateY(0) rotate(0)}
   50% {transform:translateY(-17px) rotate(4deg)}
 }
+
 @keyframes coinFloat {
   0%,100% {transform:translateY(0) rotate(0)}
   50% {transform:translateY(-18px) rotate(12deg)}
 }
+
 @keyframes sparkle {
   from {opacity:.35;transform:scale(.75)}
   to {opacity:1;transform:scale(1.2)}
@@ -223,40 +258,49 @@ nav a:hover {color:var(--lime)}
   background:linear-gradient(100deg,#4b087f,#8111b0,#32104f);
   box-shadow:0 0 30px #a61bff55,inset 0 0 25px #d52aff30;
 }
+
 .spotlight-title {
   color:#ffe600;
   font-size:25px;
   font-weight:900;
   white-space:nowrap;
 }
+
 .spotlight-copy {
   flex:1;
   border-left:2px solid #ffffff70;
   padding-left:27px;
 }
+
 .spotlight-copy strong {font-size:22px}
+
 .spotlight-copy p {
   margin-top:7px;
   color:#eadcf7;
   line-height:1.4;
 }
 
-/* WAYS TO EARN */
+/* SECTIONS */
 .section {
   max-width:1500px;
   margin:38px auto;
   padding:0 4%;
 }
+
 .section-heading {
   font-size:32px;
   margin-bottom:23px;
 }
+
 .section-heading span {color:var(--lime)}
+
+/* FEATURE CARDS - DISPLAY ONLY */
 .feature-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:17px;
 }
+
 .feature {
   min-height:180px;
   padding:22px 19px;
@@ -265,51 +309,64 @@ nav a:hover {color:var(--lime)}
   background:linear-gradient(140deg,#4a1268,#21103d 75%);
   box-shadow:0 0 18px #bd22ff30;
   transition:.25s;
+  cursor:default;
 }
+
 .feature:hover {
   transform:translateY(-7px);
   box-shadow:0 0 28px #d22aff70;
 }
+
 .feature:nth-child(1) {border-color:#ff9a35}
 .feature:nth-child(2) {border-color:#20aaff}
 .feature:nth-child(3) {border-color:#e52aff}
 .feature:nth-child(4) {border-color:#37e77c}
-.feature-icon {font-size:39px;margin-bottom:12px}
-.feature h3 {font-size:21px;margin-bottom:9px}
+
+.feature-icon {
+  font-size:39px;
+  margin-bottom:12px;
+}
+
+.feature h3 {
+  font-size:21px;
+  margin-bottom:9px;
+}
+
 .feature p {
   font-size:14px;
   line-height:1.5;
   color:#e7ddef;
 }
-.feature a {
-  display:inline-block;
-  color:#ffed00;
-  font-weight:800;
-  margin-top:16px;
-}
 
-/* DISCOVER */
+/* DISCOVER CARDS - DISPLAY ONLY */
 .discover-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:18px;
 }
+
 .discover-card {
   padding:28px;
   border-radius:20px;
   background:linear-gradient(135deg,#321052,#18072c);
   border:1px solid #9b38cf;
   transition:.25s;
+  cursor:default;
 }
+
 .discover-card:hover {
   transform:translateY(-5px);
   border-color:var(--lime);
 }
-.discover-card h3 {font-size:23px;margin-bottom:10px}
+
+.discover-card h3 {
+  font-size:23px;
+  margin-bottom:10px;
+}
+
 .discover-card p {
   color:#d7c9e5;
   line-height:1.5;
-  margin-bottom:18px;
 }
 
 /* JOIN BANNER */
@@ -322,7 +379,12 @@ nav a:hover {color:var(--lime)}
   background:linear-gradient(110deg,#5600a3,#b20bd0,#4a0789);
   box-shadow:0 0 35px #b52cff50;
 }
-.bottom-cta h2 {font-size:30px;margin-bottom:10px}
+
+.bottom-cta h2 {
+  font-size:30px;
+  margin-bottom:10px;
+}
+
 .bottom-cta p {
   color:#f0ddff;
   margin-bottom:20px;
@@ -340,14 +402,21 @@ footer {
   border-top:1px solid #a72cff50;
   color:#cbbbdc;
 }
-.footer-links {display:flex;gap:23px;flex-wrap:wrap;font-size:14px}
+
+.footer-links {
+  display:flex;
+  gap:23px;
+  flex-wrap:wrap;
+  font-size:14px;
+}
+
 footer a:hover {color:var(--lime)}
 
 /* TABLET */
 @media(max-width:1050px) {
-  nav {gap:10px}
-  nav a {font-size:11px}
-  .feature-grid {grid-template-columns:repeat(2,1fr)}
+  .feature-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
 /* MOBILE */
@@ -356,47 +425,37 @@ footer a:hover {color:var(--lime)}
     padding:13px 5%;
     min-height:68px;
   }
+
   .logo {font-size:28px}
-  .menu-toggle {display:block}
-  nav {
-    display:none;
-    position:absolute;
-    top:68px;
-    left:0;
-    right:0;
-    background:#19052f;
-    padding:23px 6%;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:20px;
-    border-bottom:1px solid #a72cff;
-    box-shadow:0 15px 25px #0006;
-  }
-  nav.open {display:flex}
-  nav a {font-size:15px}
-  .header-actions .btn {padding:10px 13px;font-size:12px}
+
   .hero {
     grid-template-columns:1fr;
     padding:35px 5% 10px;
     text-align:center;
     gap:0;
   }
+
   .welcome {font-size:13px}
+
   .hero h1 {
     font-size:clamp(48px,12vw,68px);
     letter-spacing:-2px;
   }
+
   .hero-copy p {
     font-size:16px;
     margin:19px auto 22px;
     max-width:500px;
   }
+
   .hero-buttons {justify-content:center}
+
   .hero-art {
     width:100%;
     max-width:540px;
     margin:15px auto 5px;
   }
+
   .spotlight {
     width:92%;
     padding:22px;
@@ -405,68 +464,90 @@ footer a:hover {color:var(--lime)}
     gap:17px;
     border-radius:24px;
   }
+
   .spotlight-title {
     white-space:normal;
     font-size:23px;
   }
+
   .spotlight-copy {
     border-left:0;
     border-top:1px solid #ffffff65;
     padding:15px 0 0;
     width:100%;
   }
+
   .spotlight-copy strong {font-size:20px}
+
   .spotlight .btn {width:100%}
+
   .discover-grid {grid-template-columns:1fr}
+
   footer {
     justify-content:center;
     text-align:center;
   }
+
   .footer-links {justify-content:center}
 }
 
 /* SMALL PHONES */
 @media(max-width:430px) {
   .logo {font-size:25px}
-  .header-actions .btn-outline {display:none}
+
+  .header-actions .btn {
+    padding:10px 12px;
+    font-size:12px;
+  }
+
   .hero {padding-top:28px}
+
   .hero h1 {font-size:47px}
+
   .hero-art {margin-top:12px}
+
   .feature-grid {grid-template-columns:1fr}
+
   .section-heading {font-size:27px}
+
   .feature {min-height:160px}
+
   .bottom-cta h2 {font-size:25px}
+
   .footer-links {gap:16px}
+}
+
+/* ACCESSIBILITY: REDUCED MOTION */
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER: ONLY LOG IN AND CREATE ACCOUNT -->
 <header>
-  <a class="logo" href="index.html"><b class="crown">👑</b>Earn<span>Gig</span></a>
-
-  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
-
-  <nav id="mainNav">
-    <a href="index.html">Home</a>
-    <a href="pages/games.html">🎮 Games</a>
-    <a href="pages/novels.html">📖 Novels</a>
-    <a href="pages/marketplace.html">🛍 Marketplace</a>
-    <a href="pages/earn-more.html">Earn More</a>
-    <a href="pages/advertise.html">📢 Advertise</a>
-    <a href="pages/wallet.html">Wallet</a>
-    <a href="pages/my-shop.html">My Shop</a>
-  </nav>
+  <a class="logo" href="index.html" aria-label="EarnGig Home">
+    <b class="crown">👑</b>Earn<span>Gig</span>
+  </a>
 
   <div class="header-actions">
-    <a class="btn btn-outline" href="pages/login.html">Log in</a>
-    <a class="btn btn-lime" href="pages/register.html">Join</a>
+    <a class="btn btn-outline" href="pages/login.html">Log In</a>
+    <a class="btn btn-lime" href="pages/register.html">Create Account</a>
   </div>
 </header>
 
 <main>
 
+<!-- HERO -->
 <section class="hero">
 
   <div class="hero-copy">
@@ -486,10 +567,12 @@ footer a:hover {color:var(--lime)}
     </div>
   </div>
 
+  <!-- MONEY AND COINS ILLUSTRATION -->
   <div class="hero-art">
     <svg class="money-svg" viewBox="0 0 700 500"
       xmlns="http://www.w3.org/2000/svg"
-      role="img" aria-label="Flying Nigerian naira notes and a pile of gold coins">
+      role="img"
+      aria-label="Flying Nigerian naira notes and a pile of gold coins">
 
       <defs>
         <linearGradient id="bill" x1="0" y1="0" x2="1" y2="1">
@@ -497,16 +580,19 @@ footer a:hover {color:var(--lime)}
           <stop offset="48%" stop-color="#31c66b"/>
           <stop offset="100%" stop-color="#08713c"/>
         </linearGradient>
+
         <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#fff5a0"/>
           <stop offset="35%" stop-color="#ffd33d"/>
           <stop offset="75%" stop-color="#e99a00"/>
           <stop offset="100%" stop-color="#9d5200"/>
         </linearGradient>
+
         <linearGradient id="cash" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#45dc79"/>
           <stop offset="100%" stop-color="#08743e"/>
         </linearGradient>
+
         <filter id="glow">
           <feGaussianBlur stdDeviation="7" result="blur"/>
           <feMerge>
@@ -514,6 +600,7 @@ footer a:hover {color:var(--lime)}
             <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+
         <filter id="shadow">
           <feGaussianBlur stdDeviation="12"/>
         </filter>
@@ -521,21 +608,27 @@ footer a:hover {color:var(--lime)}
 
       <ellipse cx="350" cy="370" rx="260" ry="95"
         fill="#b000ff" opacity=".25" filter="url(#shadow)"/>
+
       <ellipse cx="350" cy="340" rx="280" ry="155"
         fill="none" stroke="#d42bff" stroke-width="5"
         opacity=".75" filter="url(#glow)"/>
+
       <ellipse cx="350" cy="340" rx="230" ry="120"
-        fill="none" stroke="#ed6aff" stroke-width="2" opacity=".7"/>
+        fill="none" stroke="#ed6aff" stroke-width="2"
+        opacity=".7"/>
 
       <!-- Flying banknote left -->
       <g class="cash-note">
         <g transform="rotate(-24 130 140)">
           <rect x="55" y="105" width="150" height="78" rx="9"
             fill="url(#bill)" stroke="#c6ff9e" stroke-width="4"/>
+
           <rect x="67" y="117" width="126" height="54" rx="5"
             fill="none" stroke="#e5ffbb" stroke-width="2"/>
+
           <circle cx="130" cy="144" r="22"
             fill="#baff8a" stroke="#168b49" stroke-width="3"/>
+
           <text x="130" y="153" text-anchor="middle"
             font-size="29" font-weight="900" fill="#08743e">₦</text>
         </g>
@@ -546,10 +639,13 @@ footer a:hover {color:var(--lime)}
         <g transform="rotate(22 570 120)">
           <rect x="500" y="80" width="145" height="75" rx="9"
             fill="url(#bill)" stroke="#c6ff9e" stroke-width="4"/>
+
           <rect x="512" y="92" width="121" height="51" rx="5"
             fill="none" stroke="#e5ffbb" stroke-width="2"/>
+
           <circle cx="572" cy="117" r="20"
             fill="#baff8a" stroke="#168b49" stroke-width="3"/>
+
           <text x="572" y="126" text-anchor="middle"
             font-size="27" font-weight="900" fill="#08743e">₦</text>
         </g>
@@ -560,7 +656,9 @@ footer a:hover {color:var(--lime)}
         <g transform="rotate(-13 550 260)">
           <rect x="510" y="238" width="85" height="45" rx="6"
             fill="url(#bill)" stroke="#d3ffac" stroke-width="3"/>
+
           <circle cx="552" cy="260" r="13" fill="#c2ff9b"/>
+
           <text x="552" y="267" text-anchor="middle"
             font-size="18" font-weight="900" fill="#08743e">₦</text>
         </g>
@@ -570,16 +668,22 @@ footer a:hover {color:var(--lime)}
       <g transform="translate(85 345)" filter="url(#glow)">
         <rect x="0" y="65" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="65" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <rect x="0" y="43" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="43" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <rect x="0" y="21" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="21" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <text x="57" y="28" text-anchor="middle"
           font-size="22" font-weight="900" fill="#995400">₦</text>
       </g>
@@ -588,16 +692,22 @@ footer a:hover {color:var(--lime)}
       <g transform="translate(500 345)" filter="url(#glow)">
         <rect x="0" y="65" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="65" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <rect x="0" y="43" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="43" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <rect x="0" y="21" width="115" height="20" rx="10"
           fill="#c67a00" stroke="#ffdc50" stroke-width="3"/>
+
         <ellipse cx="57" cy="21" rx="57" ry="14"
           fill="url(#gold)" stroke="#fff09a" stroke-width="3"/>
+
         <text x="57" y="28" text-anchor="middle"
           font-size="22" font-weight="900" fill="#995400">₦</text>
       </g>
@@ -607,14 +717,19 @@ footer a:hover {color:var(--lime)}
         <g transform="rotate(-5 350 310)">
           <rect x="205" y="245" width="290" height="145" rx="14"
             fill="#08713c" stroke="#8cff86" stroke-width="4"/>
+
           <rect x="216" y="256" width="268" height="123" rx="9"
             fill="url(#cash)" stroke="#d4ff9f" stroke-width="3"/>
+
           <rect x="315" y="250" width="65" height="135"
             fill="#e7ffb4" opacity=".85"/>
+
           <rect x="330" y="250" width="35" height="135"
             fill="#aeea87"/>
+
           <circle cx="350" cy="318" r="43"
             fill="#a1eb7d" stroke="#168849" stroke-width="4"/>
+
           <text x="350" y="337" text-anchor="middle"
             font-size="55" font-weight="900" fill="#08743e">₦</text>
         </g>
@@ -622,10 +737,13 @@ footer a:hover {color:var(--lime)}
         <g transform="rotate(6 350 220)">
           <rect x="230" y="185" width="240" height="85" rx="12"
             fill="#168b4b" stroke="#b4ff91" stroke-width="4"/>
+
           <rect x="243" y="196" width="214" height="63" rx="7"
             fill="url(#cash)" stroke="#e2ffbd" stroke-width="3"/>
+
           <rect x="320" y="189" width="60" height="77"
             fill="#e6ffb8"/>
+
           <text x="350" y="241" text-anchor="middle"
             font-size="36" font-weight="900" fill="#08743e">₦</text>
         </g>
@@ -635,8 +753,10 @@ footer a:hover {color:var(--lime)}
       <g class="gold-coin" filter="url(#glow)">
         <circle cx="225" cy="105" r="35"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
+
         <circle cx="225" cy="105" r="25"
           fill="none" stroke="#b66b00" stroke-width="3"/>
+
         <text x="225" y="117" text-anchor="middle"
           font-size="31" font-weight="900" fill="#985200">₦</text>
       </g>
@@ -644,8 +764,10 @@ footer a:hover {color:var(--lime)}
       <g class="gold-coin delay1" filter="url(#glow)">
         <circle cx="480" cy="180" r="31"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
+
         <circle cx="480" cy="180" r="22"
           fill="none" stroke="#b66b00" stroke-width="3"/>
+
         <text x="480" y="191" text-anchor="middle"
           font-size="27" font-weight="900" fill="#985200">₦</text>
       </g>
@@ -653,6 +775,7 @@ footer a:hover {color:var(--lime)}
       <g class="gold-coin delay2">
         <circle cx="350" cy="105" r="24"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="3"/>
+
         <text x="350" y="114" text-anchor="middle"
           font-size="22" font-weight="900" fill="#985200">₦</text>
       </g>
@@ -678,91 +801,127 @@ footer a:hover {color:var(--lime)}
       </g>
     </svg>
   </div>
-
 </section>
 
 <!-- SPOTLIGHT -->
 <section class="spotlight">
   <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
+
   <div class="spotlight-copy">
     <strong>Put your brand in the spotlight.</strong>
     <p>Advertise to the growing EarnGig community.</p>
   </div>
-  <a class="btn btn-lime" href="pages/advertise.html">Advertise Now →</a>
+
+  <a class="btn btn-lime" href="pages/advertise.html">
+    Advertise Now →
+  </a>
 </section>
 
-<!-- WAYS TO EARN -->
+<!-- WAYS TO EARN: DISPLAY ONLY -->
 <section class="section">
-  <h2 class="section-heading">More ways to <span>earn</span> ━</h2>
+  <h2 class="section-heading">
+    More ways to <span>earn</span> ━
+  </h2>
 
   <div class="feature-grid">
+
     <article class="feature">
       <div class="feature-icon">🎬</div>
       <h3>Watch Ads</h3>
-      <p>Watch sponsored videos and collect reward coins.</p>
-      <a href="pages/watch-ads.html">Start earning →</a>
+      <p>
+        Watch sponsored videos and collect reward coins.
+        Available to registered EarnGig members.
+      </p>
     </article>
 
     <article class="feature">
       <div class="feature-icon">👥</div>
       <h3>Refer Friends</h3>
-      <p>Invite friends and earn when their referrals qualify.</p>
-      <a href="pages/referrals.html">Invite friends →</a>
+      <p>
+        Invite friends to EarnGig and earn when their referrals
+        meet the platform's qualifying requirements.
+      </p>
     </article>
 
     <article class="feature">
       <div class="feature-icon">📖</div>
       <h3>Read Novels</h3>
-      <p>Explore stories and earn from qualified reading.</p>
-      <a href="pages/novels.html">Read stories →</a>
+      <p>
+        Explore interesting stories and earn from eligible
+        reading activities as a member.
+      </p>
     </article>
 
     <article class="feature">
       <div class="feature-icon">👛</div>
       <h3>My Wallet</h3>
-      <p>Keep track of your rewards and transactions.</p>
-      <a href="pages/wallet.html">Open wallet →</a>
+      <p>
+        Registered members can keep track of their rewards,
+        coin balance and transactions.
+      </p>
     </article>
+
   </div>
 </section>
 
-<!-- DISCOVER -->
+<!-- DISCOVER EARNGIG: DISPLAY ONLY -->
 <section class="section" id="discover">
-  <h2 class="section-heading">Explore <span>EarnGig</span></h2>
+  <h2 class="section-heading">
+    Explore <span>EarnGig</span>
+  </h2>
 
   <div class="discover-grid">
+
     <article class="discover-card">
       <h3>🎮 Play Games</h3>
-      <p>Discover exciting games, challenge yourself and enjoy the experience.</p>
-      <a class="btn btn-outline" href="pages/games.html">Explore Games →</a>
+      <p>
+        Discover exciting games, challenge yourself and enjoy
+        the experience. Games are available to members after
+        registration or login.
+      </p>
     </article>
 
     <article class="discover-card">
       <h3>🛍 Shop Marketplace</h3>
-      <p>Discover products, browse stores and find something you love.</p>
-      <a class="btn btn-outline" href="pages/marketplace.html">Visit Marketplace →</a>
+      <p>
+        Discover products, browse stores and find something
+        you love. Sign in to access the marketplace and its
+        member features.
+      </p>
     </article>
 
     <article class="discover-card">
       <h3>🏪 Open Your Shop</h3>
-      <p>Create your store and introduce your products to EarnGig customers.</p>
-      <a class="btn btn-outline" href="pages/my-shop.html">Create Your Store →</a>
+      <p>
+        Create your own store and introduce your products to
+        EarnGig customers. Store features are available to
+        registered members.
+      </p>
     </article>
+
   </div>
 </section>
 
 <!-- JOIN BANNER -->
 <section class="bottom-cta">
   <h2>Your next chapter starts here.</h2>
-  <p>Join EarnGig and discover games, stories, rewards and shopping.</p>
-  <a class="btn btn-lime" href="pages/register.html">Create your free account →</a>
+
+  <p>
+    Join EarnGig and discover games, stories, rewards and shopping.
+  </p>
+
+  <a class="btn btn-lime" href="pages/register.html">
+    Create your free account →
+  </a>
 </section>
 
 </main>
 
 <!-- FOOTER -->
 <footer>
-  <a class="logo" href="index.html"><b class="crown">👑</b>Earn<span>Gig</span></a>
+  <a class="logo" href="index.html">
+    <b class="crown">👑</b>Earn<span>Gig</span>
+  </a>
 
   <div class="footer-links">
     <a href="pages/about.html">About</a>
@@ -775,12 +934,6 @@ footer a:hover {color:var(--lime)}
 
   <small>© 2026 EarnGig. All rights reserved.</small>
 </footer>
-
-<script>
-function toggleMenu() {
-  document.getElementById("mainNav").classList.toggle("open");
-}
-</script>
 
 </body>
 </html>
