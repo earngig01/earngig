@@ -1,0 +1,1142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Haul | EarnGig</title>
+
+<style>
+:root{
+  --purple:#6427a8;
+  --deep:#381052;
+  --lavender:#f4eaff;
+  --lavender-light:#fbf8ff;
+  --border:#dfcbed;
+  --gold:#d6a62e;
+  --text:#32144b;
+  --muted:#71627f;
+  --white:#fff;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 10% 15%,#f9f2ff 0%,transparent 40%),
+    radial-gradient(ellipse at 90% 70%,#f0e3ff 0%,transparent 42%),
+    linear-gradient(135deg,#fcfaff,#f7f0ff 55%,#fcfaff);
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button,input{
+  font:inherit;
+}
+
+/* HEADER */
+
+.topbar{
+  min-height:75px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:center;
+  padding:8px 4%;
+  background:rgba(255,255,255,.85);
+  border-bottom:1px solid #e8daf5;
+  box-shadow:0 3px 13px rgba(72,30,105,.05);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(12px);
+}
+
+.brand-wrap{
+  display:flex;
+  align-items:center;
+  width:max-content;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--purple);
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-.8px;
+  white-space:nowrap;
+}
+
+.brand svg{
+  width:39px;
+  height:39px;
+}
+
+.header-divider{
+  width:1px;
+  height:38px;
+  background:#dfcbed;
+  margin-left:12px;
+}
+
+.dashboard-link{
+  justify-self:center;
+  color:#562184;
+  font-size:17px;
+  font-weight:600;
+}
+
+.header-actions{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.coin-area{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 13px;
+  background:#f0e2fc;
+  border:1px solid #ead8f8;
+  border-radius:30px;
+  color:var(--deep);
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.coin-icon{
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:linear-gradient(145deg,#f4cf70,#d99d26);
+  border:2px solid #fff5d9;
+  color:white;
+  font-size:14px;
+  font-weight:800;
+}
+
+.cart-link{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:9px 12px;
+  background:var(--lavender);
+  border:1px solid var(--border);
+  border-radius:9px;
+  color:var(--purple);
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.cart-count{
+  display:grid;
+  place-items:center;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:20px;
+  background:var(--purple);
+  color:white;
+  font-size:10px;
+}
+
+/* MAIN */
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:55px 35px 100px;
+}
+
+.page-heading{
+  margin-bottom:30px;
+}
+
+.page-heading h1{
+  font-size:clamp(32px,4vw,48px);
+  letter-spacing:-1px;
+  color:#35104f;
+  margin:0 0 10px;
+}
+
+.page-heading p{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.7;
+  margin:0;
+}
+
+/* SEARCH */
+
+.search-section{
+  margin-bottom:38px;
+}
+
+.search-box{
+  width:100%;
+  max-width:750px;
+  min-height:57px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 6px 5px 17px;
+  background:white;
+  border:1px solid #d9c3ed;
+  border-radius:12px;
+  box-shadow:0 4px 13px rgba(84,38,126,.045);
+}
+
+.search-icon{
+  color:#8b75a1;
+  font-size:22px;
+  flex-shrink:0;
+}
+
+.search-box input{
+  flex:1;
+  min-width:0;
+  height:43px;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  font-size:13px;
+}
+
+.search-box input::placeholder{
+  color:#a197aa;
+}
+
+.search-button{
+  height:44px;
+  border:0;
+  border-radius:9px;
+  padding:0 22px;
+  background:var(--purple);
+  color:white;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.search-button:hover{
+  background:var(--deep);
+}
+
+/* DIRECTORY HEADING */
+
+.directory-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:23px;
+}
+
+.directory-heading h2{
+  font-size:20px;
+  color:#35104f;
+  margin:0;
+}
+
+.vendor-count{
+  color:#704b91;
+  background:#f0e3fb;
+  border-radius:25px;
+  padding:8px 13px;
+  font-size:11px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* VENDOR GRID */
+
+.vendor-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:35px 22px;
+}
+
+.vendor-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  min-width:0;
+  padding:15px 10px 17px;
+  border-radius:15px;
+  transition:background .2s,transform .2s;
+}
+
+.vendor-card:hover{
+  background:rgba(255,255,255,.65);
+  transform:translateY(-3px);
+}
+
+.vendor-logo{
+  width:115px;
+  height:115px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:linear-gradient(145deg,#f0e2fc,#faf6ff);
+  border:2px solid #dfcbed;
+  box-shadow:0 5px 14px rgba(84,38,126,.07);
+  margin-bottom:13px;
+}
+
+.vendor-logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.vendor-placeholder{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:100%;
+  color:var(--purple);
+  font-size:38px;
+  font-weight:800;
+}
+
+.vendor-name{
+  display:inline-block;
+  max-width:100%;
+  color:#45146d;
+  font-size:14px;
+  line-height:1.5;
+  font-weight:800;
+  overflow-wrap:anywhere;
+  transition:color .2s;
+}
+
+.vendor-name:hover{
+  color:#8b43c7;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.vendor-description{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+  margin-top:4px;
+}
+
+/* EMPTY AND LOADING STATES */
+
+.directory-message{
+  grid-column:1/-1;
+  padding:55px 20px;
+  background:rgba(255,255,255,.8);
+  border:1px dashed #d9c3ed;
+  border-radius:15px;
+  text-align:center;
+}
+
+.directory-message .message-icon{
+  font-size:35px;
+  margin-bottom:12px;
+}
+
+.directory-message h3{
+  color:#35104f;
+  font-size:17px;
+  margin:0 0 8px;
+}
+
+.directory-message p{
+  max-width:450px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+.clear-search{
+  display:none;
+  margin-top:14px;
+  border:0;
+  background:var(--lavender);
+  color:var(--purple);
+  border-radius:8px;
+  padding:9px 15px;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* FOOTER */
+
+.footer{
+  padding:25px 12px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  background:rgba(255,255,255,.5);
+  border-top:1px solid #eadcf6;
+}
+
+.footer p{
+  margin:0 0 12px;
+}
+
+.footer a{
+  color:var(--purple);
+  margin:0 9px;
+}
+
+/* TABLET */
+
+@media(max-width:950px){
+  .vendor-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+
+  .vendor-logo{
+    width:105px;
+    height:105px;
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+  .topbar{
+    min-height:64px;
+    padding:7px 10px;
+    gap:5px;
+  }
+
+  .brand{
+    font-size:20px;
+    gap:4px;
+  }
+
+  .brand svg{
+    width:30px;
+    height:30px;
+  }
+
+  .header-divider{
+    height:30px;
+    margin-left:5px;
+  }
+
+  .dashboard-link{
+    font-size:13px;
+  }
+
+  .header-actions{
+    gap:5px;
+  }
+
+  .coin-area{
+    padding:5px 7px;
+    gap:5px;
+    font-size:11px;
+  }
+
+  .coin-icon{
+    width:22px;
+    height:22px;
+    font-size:11px;
+  }
+
+  .cart-link{
+    padding:7px;
+    gap:4px;
+    font-size:10px;
+  }
+
+  .container{
+    padding:35px 15px 65px;
+  }
+
+  .page-heading{
+    margin-bottom:23px;
+  }
+
+  .page-heading h1{
+    font-size:31px;
+    margin-bottom:7px;
+  }
+
+  .page-heading p{
+    font-size:12px;
+  }
+
+  .search-section{
+    margin-bottom:29px;
+  }
+
+  .search-box{
+    min-height:51px;
+    padding:4px 5px 4px 12px;
+    gap:7px;
+  }
+
+  .search-box input{
+    font-size:11px;
+    height:39px;
+  }
+
+  .search-button{
+    height:40px;
+    padding:0 14px;
+    font-size:10px;
+  }
+
+  .directory-heading{
+    margin-bottom:18px;
+  }
+
+  .directory-heading h2{
+    font-size:16px;
+  }
+
+  .vendor-count{
+    font-size:9px;
+    padding:7px 9px;
+  }
+
+  .vendor-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:23px 8px;
+  }
+
+  .vendor-card{
+    padding:9px 3px 12px;
+  }
+
+  .vendor-logo{
+    width:83px;
+    height:83px;
+    margin-bottom:9px;
+    border-width:1.5px;
+  }
+
+  .vendor-placeholder{
+    font-size:29px;
+  }
+
+  .vendor-name{
+    font-size:11px;
+  }
+
+  .vendor-description{
+    font-size:9px;
+  }
+
+  .directory-message{
+    padding:38px 15px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media(max-width:370px){
+
+  .brand{
+    font-size:17px;
+  }
+
+  .brand svg{
+    width:26px;
+    height:26px;
+  }
+
+  .dashboard-link{
+    font-size:11px;
+  }
+
+  .coin-area{
+    padding:5px;
+    font-size:9px;
+  }
+
+  .cart-link{
+    padding:6px 5px;
+    font-size:9px;
+  }
+
+  .vendor-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px 5px;
+  }
+
+  .vendor-logo{
+    width:72px;
+    height:72px;
+  }
+
+  .vendor-name{
+    font-size:10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="topbar">
+
+  <div class="brand-wrap">
+    <a href="dashboard.html" class="brand">
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M7 19L20 34L31 10L44 34L57 19L51 49H13L7 19Z"
+          stroke="#D6A62E"
+          stroke-width="2.3"
+          stroke-linejoin="round"/>
+        <path d="M14 42H50"
+          stroke="#D6A62E"
+          stroke-width="1.7"/>
+        <circle cx="7" cy="17" r="3" fill="#D6A62E"/>
+        <circle cx="31" cy="8" r="3" fill="#D6A62E"/>
+        <circle cx="57" cy="17" r="3" fill="#D6A62E"/>
+      </svg>
+      EarnGig
+    </a>
+
+    <div class="header-divider"></div>
+  </div>
+
+  <a href="dashboard.html" class="dashboard-link">
+    Dashboard
+  </a>
+
+  <div class="header-actions">
+
+    <div class="coin-area">
+      <span class="coin-icon">G</span>
+      <span id="coinBalance">—</span>
+    </div>
+
+    <a href="cart.html" class="cart-link">
+      🛒 Cart
+      <span class="cart-count" id="cartCount">0</span>
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- MAIN -->
+
+<main class="container">
+
+  <section class="page-heading">
+    <h1>Vendor Haul</h1>
+    <p>
+      Discover and shop from registered storefronts across EarnGig.
+    </p>
+  </section>
+
+
+  <!-- SEARCH VENDORS -->
+
+  <section class="search-section">
+
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="search"
+        id="vendorSearch"
+        placeholder="Search for a vendor or store name..."
+        autocomplete="off"
+        aria-label="Search vendors"
+      >
+
+      <button
+        type="button"
+        class="search-button"
+        id="searchButton"
+      >
+        Search
+      </button>
+    </div>
+
+  </section>
+
+
+  <!-- REGISTERED STORES -->
+
+  <section>
+
+    <div class="directory-heading">
+
+      <h2 id="directoryTitle">Explore Stores</h2>
+
+      <span class="vendor-count" id="vendorCount">
+        0 Stores
+      </span>
+
+    </div>
+
+    <div class="vendor-grid" id="vendorGrid">
+
+      <div class="directory-message">
+        <div class="message-icon">🏬</div>
+        <h3>Loading stores...</h3>
+        <p>Please wait while we load registered EarnGig vendors.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer class="footer">
+  <p>EarnGig Vendor Haul</p>
+  <a href="about.html">About</a>
+  <a href="help.html">Help</a>
+  <a href="terms.html">Terms</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="contact.html">Contact</a>
+</footer>
+
+
+<script>
+
+/* ===================================
+   STORAGE SETTINGS
+=================================== */
+
+const STORES_KEY = "earngig_vendor_stores";
+const CART_KEY = "earngig_cart";
+
+let allStores = [];
+let searchTerm = "";
+
+
+/* ===================================
+   GENERAL HELPERS
+=================================== */
+
+function readJSON(key,fallback){
+
+  try{
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  }catch(error){
+    return fallback;
+  }
+}
+
+function clean(value){
+  return String(value ?? "").trim();
+}
+
+function getFirstValue(object,keys){
+
+  for(const key of keys){
+
+    const value = object?.[key];
+
+    if(value !== undefined && value !== null && value !== ""){
+      return value;
+    }
+  }
+
+  return "";
+}
+
+
+/* ===================================
+   G-COINS
+=================================== */
+
+function updateCoinBalance(){
+
+  const keys = [
+    "earngig_gcoins",
+    "earngig_coin_balance",
+    "gcoins",
+    "coinBalance"
+  ];
+
+  let balance = null;
+
+  for(const key of keys){
+
+    const value = localStorage.getItem(key);
+
+    if(value !== null && value !== ""){
+
+      const number = Number(value);
+
+      if(Number.isFinite(number)){
+        balance = number;
+        break;
+      }
+    }
+  }
+
+  document.getElementById("coinBalance").textContent =
+    balance === null
+      ? "—"
+      : balance.toLocaleString("en-NG");
+}
+
+
+/* ===================================
+   CART COUNT
+=================================== */
+
+function updateCartCount(){
+
+  const cart = readJSON(CART_KEY,[]);
+
+  const count = Array.isArray(cart)
+    ? cart.reduce((total,item)=>{
+        return total + Number(item.quantity || 1);
+      },0)
+    : 0;
+
+  document.getElementById("cartCount").textContent = count;
+}
+
+
+/* ===================================
+   REGISTERED VENDOR STORES
+
+   Reads existing storefront records.
+   Does not create or modify vendor stores.
+=================================== */
+
+function getRegisteredStores(){
+
+  const stored = readJSON(STORES_KEY,[]);
+
+  if(!Array.isArray(stored)) return [];
+
+  return stored
+    .filter(store=>{
+
+      const status = clean(
+        store.status || store.storeStatus || "active"
+      ).toLowerCase();
+
+      return ![
+        "deleted",
+        "removed",
+        "suspended",
+        "inactive",
+        "rejected"
+      ].includes(status)
+      && store.isApproved !== false
+      && store.approved !== false;
+    })
+    .map((store,index)=>{
+
+      const id = clean(getFirstValue(store,[
+        "id",
+        "storeId",
+        "vendorId",
+        "sellerId",
+        "uid",
+        "userId"
+      ]));
+
+      const name = clean(getFirstValue(store,[
+        "storeName",
+        "shopName",
+        "businessName",
+        "vendorName",
+        "name",
+        "sellerName"
+      ]));
+
+      const logo = clean(getFirstValue(store,[
+        "logoUrl",
+        "storeLogo",
+        "logo",
+        "imageUrl",
+        "image",
+        "profileImage",
+        "photo"
+      ]));
+
+      const description = clean(getFirstValue(store,[
+        "description",
+        "storeDescription",
+        "about"
+      ]));
+
+      const email = clean(getFirstValue(store,[
+        "email",
+        "vendorEmail",
+        "sellerEmail"
+      ]));
+
+      return {
+        ...store,
+        id:id || email || "vendor-" + index,
+        name:name || "EarnGig Store",
+        logo:logo,
+        description:description,
+        email:email
+      };
+
+    })
+    .filter(store=>store.name !== "EarnGig Store");
+}
+
+
+/* ===================================
+   STORE SEARCH
+=================================== */
+
+function matchesSearch(store){
+
+  if(!searchTerm) return true;
+
+  const searchable = [
+    store.name,
+    store.description,
+    store.email,
+    store.location,
+    store.category
+  ].join(" ").toLowerCase();
+
+  return searchable.includes(searchTerm);
+}
+
+
+/* ===================================
+   CREATE VENDOR DIRECTORY CARD
+=================================== */
+
+function createVendorCard(store){
+
+  const card = document.createElement("article");
+  card.className = "vendor-card";
+
+  const logoWrap = document.createElement("div");
+  logoWrap.className = "vendor-logo";
+
+  if(store.logo){
+
+    const image = document.createElement("img");
+
+    image.src = store.logo;
+    image.alt = store.name + " store logo";
+    image.loading = "lazy";
+
+    image.onerror = ()=>{
+
+      image.remove();
+
+      const placeholder = document.createElement("div");
+      placeholder.className = "vendor-placeholder";
+      placeholder.textContent = store.name.charAt(0).toUpperCase();
+
+      logoWrap.appendChild(placeholder);
+    };
+
+    logoWrap.appendChild(image);
+
+  }else{
+
+    const placeholder = document.createElement("div");
+    placeholder.className = "vendor-placeholder";
+    placeholder.textContent = store.name.charAt(0).toUpperCase();
+
+    logoWrap.appendChild(placeholder);
+  }
+
+  /*
+    The vendor name is the clickable link.
+    It opens the existing storefront page.
+  */
+
+  const nameLink = document.createElement("a");
+
+  nameLink.className = "vendor-name";
+  nameLink.textContent = store.name;
+
+  nameLink.href =
+    "storefront.html?seller=" +
+    encodeURIComponent(store.id);
+
+  if(store.description){
+
+    const description = document.createElement("div");
+
+    description.className = "vendor-description";
+    description.textContent = store.description;
+
+    card.append(logoWrap,nameLink,description);
+
+  }else{
+
+    card.append(logoWrap,nameLink);
+  }
+
+  return card;
+}
+
+
+/* ===================================
+   RENDER VENDORS
+=================================== */
+
+function renderVendors(){
+
+  const grid = document.getElementById("vendorGrid");
+
+  const filtered = allStores.filter(matchesSearch);
+
+  grid.innerHTML = "";
+
+  document.getElementById("vendorCount").textContent =
+    filtered.length + (filtered.length === 1 ? " Store" : " Stores");
+
+  document.getElementById("directoryTitle").textContent =
+    searchTerm ? "Search Results" : "Explore Stores";
+
+  if(filtered.length === 0){
+
+    const message = document.createElement("div");
+    message.className = "directory-message";
+
+    const icon = document.createElement("div");
+    icon.className = "message-icon";
+    icon.textContent = searchTerm ? "🔎" : "🏬";
+
+    const title = document.createElement("h3");
+    title.textContent = searchTerm
+      ? "No matching stores found"
+      : "No registered stores yet";
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = searchTerm
+      ? "We couldn't find a vendor with that name. Try another search."
+      : "Registered EarnGig vendor storefronts will appear here when they become available.";
+
+    message.append(icon,title,paragraph);
+
+    if(searchTerm){
+
+      const clear = document.createElement("button");
+
+      clear.className = "clear-search";
+      clear.style.display = "inline-block";
+      clear.textContent = "Clear Search";
+
+      clear.addEventListener("click",()=>{
+        document.getElementById("vendorSearch").value = "";
+        searchTerm = "";
+        renderVendors();
+      });
+
+      message.appendChild(clear);
+    }
+
+    grid.appendChild(message);
+    return;
+  }
+
+  filtered.forEach(store=>{
+    grid.appendChild(createVendorCard(store));
+  });
+}
+
+
+/* ===================================
+   SEARCH EVENTS
+=================================== */
+
+function applySearch(){
+
+  searchTerm = document
+    .getElementById("vendorSearch")
+    .value
+    .trim()
+    .toLowerCase();
+
+  renderVendors();
+}
+
+document.getElementById("searchButton")
+  .addEventListener("click",applySearch);
+
+document.getElementById("vendorSearch")
+  .addEventListener("input",applySearch);
+
+document.getElementById("vendorSearch")
+  .addEventListener("keydown",event=>{
+
+    if(event.key === "Enter"){
+      applySearch();
+    }
+  });
+
+
+/* ===================================
+   REFRESH WHEN STORES CHANGE
+=================================== */
+
+window.addEventListener("storage",event=>{
+
+  if(event.key === STORES_KEY){
+    allStores = getRegisteredStores();
+    renderVendors();
+  }
+
+  if(event.key === CART_KEY){
+    updateCartCount();
+  }
+
+  updateCoinBalance();
+});
+
+
+/* ===================================
+   INITIALISE
+=================================== */
+
+function initialise(){
+
+  allStores = getRegisteredStores();
+
+  updateCoinBalance();
+  updateCartCount();
+  renderVendors();
+
+}
+
+initialise();
+
+</script>
+
+</body>
+</html>
