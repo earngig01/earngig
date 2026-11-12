@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
-
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
@@ -21,14 +20,10 @@
   --white:#fff;
   --muted:#b9aecb;
   --border:rgba(255,255,255,.1);
-  --red:#ff7373;
-  --green:#8ee6a2;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
+  margin:0;background:var(--bg);color:var(--white);
   font-family:Inter,Arial,sans-serif;
 }
 button,input,select,textarea{font:inherit}
@@ -65,7 +60,6 @@ main{padding:28px 0 55px}
 }
 h1{font-size:clamp(27px,5vw,43px);line-height:1.08;margin:12px 0}
 .hero p{color:#d2c8e1;max-width:620px;line-height:1.65;margin:0}
-.section-title{font-size:20px;margin:30px 0 13px}
 .tabs{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;
 }
@@ -88,8 +82,7 @@ h1{font-size:clamp(27px,5vw,43px);line-height:1.08;margin:12px 0}
 }
 .package{
   padding:15px;border:1px solid var(--border);
-  background:#261a3c;border-radius:15px;text-align:left;
-  color:white;
+  background:#261a3c;border-radius:15px;text-align:left;color:white;
 }
 .package.selected{
   border:2px solid var(--lime);
@@ -128,21 +121,19 @@ input[type=file]{padding:10px}
 .slot small{font-size:10px;color:var(--muted)}
 .slot.available{border-color:#536b39;background:#26391f}
 .slot.selected{background:#31451e;border:2px solid var(--lime)}
-.slot.booked,.slot.held{
-  opacity:.65;background:#493b50;border-color:#81758d;
-  cursor:not-allowed;
-}
-.slot.unknown{
-  opacity:.8;background:#352b3c;border-color:#81758d;
-  cursor:not-allowed;
+.slot.booked{
+  background:#493b50;border-color:#81758d;
+  opacity:.75;cursor:not-allowed;
 }
 .legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:13px}
 .legend span{font-size:11px;color:var(--muted)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.dot{
+  display:inline-block;width:8px;height:8px;
+  border-radius:50%;margin-right:5px;
+}
 .available-dot{background:var(--lime)}
 .booked-dot{background:#81758d}
 .selected-dot{background:#a78bfa}
-.unknown-dot{background:#51465b}
 .total{
   display:flex;justify-content:space-between;gap:10px;
   padding:15px;background:#120b20;border-radius:13px;
@@ -196,6 +187,7 @@ footer{
 </header>
 
 <main class="container">
+
   <section class="hero">
     <div class="eyebrow">Grow your audience</div>
     <h1>Put your business<br>in the spotlight.</h1>
@@ -215,7 +207,7 @@ footer{
     <h2>Watch and Earn Advertising</h2>
     <p class="sub">Choose how long you want your advert to run. Payment is required when you submit.</p>
 
-    <div class="package-grid" id="packageGrid">
+    <div class="package-grid">
       <button class="package selected" type="button" data-days="1" data-price="10000">
         <div class="duration">24 Hours</div>
         <div class="price">₦10,000</div>
@@ -271,7 +263,7 @@ footer{
       <div class="field">
         <label for="timeMedia">Upload Advert Media</label>
         <input id="timeMedia" name="media" type="file" accept="image/*,video/*" required>
-        <div class="hint">Upload an image or video. File size and accepted formats are validated by the server.</div>
+        <div class="hint">Upload an image or video.</div>
       </div>
 
       <div class="total">
@@ -298,9 +290,8 @@ footer{
     </div>
 
     <div class="notice">
-      Select one or more available slots. Your slots are only confirmed after
-      successful payment. Slots temporarily held by another customer cannot
-      be selected during checkout.
+      Select one or more available slots. Payment is required to complete your booking.
+      A slot becomes booked only after successful payment verification.
     </div>
 
     <div class="slot-grid" id="slotGrid"></div>
@@ -308,8 +299,7 @@ footer{
     <div class="legend">
       <span><i class="dot available-dot"></i>Available</span>
       <span><i class="dot selected-dot"></i>Selected</span>
-      <span><i class="dot booked-dot"></i>Booked / Held</span>
-      <span><i class="dot unknown-dot"></i>Checking</span>
+      <span><i class="dot booked-dot"></i>Booked</span>
     </div>
 
     <div class="total">
@@ -357,8 +347,7 @@ footer{
   <div class="notice">
     <strong>Secure payment:</strong> Payments are processed through Flutterwave.
     A campaign or billboard booking is confirmed only after EarnGig's server
-    verifies the successful payment. A payment receipt or return from the
-    payment page alone does not confirm a booking.
+    verifies the successful payment.
   </div>
 </main>
 
@@ -367,39 +356,30 @@ footer{
 </footer>
 
 <script>
-/* FLUTTERWAVE TEST MODE PUBLIC KEY */
+/*
+  FLUTTERWAVE PUBLIC TEST KEY.
+  Replace with your live public key when switching to live mode.
+*/
 const FLUTTERWAVE_PUBLIC_KEY =
   "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
 /*
-  Set this to your deployed backend URL.
-  Example: https://your-backend.example.com
-
-  Do not put your Flutterwave secret key here.
+  Enter your deployed backend URL here.
+  Do not put your Flutterwave secret key in this file.
 */
 const API_BASE = "";
 
 const BILLBOARD_SLOT_PRICE = 100000;
 
-const TIME_PACKAGES = [
-  {days:1,price:10000},
-  {days:3,price:25000},
-  {days:7,price:50000},
-  {days:14,price:85000},
-  {days:30,price:150000}
-];
+let selectedPackage = {days:1,price:10000};
+let selectedSlots = new Set();
 
 const $ = id => document.getElementById(id);
 
-let selectedPackage = TIME_PACKAGES[0];
-let selectedSlots = new Set();
-let currentSlots = [];
-let activePaymentOrder = null;
-
 $("year").textContent = new Date().getFullYear();
 
-function naira(value) {
-  return "₦" + Number(value).toLocaleString("en-NG");
+function naira(amount) {
+  return "₦" + Number(amount).toLocaleString("en-NG");
 }
 
 function showStatus(id,message,type="info") {
@@ -409,14 +389,8 @@ function showStatus(id,message,type="info") {
 }
 
 function clearStatus(id) {
-  const el = $(id);
-  el.textContent = "";
-  el.className = "status";
-}
-
-function setBusy(button,busy,label) {
-  button.disabled = busy;
-  button.textContent = label;
+  $(id).textContent = "";
+  $(id).className = "status";
 }
 
 async function request(path,options={}) {
@@ -429,75 +403,273 @@ async function request(path,options={}) {
   );
 
   let data = {};
-
-  try {
-    data = await response.json();
-  } catch {}
+  try { data = await response.json(); } catch {}
 
   if (!response.ok) {
-    throw new Error(
-      data.message || "Unable to complete this request. Please try again."
-    );
+    throw new Error(data.message || "Request failed. Please try again.");
   }
 
   return data;
 }
 
-/*
-  Always show all 10 slots, even before the server
-  responds or when the availability service is offline.
-*/
-function showInitialSlots() {
-  renderSlots(
-    Array.from({length:10},(_,index)=>({
-      slot:index+1,
-      status:"unknown"
-    }))
-  );
+/* TABS */
+
+$("timeTab").addEventListener("click",()=>{
+  $("timeTab").classList.add("active");
+  $("billboardTab").classList.remove("active");
+  $("timePanel").classList.remove("hidden");
+  $("billboardPanel").classList.add("hidden");
+});
+
+$("billboardTab").addEventListener("click",()=>{
+  $("billboardTab").classList.add("active");
+  $("timeTab").classList.remove("active");
+  $("billboardPanel").classList.remove("hidden");
+  $("timePanel").classList.add("hidden");
+  loadBillboardAvailability();
+});
+
+/* PACKAGES */
+
+document.querySelectorAll(".package").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".package").forEach(item=>{
+      item.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    selectedPackage = {
+      days:Number(button.dataset.days),
+      price:Number(button.dataset.price)
+    };
+
+    $("timeTotal").textContent = naira(selectedPackage.price);
+  });
+});
+
+/* CHECKOUT REQUEST */
+
+async function prepareCheckout(form,type,extra={}) {
+  const data = new FormData(form);
+  data.set("type",type);
+
+  Object.entries(extra).forEach(([key,value])=>{
+    data.set(
+      key,
+      typeof value === "object" ? JSON.stringify(value) : String(value)
+    );
+  });
+
+  return request("/api/advertising/checkout",{
+    method:"POST",
+    body:data
+  });
 }
 
+/* FLUTTERWAVE PAYMENT POPUP */
+
+function openFlutterwave(order,statusId) {
+  if (typeof FlutterwaveCheckout !== "function") {
+    throw new Error("Flutterwave could not load. Refresh and try again.");
+  }
+
+  if (!order.orderId || !order.txRef || !order.amount || !order.customerEmail) {
+    throw new Error("Payment details could not be prepared by the server.");
+  }
+
+  FlutterwaveCheckout({
+    public_key:FLUTTERWAVE_PUBLIC_KEY,
+    tx_ref:order.txRef,
+    amount:Number(order.amount),
+    currency:order.currency || "NGN",
+    payment_options:"card,banktransfer,ussd",
+
+    customer:{
+      email:order.customerEmail,
+      phone_number:order.customerPhone || "",
+      name:order.customerName || "EarnGig Advertiser"
+    },
+
+    customizations:{
+      title:"EarnGig Advertising",
+      description:"Payment for EarnGig advertising",
+      logo:""
+    },
+
+    callback:async function(payment) {
+      showStatus(statusId,"Verifying your payment...","info");
+
+      try {
+        const result = await request(
+          "/api/advertising/payment/verify",
+          {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              orderId:order.orderId,
+              txRef:order.txRef,
+              transactionId:payment.transaction_id
+            })
+          }
+        );
+
+        if (
+          result.status === "successful" &&
+          result.submissionStatus === "confirmed"
+        ) {
+          showStatus(
+            statusId,
+            "Payment successful! Your advertising submission is confirmed.",
+            "success"
+          );
+
+          if (statusId === "billStatus") {
+            selectedSlots.clear();
+            updateBillboardTotal();
+            loadBillboardAvailability();
+            $("billboardForm").reset();
+          } else {
+            $("timeForm").reset();
+          }
+        } else {
+          showStatus(
+            statusId,
+            "Payment has not yet been verified. Your advert is not confirmed.",
+            "info"
+          );
+        }
+      } catch(error) {
+        showStatus(
+          statusId,
+          "We could not verify this payment. Please contact EarnGig support with reference " + order.txRef,
+          "error"
+        );
+      }
+    },
+
+    onclose:function() {
+      /*
+        Closing the popup does not confirm an advert.
+        The server must automatically expire unpaid billboard holds.
+      */
+    }
+  });
+}
+
+/* TIME-BASED PAYMENT */
+
+$("timeForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  clearStatus("timeStatus");
+
+  const button = $("timeSubmit");
+  button.disabled = true;
+  button.textContent = "Preparing payment...";
+
+  try {
+    const order = await prepareCheckout(
+      event.target,
+      "time_based",
+      {durationDays:selectedPackage.days}
+    );
+
+    if (Number(order.amount) !== selectedPackage.price) {
+      throw new Error("The payment amount does not match your selected package.");
+    }
+
+    openFlutterwave(order,"timeStatus");
+
+  } catch(error) {
+    showStatus("timeStatus",error.message,"error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Pay & Submit →";
+  }
+});
+
+/* CAMPAIGN WEEKS */
+
+function dateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,"0");
+  const d = String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+
+function mondayOf(date) {
+  const result = new Date(date);
+  result.setHours(0,0,0,0);
+  const day = result.getDay();
+  result.setDate(result.getDate() + (day===0 ? -6 : 1-day));
+  return result;
+}
+
+function populateWeeks() {
+  const select = $("campaignWeek");
+  const today = new Date();
+  const firstMonday = mondayOf(today);
+
+  select.innerHTML = "";
+
+  for (let i=0;i<12;i++) {
+    const monday = new Date(firstMonday);
+    monday.setDate(monday.getDate()+i*7);
+
+    const bookingOpens = new Date(monday);
+    bookingOpens.setDate(bookingOpens.getDate()-2);
+
+    if (today < bookingOpens) continue;
+
+    const option = document.createElement("option");
+    option.value = dateString(monday);
+    option.textContent = dateString(monday)+" campaign week";
+    select.appendChild(option);
+  }
+
+  if (!select.options.length) {
+    const next = new Date(firstMonday);
+    next.setDate(next.getDate()+7);
+
+    const option = document.createElement("option");
+    option.value = dateString(next);
+    option.textContent = dateString(next)+" campaign week";
+    select.appendChild(option);
+  }
+}
+
+populateWeeks();
+
+/* BILLBOARD SLOT DISPLAY */
+
 /*
-  BILLBOARD SLOT RENDERING
+  Every slot has only two visible states:
+  AVAILABLE or BOOKED.
+
+  Any server status other than "available", including
+  "held", is displayed as BOOKED.
 */
 function renderSlots(slots) {
   const grid = $("slotGrid");
   grid.innerHTML = "";
-
   selectedSlots.clear();
-  currentSlots = slots || [];
 
   for (let number=1;number<=10;number++) {
-    const info = currentSlots.find(
+    const info = (slots || []).find(
       item => Number(item.slot) === number
     );
 
-    const status = info?.status || "unknown";
-    const available = status === "available";
+    const available = info?.status === "available";
 
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "slot";
-
-    if (available) {
-      button.classList.add("available");
-    } else if (status === "held") {
-      button.classList.add("held");
-    } else if (status === "booked") {
-      button.classList.add("booked");
-    } else {
-      button.classList.add("unknown");
-    }
+    button.className = "slot " + (available ? "available" : "booked");
 
     const strong = document.createElement("strong");
-    strong.textContent = String(number);
+    strong.textContent = number;
 
     const small = document.createElement("small");
-
-    small.textContent =
-      status === "available" ? "Available" :
-      status === "held" ? "Temporarily held" :
-      status === "booked" ? "Booked" :
-      "Checking status";
+    small.textContent = available ? "Available" : "Booked";
 
     button.append(strong,small);
     button.disabled = !available;
@@ -521,21 +693,11 @@ function renderSlots(slots) {
     grid.appendChild(button);
   }
 
-  const known = currentSlots.filter(
-    slot => ["available","booked","held"].includes(slot.status)
+  const availableCount = (slots || []).filter(
+    item => item.status === "available"
   ).length;
 
-  const availableCount = currentSlots.filter(
-    slot => slot.status === "available"
-  ).length;
-
-  if (known === 0) {
-    showStatus(
-      "billStatus",
-      "All 10 slots are displayed. Live availability is being checked.",
-      "info"
-    );
-  } else if (availableCount === 0) {
+  if (availableCount === 0) {
     showStatus(
       "billStatus",
       "All slots for this week have been booked. Please check the next available week.",
@@ -548,310 +710,14 @@ function renderSlots(slots) {
   updateBillboardTotal();
 }
 
-/*
-  PREPARE CHECKOUT
-
-  POST /api/advertising/checkout
-
-  Backend must return:
-  {
-    "orderId":"unique-order-id",
-    "txRef":"unique-payment-reference",
-    "amount":10000,
-    "currency":"NGN",
-    "customerName":"Advertiser",
-    "customerEmail":"customer@example.com",
-    "customerPhone":"08000000000"
-  }
-
-  Backend calculates the real price.
-  For billboard orders it must atomically hold every
-  selected slot before creating the pending order.
-*/
-async function prepareCheckout(form,type,extra={}) {
-  const data = new FormData(form);
-
-  data.set("type",type);
-
-  Object.entries(extra).forEach(([key,value])=>{
-    data.set(
-      key,
-      typeof value === "object"
-        ? JSON.stringify(value)
-        : String(value)
-    );
-  });
-
-  return request("/api/advertising/checkout",{
-    method:"POST",
-    body:data
-  });
-}
-
-/*
-  FLUTTERWAVE INLINE CHECKOUT
-*/
-function openFlutterwave(order,statusId) {
-  if (typeof FlutterwaveCheckout !== "function") {
-    throw new Error(
-      "Flutterwave could not load. Please refresh and try again."
-    );
-  }
-
-  if (
-    !order.orderId ||
-    !order.txRef ||
-    !order.amount ||
-    !order.customerEmail
-  ) {
-    throw new Error(
-      "The payment server returned incomplete payment details."
-    );
-  }
-
-  activePaymentOrder = {
-    orderId:order.orderId,
-    txRef:order.txRef,
-    statusId:statusId
-  };
-
-  FlutterwaveCheckout({
-    public_key:FLUTTERWAVE_PUBLIC_KEY,
-    tx_ref:order.txRef,
-    amount:Number(order.amount),
-    currency:order.currency || "NGN",
-    payment_options:"card,banktransfer,ussd",
-
-    customer:{
-      email:order.customerEmail,
-      phone_number:order.customerPhone || "",
-      name:order.customerName || "EarnGig Advertiser"
-    },
-
-    customizations:{
-      title:"EarnGig Advertising",
-      description:"Payment for EarnGig advertising",
-      logo:""
-    },
-
-    callback:async function(payment) {
-      showStatus(
-        statusId,
-        "Payment received. Verifying your transaction...",
-        "info"
-      );
-
-      try {
-        const result = await request(
-          "/api/advertising/payment/verify",
-          {
-            method:"POST",
-            headers:{
-              "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-              orderId:order.orderId,
-              txRef:order.txRef,
-              transactionId:payment.transaction_id
-            })
-          }
-        );
-
-        if (
-          result.status === "successful" &&
-          result.submissionStatus === "confirmed"
-        ) {
-          showStatus(
-            statusId,
-            "Payment successful! Your advertising submission is confirmed.",
-            "success"
-          );
-
-          if (statusId === "billStatus") {
-            selectedSlots.clear();
-            updateBillboardTotal();
-            loadBillboardAvailability();
-          }
-
-          if (statusId === "timeStatus") {
-            $("timeForm").reset();
-          }
-
-        } else {
-          showStatus(
-            statusId,
-            "Your payment is not yet verified. Your advert is not confirmed yet.",
-            "info"
-          );
-        }
-
-      } catch (error) {
-        showStatus(
-          statusId,
-          "Payment verification could not be completed. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
-          "error"
-        );
-      }
-    },
-
-    onclose:function() {
-      /*
-        Closing the popup does not confirm an advert.
-        Backend must release an unpaid billboard hold
-        automatically when its hold expires.
-      */
-    }
-  });
-}
-
-/* TAB SWITCHING */
-
-$("timeTab").addEventListener("click",()=>{
-  $("timeTab").classList.add("active");
-  $("billboardTab").classList.remove("active");
-  $("timePanel").classList.remove("hidden");
-  $("billboardPanel").classList.add("hidden");
-});
-
-$("billboardTab").addEventListener("click",()=>{
-  $("billboardTab").classList.add("active");
-  $("timeTab").classList.remove("active");
-  $("billboardPanel").classList.remove("hidden");
-  $("timePanel").classList.add("hidden");
-  loadBillboardAvailability();
-});
-
-/* TIME PACKAGE SELECTION */
-
-document.querySelectorAll(".package").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll(".package").forEach(item=>{
-      item.classList.remove("selected");
-    });
-
-    button.classList.add("selected");
-
-    selectedPackage = {
-      days:Number(button.dataset.days),
-      price:Number(button.dataset.price)
-    };
-
-    $("timeTotal").textContent =
-      naira(selectedPackage.price);
-  });
-});
-
-/* TIME ADVERT PAYMENT */
-
-$("timeForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  clearStatus("timeStatus");
-
-  const button = $("timeSubmit");
-  setBusy(button,true,"Preparing payment...");
-
-  try {
-    const order = await prepareCheckout(
-      event.target,
-      "time_based",
-      {
-        durationDays:selectedPackage.days
-      }
-    );
-
-    if (Number(order.amount) !== selectedPackage.price) {
-      throw new Error(
-        "The server payment amount does not match the selected package."
-      );
-    }
-
-    openFlutterwave(order,"timeStatus");
-
-  } catch (error) {
-    showStatus("timeStatus",error.message,"error");
-  } finally {
-    setBusy(button,false,"Pay & Submit →");
-  }
-});
-
-/* CAMPAIGN WEEK SELECTION */
-
-function dateString(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,"0");
-  const d = String(date.getDate()).padStart(2,"0");
-  return `${y}-${m}-${d}`;
-}
-
-function mondayOf(date) {
-  const result = new Date(date);
-  result.setHours(0,0,0,0);
-
-  const day = result.getDay();
-
-  result.setDate(
-    result.getDate() + (day===0 ? -6 : 1-day)
-  );
-
-  return result;
-}
-
-function populateWeeks() {
-  const select = $("campaignWeek");
-  const today = new Date();
-  const thisMonday = mondayOf(today);
-
-  select.innerHTML = "";
-
-  for (let i=0;i<12;i++) {
-    const monday = new Date(thisMonday);
-    monday.setDate(monday.getDate()+i*7);
-
-    const bookingOpens = new Date(monday);
-    bookingOpens.setDate(bookingOpens.getDate()-2);
-
-    if (today < bookingOpens) continue;
-
-    const option = document.createElement("option");
-    option.value = dateString(monday);
-    option.textContent = `${dateString(monday)} campaign week`;
-
-    select.appendChild(option);
-  }
-
-  if (!select.options.length) {
-    const next = new Date(thisMonday);
-    next.setDate(next.getDate()+7);
-
-    const option = document.createElement("option");
-    option.value = dateString(next);
-    option.textContent = `${dateString(next)} campaign week`;
-
-    select.appendChild(option);
-  }
-}
-
-populateWeeks();
-
-$("campaignWeek").addEventListener(
-  "change",
-  loadBillboardAvailability
-);
-
-/* LOAD BILLBOARD AVAILABILITY */
+/* LOAD AVAILABILITY */
 
 async function loadBillboardAvailability() {
   /*
-    Render all ten immediately. Never leave the slot
-    area blank while waiting for the server.
+    Show ten booked slots immediately while availability loads.
+    The server will replace them with the actual statuses.
   */
-  showInitialSlots();
-
-  showStatus(
-    "billStatus",
-    "Checking the availability of all 10 slots...",
-    "info"
-  );
+  renderSlots([]);
 
   try {
     const week = $("campaignWeek").value;
@@ -862,49 +728,44 @@ async function loadBillboardAvailability() {
     );
 
     if (!Array.isArray(result.slots)) {
-      throw new Error("The server returned an invalid slot list.");
+      throw new Error("Invalid availability response.");
     }
 
     renderSlots(result.slots);
 
-  } catch (error) {
-    /*
-      Keep all ten visible in unknown grey.
-      Do not treat unknown slots as available.
-    */
-    renderSlots(
-      Array.from({length:10},(_,index)=>({
-        slot:index+1,
-        status:"unknown"
-      }))
-    );
+  } catch(error) {
+    renderSlots([]);
 
     showStatus(
       "billStatus",
-      "All 10 slots are displayed, but live availability could not be loaded. Please try again.",
+      "Billboard availability could not be loaded. Please refresh and try again.",
       "error"
     );
   }
 }
 
-/* BILLBOARD TOTAL */
+$("campaignWeek").addEventListener(
+  "change",
+  loadBillboardAvailability
+);
+
+/* TOTAL */
 
 function updateBillboardTotal() {
   const count = selectedSlots.size;
 
   $("slotCount").textContent =
-    `${count} slot${count===1?"":"s"} selected`;
+    count+" slot"+(count===1?"":"s")+" selected";
 
   $("billboardTotal").textContent =
     naira(count*BILLBOARD_SLOT_PRICE);
 
   const button = $("billSubmit");
-
   button.disabled = count===0;
 
   button.textContent = count===0
     ? "Select a slot to continue"
-    : `Pay ${naira(count*BILLBOARD_SLOT_PRICE)} and Submit`;
+    : "Pay "+naira(count*BILLBOARD_SLOT_PRICE)+" and Submit";
 }
 
 /* BILLBOARD PAYMENT */
@@ -914,17 +775,13 @@ $("billboardForm").addEventListener("submit",async event=>{
   clearStatus("billStatus");
 
   if (selectedSlots.size===0) {
-    showStatus(
-      "billStatus",
-      "Please select at least one available slot.",
-      "error"
-    );
+    showStatus("billStatus","Please select at least one available slot.","error");
     return;
   }
 
   const button = $("billSubmit");
-
-  setBusy(button,true,"Securing selected slots...");
+  button.disabled = true;
+  button.textContent = "Securing selected slots...";
 
   try {
     const slots = [...selectedSlots].sort((a,b)=>a-b);
@@ -938,24 +795,21 @@ $("billboardForm").addEventListener("submit",async event=>{
       }
     );
 
-    const expectedAmount =
-      slots.length*BILLBOARD_SLOT_PRICE;
+    const expectedAmount = slots.length*BILLBOARD_SLOT_PRICE;
 
     if (Number(order.amount)!==expectedAmount) {
-      throw new Error(
-        "The server payment amount does not match your selected slots."
-      );
+      throw new Error("The payment amount does not match your selected slots.");
     }
-
-    openFlutterwave(order,"billStatus");
 
     showStatus(
       "billStatus",
-      "Your selected slots are temporarily held while you complete payment in Flutterwave.",
+      "Your selected slots are temporarily reserved. Complete payment in Flutterwave to confirm your booking.",
       "info"
     );
 
-  } catch (error) {
+    openFlutterwave(order,"billStatus");
+
+  } catch(error) {
     showStatus("billStatus",error.message,"error");
     loadBillboardAvailability();
   } finally {
@@ -963,12 +817,10 @@ $("billboardForm").addEventListener("submit",async event=>{
   }
 });
 
-/* INITIALIZE */
+/* INITIAL DISPLAY */
 
+renderSlots([]);
 updateBillboardTotal();
-
-/* Display the 10 slots immediately on page load. */
-showInitialSlots();
 </script>
 </body>
 </html>
