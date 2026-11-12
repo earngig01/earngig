@@ -7,7 +7,6 @@
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
 
-<!-- Flutterwave payment popup -->
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
@@ -127,10 +126,15 @@ input[type=file]{padding:10px}
 }
 .slot strong{font-size:19px}
 .slot small{font-size:10px;color:var(--muted)}
-.slot.available{border-color:#536b39}
+.slot.available{border-color:#536b39;background:#26391f}
 .slot.selected{background:#31451e;border:2px solid var(--lime)}
 .slot.booked,.slot.held{
-  opacity:.48;background:#352b3c;cursor:not-allowed;
+  opacity:.65;background:#493b50;border-color:#81758d;
+  cursor:not-allowed;
+}
+.slot.unknown{
+  opacity:.8;background:#352b3c;border-color:#81758d;
+  cursor:not-allowed;
 }
 .legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:13px}
 .legend span{font-size:11px;color:var(--muted)}
@@ -138,6 +142,7 @@ input[type=file]{padding:10px}
 .available-dot{background:var(--lime)}
 .booked-dot{background:#81758d}
 .selected-dot{background:#a78bfa}
+.unknown-dot{background:#51465b}
 .total{
   display:flex;justify-content:space-between;gap:10px;
   padding:15px;background:#120b20;border-radius:13px;
@@ -304,6 +309,7 @@ footer{
       <span><i class="dot available-dot"></i>Available</span>
       <span><i class="dot selected-dot"></i>Selected</span>
       <span><i class="dot booked-dot"></i>Booked / Held</span>
+      <span><i class="dot unknown-dot"></i>Checking</span>
     </div>
 
     <div class="total">
@@ -361,17 +367,20 @@ footer{
 </footer>
 
 <script>
-/* FLUTTERWAVE TEST PUBLIC KEY */
+/* FLUTTERWAVE TEST MODE PUBLIC KEY */
 const FLUTTERWAVE_PUBLIC_KEY =
   "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
 /*
-  Set this to your backend URL when deployed.
+  Set this to your deployed backend URL.
+  Example: https://your-backend.example.com
+
   Do not put your Flutterwave secret key here.
 */
 const API_BASE = "";
 
 const BILLBOARD_SLOT_PRICE = 100000;
+
 const TIME_PACKAGES = [
   {days:1,price:10000},
   {days:3,price:25000},
@@ -385,6 +394,7 @@ const $ = id => document.getElementById(id);
 let selectedPackage = TIME_PACKAGES[0];
 let selectedSlots = new Set();
 let currentSlots = [];
+let activePaymentOrder = null;
 
 $("year").textContent = new Date().getFullYear();
 
@@ -404,6 +414,11 @@ function clearStatus(id) {
   el.className = "status";
 }
 
+function setBusy(button,busy,label) {
+  button.disabled = busy;
+  button.textContent = label;
+}
+
 async function request(path,options={}) {
   const response = await fetch(
     API_BASE.replace(/\/$/,"") + path,
@@ -420,41 +435,145 @@ async function request(path,options={}) {
   } catch {}
 
   if (!response.ok) {
-    throw new Error(data.message || "Unable to complete this request.");
+    throw new Error(
+      data.message || "Unable to complete this request. Please try again."
+    );
   }
 
   return data;
 }
 
 /*
-  PREPARE PAYMENT ORDER
+  Always show all 10 slots, even before the server
+  responds or when the availability service is offline.
+*/
+function showInitialSlots() {
+  renderSlots(
+    Array.from({length:10},(_,index)=>({
+      slot:index+1,
+      status:"unknown"
+    }))
+  );
+}
+
+/*
+  BILLBOARD SLOT RENDERING
+*/
+function renderSlots(slots) {
+  const grid = $("slotGrid");
+  grid.innerHTML = "";
+
+  selectedSlots.clear();
+  currentSlots = slots || [];
+
+  for (let number=1;number<=10;number++) {
+    const info = currentSlots.find(
+      item => Number(item.slot) === number
+    );
+
+    const status = info?.status || "unknown";
+    const available = status === "available";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "slot";
+
+    if (available) {
+      button.classList.add("available");
+    } else if (status === "held") {
+      button.classList.add("held");
+    } else if (status === "booked") {
+      button.classList.add("booked");
+    } else {
+      button.classList.add("unknown");
+    }
+
+    const strong = document.createElement("strong");
+    strong.textContent = String(number);
+
+    const small = document.createElement("small");
+
+    small.textContent =
+      status === "available" ? "Available" :
+      status === "held" ? "Temporarily held" :
+      status === "booked" ? "Booked" :
+      "Checking status";
+
+    button.append(strong,small);
+    button.disabled = !available;
+
+    button.addEventListener("click",()=>{
+      if (!available) return;
+
+      if (selectedSlots.has(number)) {
+        selectedSlots.delete(number);
+        button.classList.remove("selected");
+        small.textContent = "Available";
+      } else {
+        selectedSlots.add(number);
+        button.classList.add("selected");
+        small.textContent = "Selected";
+      }
+
+      updateBillboardTotal();
+    });
+
+    grid.appendChild(button);
+  }
+
+  const known = currentSlots.filter(
+    slot => ["available","booked","held"].includes(slot.status)
+  ).length;
+
+  const availableCount = currentSlots.filter(
+    slot => slot.status === "available"
+  ).length;
+
+  if (known === 0) {
+    showStatus(
+      "billStatus",
+      "All 10 slots are displayed. Live availability is being checked.",
+      "info"
+    );
+  } else if (availableCount === 0) {
+    showStatus(
+      "billStatus",
+      "All slots for this week have been booked. Please check the next available week.",
+      "info"
+    );
+  } else {
+    clearStatus("billStatus");
+  }
+
+  updateBillboardTotal();
+}
+
+/*
+  PREPARE CHECKOUT
 
   POST /api/advertising/checkout
 
-  The backend must:
-  - Validate advertiser details and media.
-  - Calculate the amount itself.
-  - Create a pending order and unique txRef.
-  - Temporarily lock selected billboard slots.
-  - Return orderId, txRef, amount, currency and customer details.
-
-  Example response:
+  Backend must return:
   {
-    "orderId":"order123",
-    "txRef":"unique_reference",
+    "orderId":"unique-order-id",
+    "txRef":"unique-payment-reference",
     "amount":10000,
     "currency":"NGN",
     "customerName":"Advertiser",
     "customerEmail":"customer@example.com",
     "customerPhone":"08000000000"
   }
+
+  Backend calculates the real price.
+  For billboard orders it must atomically hold every
+  selected slot before creating the pending order.
 */
 async function prepareCheckout(form,type,extra={}) {
   const data = new FormData(form);
 
   data.set("type",type);
 
-  Object.entries(extra).forEach(([key,value]) => {
+  Object.entries(extra).forEach(([key,value])=>{
     data.set(
       key,
       typeof value === "object"
@@ -470,13 +589,12 @@ async function prepareCheckout(form,type,extra={}) {
 }
 
 /*
-  OPEN FLUTTERWAVE INLINE POPUP
+  FLUTTERWAVE INLINE CHECKOUT
 */
 function openFlutterwave(order,statusId) {
-
   if (typeof FlutterwaveCheckout !== "function") {
     throw new Error(
-      "Flutterwave could not load. Refresh the page and try again."
+      "Flutterwave could not load. Please refresh and try again."
     );
   }
 
@@ -486,8 +604,16 @@ function openFlutterwave(order,statusId) {
     !order.amount ||
     !order.customerEmail
   ) {
-    throw new Error("The payment server returned incomplete information.");
+    throw new Error(
+      "The payment server returned incomplete payment details."
+    );
   }
+
+  activePaymentOrder = {
+    orderId:order.orderId,
+    txRef:order.txRef,
+    statusId:statusId
+  };
 
   FlutterwaveCheckout({
     public_key:FLUTTERWAVE_PUBLIC_KEY,
@@ -509,7 +635,6 @@ function openFlutterwave(order,statusId) {
     },
 
     callback:async function(payment) {
-
       showStatus(
         statusId,
         "Payment received. Verifying your transaction...",
@@ -521,7 +646,9 @@ function openFlutterwave(order,statusId) {
           "/api/advertising/payment/verify",
           {
             method:"POST",
-            headers:{"Content-Type":"application/json"},
+            headers:{
+              "Content-Type":"application/json"
+            },
             body:JSON.stringify({
               orderId:order.orderId,
               txRef:order.txRef,
@@ -546,10 +673,14 @@ function openFlutterwave(order,statusId) {
             loadBillboardAvailability();
           }
 
+          if (statusId === "timeStatus") {
+            $("timeForm").reset();
+          }
+
         } else {
           showStatus(
             statusId,
-            "Your payment is not yet verified. Your submission is not confirmed yet.",
+            "Your payment is not yet verified. Your advert is not confirmed yet.",
             "info"
           );
         }
@@ -557,7 +688,7 @@ function openFlutterwave(order,statusId) {
       } catch (error) {
         showStatus(
           statusId,
-          "Payment verification is pending. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
+          "Payment verification could not be completed. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
           "error"
         );
       }
@@ -565,23 +696,24 @@ function openFlutterwave(order,statusId) {
 
     onclose:function() {
       /*
-        Closing the popup is not a successful submission.
-        Backend expires unpaid billboard holds automatically.
+        Closing the popup does not confirm an advert.
+        Backend must release an unpaid billboard hold
+        automatically when its hold expires.
       */
     }
   });
 }
 
-/* SWITCH ADVERTISING TYPE */
+/* TAB SWITCHING */
 
-$("timeTab").addEventListener("click",() => {
+$("timeTab").addEventListener("click",()=>{
   $("timeTab").classList.add("active");
   $("billboardTab").classList.remove("active");
   $("timePanel").classList.remove("hidden");
   $("billboardPanel").classList.add("hidden");
 });
 
-$("billboardTab").addEventListener("click",() => {
+$("billboardTab").addEventListener("click",()=>{
   $("billboardTab").classList.add("active");
   $("timeTab").classList.remove("active");
   $("billboardPanel").classList.remove("hidden");
@@ -591,12 +723,11 @@ $("billboardTab").addEventListener("click",() => {
 
 /* TIME PACKAGE SELECTION */
 
-document.querySelectorAll(".package").forEach(button => {
-  button.addEventListener("click",() => {
-
-    document.querySelectorAll(".package").forEach(p =>
-      p.classList.remove("selected")
-    );
+document.querySelectorAll(".package").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".package").forEach(item=>{
+      item.classList.remove("selected");
+    });
 
     button.classList.add("selected");
 
@@ -610,9 +741,9 @@ document.querySelectorAll(".package").forEach(button => {
   });
 });
 
-/* TIME-BASED ADVERT PAYMENT */
+/* TIME ADVERT PAYMENT */
 
-$("timeForm").addEventListener("submit",async event => {
+$("timeForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearStatus("timeStatus");
 
@@ -623,11 +754,15 @@ $("timeForm").addEventListener("submit",async event => {
     const order = await prepareCheckout(
       event.target,
       "time_based",
-      {durationDays:selectedPackage.days}
+      {
+        durationDays:selectedPackage.days
+      }
     );
 
     if (Number(order.amount) !== selectedPackage.price) {
-      throw new Error("The server amount does not match the selected package.");
+      throw new Error(
+        "The server payment amount does not match the selected package."
+      );
     }
 
     openFlutterwave(order,"timeStatus");
@@ -651,10 +786,11 @@ function dateString(date) {
 function mondayOf(date) {
   const result = new Date(date);
   result.setHours(0,0,0,0);
+
   const day = result.getDay();
 
   result.setDate(
-    result.getDate() + (day === 0 ? -6 : 1-day)
+    result.getDate() + (day===0 ? -6 : 1-day)
   );
 
   return result;
@@ -678,7 +814,8 @@ function populateWeeks() {
 
     const option = document.createElement("option");
     option.value = dateString(monday);
-    option.textContent = dateString(monday)+" campaign week";
+    option.textContent = `${dateString(monday)} campaign week`;
+
     select.appendChild(option);
   }
 
@@ -688,7 +825,8 @@ function populateWeeks() {
 
     const option = document.createElement("option");
     option.value = dateString(next);
-    option.textContent = dateString(next)+" campaign week";
+    option.textContent = `${dateString(next)} campaign week`;
+
     select.appendChild(option);
   }
 }
@@ -700,86 +838,18 @@ $("campaignWeek").addEventListener(
   loadBillboardAvailability
 );
 
-/* BILLBOARD SLOT DISPLAY */
-
-function renderSlots(slots) {
-  const grid = $("slotGrid");
-  grid.innerHTML = "";
-
-  selectedSlots.clear();
-  currentSlots = slots || [];
-
-  for (let number=1;number<=10;number++) {
-    const info = currentSlots.find(
-      item => Number(item.slot) === number
-    );
-
-    const state = info?.status || "unavailable";
-    const available = state === "available";
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "slot";
-
-    button.classList.add(
-      available ? "available" :
-      state === "held" ? "held" : "booked"
-    );
-
-    const strong = document.createElement("strong");
-    strong.textContent = String(number);
-
-    const small = document.createElement("small");
-    small.textContent = available ? "Available" :
-      state === "held" ? "Temporarily held" :
-      state === "booked" ? "Booked" : "Unavailable";
-
-    button.append(strong,small);
-    button.disabled = !available;
-
-    button.addEventListener("click",() => {
-      if (!available) return;
-
-      if (selectedSlots.has(number)) {
-        selectedSlots.delete(number);
-        button.classList.remove("selected");
-        small.textContent = "Available";
-      } else {
-        selectedSlots.add(number);
-        button.classList.add("selected");
-        small.textContent = "Selected";
-      }
-
-      updateBillboardTotal();
-    });
-
-    grid.appendChild(button);
-  }
-
-  const availableCount = currentSlots.filter(
-    s => s.status === "available"
-  ).length;
-
-  if (availableCount === 0) {
-    showStatus(
-      "billStatus",
-      "All slots for this week have been booked. Please check the next available week.",
-      "info"
-    );
-  } else {
-    clearStatus("billStatus");
-  }
-
-  updateBillboardTotal();
-}
+/* LOAD BILLBOARD AVAILABILITY */
 
 async function loadBillboardAvailability() {
-  clearStatus("billStatus");
-  $("slotGrid").innerHTML = "";
+  /*
+    Render all ten immediately. Never leave the slot
+    area blank while waiting for the server.
+  */
+  showInitialSlots();
 
   showStatus(
     "billStatus",
-    "Loading live billboard availability...",
+    "Checking the availability of all 10 slots...",
     "info"
   );
 
@@ -792,18 +862,32 @@ async function loadBillboardAvailability() {
     );
 
     if (!Array.isArray(result.slots)) {
-      throw new Error("Invalid billboard availability response.");
+      throw new Error("The server returned an invalid slot list.");
     }
 
     renderSlots(result.slots);
 
   } catch (error) {
-    showStatus("billStatus",error.message,"error");
-    $("slotGrid").innerHTML = "";
-    selectedSlots.clear();
-    updateBillboardTotal();
+    /*
+      Keep all ten visible in unknown grey.
+      Do not treat unknown slots as available.
+    */
+    renderSlots(
+      Array.from({length:10},(_,index)=>({
+        slot:index+1,
+        status:"unknown"
+      }))
+    );
+
+    showStatus(
+      "billStatus",
+      "All 10 slots are displayed, but live availability could not be loaded. Please try again.",
+      "error"
+    );
   }
 }
+
+/* BILLBOARD TOTAL */
 
 function updateBillboardTotal() {
   const count = selectedSlots.size;
@@ -825,7 +909,7 @@ function updateBillboardTotal() {
 
 /* BILLBOARD PAYMENT */
 
-$("billboardForm").addEventListener("submit",async event => {
+$("billboardForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearStatus("billStatus");
 
@@ -839,6 +923,7 @@ $("billboardForm").addEventListener("submit",async event => {
   }
 
   const button = $("billSubmit");
+
   setBusy(button,true,"Securing selected slots...");
 
   try {
@@ -857,14 +942,16 @@ $("billboardForm").addEventListener("submit",async event => {
       slots.length*BILLBOARD_SLOT_PRICE;
 
     if (Number(order.amount)!==expectedAmount) {
-      throw new Error("The server amount does not match the selected slots.");
+      throw new Error(
+        "The server payment amount does not match your selected slots."
+      );
     }
 
     openFlutterwave(order,"billStatus");
 
     showStatus(
       "billStatus",
-      "Your selected slots are temporarily held. Complete payment in the Flutterwave popup.",
+      "Your selected slots are temporarily held while you complete payment in Flutterwave.",
       "info"
     );
 
@@ -878,12 +965,10 @@ $("billboardForm").addEventListener("submit",async event => {
 
 /* INITIALIZE */
 
-function setBusy(button,busy,label) {
-  button.disabled = busy;
-  button.textContent = label;
-}
-
 updateBillboardTotal();
+
+/* Display the 10 slots immediately on page load. */
+showInitialSlots();
 </script>
 </body>
 </html>
