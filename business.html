@@ -1,0 +1,1649 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F3F8FD">
+<title>EarnGig Business</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" defer></script>
+
+<style>
+:root {
+  --bg:#F3F8FD;
+  --white:#FFFFFF;
+  --blue:#78AEE0;
+  --blue-dark:#477FAF;
+  --blue-button:#6099CE;
+  --blue-light:#E5F1FC;
+  --heading:#30465D;
+  --text:#394A5C;
+  --muted:#8493A3;
+  --border:#DFEAF4;
+  --gold:#C49A45;
+  --green:#23865A;
+  --green-bg:#EAF8F0;
+  --orange:#B77922;
+  --orange-bg:#FFF5E5;
+  --red:#C14D57;
+  --red-bg:#FFF0F0;
+  --shadow:0 7px 25px rgba(50,91,130,.065);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+  min-height:70px;
+  padding:10px 5%;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Cinzel',serif;
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:var(--heading);
+  white-space:nowrap;
+}
+
+.brand .gig{color:var(--blue-dark)}
+
+.crown{
+  width:43px;
+  height:37px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.crown svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+
+.top-nav{display:flex;gap:23px;align-items:center}
+
+.top-nav a{
+  font-size:12px;
+  font-weight:700;
+  color:#74869A;
+}
+
+.top-nav a:hover,.top-nav a.active{color:var(--blue-dark)}
+
+.header-profile{
+  width:36px;height:36px;
+  display:grid;place-items:center;
+  background:var(--blue-light);
+  border:1px solid #D1E5F6;
+  border-radius:50%;
+  color:var(--blue-dark);
+}
+
+.page{
+  max-width:1050px;
+  width:92%;
+  margin:30px auto 60px;
+}
+
+.page-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:23px;
+}
+
+.page-heading h1{
+  color:var(--heading);
+  font-size:27px;
+  letter-spacing:-.7px;
+}
+
+.page-heading p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
+  line-height:1.6;
+}
+
+.business-crown{
+  width:58px;height:58px;
+  display:grid;place-items:center;
+  border-radius:17px;
+  background:linear-gradient(145deg,#FFF9EA,#F1E2BF);
+  border:1px solid #E9D9B5;
+  flex-shrink:0;
+  padding:8px;
+}
+
+.business-crown svg{width:100%;height:100%}
+
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  margin-bottom:17px;
+}
+
+.card-title{
+  font-size:16px;
+  color:var(--heading);
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.card-description{
+  font-size:12px;
+  line-height:1.7;
+  color:var(--muted);
+  margin-bottom:17px;
+}
+
+.badge{
+  display:inline-flex;
+  padding:6px 10px;
+  border-radius:30px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.badge.pending{background:var(--orange-bg);color:var(--orange)}
+.badge.approved{background:var(--green-bg);color:var(--green)}
+.badge.active{background:var(--blue-light);color:var(--blue-dark)}
+.badge.rejected{background:var(--red-bg);color:var(--red)}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:12px 17px;
+  font-size:12px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  transition:.2s;
+}
+
+.btn-primary{
+  color:white;
+  background:var(--blue-button);
+  box-shadow:0 4px 11px rgba(75,132,187,.15);
+}
+
+.btn-primary:hover{background:#4E88BE}
+.btn-gold{background:linear-gradient(135deg,#CBA85E,#A78034);color:white}
+.btn-secondary{background:var(--blue-light);color:var(--blue-dark);border:1px solid #D5E7F6}
+.btn-outline{background:white;color:var(--blue-dark);border:1px solid #C9DDEC}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.full-width{width:100%}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.form-group{margin-bottom:14px;min-width:0}
+.form-group.full{grid-column:1/-1}
+
+.form-group label{
+  display:block;
+  color:var(--heading);
+  font-size:11px;
+  font-weight:750;
+  margin-bottom:7px;
+}
+
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;
+  padding:12px 13px;
+  border:1px solid #DCE6EF;
+  background:#FCFDFF;
+  border-radius:9px;
+  outline:none;
+  font-size:12px;
+  color:var(--text);
+}
+
+.form-group textarea{min-height:90px;resize:vertical}
+
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(120,174,224,.12);
+}
+
+.form-hint{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:6px;
+  line-height:1.5;
+}
+
+.username-input{position:relative}
+.username-input input{padding-left:29px}
+.username-prefix{
+  position:absolute;
+  left:12px;
+  top:12px;
+  color:var(--blue-dark);
+  font-size:12px;
+  font-weight:800;
+}
+
+.field-message{display:block;font-size:10px;margin-top:6px;min-height:13px}
+.field-message.good{color:var(--green)}
+.field-message.bad{color:var(--red)}
+
+.notice{
+  padding:13px 15px;
+  border-radius:10px;
+  margin-bottom:15px;
+  font-size:11px;
+  line-height:1.7;
+}
+.notice.info{background:var(--blue-light);color:#426E96;border:1px solid #D6E7F5}
+.notice.success{background:var(--green-bg);color:var(--green);border:1px solid #D3ECDD}
+.notice.warning{background:var(--orange-bg);color:#95631E;border:1px solid #F0E0C2}
+.notice.error{background:var(--red-bg);color:var(--red);border:1px solid #F2D9DB}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.step{
+  background:#F5F8FC;border:1px solid var(--border);
+  border-radius:10px;padding:11px 8px;text-align:center;color:#8493A3;
+}
+.step-number{
+  width:24px;height:24px;display:grid;place-items:center;
+  margin:0 auto 6px;background:#E5EDF5;color:#71849A;
+  border-radius:50%;font-size:10px;font-weight:800;
+}
+.step strong{display:block;font-size:10px}
+.step.active{border-color:#B8D5EC;background:#EFF7FE;color:var(--blue-dark)}
+.step.active .step-number{background:var(--blue);color:white}
+.step.done{background:var(--green-bg);border-color:#D4ECDD;color:var(--green)}
+.step.done .step-number{background:var(--green);color:white}
+
+.wallet-hero{
+  background:linear-gradient(120deg,#DDEEFF,#F1F7FD 75%,#FAF6EA);
+  border:1px solid #D4E5F3;border-radius:18px;
+  padding:24px;margin-bottom:17px;position:relative;overflow:hidden;
+}
+
+.wallet-hero:after{
+  content:"";position:absolute;right:-55px;top:-95px;
+  width:230px;height:230px;background:rgba(255,255,255,.35);
+  border-radius:50%;
+}
+
+.wallet-content{position:relative;z-index:1}
+.wallet-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:23px}
+.wallet-label{color:#66809A;font-size:11px;font-weight:700;margin-bottom:8px}
+.wallet-balance{
+  color:#274C70;font-size:clamp(27px,5vw,39px);
+  font-weight:900;letter-spacing:-1px;overflow-wrap:anywhere;
+}
+.wallet-naira{font-size:12px;color:#69829A;margin-top:7px}
+.wallet-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:21px}
+
+.identity-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.identity-item{
+  padding:14px;background:#F7FAFD;border:1px solid #E6EEF5;
+  border-radius:11px;min-width:0;
+}
+.identity-item small{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
+.identity-item strong{display:block;color:var(--heading);font-size:13px;overflow-wrap:anywhere}
+
+.action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.action-card{
+  border:1px solid var(--border);background:white;border-radius:13px;
+  padding:17px;display:flex;gap:12px;align-items:center;text-align:left;transition:.2s;
+}
+.action-card:hover{border-color:#B9D6ED;background:#F9FCFF;transform:translateY(-2px)}
+.action-icon{
+  width:42px;height:42px;flex-shrink:0;border-radius:12px;
+  background:var(--blue-light);color:var(--blue-dark);
+  display:grid;place-items:center;font-size:21px;
+}
+.action-card strong{display:block;color:var(--heading);font-size:12px;margin-bottom:4px}
+.action-card small{color:var(--muted);font-size:10px;line-height:1.5}
+
+.qr-panel{text-align:center}
+.qr-business{color:var(--heading);font-weight:800;font-size:17px;margin:8px 0 5px}
+.qr-username{color:var(--blue-dark);font-size:12px;font-weight:750}
+.qr-box{
+  width:230px;min-height:230px;margin:20px auto;
+  display:grid;place-items:center;background:white;
+  border:1px solid var(--border);border-radius:13px;padding:13px;
+}
+.qr-box img{max-width:100%}
+.qr-box canvas{max-width:100%;height:auto!important}
+.qr-note{color:var(--muted);font-size:11px;line-height:1.7;max-width:380px;margin:0 auto 15px}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:480px}
+th{text-align:left;padding:12px 10px;color:#8292A4;font-size:10px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:13px 10px;font-size:11px;border-bottom:1px solid #EFF3F7;color:var(--text)}
+td strong{color:var(--heading)}
+.amount-in{color:var(--green);font-weight:800}
+.amount-out{color:var(--red);font-weight:800}
+.empty-history{text-align:center;color:var(--muted);padding:30px 10px;font-size:12px}
+
+.modal{
+  position:fixed;inset:0;z-index:100;background:rgba(24,43,62,.48);
+  display:none;align-items:center;justify-content:center;padding:15px;overflow-y:auto;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:white;width:min(470px,100%);border-radius:17px;
+  padding:22px;box-shadow:0 20px 70px #142c4430;max-height:90vh;overflow-y:auto;
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
+.modal-header h2{color:var(--heading);font-size:17px}
+.close-modal{
+  width:32px;height:32px;border:0;background:#EEF3F8;
+  color:#687A8D;border-radius:8px;font-size:20px;
+}
+.calculation{background:#F5F9FD;border:1px solid var(--border);padding:13px;border-radius:10px;margin:13px 0}
+.calculation-row{display:flex;justify-content:space-between;gap:10px;margin:9px 0;font-size:11px}
+.calculation-row strong{color:var(--heading)}
+.calculation-row.total{border-top:1px solid #DCE6EF;padding-top:12px;font-size:13px;font-weight:800}
+
+#qrReader{width:100%;overflow:hidden;border-radius:12px;margin-top:12px}
+#qrReader video{border-radius:12px}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;background:#30465D;color:white;
+  padding:12px 18px;border-radius:10px;font-size:11px;z-index:200;
+  max-width:90%;text-align:center;transition:.2s;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.hidden{display:none!important}
+
+footer{text-align:center;color:#94A3B2;font-size:10px;padding:25px 10px;border-top:1px solid var(--border)}
+
+@media(max-width:700px){
+  .topbar{padding:10px 4%;min-height:62px}
+  .brand{font-size:20px;letter-spacing:.7px}
+  .crown{width:39px;height:34px}
+  .top-nav{display:none}
+  .page{margin-top:23px}
+  .page-heading h1{font-size:23px}
+  .card{padding:17px}
+  .wallet-hero{padding:19px}
+  .action-grid{gap:9px}
+  .action-card{padding:13px 9px;gap:9px}
+  .action-icon{width:36px;height:36px;font-size:18px}
+  .action-card strong{font-size:11px}
+  .action-card small{font-size:9px}
+}
+
+@media(max-width:430px){
+  .form-grid{grid-template-columns:1fr;gap:0}
+  .form-group.full{grid-column:auto}
+  .identity-grid{grid-template-columns:1fr 1fr}
+  .steps{gap:5px}
+  .step{padding:9px 4px}
+  .step strong{font-size:9px}
+  .wallet-actions{flex-direction:column}
+  .wallet-actions .btn{width:100%}
+  .action-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a href="dashboard.html" class="brand">
+    <span class="crown" aria-label="EarnGig gold crown">
+      <svg viewBox="0 0 100 78" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="goldMetal" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFF4BB"/>
+            <stop offset="22%" stop-color="#D9AD48"/>
+            <stop offset="48%" stop-color="#FFF0A0"/>
+            <stop offset="70%" stop-color="#B77C22"/>
+            <stop offset="100%" stop-color="#F6D77A"/>
+          </linearGradient>
+          <linearGradient id="goldSide" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F8DF91"/>
+            <stop offset="100%" stop-color="#A66D1D"/>
+          </linearGradient>
+          <linearGradient id="ruby" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFB4A8"/>
+            <stop offset="50%" stop-color="#C62845"/>
+            <stop offset="100%" stop-color="#710E28"/>
+          </linearGradient>
+          <filter id="crownShadow" x="-30%" y="-30%" width="160%" height="170%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/>
+            <feOffset dy="3"/>
+            <feComponentTransfer><feFuncA type="linear" slope=".28"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g filter="url(#crownShadow)">
+          <path d="M12 24 L29 40 L49 8 L70 40 L88 24 L79 63 L21 63 Z"
+            fill="url(#goldMetal)" stroke="#A87929" stroke-width="2"/>
+          <path d="M12 24 L29 40 L21 63 Z" fill="#F8DB83"/>
+          <path d="M29 40 L49 8 L44 63 L21 63 Z" fill="#D4A33F"/>
+          <path d="M49 8 L70 40 L56 63 L44 63 Z" fill="#FFE9A0"/>
+          <path d="M70 40 L88 24 L79 63 L56 63 Z" fill="#C18B32"/>
+          <path d="M19 59 Q50 67 81 59 L78 69 Q50 75 22 69 Z"
+            fill="url(#goldSide)" stroke="#9D702A" stroke-width="1.5"/>
+          <circle cx="49" cy="13" r="5.3" fill="url(#goldMetal)"/>
+          <circle cx="49" cy="13" r="3.4" fill="url(#ruby)"/>
+          <circle cx="12" cy="24" r="4.8" fill="url(#goldMetal)"/>
+          <circle cx="12" cy="24" r="2.7" fill="#DCEBFF"/>
+          <circle cx="88" cy="24" r="4.8" fill="url(#goldMetal)"/>
+          <circle cx="88" cy="24" r="2.7" fill="#DCEBFF"/>
+          <circle cx="31" cy="46" r="3.2" fill="url(#ruby)"/>
+          <circle cx="68" cy="46" r="3.2" fill="url(#ruby)"/>
+          <circle cx="50" cy="56" r="3.4" fill="#DCEBFF"/>
+          <path d="M18 28 L29 40 M49 13 L42 38 M84 29 L70 40"
+            stroke="#FFF4C8" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+          <path d="M25 69 Q50 76 75 69"
+            stroke="#FFE6A0" stroke-width="1.5" fill="none"/>
+        </g>
+      </svg>
+    </span>
+    Earn<span class="gig">Gig</span>
+  </a>
+
+  <nav class="top-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="business.html" class="active">Business</a>
+  </nav>
+
+  <a href="profile.html" class="header-profile" aria-label="Profile">👤</a>
+</header>
+
+<main class="page">
+  <div class="page-heading">
+    <div>
+      <h1 id="pageTitle">EarnGig Business</h1>
+      <p id="pageSubtitle">Register your business and receive G-Coin payments.</p>
+    </div>
+
+    <div class="business-crown" aria-label="Gold crown">
+      <svg viewBox="0 0 100 78" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="smallGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFF4BB"/>
+            <stop offset="45%" stop-color="#D9AD48"/>
+            <stop offset="100%" stop-color="#A66D1D"/>
+          </linearGradient>
+        </defs>
+        <path d="M12 24 L29 40 L49 8 L70 40 L88 24 L79 63 L21 63 Z"
+          fill="url(#smallGold)" stroke="#A87929" stroke-width="2"/>
+        <path d="M19 59 Q50 67 81 59 L78 69 Q50 75 22 69 Z"
+          fill="#C49A45" stroke="#9D702A"/>
+        <circle cx="49" cy="13" r="4" fill="#C62845"/>
+        <circle cx="12" cy="24" r="3.5" fill="#DCEBFF"/>
+        <circle cx="88" cy="24" r="3.5" fill="#DCEBFF"/>
+        <circle cx="31" cy="46" r="3" fill="#C62845"/>
+        <circle cx="68" cy="46" r="3" fill="#C62845"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="globalMessage"></div>
+
+  <section id="progressSection" class="card">
+    <div class="card-title">Business registration process</div>
+    <p class="card-description">
+      Your business must be reviewed and approved by EarnGig Admin
+      before registration payment and activation.
+    </p>
+    <div class="steps">
+      <div class="step" id="step1"><div class="step-number">1</div><strong>Apply</strong></div>
+      <div class="step" id="step2"><div class="step-number">2</div><strong>Admin Approval</strong></div>
+      <div class="step" id="step3"><div class="step-number">3</div><strong>Payment & Activation</strong></div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION -->
+  <section id="registrationView" class="card hidden">
+    <div class="card-title">Register your business</div>
+    <p class="card-description">
+      You can register a business even if you do not want a Vendor Haul storefront.
+    </p>
+
+    <div class="notice info">
+      Business registration costs ₦10,000. Submit your application first.
+      Payment is requested only after Admin approval.
+    </div>
+
+    <form id="registrationForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="businessName">Business name *</label>
+          <input id="businessName" required maxlength="100" placeholder="Enter your business name">
+        </div>
+
+        <div class="form-group">
+          <label for="businessUsername">Preferred business username *</label>
+          <div class="username-input">
+            <span class="username-prefix">@</span>
+            <input id="businessUsername" required minlength="3" maxlength="25"
+              pattern="[a-zA-Z0-9_]+" placeholder="yourbusiness" autocomplete="off">
+          </div>
+          <span class="form-hint">Letters, numbers and underscores only.</span>
+          <span id="usernameMessage" class="field-message"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="businessCategory">Business category *</label>
+          <select id="businessCategory" required>
+            <option value="">Choose a category</option>
+            <option>Retail and Shopping</option>
+            <option>Food and Catering</option>
+            <option>Fashion and Beauty</option>
+            <option>Technology and Gadgets</option>
+            <option>Education and Training</option>
+            <option>Professional Services</option>
+            <option>Health and Wellness</option>
+            <option>Transport and Logistics</option>
+            <option>Entertainment and Media</option>
+            <option>Manufacturing</option>
+            <option>Agriculture</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="businessPhone">Business phone number *</label>
+          <input id="businessPhone" type="tel" required placeholder="08012345678">
+        </div>
+
+        <div class="form-group">
+          <label for="businessEmail">Business email *</label>
+          <input id="businessEmail" type="email" required placeholder="business@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="businessLocation">Business location *</label>
+          <input id="businessLocation" required placeholder="City and state">
+        </div>
+
+        <div class="form-group full">
+          <label for="businessDescription">Tell us about your business *</label>
+          <textarea id="businessDescription" maxlength="1000" required
+            placeholder="Briefly describe what your business does."></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label for="businessWebsite">Website or social media link (optional)</label>
+          <input id="businessWebsite" type="url" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label for="businessDocument">Supporting document (optional)</label>
+          <input id="businessDocument" type="file" accept=".pdf,.jpg,.jpeg,.png">
+          <span class="form-hint">PDF, JPG or PNG.</span>
+        </div>
+      </div>
+
+      <div class="notice warning">
+        Your Business Wallet will not be activated until your application
+        is approved and your registration payment is verified.
+      </div>
+
+      <label style="display:flex;gap:9px;align-items:flex-start;font-size:11px;line-height:1.6;margin:15px 0">
+        <input type="checkbox" id="agreeTerms" required style="margin-top:2px">
+        I confirm that the information supplied is accurate and that I am authorised to register this business.
+      </label>
+
+      <button class="btn btn-primary full-width" id="submitApplication">
+        Submit Business Application →
+      </button>
+    </form>
+  </section>
+
+  <!-- PENDING -->
+  <section id="pendingView" class="card hidden">
+    <div style="text-align:center;padding:17px 5px">
+      <div style="font-size:48px;margin-bottom:13px">📋</div>
+      <span class="badge pending">Pending Admin Review</span>
+      <h2 style="font-size:21px;color:var(--heading);margin:14px 0 8px">Application submitted!</h2>
+      <p class="card-description" style="max-width:440px;margin:0 auto 20px">
+        Your business application has been received. EarnGig Admin will review your information.
+      </p>
+    </div>
+
+    <div class="identity-grid">
+      <div class="identity-item"><small>Business name</small><strong id="pendingName">—</strong></div>
+      <div class="identity-item"><small>Proposed username</small><strong id="pendingUsername">—</strong></div>
+      <div class="identity-item"><small>Application reference</small><strong id="pendingReference">—</strong></div>
+      <div class="identity-item"><small>Application status</small><strong>Under review</strong></div>
+    </div>
+
+    <button class="btn btn-outline full-width" style="margin-top:17px" onclick="refreshBusinessStatus()">
+      Check Application Status
+    </button>
+  </section>
+
+  <!-- REJECTED -->
+  <section id="rejectedView" class="card hidden">
+    <div style="text-align:center;padding:14px">
+      <div style="font-size:43px">⚠️</div>
+      <span class="badge rejected">Application not approved</span>
+      <h2 style="color:var(--heading);font-size:20px;margin:13px 0">Application needs attention</h2>
+      <p class="card-description" id="rejectionReason"></p>
+    </div>
+    <button class="btn btn-primary full-width" onclick="editApplication()">
+      Correct and Resubmit Application
+    </button>
+  </section>
+
+  <!-- APPROVED / PAYMENT -->
+  <section id="paymentView" class="card hidden">
+    <div style="text-align:center;padding:10px 5px 17px">
+      <div style="font-size:46px;margin-bottom:10px">🎉</div>
+      <span class="badge approved">Application Approved</span>
+      <h2 style="color:var(--heading);font-size:21px;margin:13px 0 7px">
+        Your business has been approved!
+      </h2>
+      <p class="card-description" style="max-width:420px;margin:0 auto">
+        Complete your registration payment to activate your Business account.
+      </p>
+    </div>
+
+    <div class="identity-grid">
+      <div class="identity-item"><small>Business name</small><strong id="approvedName">—</strong></div>
+      <div class="identity-item"><small>Business username</small><strong id="approvedUsername">—</strong></div>
+    </div>
+
+    <div class="calculation">
+      <div class="calculation-row"><span>Business registration fee</span><strong>₦10,000</strong></div>
+      <div class="calculation-row total"><span>Total payable</span><strong>₦10,000</strong></div>
+    </div>
+
+    <div class="notice info">
+      Your Business Wallet becomes active only after EarnGig verifies your Flutterwave payment.
+    </div>
+
+    <button class="btn btn-gold full-width" id="payRegistration">
+      Pay ₦10,000 and Activate Business
+    </button>
+  </section>
+
+  <!-- ACTIVE BUSINESS -->
+  <section id="activeView" class="hidden">
+    <div class="wallet-hero">
+      <div class="wallet-content">
+        <div class="wallet-top">
+          <span class="badge active">● Active Business</span>
+          <div class="business-crown">
+            <svg viewBox="0 0 100 78" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="walletGold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FFF4BB"/><stop offset="50%" stop-color="#D9AD48"/><stop offset="100%" stop-color="#A66D1D"/>
+              </linearGradient></defs>
+              <path d="M12 24 L29 40 L49 8 L70 40 L88 24 L79 63 L21 63 Z" fill="url(#walletGold)" stroke="#A87929" stroke-width="2"/>
+              <path d="M19 59 Q50 67 81 59 L78 69 Q50 75 22 69 Z" fill="#C49A45"/>
+              <circle cx="49" cy="13" r="4" fill="#C62845"/>
+              <circle cx="12" cy="24" r="3" fill="#DCEBFF"/>
+              <circle cx="88" cy="24" r="3" fill="#DCEBFF"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="wallet-label">BUSINESS WALLET BALANCE</div>
+        <div class="wallet-balance" id="walletBalance">0 G-Coins</div>
+        <div class="wallet-naira" id="walletNaira">Equivalent value: ₦0</div>
+
+        <div class="wallet-actions">
+          <button class="btn btn-primary" onclick="openWithdrawModal()">↗ Withdraw Funds</button>
+          <button class="btn btn-outline" onclick="openReceiveModal()">↓ Receive Payment</button>
+          <button class="btn btn-secondary" onclick="openScanner()">▣ Scan QR</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="card-title">Your Business</div>
+      <p class="card-description">Your registered EarnGig business identity.</p>
+      <div class="identity-grid">
+        <div class="identity-item"><small>Business name</small><strong id="activeBusinessName">—</strong></div>
+        <div class="identity-item"><small>Business username</small><strong id="activeBusinessUsername">—</strong></div>
+        <div class="identity-item"><small>Business category</small><strong id="activeBusinessCategory">—</strong></div>
+        <div class="identity-item"><small>Business status</small><strong style="color:var(--green)">Verified and active</strong></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">Business Services</div>
+      <p class="card-description">Receive customer payments and manage your business funds.</p>
+
+      <div class="action-grid">
+        <button class="action-card" onclick="openReceiveModal()">
+          <span class="action-icon">📥</span>
+          <span><strong>Receive Payment</strong><small>Show your QR code and payment details.</small></span>
+        </button>
+        <button class="action-card" onclick="openTransactions()">
+          <span class="action-icon">📜</span>
+          <span><strong>Transactions</strong><small>View payments and withdrawals.</small></span>
+        </button>
+        <button class="action-card" onclick="openWithdrawModal()">
+          <span class="action-icon">🏦</span>
+          <span><strong>Withdraw Funds</strong><small>Withdraw eligible business funds.</small></span>
+        </button>
+        <button class="action-card" onclick="openBusinessProfile()">
+          <span class="action-icon">⚙️</span>
+          <span><strong>Business Profile</strong><small>View your registered business details.</small></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card" id="transactionSection">
+      <div class="card-title">Recent Transactions</div>
+      <p class="card-description">Your latest business payments and withdrawals.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>REFERENCE</th><th>DESCRIPTION</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th></tr></thead>
+          <tbody id="transactionRows"></tbody>
+        </table>
+      </div>
+      <div id="emptyTransactions" class="empty-history hidden">No business transactions yet.</div>
+    </section>
+  </section>
+
+  <div id="loadingView" class="card">
+    <p style="text-align:center;color:var(--muted);font-size:12px">Loading your business account...</p>
+  </div>
+</main>
+
+<footer>
+  © 2026 EarnGig. All rights reserved.
+  <br><br>Business Wallet · Secure G-Coin Payments
+</footer>
+
+<!-- RECEIVE PAYMENT -->
+<div class="modal" id="receiveModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Receive Business Payment</h2>
+      <button class="close-modal" onclick="closeModal('receiveModal')">×</button>
+    </div>
+    <div class="qr-panel">
+      <p style="font-size:11px;color:var(--muted)">Scan this QR code to pay this business.</p>
+      <div class="qr-business" id="qrBusinessName">Business Name</div>
+      <div class="qr-username" id="qrBusinessUsername">@business</div>
+      <div class="qr-box" id="businessQr">Loading secure QR...</div>
+      <p class="qr-note">
+        Customers will see your verified business identity before confirming payment.
+      </p>
+      <div class="form-group" style="text-align:left">
+        <label>Business payment address</label>
+        <input id="shareBusinessUsername" readonly>
+      </div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn btn-primary" style="flex:1" onclick="copyBusinessUsername()">Copy Username</button>
+        <button class="btn btn-secondary" style="flex:1" onclick="downloadBusinessQR()">Download QR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WITHDRAWAL -->
+<div class="modal" id="withdrawModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Withdraw Business Funds</h2>
+      <button class="close-modal" onclick="closeModal('withdrawModal')">×</button>
+    </div>
+
+    <div class="notice info">
+      Business funds can be withdrawn at any time, subject to account verification and processing.
+    </div>
+
+    <div class="form-group">
+      <label>Available business balance</label>
+      <input id="withdrawAvailable" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="withdrawCoins">G-Coins to withdraw</label>
+      <input type="number" id="withdrawCoins" min="1000" step="1" placeholder="Enter G-Coin amount">
+    </div>
+
+    <div class="calculation">
+      <div class="calculation-row"><span>G-Coins</span><strong id="withdrawCoinDisplay">0</strong></div>
+      <div class="calculation-row"><span>Gross naira value</span><strong id="withdrawGross">₦0.00</strong></div>
+      <div class="calculation-row"><span>Service charge (2%)</span><strong id="withdrawFee">₦0.00</strong></div>
+      <div class="calculation-row total"><span>You receive</span><strong id="withdrawNet">₦0.00</strong></div>
+    </div>
+
+    <div class="form-group">
+      <label for="withdrawBank">Withdrawal bank account</label>
+      <select id="withdrawBank"><option value="">Select saved bank account</option></select>
+    </div>
+
+    <button class="btn btn-primary full-width" id="submitWithdrawal">Request Withdrawal</button>
+  </div>
+</div>
+
+<!-- QR SCANNER -->
+<div class="modal" id="scannerModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Scan EarnGig Payment QR</h2>
+      <button class="close-modal" onclick="closeScanner()">×</button>
+    </div>
+    <p class="card-description">Scan a business or user receiving QR code.</p>
+    <div id="qrReader"></div>
+    <div id="scanMessage" class="notice info" style="margin-top:12px">
+      Camera access is required to scan a QR code.
+    </div>
+  </div>
+</div>
+
+<!-- SEND PAYMENT -->
+<div class="modal" id="sendModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Send G-Coins</h2>
+      <button class="close-modal" onclick="closeModal('sendModal')">×</button>
+    </div>
+    <div class="notice info">
+      Scanning a QR code never sends money automatically. Verify the recipient and confirm the payment.
+    </div>
+    <div class="form-group"><label>Recipient</label><input id="sendRecipient" readonly></div>
+    <div class="form-group"><label>Recipient account</label><input id="sendRecipientType" readonly></div>
+    <div class="form-group"><label for="sendAmount">G-Coins to send</label><input id="sendAmount" type="number" min="1" placeholder="Enter amount"></div>
+    <div class="form-group"><label for="sendPin">Transaction PIN</label><input id="sendPin" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter transaction PIN"></div>
+    <div class="calculation">
+      <div class="calculation-row"><span>Transfer amount</span><strong id="sendAmountDisplay">0 G-Coins</strong></div>
+      <div class="calculation-row"><span>Recipient</span><strong id="sendRecipientDisplay">—</strong></div>
+    </div>
+    <button class="btn btn-primary full-width" id="confirmTransfer">Confirm G-Coin Transfer</button>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="modal" id="profileModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Business Profile</h2>
+      <button class="close-modal" onclick="closeModal('profileModal')">×</button>
+    </div>
+    <div id="businessProfileDetails"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/*
+  CONNECT YOUR REAL BACKEND HERE.
+
+  This page requires a secure backend for applications, Admin approval,
+  username reservation, Flutterwave verification, wallet balances,
+  QR resolution, G-Coin transfers and withdrawals.
+
+  Never put a Flutterwave secret key or authoritative wallet balance
+  in frontend code.
+*/
+
+const API_BASE = "https://YOUR-BACKEND-DOMAIN/api";
+const COINS_PER_NAIRA = 10;
+const WITHDRAWAL_FEE_RATE = 0.02;
+
+let business = null;
+let qrCodeInstance = null;
+let qrScanner = null;
+let currentRecipient = null;
+let usernameCheckTimer = null;
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[char]);
+}
+
+function formatCoins(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toLocaleString("en-NG",{maximumFractionDigits:2}) : "0";
+}
+
+function formatNaira(value) {
+  const n = Number(value);
+  return "₦" + (Number.isFinite(n)?n:0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,maximumFractionDigits:2
+  });
+}
+
+function showToast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  setTimeout(()=>$("toast").classList.remove("show"),3000);
+}
+
+function showMessage(message,type="info") {
+  $("globalMessage").innerHTML =
+    `<div class="notice ${type}">${escapeHTML(message)}</div>`;
+}
+
+function showView(viewId) {
+  ["registrationView","pendingView","rejectedView","paymentView","activeView"]
+    .forEach(id=>$(id).classList.add("hidden"));
+  $(viewId).classList.remove("hidden");
+  $("loadingView").classList.add("hidden");
+  $("progressSection").classList.remove("hidden");
+}
+
+function hideAllViews() {
+  ["registrationView","pendingView","rejectedView","paymentView","activeView","progressSection"]
+    .forEach(id=>$(id).classList.add("hidden"));
+}
+
+function updateSteps(current) {
+  for(let i=1;i<=3;i++){
+    const step=$("step"+i);
+    step.classList.remove("active","done");
+    if(i<current)step.classList.add("done");
+    if(i===current)step.classList.add("active");
+  }
+}
+
+async function apiRequest(path,options={}) {
+  if(API_BASE.includes("YOUR-BACKEND-DOMAIN")){
+    throw new Error("Connect your EarnGig backend by setting API_BASE first.");
+  }
+
+  const response=await fetch(API_BASE.replace(/\/$/,"")+path,{
+    ...options,
+    credentials:"include",
+    headers:{...(options.headers||{})}
+  });
+
+  const contentType=response.headers.get("content-type")||"";
+  const data=contentType.includes("application/json")?await response.json():{};
+
+  if(!response.ok)throw new Error(data.message||data.error||"Something went wrong.");
+  return data;
+}
+
+function normalizeStatus(data) {
+  return String(data?.status||data?.applicationStatus||data?.application_status||"none")
+    .toLowerCase().replace(/[\s-]+/g,"_");
+}
+
+async function loadBusiness() {
+  $("loadingView").classList.remove("hidden");
+  hideAllViews();
+  $("globalMessage").innerHTML="";
+
+  try {
+    const data=await apiRequest("/business/me");
+    business=data.business||data.application||data||null;
+
+    if(!business||!business.id){
+      showView("registrationView");
+      updateSteps(1);
+      return;
+    }
+
+    renderBusinessState();
+  } catch(error) {
+    hideAllViews();
+    $("loadingView").classList.remove("hidden");
+    $("loadingView").innerHTML=`
+      <p style="text-align:center;color:#8493A3;font-size:12px">
+        Unable to load your Business account.<br><br>
+        ${escapeHTML(error.message)}<br><br>
+        <button class="btn btn-primary" onclick="loadBusiness()">Try Again</button>
+      </p>`;
+  }
+}
+
+function renderBusinessState() {
+  const status=normalizeStatus(business);
+
+  if(["active","activated","paid","verified"].includes(status)){
+    showActiveDashboard();
+  }else if(["rejected","declined"].includes(status)){
+    showRejected();
+  }else if(["approved","payment_required","awaiting_payment"].includes(status)){
+    showPayment();
+  }else if(["pending","under_review","submitted","in_review"].includes(status)){
+    showPending();
+  }else{
+    showView("registrationView");
+    updateSteps(1);
+  }
+}
+
+function showPending() {
+  showView("pendingView");
+  updateSteps(2);
+  $("pendingName").textContent=business.businessName||business.name||"—";
+  $("pendingUsername").textContent="@"+String(business.username||"—").replace(/^@/,"");
+  $("pendingReference").textContent=business.applicationReference||business.reference||business.id||"—";
+}
+
+function showRejected() {
+  showView("rejectedView");
+  updateSteps(2);
+  $("rejectionReason").textContent=business.rejectionReason||business.rejection_reason||"Please review your application and contact support if you need clarification.";
+}
+
+function showPayment() {
+  showView("paymentView");
+  updateSteps(3);
+  $("approvedName").textContent=business.businessName||business.name||"—";
+  $("approvedUsername").textContent="@"+String(business.username||"—").replace(/^@/,"");
+}
+
+function showActiveDashboard() {
+  showView("activeView");
+  updateSteps(3);
+
+  const name=business.businessName||business.name||"My Business";
+  const username="@"+String(business.username||"").replace(/^@/,"");
+  const balance=Number(business.walletBalance??business.wallet_balance??business.businessWallet?.balance??0);
+
+  $("pageTitle").textContent=name;
+  $("pageSubtitle").textContent=username;
+  $("walletBalance").textContent=formatCoins(balance)+" G-Coins";
+  $("walletNaira").textContent="Equivalent value: "+formatNaira(balance/COINS_PER_NAIRA);
+  $("activeBusinessName").textContent=name;
+  $("activeBusinessUsername").textContent=username;
+  $("activeBusinessCategory").textContent=business.category||business.businessCategory||"—";
+
+  loadTransactions();
+}
+
+/* Username availability */
+
+$("businessUsername").addEventListener("input",()=>{
+  const input=$("businessUsername");
+  const message=$("usernameMessage");
+  input.value=input.value.toLowerCase().replace(/[^a-z0-9_]/g,"");
+  const username=input.value;
+
+  clearTimeout(usernameCheckTimer);
+
+  if(username.length<3){
+    message.textContent="Username must contain at least 3 characters.";
+    message.className="field-message bad";
+    return;
+  }
+
+  message.textContent="Checking username...";
+  message.className="field-message";
+
+  usernameCheckTimer=setTimeout(async()=>{
+    try{
+      const result=await apiRequest("/business/username/check?username="+encodeURIComponent(username));
+      message.textContent=result.available?"✓ Username is available.":"✕ This username is already taken.";
+      message.className="field-message "+(result.available?"good":"bad");
+    }catch(error){
+      message.textContent="Username availability could not be verified. Try again.";
+      message.className="field-message bad";
+    }
+  },500);
+});
+
+/* Application */
+
+$("registrationForm").addEventListener("submit",submitApplication);
+
+async function submitApplication(event) {
+  event.preventDefault();
+
+  const username=$("businessUsername").value.trim().toLowerCase();
+
+  if(!/^[a-z0-9_]{3,25}$/.test(username)){
+    showToast("Please enter a valid business username.");
+    return;
+  }
+
+  if(!$("agreeTerms").checked){
+    showToast("Please confirm your application information.");
+    return;
+  }
+
+  const button=$("submitApplication");
+  button.disabled=true;
+  button.textContent="Submitting Application...";
+
+  try{
+    const check=await apiRequest("/business/username/check?username="+encodeURIComponent(username));
+    if(!check.available)throw new Error("This username is already taken.");
+
+    const payload={
+      businessName:$("businessName").value.trim(),
+      username,
+      category:$("businessCategory").value,
+      phone:$("businessPhone").value.trim(),
+      email:$("businessEmail").value.trim(),
+      location:$("businessLocation").value.trim(),
+      description:$("businessDescription").value.trim(),
+      website:$("businessWebsite").value.trim()
+    };
+
+    const formData=new FormData();
+    Object.entries(payload).forEach(([key,value])=>formData.append(key,value));
+
+    const file=$("businessDocument").files[0];
+    if(file)formData.append("supportingDocument",file);
+
+    const result=await apiRequest("/business/applications",{
+      method:"POST",body:formData
+    });
+
+    business=result.business||result.application||result;
+    if(!business.id)throw new Error("Application reference was not returned.");
+    renderBusinessState();
+    showToast("Business application submitted.");
+
+  }catch(error){
+    showMessage(error.message,"error");
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Submit Business Application →";
+  }
+}
+
+async function refreshBusinessStatus() {
+  try{
+    const data=await apiRequest("/business/me");
+    business=data.business||data.application||data;
+    renderBusinessState();
+    showToast("Application status refreshed.");
+  }catch(error){showToast(error.message)}
+}
+
+function editApplication() {
+  showView("registrationView");
+  updateSteps(1);
+
+  $("businessName").value=business.businessName||"";
+  $("businessUsername").value=business.username||"";
+  $("businessCategory").value=business.category||"";
+  $("businessPhone").value=business.phone||"";
+  $("businessEmail").value=business.email||"";
+  $("businessLocation").value=business.location||"";
+  $("businessDescription").value=business.description||"";
+  $("businessWebsite").value=business.website||"";
+
+  $("registrationForm").removeEventListener("submit",submitApplication);
+  $("registrationForm").addEventListener("submit",resubmitApplication);
+}
+
+async function resubmitApplication(event) {
+  event.preventDefault();
+
+  const payload={
+    businessName:$("businessName").value.trim(),
+    username:$("businessUsername").value.trim().toLowerCase(),
+    category:$("businessCategory").value,
+    phone:$("businessPhone").value.trim(),
+    email:$("businessEmail").value.trim(),
+    location:$("businessLocation").value.trim(),
+    description:$("businessDescription").value.trim(),
+    website:$("businessWebsite").value.trim()
+  };
+
+  const button=$("submitApplication");
+  button.disabled=true;
+  button.textContent="Resubmitting...";
+
+  try{
+    const result=await apiRequest(`/business/applications/${encodeURIComponent(business.id)}/resubmit`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+
+    business=result.business||result.application||result;
+    $("registrationForm").removeEventListener("submit",resubmitApplication);
+    $("registrationForm").addEventListener("submit",submitApplication);
+    renderBusinessState();
+    showToast("Application resubmitted.");
+  }catch(error){showToast(error.message)}
+  finally{
+    button.disabled=false;
+    button.textContent="Submit Business Application →";
+  }
+}
+
+/* Flutterwave checkout */
+
+$("payRegistration").addEventListener("click",beginRegistrationPayment);
+
+async function beginRegistrationPayment() {
+  const button=$("payRegistration");
+  button.disabled=true;
+  button.textContent="Preparing Payment...";
+
+  try{
+    const checkout=await apiRequest(`/business/applications/${encodeURIComponent(business.id)}/checkout`,{
+      method:"POST"
+    });
+
+    if(!checkout.checkoutUrl||!checkout.checkoutUrl.startsWith("https://")){
+      throw new Error("A valid secure payment link was not returned.");
+    }
+
+    window.location.href=checkout.checkoutUrl;
+  }catch(error){
+    showToast(error.message);
+    button.disabled=false;
+    button.textContent="Pay ₦10,000 and Activate Business";
+  }
+}
+
+async function verifyReturnedPayment() {
+  const params=new URLSearchParams(window.location.search);
+  const transactionId=params.get("transaction_id")||params.get("transactionId");
+  const transactionReference=params.get("tx_ref")||params.get("reference");
+
+  if(!transactionId&&!transactionReference)return;
+
+  try{
+    showMessage("Verifying your registration payment...","info");
+
+    const result=await apiRequest("/business/payments/verify",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({transactionId,transactionReference})
+    });
+
+    if(!result.verified||!result.business)throw new Error("Payment has not been verified.");
+
+    business=result.business;
+    history.replaceState({},"","business.html");
+    renderBusinessState();
+    showToast("Business successfully activated.");
+  }catch(error){
+    showMessage("Payment verification is not complete. Please contact support if you have already paid.","warning");
+  }
+}
+
+/* Transactions */
+
+async function loadTransactions() {
+  $("transactionRows").innerHTML="";
+  $("emptyTransactions").classList.add("hidden");
+
+  try{
+    const data=await apiRequest("/business/transactions");
+    const transactions=Array.isArray(data)?data:data.transactions||[];
+
+    if(!transactions.length){
+      $("emptyTransactions").classList.remove("hidden");
+      return;
+    }
+
+    $("transactionRows").innerHTML=transactions.map(tx=>{
+      const incoming=["credit","incoming","received"].includes(String(tx.type||tx.direction).toLowerCase());
+      const amount=Number(tx.amount||tx.coins||0);
+
+      return `<tr>
+        <td><strong>${escapeHTML(tx.reference||tx.transactionReference||"—")}</strong></td>
+        <td>${escapeHTML(tx.description||tx.type||"Transaction")}</td>
+        <td>${escapeHTML(tx.date?new Date(tx.date).toLocaleDateString("en-NG"):"—")}</td>
+        <td class="${incoming?"amount-in":"amount-out"}">${incoming?"+":"−"}${formatCoins(amount)}</td>
+        <td>${escapeHTML(tx.status||"completed")}</td>
+      </tr>`;
+    }).join("");
+  }catch(error){
+    $("emptyTransactions").classList.remove("hidden");
+    $("emptyTransactions").textContent="Transaction history could not be loaded.";
+  }
+}
+
+function openTransactions() {
+  $("transactionSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* Business profile */
+
+function openBusinessProfile() {
+  const details=[
+    ["Business name",business.businessName||business.name],
+    ["Business username","@"+String(business.username||"").replace(/^@/,"")],
+    ["Category",business.category],
+    ["Email",business.email],
+    ["Phone",business.phone],
+    ["Location",business.location],
+    ["Description",business.description]
+  ];
+
+  $("businessProfileDetails").innerHTML=details.map(([label,value])=>`
+    <div class="identity-item" style="margin-bottom:9px">
+      <small>${escapeHTML(label)}</small>
+      <strong>${escapeHTML(value||"Not provided")}</strong>
+    </div>`).join("");
+
+  openModal("profileModal");
+}
+
+/* Receive QR */
+
+async function openReceiveModal() {
+  openModal("receiveModal");
+
+  $("qrBusinessName").textContent=business.businessName||business.name||"Business";
+  const username="@"+String(business.username||"").replace(/^@/,"");
+  $("qrBusinessUsername").textContent=username;
+  $("shareBusinessUsername").value=username;
+  $("businessQr").textContent="Generating secure payment QR...";
+
+  try{
+    const data=await apiRequest("/business/qr");
+    if(!data.qrPayload)throw new Error("Secure payment QR was not returned.");
+
+    $("businessQr").innerHTML="";
+
+    if(typeof QRCode==="undefined")throw new Error("QR library unavailable.");
+
+    qrCodeInstance=new QRCode($("businessQr"),{
+      text:data.qrPayload,
+      width:190,height:190,
+      colorDark:"#263B50",
+      colorLight:"#FFFFFF",
+      correctLevel:QRCode.CorrectLevel.H
+    });
+  }catch(error){
+    $("businessQr").textContent="Secure QR could not be generated: "+error.message;
+  }
+}
+
+function copyBusinessUsername() {
+  const username=$("shareBusinessUsername").value;
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(username)
+      .then(()=>showToast("Business username copied."))
+      .catch(()=>showToast("Could not copy username."));
+  }else{
+    $("shareBusinessUsername").select();
+    document.execCommand("copy");
+    showToast("Business username copied.");
+  }
+}
+
+function downloadBusinessQR() {
+  const canvas=$("businessQr").querySelector("canvas");
+  const image=$("businessQr").querySelector("img");
+  const src=canvas?canvas.toDataURL("image/png"):image?.src;
+
+  if(!src){showToast("QR code is not ready yet.");return;}
+
+  const link=document.createElement("a");
+  link.href=src;
+  link.download="earngig-business-payment-qr.png";
+  link.click();
+}
+
+/* Withdrawals */
+
+function openWithdrawModal() {
+  $("withdrawAvailable").value=formatCoins(business.walletBalance??business.wallet_balance??0)+" G-Coins";
+  $("withdrawCoins").value="";
+  calculateWithdrawal();
+  loadBankAccounts();
+  openModal("withdrawModal");
+}
+
+function calculateWithdrawal() {
+  const coins=Math.max(0,Number($("withdrawCoins").value||0));
+  const gross=coins/COINS_PER_NAIRA;
+  const fee=gross*WITHDRAWAL_FEE_RATE;
+
+  $("withdrawCoinDisplay").textContent=formatCoins(coins);
+  $("withdrawGross").textContent=formatNaira(gross);
+  $("withdrawFee").textContent=formatNaira(fee);
+  $("withdrawNet").textContent=formatNaira(gross-fee);
+}
+
+$("withdrawCoins").addEventListener("input",calculateWithdrawal);
+
+async function loadBankAccounts() {
+  const select=$("withdrawBank");
+  select.innerHTML='<option value="">Loading bank accounts...</option>';
+
+  try{
+    const data=await apiRequest("/business/banks");
+    const accounts=Array.isArray(data)?data:data.accounts||[];
+
+    select.innerHTML='<option value="">Select saved bank account</option>';
+
+    accounts.forEach(account=>{
+      const option=document.createElement("option");
+      option.value=account.id;
+      option.textContent=`${account.bankName||account.bank_name} ••••${account.lastFour||account.last_four}`;
+      select.appendChild(option);
+    });
+
+    if(!accounts.length)select.innerHTML='<option value="">No verified bank account found</option>';
+  }catch(error){
+    select.innerHTML='<option value="">Unable to load bank accounts</option>';
+  }
+}
+
+$("submitWithdrawal").addEventListener("click",submitWithdrawal);
+
+async function submitWithdrawal() {
+  const coins=Number($("withdrawCoins").value);
+  const available=Number(business.walletBalance??business.wallet_balance??0);
+
+  if(!Number.isFinite(coins)||coins<=0){showToast("Enter a valid withdrawal amount.");return;}
+  if(coins>available){showToast("Insufficient Business Wallet balance.");return;}
+  if(!$("withdrawBank").value){showToast("Please select a verified bank account.");return;}
+
+  const button=$("submitWithdrawal");
+  button.disabled=true;
+  button.textContent="Submitting Withdrawal...";
+
+  try{
+    const result=await apiRequest("/business/withdrawals",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({coins,bankAccountId:$("withdrawBank").value})
+    });
+
+    closeModal("withdrawModal");
+
+    if(result.business)business=result.business;
+    if(result.balance!==undefined)business.walletBalance=result.balance;
+
+    $("walletBalance").textContent=formatCoins(business.walletBalance??0)+" G-Coins";
+    $("walletNaira").textContent="Equivalent value: "+formatNaira(Number(business.walletBalance??0)/COINS_PER_NAIRA);
+
+    showToast("Withdrawal request submitted.");
+    loadTransactions();
+  }catch(error){
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Request Withdrawal";
+  }
+}
+
+/* QR scanner */
+
+async function openScanner() {
+  openModal("scannerModal");
+  $("scanMessage").textContent="Starting camera...";
+  $("scanMessage").className="notice info";
+
+  if(!window.Html5Qrcode){
+    $("scanMessage").textContent="QR scanner is unavailable. Refresh the page and try again.";
+    $("scanMessage").className="notice error";
+    return;
+  }
+
+  try{
+    qrScanner=new Html5Qrcode("qrReader");
+    await qrScanner.start(
+      {facingMode:"environment"},
+      {fps:10,qrbox:{width:230,height:230}},
+      onQrScanned,
+      ()=>{}
+    );
+    $("scanMessage").textContent="Point your camera at an EarnGig payment QR code.";
+  }catch(error){
+    $("scanMessage").textContent="Camera access failed. Allow camera permission and try again.";
+    $("scanMessage").className="notice error";
+  }
+}
+
+async function onQrScanned(decodedText) {
+  await closeScanner();
+
+  try{
+    const result=await apiRequest("/transfers/resolve-qr",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({qrPayload:decodedText})
+    });
+
+    if(!result.recipient||!result.recipient.id)throw new Error("QR recipient could not be verified.");
+
+    currentRecipient=result.recipient;
+
+    $("sendRecipient").value=result.recipient.displayName||result.recipient.businessName||result.recipient.name||"Verified recipient";
+    $("sendRecipientType").value=result.recipient.type==="business"?"EarnGig Business":"EarnGig User";
+    $("sendRecipientDisplay").textContent=$("sendRecipient").value;
+    $("sendAmount").value="";
+    $("sendPin").value="";
+
+    openModal("sendModal");
+  }catch(error){showToast(error.message)}
+}
+
+async function closeScanner() {
+  if(qrScanner){
+    try{await qrScanner.stop();await qrScanner.clear()}catch(e){}
+    qrScanner=null;
+  }
+  closeModal("scannerModal");
+}
+
+/* G-Coin transfer */
+
+$("sendAmount").addEventListener("input",()=>{
+  $("sendAmountDisplay").textContent=formatCoins($("sendAmount").value||0)+" G-Coins";
+});
+
+$("confirmTransfer").addEventListener("click",async()=>{
+  if(!currentRecipient)return;
+
+  const amount=Number($("sendAmount").value);
+  const pin=$("sendPin").value;
+
+  if(!Number.isFinite(amount)||amount<=0){showToast("Enter a valid G-Coin amount.");return;}
+  if(!pin){showToast("Enter your transaction PIN.");return;}
+
+  if(!confirm(`Send ${formatCoins(amount)} G-Coins to ${$("sendRecipient").value}?`))return;
+
+  const button=$("confirmTransfer");
+  button.disabled=true;
+  button.textContent="Processing Transfer...";
+
+  try{
+    const result=await apiRequest("/transfers",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        recipientId:currentRecipient.id,
+        amount,
+        transactionPin:pin
+      })
+    });
+
+    closeModal("sendModal");
+    showToast("G-Coin transfer completed successfully.");
+
+    if(result.business){
+      business=result.business;
+      showActiveDashboard();
+    }
+  }catch(error){
+    showToast(error.message);
+  }finally{
+    button.disabled=false;
+    button.textContent="Confirm G-Coin Transfer";
+  }
+});
+
+/* Modals */
+
+function openModal(id) {
+  $(id).classList.add("show");
+  document.body.style.overflow="hidden";
+}
+
+function closeModal(id) {
+  $(id).classList.remove("show");
+  if(!document.querySelector(".modal.show"))document.body.style.overflow="";
+}
+
+document.querySelectorAll(".modal").forEach(modal=>{
+  modal.addEventListener("click",event=>{
+    if(event.target===modal){
+      if(modal.id==="scannerModal")closeScanner();
+      else closeModal(modal.id);
+    }
+  });
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    document.querySelectorAll(".modal.show").forEach(modal=>{
+      if(modal.id==="scannerModal")closeScanner();
+      else closeModal(modal.id);
+    });
+  }
+});
+
+/* Start */
+
+loadBusiness().then(verifyReturnedPayment);
+</script>
+
+</body>
+</html>
