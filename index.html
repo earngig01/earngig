@@ -7,6 +7,11 @@
 <meta name="theme-color" content="#160329">
 <title>EarnGig | Play. Read. Earn. Shop.</title>
 
+<!-- DISPLAY FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg:#120322;
@@ -24,10 +29,12 @@
   padding:0;
 }
 
-html {scroll-behavior:smooth}
+html {
+  scroll-behavior:smooth;
+}
 
 body {
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:'Nunito',Arial,sans-serif;
   color:white;
   background:
     radial-gradient(ellipse at 85% 15%,#4c087a 0%,transparent 38%),
@@ -74,16 +81,16 @@ header {
   font-size:1em;
   color:var(--gold);
   display:inline-block;
-  vertical-align:middle;
-  letter-spacing:0;
   line-height:1;
 }
 
-.logo span {color:var(--lime)}
+.logo span {
+  color:var(--lime);
+}
 
 .header-actions {
   display:flex;
-  gap:9px;
+  gap:10px;
   align-items:center;
 }
 
@@ -93,10 +100,11 @@ header {
   justify-content:center;
   gap:9px;
   padding:14px 21px;
-  border-radius:13px;
-  font-weight:800;
+  border-radius:15px;
+  font-weight:900;
   transition:.25s;
   text-align:center;
+  border:0;
 }
 
 .btn:hover {
@@ -114,17 +122,19 @@ header {
   border:2px solid #dc55ff;
   color:white;
   background:#23083d80;
+  box-shadow:0 0 15px #d92cff25;
 }
 
-/* HERO - SIDE BY SIDE */
+/* HERO */
 .hero {
   max-width:1500px;
   margin:auto;
-  padding:42px 4% 20px;
+  padding:42px 4% 30px;
   display:grid;
-  grid-template-columns:.9fr 1.1fr;
+  grid-template-columns:.95fr 1.05fr;
   align-items:center;
   gap:20px;
+  min-height:550px;
 }
 
 .hero-copy {
@@ -134,46 +144,101 @@ header {
 }
 
 .welcome {
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   padding:11px 20px;
   border-radius:30px;
   background:linear-gradient(90deg,#7415a8,#470b78);
-  border:1px solid #d93cff70;
-  font-weight:800;
-  margin-bottom:20px;
-}
-
-.hero h1 {
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:clamp(42px,4.8vw,68px);
-  line-height:1.04;
-  letter-spacing:-2px;
+  border:1px solid #d93cff;
+  box-shadow:0 0 17px #d92cff70;
   font-weight:900;
-  font-style:normal;
-  text-shadow:0 0 25px #ffffff25;
+  margin-bottom:25px;
+  letter-spacing:.5px;
 }
 
-.hero h1 span {
-  color:var(--lime);
+/* 3D GAMING HEADLINE */
+.hero h1 {
+  font-family:'Titan One',Impact,sans-serif;
+  font-size:clamp(44px,5.1vw,76px);
+  line-height:1.06;
+  letter-spacing:-1.5px;
+  font-weight:400;
+  font-style:italic;
+  text-transform:none;
+  color:#fff;
+  -webkit-text-stroke:1px #e9d8ff;
+  text-shadow:
+    1px 2px 0 #d8c3ff,
+    2px 4px 0 #9c62d9,
+    3px 6px 0 #6a20a6,
+    5px 9px 0 #390b65,
+    0 0 20px #c44dff60;
+  animation:headlineFloat 4s ease-in-out infinite;
+}
+
+.hero h1 .white-line {
   display:block;
-  text-shadow:0 0 25px #caff1960;
+  color:#fff;
+}
+
+.hero h1 .lime-line {
+  display:block;
+  margin-top:3px;
+  background:linear-gradient(
+    180deg,
+    #fffca2 0%,
+    #eaff00 35%,
+    #b7ff00 70%,
+    #77c900 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-stroke:1px #eaff65;
+  text-shadow:
+    2px 3px 0 #9ab900,
+    4px 6px 0 #537e00,
+    6px 9px 0 #341052,
+    0 0 18px #caff1980;
+  animation:limePulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes headlineFloat {
+  0%,100% {transform:translateY(0) skewX(-3deg)}
+  50% {transform:translateY(-5px) skewX(-3deg)}
+}
+
+@keyframes limePulse {
+  from {
+    filter:brightness(1);
+  }
+  to {
+    filter:brightness(1.2);
+  }
 }
 
 .hero-copy p {
   color:#eee2f7;
   font-size:17px;
-  line-height:1.6;
-  max-width:480px;
-  margin:22px 0;
+  font-weight:600;
+  line-height:1.65;
+  max-width:500px;
+  margin:25px 0;
 }
 
 .hero-buttons {
   display:flex;
-  gap:13px;
+  gap:14px;
   flex-wrap:wrap;
 }
 
-/* MONEY AND COINS ILLUSTRATION */
+.hero-buttons .btn {
+  padding:17px 24px;
+  font-size:16px;
+}
+
+/* MONEY AND COINS */
 .hero-art {
   width:100%;
   max-width:760px;
@@ -188,7 +253,7 @@ header {
   border-radius:50%;
   background:#a000ff;
   filter:blur(90px);
-  opacity:.32;
+  opacity:.38;
 }
 
 .money-svg {
@@ -258,7 +323,9 @@ header {
   border:2px solid #c52aff;
   border-radius:27px;
   background:linear-gradient(100deg,#4b087f,#8111b0,#32104f);
-  box-shadow:0 0 30px #a61bff55,inset 0 0 25px #d52aff30;
+  box-shadow:
+    0 0 30px #a61bff55,
+    inset 0 0 25px #d52aff30;
 }
 
 .spotlight-title {
@@ -274,7 +341,10 @@ header {
   padding-left:27px;
 }
 
-.spotlight-copy strong {font-size:22px}
+.spotlight-copy strong {
+  font-size:22px;
+  font-weight:900;
+}
 
 .spotlight-copy p {
   margin-top:7px;
@@ -285,18 +355,21 @@ header {
 /* SECTIONS */
 .section {
   max-width:1500px;
-  margin:38px auto;
+  margin:45px auto;
   padding:0 4%;
 }
 
 .section-heading {
   font-size:32px;
+  font-weight:900;
   margin-bottom:23px;
 }
 
-.section-heading span {color:var(--lime)}
+.section-heading span {
+  color:var(--lime);
+}
 
-/* FEATURE CARDS - DISPLAY ONLY */
+/* FEATURE CARDS */
 .feature-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -331,16 +404,18 @@ header {
 
 .feature h3 {
   font-size:21px;
+  font-weight:900;
   margin-bottom:9px;
 }
 
 .feature p {
   font-size:14px;
-  line-height:1.5;
+  font-weight:600;
+  line-height:1.6;
   color:#e7ddef;
 }
 
-/* DISCOVER CARDS - DISPLAY ONLY */
+/* DISCOVER CARDS */
 .discover-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -363,12 +438,14 @@ header {
 
 .discover-card h3 {
   font-size:23px;
+  font-weight:900;
   margin-bottom:10px;
 }
 
 .discover-card p {
   color:#d7c9e5;
-  line-height:1.5;
+  font-weight:600;
+  line-height:1.6;
 }
 
 /* JOIN BANNER */
@@ -384,6 +461,7 @@ header {
 
 .bottom-cta h2 {
   font-size:30px;
+  font-weight:900;
   margin-bottom:10px;
 }
 
@@ -391,6 +469,7 @@ header {
   color:#f0ddff;
   margin-bottom:20px;
   line-height:1.5;
+  font-weight:600;
 }
 
 /* FOOTER */
@@ -410,29 +489,22 @@ footer {
   gap:23px;
   flex-wrap:wrap;
   font-size:14px;
+  font-weight:700;
 }
 
-footer a:hover {color:var(--lime)}
+footer a:hover {
+  color:var(--lime);
+}
 
-/* TABLET - KEEP HERO SIDE BY SIDE */
-@media(max-width:900px) {
+/* TABLET */
+@media(max-width:1000px) {
   .hero {
-    grid-template-columns:.9fr 1.1fr;
+    grid-template-columns:.95fr 1.05fr;
     gap:8px;
-    padding-left:3%;
-    padding-right:3%;
   }
 
   .hero h1 {
-    font-size:clamp(38px,5.2vw,52px);
-  }
-
-  .hero-copy p {
-    font-size:15px;
-  }
-
-  .hero-art {
-    max-width:100%;
+    font-size:clamp(40px,5.2vw,58px);
   }
 
   .feature-grid {
@@ -440,14 +512,16 @@ footer a:hover {color:var(--lime)}
   }
 }
 
-/* MOBILE - STACK ONLY ON NARROW SCREENS */
-@media(max-width:600px) {
+/* MOBILE */
+@media(max-width:650px) {
   header {
     padding:13px 5%;
     min-height:68px;
   }
 
-  .logo {font-size:27px}
+  .logo {
+    font-size:27px;
+  }
 
   .header-actions {
     gap:7px;
@@ -462,23 +536,27 @@ footer a:hover {color:var(--lime)}
     grid-template-columns:1fr;
     padding:32px 5% 10px;
     text-align:center;
-    gap:0;
+    gap:5px;
   }
 
   .hero-copy {
     text-align:center;
   }
 
-  .welcome {font-size:13px}
+  .welcome {
+    font-size:13px;
+    margin-bottom:20px;
+  }
 
   .hero h1 {
-    font-size:clamp(40px,10vw,55px);
-    letter-spacing:-1.5px;
+    font-size:clamp(39px,10vw,57px);
+    line-height:1.1;
+    letter-spacing:-1px;
   }
 
   .hero-copy p {
-    font-size:16px;
-    margin:18px auto 22px;
+    font-size:15px;
+    margin:20px auto;
     max-width:500px;
   }
 
@@ -486,10 +564,15 @@ footer a:hover {color:var(--lime)}
     justify-content:center;
   }
 
+  .hero-buttons .btn {
+    padding:14px 17px;
+    font-size:14px;
+  }
+
   .hero-art {
     width:100%;
     max-width:540px;
-    margin:15px auto 5px;
+    margin:12px auto 5px;
   }
 
   .spotlight {
@@ -513,9 +596,13 @@ footer a:hover {color:var(--lime)}
     width:100%;
   }
 
-  .spotlight-copy strong {font-size:20px}
+  .spotlight-copy strong {
+    font-size:20px;
+  }
 
-  .spotlight .btn {width:100%}
+  .spotlight .btn {
+    width:100%;
+  }
 
   .discover-grid {
     grid-template-columns:1fr;
@@ -533,26 +620,42 @@ footer a:hover {color:var(--lime)}
 
 /* SMALL PHONES */
 @media(max-width:430px) {
-  .logo {font-size:24px}
+  .logo {
+    font-size:24px;
+  }
 
   .header-actions .btn {
     padding:9px 10px;
     font-size:11px;
   }
 
-  .hero {padding-top:28px}
+  .hero {
+    padding-top:27px;
+  }
 
-  .hero h1 {font-size:42px}
+  .hero h1 {
+    font-size:39px;
+  }
 
-  .feature-grid {grid-template-columns:1fr}
+  .feature-grid {
+    grid-template-columns:1fr;
+  }
 
-  .section-heading {font-size:27px}
+  .section-heading {
+    font-size:27px;
+  }
 
-  .feature {min-height:160px}
+  .feature {
+    min-height:160px;
+  }
 
-  .bottom-cta h2 {font-size:25px}
+  .bottom-cta h2 {
+    font-size:25px;
+  }
 
-  .footer-links {gap:16px}
+  .footer-links {
+    gap:16px;
+  }
 }
 
 /* REDUCED MOTION */
@@ -585,15 +688,16 @@ footer a:hover {color:var(--lime)}
 
 <main>
 
-<!-- HERO: TEXT LEFT, MONEY ART RIGHT -->
+<!-- HERO -->
 <section class="hero">
 
   <div class="hero-copy">
+
     <div class="welcome">👑 WELCOME TO EARNGIG</div>
 
     <h1>
-      Play. Read.
-      <span>Earn. Shop.</span>
+      <span class="white-line">Play. Read.</span>
+      <span class="lime-line">Earn. Shop.</span>
     </h1>
 
     <p>
@@ -611,10 +715,12 @@ footer a:hover {color:var(--lime)}
         Explore EarnGig
       </a>
     </div>
+
   </div>
 
-  <!-- ORIGINAL MONEY ILLUSTRATION -->
+  <!-- ANIMATED MONEY ILLUSTRATION -->
   <div class="hero-art">
+
     <svg class="money-svg" viewBox="0 0 700 500"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
@@ -795,7 +901,7 @@ footer a:hover {color:var(--lime)}
         </g>
       </g>
 
-      <!-- FLOATING GOLD COINS -->
+      <!-- FLOATING COINS -->
       <g class="gold-coin" filter="url(#glow)">
         <circle cx="225" cy="105" r="35"
           fill="url(#gold)" stroke="#fff3a0" stroke-width="4"/>
@@ -845,6 +951,7 @@ footer a:hover {color:var(--lime)}
         <circle cx="600" cy="390" r="4"/>
         <circle cx="100" cy="170" r="3"/>
       </g>
+
     </svg>
   </div>
 
@@ -852,7 +959,10 @@ footer a:hover {color:var(--lime)}
 
 <!-- SPOTLIGHT -->
 <section class="spotlight">
-  <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
+
+  <div class="spotlight-title">
+    📣 EARNGIG SPOTLIGHT
+  </div>
 
   <div class="spotlight-copy">
     <strong>Put your brand in the spotlight.</strong>
@@ -862,10 +972,12 @@ footer a:hover {color:var(--lime)}
   <a class="btn btn-lime" href="pages/advertise.html">
     Advertise Now →
   </a>
+
 </section>
 
 <!-- MORE WAYS TO EARN -->
 <section class="section">
+
   <h2 class="section-heading">
     More ways to <span>earn</span> ━
   </h2>
@@ -913,6 +1025,7 @@ footer a:hover {color:var(--lime)}
 
 <!-- EXPLORE EARNGIG -->
 <section class="section" id="discover">
+
   <h2 class="section-heading">
     Explore <span>EarnGig</span>
   </h2>
@@ -951,6 +1064,7 @@ footer a:hover {color:var(--lime)}
 
 <!-- JOIN BANNER -->
 <section class="bottom-cta">
+
   <h2>Your next chapter starts here.</h2>
 
   <p>
@@ -960,12 +1074,14 @@ footer a:hover {color:var(--lime)}
   <a class="btn btn-lime" href="pages/register.html">
     Create your free account →
   </a>
+
 </section>
 
 </main>
 
 <!-- FOOTER -->
 <footer>
+
   <a class="logo" href="index.html">
     <b class="crown">👑</b>Earn<span>Gig</span>
   </a>
@@ -980,6 +1096,7 @@ footer a:hover {color:var(--lime)}
   </div>
 
   <small>© 2026 EarnGig. All rights reserved.</small>
+
 </footer>
 
 </body>
