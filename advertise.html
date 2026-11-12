@@ -3,177 +3,533 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#160329">
 <title>Advertise | EarnGig</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-:root{--purple:#673de6;--deep:#4c27bd;--lavender:#f3efff;--gold:#e8b943;--ink:#242039;--muted:#77738a;--line:#e9e4f3;--white:#fff}
-*{box-sizing:border-box}
-body{margin:0;background:#fff;color:var(--ink);font-family:Arial,sans-serif}
-header{height:68px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:10}
-.brand{font-size:22px;font-weight:800;color:var(--purple);display:flex;align-items:center;gap:8px;text-decoration:none}
-.brand svg{width:25px;height:25px}
-nav a{color:#514b64;text-decoration:none;font-size:14px;margin-left:20px}
-nav a:hover{color:var(--purple)}
-main{max-width:1050px;margin:35px auto;padding:0 18px 60px}
-.hero{text-align:center;padding:30px 15px 25px}
-.hero h1{font-size:34px;margin:0 0 12px}
-.hero p{color:var(--muted);line-height:1.6;margin:0}
-.section{margin-top:28px}
-.section h2{font-size:21px;margin:0 0 8px}
-.sub{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 17px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:13px}
-.package{border:1px solid var(--line);border-radius:14px;padding:17px;background:#fff;cursor:pointer;transition:.2s}
-.package:hover{border-color:var(--purple);transform:translateY(-2px)}
-.package.selected{border:2px solid var(--purple);background:var(--lavender);padding:16px}
-.package input{accent-color:var(--purple)}
-.package strong{display:block;font-size:16px;margin:9px 0 5px}
-.price{font-size:22px;font-weight:800;color:var(--purple)}
-.package small{color:var(--muted)}
-.panel{border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:22px}
-.panel h3{margin:0 0 7px;font-size:18px}
-label{font-size:13px;font-weight:700;display:block;margin:15px 0 7px}
-input,textarea,select{width:100%;border:1px solid #ddd6ed;border-radius:9px;padding:12px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
-input:focus,textarea:focus,select:focus{outline:2px solid #d8cbff;border-color:var(--purple)}
-textarea{min-height:90px;resize:vertical}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.upload-box{border:2px dashed #c9b9f5;background:#faf8ff;border-radius:12px;padding:16px;margin-top:10px}
-.upload-box input{border:0;padding:8px 0;background:transparent}
-.upload-box p{font-size:12px;color:var(--muted);margin:5px 0}
-.file-preview{display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap}
-.file-preview img,.file-preview video{width:100px;height:72px;object-fit:cover;border-radius:8px;background:#eee}
-.file-name{font-size:12px;color:#514b64;overflow-wrap:anywhere}
-.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:15px}
-.slot{border:1px solid var(--line);border-radius:10px;padding:13px 5px;text-align:center;cursor:pointer}
-.slot input{width:auto;accent-color:var(--purple)}
-.slot.booked{background:#f2f1f4;color:#aaa;cursor:not-allowed}
-.slot.chosen{border:2px solid var(--purple);background:var(--lavender)}
-.slot b{display:block;margin-top:6px}
-.summary{background:#f8f6ff;border:1px solid #e5dcff;border-radius:12px;padding:16px;margin-top:16px;line-height:1.8}
-.total{font-size:23px;color:var(--purple);font-weight:800}
-button{border:0;border-radius:10px;padding:14px 20px;background:var(--purple);color:white;font-weight:700;font-size:15px;cursor:pointer}
-button:hover{background:var(--deep)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.primary{width:100%;margin-top:20px}
-.notice{padding:13px;border-radius:10px;background:#fff8e8;color:#765313;font-size:13px;line-height:1.6;margin-top:14px}
-.success{padding:16px;background:#edfff3;border:1px solid #bde9cb;color:#176333;border-radius:12px;line-height:1.6;margin-top:18px}
-.error{padding:13px;background:#fff0f0;color:#a32323;border-radius:9px;margin-top:12px;display:none}
+:root{
+  --bg:#120322;
+  --purple:#260644;
+  --purple2:#4b087f;
+  --purple3:#7026a5;
+  --lime:#caff19;
+  --gold:#ffc928;
+  --white:#fff;
+  --muted:#b5a4c5;
+  --line:#ffffff20;
+  --card:#28103f;
+  --success:#a9f5b9;
+  --danger:#ff9ba9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',Arial,sans-serif;
+  min-height:100vh;color:white;
+  background:
+    radial-gradient(ellipse at 90% 0%,#4c087a 0%,transparent 35%),
+    linear-gradient(145deg,#10021d,#23063e 55%,#10021d);
+}
+a{text-decoration:none;color:inherit}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+/* HEADER */
+header{
+  min-height:68px;padding:10px 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:#160329ed;border-bottom:1px solid #a72cff45;
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(15px)
+}
+.brand{
+  display:flex;align-items:center;gap:5px;
+  font-size:26px;font-weight:900;letter-spacing:-1.3px
+}
+.crown{color:var(--gold)}
+.gig{color:var(--lime)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-link{
+  padding:9px 14px;border:1px solid #ffffff30;
+  border-radius:10px;font-size:12px;font-weight:800
+}
+.menu-button{
+  width:40px;height:40px;border:1px solid #ffffff30;
+  background:#2a1042;color:white;border-radius:10px;font-size:21px
+}
+
+/* MENU */
+.overlay{position:fixed;inset:0;background:#0009;z-index:80;display:none}
+.overlay.open{display:block}
+.side-menu{
+  position:fixed;top:0;right:-330px;width:min(310px,85vw);
+  height:100%;overflow-y:auto;z-index:90;background:#1b0730;
+  border-left:1px solid #a72cff55;padding:22px 18px;transition:right .25s
+}
+.side-menu.open{right:0}
+.menu-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:18px;border-bottom:1px solid var(--line)
+}
+.close-menu{
+  background:#351052;color:white;border:0;border-radius:9px;
+  width:36px;height:36px;font-size:22px
+}
+.menu-label{
+  color:#ad91c3;font-size:10px;font-weight:900;
+  letter-spacing:1.3px;margin:22px 8px 9px
+}
+.side-menu a:not(.brand){
+  display:flex;align-items:center;gap:12px;padding:12px 10px;
+  border-radius:9px;font-size:13px;font-weight:800;color:#f4eafa
+}
+.side-menu a:hover,.side-menu a.current{background:#45166a;color:var(--lime)}
+.side-menu a span{font-size:18px}
+
+/* PAGE */
+main{width:92%;max-width:850px;margin:25px auto 55px}
+.page-heading{margin-bottom:20px}
+.page-heading h1{font-size:26px;font-weight:900;margin-bottom:5px}
+.page-heading p{font-size:12px;color:#c7b6d5;line-height:1.6}
+
+/* INTRO */
+.intro-card{
+  padding:22px;border-radius:18px;
+  background:radial-gradient(circle at 90% 10%,#a329db55,transparent 40%),
+  linear-gradient(120deg,#401064,#7025a3);
+  border:1px solid #d45cff65;margin-bottom:22px
+}
+.intro-icon{font-size:30px;margin-bottom:10px}
+.intro-card h2{font-size:20px;font-weight:900;margin-bottom:6px}
+.intro-card p{font-size:12px;color:#eadcf3;line-height:1.7;max-width:550px}
+
+/* CHOICES */
+.section-heading{margin:24px 0 12px}
+.section-heading h2{font-size:17px;font-weight:900}
+.section-heading p{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{
+  border:1px solid var(--line);border-radius:15px;
+  background:#28103f;padding:17px;cursor:pointer;
+  transition:.2s;position:relative
+}
+.choice:hover{border-color:#bd65ff;transform:translateY(-2px)}
+.choice.selected{
+  border:2px solid var(--lime);padding:16px;
+  background:#35144f;box-shadow:0 0 18px #caff1910
+}
+.choice-icon{font-size:25px;margin-bottom:10px}
+.choice h3{font-size:15px;margin-bottom:5px}
+.choice p{font-size:11px;color:#bbaacb;line-height:1.6}
+.choice-price{color:var(--lime);font-weight:900;font-size:19px;margin-top:12px}
+.choice small{display:block;color:#bbaacb;font-size:10px;margin-top:3px}
+.choice-check{
+  position:absolute;right:12px;top:12px;color:var(--lime);
+  font-weight:900;display:none
+}
+.choice.selected .choice-check{display:block}
+
+/* PACKAGE AREA */
+.content-panel{
+  display:none;background:#28103f;border:1px solid var(--line);
+  border-radius:16px;padding:18px;margin-top:15px
+}
+.content-panel.active{display:block}
+.panel-title{font-size:16px;font-weight:900;margin-bottom:5px}
+.panel-sub{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.package-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.package{
+  border:1px solid var(--line);border-radius:12px;
+  background:#1d0b30;padding:14px;cursor:pointer;position:relative
+}
+.package.selected{border:2px solid var(--lime);padding:13px;background:#35144f}
+.package input{position:absolute;opacity:0;pointer-events:none}
+.package strong{display:block;font-size:13px;margin-bottom:5px}
+.package .price{font-size:19px;font-weight:900;color:var(--lime)}
+.package small{font-size:10px;color:var(--muted)}
+.package .tick{display:none;color:var(--lime);position:absolute;right:10px;top:9px}
+.package.selected .tick{display:block}
+
+/* BILLBOARD */
+.booking-status{
+  padding:12px;border-radius:10px;margin-bottom:15px;
+  font-size:11px;line-height:1.7
+}
+.booking-status.open{background:#193b2a;border:1px solid #5fce82;color:#b9f5c8}
+.booking-status.closed{background:#382344;border:1px solid #a66ac9;color:#e7d4f5}
+.week-label{font-size:12px;font-weight:900;color:var(--lime);margin-bottom:10px}
+.slot-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.slot{
+  border:1px solid var(--line);border-radius:10px;
+  padding:12px 5px;text-align:center;background:#1d0b30;
+  cursor:pointer;min-width:0
+}
+.slot input{width:auto;accent-color:var(--lime)}
+.slot b{display:block;font-size:12px;margin-top:5px}
+.slot small{display:block;font-size:9px;color:var(--muted);margin-top:3px}
+.slot.chosen{border:2px solid var(--lime);padding:11px 4px;background:#35144f}
+.slot.booked{opacity:.4;cursor:not-allowed;background:#111}
+.slot-summary{
+  background:#1d0b30;border:1px solid var(--line);
+  border-radius:11px;padding:14px;margin-top:14px;
+  font-size:12px;line-height:2
+}
+.slot-summary strong{color:var(--lime)}
+.slot-total{font-size:21px;font-weight:900;color:var(--lime)}
+
+/* FORM */
+.form-section{margin-top:23px}
+.form-section h2{font-size:17px;margin-bottom:5px}
+.form-section>p{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.form-card{
+  padding:18px;border-radius:16px;background:#28103f;
+  border:1px solid var(--line)
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:900;color:#eee3f7}
+.field input,.field textarea,.field select{
+  width:100%;padding:12px;border:1px solid #ffffff2a;
+  border-radius:9px;background:#19082a;color:white;outline:none;font-size:12px
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--lime);box-shadow:0 0 0 2px #caff1920
+}
+.field input::placeholder,.field textarea::placeholder{color:#9584a4}
+.field textarea{min-height:85px;resize:vertical}
+.field select option{background:#19082a;color:white}
+
+/* UPLOAD */
+.upload-box{
+  border:1px dashed #bd79ed;background:#1d0b30;
+  border-radius:11px;padding:14px
+}
+.upload-box p{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:9px}
+.upload-box input{border:0;padding:5px 0;background:transparent}
+.file-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.file-item{display:flex;align-items:center;gap:8px;max-width:100%}
+.file-item img,.file-item video{
+  width:75px;height:55px;object-fit:cover;border-radius:7px;background:#111
+}
+.file-name{font-size:10px;color:#cdbbdd;overflow-wrap:anywhere}
+.upload-title{font-size:12px;font-weight:900;margin:16px 0 8px}
+
+/* SUMMARY */
+.summary{
+  background:#1d0b30;border:1px solid #ffffff20;
+  border-radius:12px;padding:15px;margin-top:16px;
+  font-size:12px;line-height:2
+}
+.summary-row{display:flex;justify-content:space-between;gap:10px}
+.summary-row strong{color:var(--lime)}
+.summary-total{
+  border-top:1px solid var(--line);margin-top:8px;padding-top:9px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;font-weight:900
+}
+.summary-total strong{color:var(--lime);font-size:21px}
+
+/* BUTTONS */
+.primary{
+  width:100%;border:0;border-radius:11px;padding:14px;
+  background:var(--lime);color:#180c23;font-size:13px;
+  font-weight:900;margin-top:17px
+}
+.primary:hover{filter:brightness(1.06)}
+.primary:disabled{opacity:.5;cursor:not-allowed}
+.notice{
+  padding:12px;border-radius:10px;background:#382344;
+  border:1px solid #a66ac944;color:#e4d2f1;
+  font-size:10px;line-height:1.8;margin-top:13px
+}
+.error{
+  display:none;padding:12px;border-radius:9px;margin-top:12px;
+  background:#4a1c32;color:#ffb7c3;border:1px solid #e66a88;
+  font-size:11px;line-height:1.6
+}
+.success{
+  padding:15px;background:#193b2a;border:1px solid #5fce82;
+  color:#b9f5c8;border-radius:11px;font-size:12px;line-height:1.8;margin-top:15px
+}
 .hidden{display:none!important}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px;border-top:1px solid var(--line)}
-@media(max-width:650px){nav a{margin-left:9px;font-size:12px}.row{grid-template-columns:1fr}.slot-grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:27px}}
+footer{
+  border-top:1px solid var(--line);padding:22px 4%;
+  text-align:center;color:var(--muted);font-size:11px
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  header{padding:10px 4%}
+  .brand{font-size:23px}
+  .header-link{font-size:11px;padding:9px 10px}
+  main{width:92%;margin-top:20px}
+  .page-heading h1{font-size:23px}
+  .intro-card{padding:18px}
+  .choice-grid{grid-template-columns:1fr}
+  .choice{display:grid;grid-template-columns:42px 1fr;column-gap:10px;padding:14px}
+  .choice-icon{grid-row:1/4;margin:0;font-size:25px}
+  .choice h3{font-size:14px}
+  .choice p{font-size:10px}
+  .choice-price{font-size:17px;margin-top:5px}
+  .choice small{margin-top:1px}
+  .choice.selected{padding:13px}
+  .package-grid{grid-template-columns:1fr 1fr}
+  .slot-grid{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .content-panel,.form-card{padding:15px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<a class="brand" href="index.html">
-<svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<path d="M5 12L13 19L20 5L27 19L35 12L32 31H8L5 12Z" fill="#E8B943" stroke="#C28D1C" stroke-width="1.5"/>
-<path d="M9 34H31" stroke="#C28D1C" stroke-width="3" stroke-linecap="round"/>
-<circle cx="5" cy="10" r="2.5" fill="#E8B943"/><circle cx="20" cy="4" r="2.5" fill="#E8B943"/><circle cx="35" cy="10" r="2.5" fill="#E8B943"/>
-</svg>
-EarnGig
-</a>
-<nav>
-<a href="dashboard.html">Dashboard</a>
-<a href="watch-ads.html">Watch and Earn</a>
-<a href="index.html">Home</a>
-</nav>
+  <a href="index.html" class="brand">
+    <span class="crown">👑</span>
+    Earn<span class="gig">Gig</span>
+  </a>
+  <div class="header-actions">
+    <a class="header-link" href="dashboard.html">Dashboard</a>
+    <button class="menu-button" onclick="openMenu()" aria-label="Open menu">☰</button>
+  </div>
 </header>
 
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<aside class="side-menu" id="sideMenu">
+  <div class="menu-head">
+    <a href="index.html" class="brand">👑 Earn<span class="gig">Gig</span></a>
+    <button class="close-menu" onclick="closeMenu()">×</button>
+  </div>
+
+  <div class="menu-label">MY ACCOUNT</div>
+  <a href="dashboard.html"><span>🏠</span> Dashboard</a>
+  <a href="wallet.html"><span>👛</span> My Wallet</a>
+  <a href="transactions.html"><span>📊</span> Transactions</a>
+  <a href="profile.html"><span>👤</span> My Profile</a>
+
+  <div class="menu-label">EARN REWARDS</div>
+  <a href="games.html"><span>🎮</span> Games</a>
+  <a href="watch-ads.html"><span>🎬</span> Watch Ads</a>
+  <a href="referrals.html"><span>👥</span> Refer Friends</a>
+  <a href="novels.html"><span>📚</span> Novels</a>
+
+  <div class="menu-label">SHOP AND BUSINESS</div>
+  <a href="marketplace.html"><span>🛍️</span> Marketplace</a>
+  <a href="storefront.html"><span>🏪</span> Storefront</a>
+  <a href="my-shop.html"><span>📦</span> Seller Dashboard</a>
+  <a href="advertise.html" class="current"><span>📣</span> Advertise</a>
+</aside>
+
 <main>
-<div class="hero">
-<h1>Advertise on EarnGig</h1>
-<p>Reach EarnGig users through Watch and Earn advertisements or prominent homepage billboard placements.</p>
-</div>
 
-<div class="section">
-<h2>1. Choose your advertisement package</h2>
-<p class="sub">Time-based and views-based campaigns will be published in Watch and Earn after payment verification and admin approval.</p>
-<div class="grid" id="packages"></div>
-</div>
+  <div class="page-heading">
+    <h1>📣 Advertise on EarnGig</h1>
+    <p>Promote your business, reach new customers and put your brand in the spotlight.</p>
+  </div>
 
-<div class="section">
-<h2>2. Homepage billboard</h2>
-<p class="sub">Each billboard slot costs ₦100,000 and runs from Monday to Sunday. Select the slots you want to book. Every selected slot requires its own image or video.</p>
-<div class="panel">
-<h3>Billboard booking window</h3>
-<p class="sub" id="windowMessage">Checking booking window…</p>
-<div class="slot-grid" id="slots"></div>
-<div class="summary">
-<div>Selected slots: <strong id="selectedCount">0</strong></div>
-<div>Creative uploads required: <strong id="uploadCount">0</strong></div>
-<div>Total: <span class="total" id="billboardTotal">₦0</span></div>
-</div>
-<div id="billboardUploads"></div>
-<div class="notice">For example, if you select slots 1 and 9, you must upload two creatives. You can upload two videos, two images, or one video and one image.</div>
-</div>
-</div>
+  <section class="intro-card">
+    <div class="intro-icon">🚀</div>
+    <h2>Give your business more visibility.</h2>
+    <p>Choose where you want your advert to appear, select your package and submit your creative. Our advertising team will review your request.</p>
+  </section>
 
-<div class="section">
-<h2>3. Advertiser and creative details</h2>
-<p class="sub">Upload your actual advertisement here. You will not need to send the same file to the admin separately.</p>
-<div class="panel">
-<div class="row">
-<div><label for="business">Business / Advertiser name *</label><input id="business" required placeholder="Business name"></div>
-<div><label for="contact">Contact person's name *</label><input id="contact" required placeholder="Full name"></div>
-</div>
-<div class="row">
-<div><label for="email">Email address *</label><input id="email" type="email" required placeholder="you@example.com"></div>
-<div><label for="phone">Phone number *</label><input id="phone" type="tel" required placeholder="080..."></div>
-</div>
-<label for="title">Advertisement title *</label>
-<input id="title" required placeholder="What are you advertising?">
-<label for="description">Advertisement description *</label>
-<textarea id="description" required placeholder="Describe your product, service or offer"></textarea>
-<div class="row">
-<div><label for="category">Category *</label>
-<select id="category" required>
-<option value="">Select category</option>
-<option>Business</option><option>Fashion</option><option>Food</option><option>Education</option><option>Technology</option><option>Entertainment</option><option>Health and Beauty</option><option>Other</option>
-</select></div>
-<div><label for="destination">Website or destination link (optional)</label><input id="destination" type="url" placeholder="https://example.com"></div>
-</div>
+  <section>
+    <div class="section-heading">
+      <h2>Where would you like to advertise?</h2>
+      <p>Choose one advertising option to get started.</p>
+    </div>
 
-<div id="normalUploadArea">
-<label>Upload your Watch and Earn advertisement *</label>
-<div class="upload-box">
-<p>Upload one or more images/videos for your campaign. Supported formats depend on your device. Maximum 100MB per file.</p>
-<input type="file" id="normalFiles" accept="image/*,video/*" multiple>
-<div class="file-preview" id="normalPreview"></div>
-</div>
-</div>
+    <div class="choice-grid">
+      <div class="choice" id="watchChoice" onclick="chooseType('watch')">
+        <span class="choice-check">✓</span>
+        <div class="choice-icon">🎬</div>
+        <h3>Watch and Earn Ads</h3>
+        <p>Place your advert in the Watch and Earn section for members to discover.</p>
+        <div class="choice-price">From ₦10,000</div>
+        <small>Choose a campaign duration</small>
+      </div>
 
-<label for="notes">Additional instructions (optional)</label>
-<textarea id="notes" placeholder="Any instructions for the EarnGig advertising team"></textarea>
+      <div class="choice" id="billboardChoice" onclick="chooseType('billboard')">
+        <span class="choice-check">✓</span>
+        <div class="choice-icon">📺</div>
+        <h3>Homepage Billboard</h3>
+        <p>Showcase your brand prominently on the EarnGig homepage.</p>
+        <div class="choice-price">₦100,000</div>
+        <small>Per slot · 7 days</small>
+      </div>
+    </div>
+  </section>
 
-<label style="display:flex;gap:9px;align-items:flex-start;font-weight:400">
-<input type="checkbox" id="terms" style="width:auto;margin-top:2px">
-<span>I confirm that I have permission to advertise this content and that the information provided is accurate.</span>
-</label>
-<div class="notice">Submitting this form does not confirm payment or guarantee publication. Your advert will be reviewed after payment verification.</div>
-<div class="error" id="error"></div>
-<button class="primary" id="submitButton" type="button">Submit advertising request</button>
-<div id="success"></div>
-</div>
-</div>
+  <!-- WATCH AND EARN PACKAGE -->
+  <section class="content-panel" id="watchPanel">
+    <h3 class="panel-title">Choose your campaign duration</h3>
+    <p class="panel-sub">Your advert will run for the duration selected after payment verification and admin approval.</p>
+
+    <div class="package-grid" id="packages"></div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span>Advertising option</span>
+        <strong>Watch and Earn</strong>
+      </div>
+      <div class="summary-row">
+        <span>Selected duration</span>
+        <strong id="watchDuration">Not selected</strong>
+      </div>
+      <div class="summary-total">
+        <span>Total campaign cost</span>
+        <strong id="watchTotal">₦0</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- BILLBOARD -->
+  <section class="content-panel" id="billboardPanel">
+    <h3 class="panel-title">Book your billboard slot</h3>
+    <p class="panel-sub">Each slot costs ₦100,000 and runs Monday to Sunday. You can select more than one available slot.</p>
+
+    <div class="booking-status" id="bookingStatus">Checking booking window...</div>
+
+    <div class="week-label" id="weekLabel"></div>
+    <div class="slot-grid" id="slots"></div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <span>Selected slots</span>
+        <strong id="selectedCount">0</strong>
+      </div>
+      <div class="summary-row">
+        <span>Required creatives</span>
+        <strong id="uploadCount">0</strong>
+      </div>
+      <div class="summary-total">
+        <span>Total billboard cost</span>
+        <strong id="billboardTotal">₦0</strong>
+      </div>
+    </div>
+
+    <div id="billboardUploads"></div>
+
+    <div class="notice">
+      Each selected slot requires its own image or video. You can use a different creative for every slot.
+    </div>
+  </section>
+
+  <!-- ADVERTISER DETAILS -->
+  <section class="form-section" id="detailsSection">
+    <h2>Your advertisement details</h2>
+    <p>Enter your business information and upload the advert you want us to publish.</p>
+
+    <div class="form-card">
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="business">Business / Advertiser name *</label>
+          <input id="business" placeholder="Your business name">
+        </div>
+
+        <div class="field">
+          <label for="contact">Contact person's name *</label>
+          <input id="contact" placeholder="Your full name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email address *</label>
+          <input id="email" type="email" placeholder="you@example.com">
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone number *</label>
+          <input id="phone" type="tel" placeholder="080...">
+        </div>
+
+        <div class="field full">
+          <label for="title">Advertisement title *</label>
+          <input id="title" placeholder="What are you advertising?">
+        </div>
+
+        <div class="field full">
+          <label for="description">Short advertisement description *</label>
+          <textarea id="description" placeholder="Tell us about your product, service or offer"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="category">Category *</label>
+          <select id="category">
+            <option value="">Select category</option>
+            <option>Business</option>
+            <option>Fashion</option>
+            <option>Food</option>
+            <option>Education</option>
+            <option>Technology</option>
+            <option>Entertainment</option>
+            <option>Health and Beauty</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="destination">Website or destination link</label>
+          <input id="destination" type="url" placeholder="https://example.com">
+        </div>
+
+      </div>
+
+      <div id="normalUploadArea">
+        <div class="upload-title">Upload your advertisement *</div>
+        <div class="upload-box">
+          <p>Choose your advert image or video. Maximum file size: 100MB per file.</p>
+          <input type="file" id="normalFiles" accept="image/*,video/*" multiple>
+          <div class="file-preview" id="normalPreview"></div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:15px">
+        <label for="notes">Additional instructions (optional)</label>
+        <textarea id="notes" placeholder="Anything our advertising team should know?"></textarea>
+      </div>
+
+      <label style="display:flex;gap:9px;align-items:flex-start;font-size:11px;font-weight:600;line-height:1.6;margin-top:17px">
+        <input type="checkbox" id="terms" style="width:16px;height:16px;flex-shrink:0;accent-color:#caff19">
+        <span>I confirm that I have permission to advertise this content and that the information provided is accurate.</span>
+      </label>
+
+      <div class="notice">
+        Submitting this form creates an advertising request. It does not confirm payment or guarantee publication. Your advert will be reviewed after payment verification.
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <button class="primary" id="submitButton" type="button">
+        Submit advertising request →
+      </button>
+
+      <div id="success"></div>
+    </div>
+  </section>
+
 </main>
-<footer>© EarnGig. All rights reserved.</footer>
+
+<footer>© 2026 EarnGig. All rights reserved.</footer>
 
 <script>
+/* ADVERTISING SETTINGS */
+
 const TIME_PACKAGES = [
- {id:"time-24h",type:"time",name:"24 Hours",price:10000,duration:"24 hours"},
- {id:"time-72h",type:"time",name:"72 Hours",price:25000,duration:"72 hours"},
- {id:"time-7d",type:"time",name:"7 Days",price:50000,duration:"7 days"},
- {id:"time-14d",type:"time",name:"14 Days",price:85000,duration:"14 days"},
- {id:"time-30d",type:"time",name:"30 Days",price:150000,duration:"30 days"}
+  {id:"time-24h",name:"24 Hours",price:10000,duration:"24 hours"},
+  {id:"time-72h",name:"72 Hours",price:25000,duration:"72 hours"},
+  {id:"time-7d",name:"7 Days",price:50000,duration:"7 days"},
+  {id:"time-14d",name:"14 Days",price:85000,duration:"14 days"},
+  {id:"time-30d",name:"30 Days",price:150000,duration:"30 days"}
 ];
-const VIEW_PACKAGES = [
- {id:"views-100",type:"views",name:"100 Views",price:1500,views:100},
- {id:"views-500",type:"views",name:"500 Views",price:6500,views:500},
- {id:"views-1000",type:"views",name:"1,000 Views",price:12000,views:1000},
- {id:"views-2500",type:"views",name:"2,500 Views",price:27500,views:2500},
- {id:"views-5000",type:"views",name:"5,000 Views",price:50000,views:5000},
- {id:"views-10000",type:"views",name:"10,000 Views",price:90000,views:10000}
-];
+
 const BILLBOARD_PRICE = 100000;
 const REQUEST_KEY = "earngig_advertising_requests";
 const BOOKING_KEY = "earngig_billboard_bookings";
@@ -181,312 +537,600 @@ const DB_NAME = "earngig_advertising_media";
 const STORE_NAME = "media";
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
+let selectedType = "";
 let selectedPackage = null;
 let selectedSlots = [];
 let normalFiles = [];
 let slotFiles = {};
 
-function money(n){return "₦"+Number(n).toLocaleString("en-NG");}
+/* GENERAL HELPERS */
+
+function money(value){
+  return "₦" + Number(value || 0).toLocaleString("en-NG");
+}
+
 function lagosDate(){
- return new Date(new Date().toLocaleString("en-US",{timeZone:"Africa/Lagos"}));
+  const parts = new Intl.DateTimeFormat("en-GB",{
+    timeZone:"Africa/Lagos",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit",
+    weekday:"short"
+  }).formatToParts(new Date());
+
+  const values = {};
+  parts.forEach(part=>values[part.type]=part.value);
+
+  return new Date(
+    Number(values.year),
+    Number(values.month)-1,
+    Number(values.day)
+  );
 }
-function dateKey(d){
- return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+
+function dateKey(date){
+  return date.getFullYear()+"-"+
+    String(date.getMonth()+1).padStart(2,"0")+"-"+
+    String(date.getDate()).padStart(2,"0");
 }
-function mondayOf(d){
- const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());
- const day=x.getDay();
- x.setDate(x.getDate()+(day===0?-6:1-day));
- return x;
+
+function mondayOf(date){
+  const result = new Date(date.getFullYear(),date.getMonth(),date.getDate());
+  const day = result.getDay();
+  result.setDate(result.getDate()+(day===0?-6:1-day));
+  return result;
 }
-function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x;}
+
+function addDays(date,days){
+  const result = new Date(date);
+  result.setDate(result.getDate()+days);
+  return result;
+}
+
 function weekLabel(start){
- const end=addDays(start,6);
- return start.toLocaleDateString("en-NG",{day:"numeric",month:"short"})+" – "+end.toLocaleDateString("en-NG",{day:"numeric",month:"short",year:"numeric"});
+  const end = addDays(start,6);
+  return start.toLocaleDateString("en-NG",{day:"numeric",month:"short"})+
+    " – "+
+    end.toLocaleDateString("en-NG",{day:"numeric",month:"short",year:"numeric"});
 }
+
 function getNextWeek(){
- return addDays(mondayOf(lagosDate()),7);
+  return addDays(mondayOf(lagosDate()),7);
 }
+
 function bookingIsOpen(){
- const now=lagosDate();
- return now.getDay()===6 || now.getDay()===0;
+  const now = lagosDate();
+  return now.getDay()===6 || now.getDay()===0;
 }
+
 function getBookings(){
- try{return JSON.parse(localStorage.getItem(BOOKING_KEY)||"[]");}catch(e){return [];}
+  try{
+    const value = JSON.parse(localStorage.getItem(BOOKING_KEY)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(error){
+    return [];
+  }
 }
+
 function isSlotBooked(slot,weekStart){
- return getBookings().some(b=>
-  b.weekStart===weekStart &&
-  ["paid","approved","scheduled","running","active"].includes(String(b.status||"").toLowerCase()) &&
-  (b.slots||[]).map(Number).includes(Number(slot))
- );
+  return getBookings().some(booking=>
+    booking.weekStart===weekStart &&
+    ["paid","approved","scheduled","running","active"].includes(
+      String(booking.status||"").toLowerCase()
+    ) &&
+    Array.isArray(booking.slots) &&
+    booking.slots.map(Number).includes(Number(slot))
+  );
 }
-function selectedWeek(){
- return getNextWeek();
+
+/* ADVERTISING TYPE */
+
+function chooseType(type){
+  selectedType = type;
+  selectedPackage = null;
+  selectedSlots = [];
+  slotFiles = {};
+  normalFiles = [];
+
+  document.getElementById("watchChoice").classList.toggle("selected",type==="watch");
+  document.getElementById("billboardChoice").classList.toggle("selected",type==="billboard");
+
+  document.getElementById("watchPanel").classList.toggle("active",type==="watch");
+  document.getElementById("billboardPanel").classList.toggle("active",type==="billboard");
+
+  document.getElementById("normalUploadArea").classList.toggle("hidden",type==="billboard");
+
+  document.getElementById("normalFiles").value="";
+  document.getElementById("normalPreview").innerHTML="";
+  document.getElementById("billboardUploads").innerHTML="";
+
+  document.getElementById("success").innerHTML="";
+  document.getElementById("submitButton").classList.remove("hidden");
+  document.getElementById("submitButton").disabled=false;
+  document.getElementById("submitButton").textContent="Submit advertising request →";
+
+  clearError();
+
+  renderPackages();
+  renderSlots();
+  renderBillboardUploads();
+  updateWatchSummary();
 }
+
+/* WATCH AND EARN PACKAGES */
+
 function renderPackages(){
- const all=[...TIME_PACKAGES,...VIEW_PACKAGES];
- document.getElementById("packages").innerHTML=all.map(p=>`
- <div class="package ${selectedPackage?.id===p.id?"selected":""}" data-id="${p.id}">
-  <input type="radio" name="package" ${selectedPackage?.id===p.id?"checked":""}>
-  <strong>${p.type==="time"?"Time-based":"Views-based"} · ${p.name}</strong>
-  <div class="price">${money(p.price)}</div>
-  <small>${p.type==="time"?"Runs for "+p.duration:"Target of "+p.views.toLocaleString()+" views"}</small>
- </div>`).join("");
- document.querySelectorAll(".package").forEach(el=>{
-  el.addEventListener("click",()=>{
-   const id=el.dataset.id;
-   selectedPackage=all.find(p=>p.id===id);
-   selectedSlots=[];
-   slotFiles={};
-   renderPackages();
-   renderSlots();
-   renderUploads();
+  const container = document.getElementById("packages");
+
+  container.innerHTML = TIME_PACKAGES.map(pkg=>`
+    <label class="package ${selectedPackage?.id===pkg.id?"selected":""}">
+      <input type="radio" name="duration" value="${pkg.id}"
+        ${selectedPackage?.id===pkg.id?"checked":""}>
+      <span class="tick">✓</span>
+      <strong>${pkg.name}</strong>
+      <div class="price">${money(pkg.price)}</div>
+      <small>Campaign duration: ${pkg.duration}</small>
+    </label>
+  `).join("");
+
+  container.querySelectorAll("input").forEach(input=>{
+    input.addEventListener("change",()=>{
+      selectedPackage=TIME_PACKAGES.find(pkg=>pkg.id===input.value);
+      renderPackages();
+      updateWatchSummary();
+    });
   });
- });
 }
+
+function updateWatchSummary(){
+  document.getElementById("watchDuration").textContent=
+    selectedPackage?selectedPackage.duration:"Not selected";
+
+  document.getElementById("watchTotal").textContent=
+    selectedPackage?money(selectedPackage.price):"₦0";
+}
+
+/* BILLBOARD SLOTS */
+
 function renderSlots(){
- const start=selectedWeek(),key=dateKey(start);
- const open=bookingIsOpen();
- document.getElementById("windowMessage").textContent=
-  "Schedule: "+weekLabel(start)+". Booking "+(open?"is currently open.":"opens on Saturday and Sunday for the following week.")+
-  " A maximum of 10 slots are available.";
- const container=document.getElementById("slots");
- container.innerHTML=Array.from({length:10},(_,i)=>{
-  const n=i+1,booked=isSlotBooked(n,key),chosen=selectedSlots.includes(n);
-  return `<label class="slot ${booked?"booked":""} ${chosen?"chosen":""}">
-   <input type="checkbox" value="${n}" ${booked?"disabled":""} ${chosen?"checked":""} ${!open?"disabled":""}>
-   <b>Slot ${n}</b><small>${booked?"Booked":chosen?"Selected":"Available"}</small>
-  </label>`;
- }).join("");
- container.querySelectorAll("input").forEach(input=>{
-  input.addEventListener("change",()=>{
-   const n=Number(input.value);
-   if(input.checked){
-    if(!selectedSlots.includes(n))selectedSlots.push(n);
-   }else{
-    selectedSlots=selectedSlots.filter(x=>x!==n);
-    delete slotFiles[n];
-   }
-   selectedSlots.sort((a,b)=>a-b);
-   renderSlots();
-   renderUploads();
+  const start = getNextWeek();
+  const key = dateKey(start);
+  const open = bookingIsOpen();
+
+  document.getElementById("weekLabel").textContent=
+    "NEXT CAMPAIGN WEEK · "+weekLabel(start);
+
+  const status=document.getElementById("bookingStatus");
+
+  if(open){
+    status.className="booking-status open";
+    status.innerHTML="<strong>Booking is open.</strong><br>You can reserve slots for the next Monday–Sunday campaign.";
+  }else{
+    status.className="booking-status closed";
+    status.innerHTML="<strong>Booking is closed right now.</strong><br>Billboard bookings open on Saturday and Sunday for the following week.";
+  }
+
+  const container=document.getElementById("slots");
+
+  container.innerHTML=Array.from({length:10},(_,index)=>{
+    const number=index+1;
+    const booked=isSlotBooked(number,key);
+    const chosen=selectedSlots.includes(number);
+
+    return `
+      <label class="slot ${booked?"booked":""} ${chosen?"chosen":""}">
+        <input type="checkbox" value="${number}"
+          ${booked||!open?"disabled":""}
+          ${chosen?"checked":""}>
+        <b>Slot ${number}</b>
+        <small>${booked?"Booked":chosen?"Selected":open?"Available":"Unavailable"}</small>
+      </label>
+    `;
+  }).join("");
+
+  container.querySelectorAll("input").forEach(input=>{
+    input.addEventListener("change",()=>{
+      const number=Number(input.value);
+
+      if(input.checked){
+        if(!selectedSlots.includes(number))selectedSlots.push(number);
+      }else{
+        selectedSlots=selectedSlots.filter(value=>value!==number);
+        delete slotFiles[number];
+      }
+
+      selectedSlots.sort((a,b)=>a-b);
+      renderSlots();
+      renderBillboardUploads();
+    });
   });
- });
- updateBillboardSummary();
+
+  updateBillboardSummary();
 }
+
 function updateBillboardSummary(){
- document.getElementById("selectedCount").textContent=selectedSlots.length;
- document.getElementById("uploadCount").textContent=selectedSlots.length;
- document.getElementById("billboardTotal").textContent=money(selectedSlots.length*BILLBOARD_PRICE);
+  document.getElementById("selectedCount").textContent=selectedSlots.length;
+  document.getElementById("uploadCount").textContent=selectedSlots.length;
+  document.getElementById("billboardTotal").textContent=
+    money(selectedSlots.length*BILLBOARD_PRICE);
 }
-function renderUploads(){
- const billboard=document.getElementById("billboardUploads");
- const normal=document.getElementById("normalUploadArea");
- const normalLabel=normal.querySelector("label");
- const normalInput=document.getElementById("normalFiles");
- if(selectedSlots.length){
-  normal.classList.add("hidden");
-  billboard.innerHTML="<h3 style='margin-top:20px'>Upload one creative for each selected slot</h3>"+
-   "<p class='sub'>Each slot must have its own image or video. You can mix images and videos.</p>"+
-   selectedSlots.map(n=>`
-    <div class="upload-box">
-     <strong>Billboard Slot ${n} — ${money(BILLBOARD_PRICE)}</strong>
-     <input type="file" accept="image/*,video/*" data-slot="${n}">
-     <div class="file-preview" id="slotPreview${n}"></div>
-    </div>`).join("");
-  billboard.querySelectorAll("input[type=file]").forEach(input=>{
-   input.addEventListener("change",()=>{
-    const n=Number(input.dataset.slot);
-    const file=input.files[0];
-    if(!file)return;
-    if(!validFile(file)){input.value="";return;}
-    slotFiles[n]=file;
-    showPreview(file,document.getElementById("slotPreview"+n));
-   });
-   if(slotFiles[Number(input.dataset.slot)]){
-    showPreview(slotFiles[Number(input.dataset.slot)],document.getElementById("slotPreview"+input.dataset.slot));
-   }
-  });
- }else{
-  billboard.innerHTML="";
-  normal.classList.remove("hidden");
-  normalLabel.textContent="Upload your Watch and Earn advertisement *";
- }
- updateBillboardSummary();
-}
+
+/* FILE VALIDATION AND PREVIEW */
+
 function validFile(file){
- if(!file.type.startsWith("image/")&&!file.type.startsWith("video/")){
-  alert("Please upload an image or video file.");return false;
- }
- if(file.size>MAX_FILE_SIZE){
-  alert("Each file must be 100MB or smaller.");return false;
- }
- return true;
+  if(!file.type.startsWith("image/")&&!file.type.startsWith("video/")){
+    alert("Please upload an image or video.");
+    return false;
+  }
+
+  if(file.size>MAX_FILE_SIZE){
+    alert("Each file must be 100MB or smaller.");
+    return false;
+  }
+
+  return true;
 }
+
 function showPreview(file,container){
- container.innerHTML="";
- const url=URL.createObjectURL(file);
- let el;
- if(file.type.startsWith("image/")){
-  el=document.createElement("img");el.src=url;
- }else{
-  el=document.createElement("video");el.src=url;el.controls=true;
- }
- const info=document.createElement("span");
- info.className="file-name";
- info.textContent=file.name+" ("+(file.size/1024/1024).toFixed(1)+" MB)";
- container.append(el,info);
-}
-document.getElementById("normalFiles").addEventListener("change",e=>{
- const files=Array.from(e.target.files||[]);
- if(files.some(f=>!validFile(f))){e.target.value="";normalFiles=[];return;}
- normalFiles=files;
- const preview=document.getElementById("normalPreview");
- preview.innerHTML="";
- files.forEach(f=>{
+  container.innerHTML="";
+
+  const url=URL.createObjectURL(file);
+  let media;
+
+  if(file.type.startsWith("image/")){
+    media=document.createElement("img");
+    media.src=url;
+  }else{
+    media=document.createElement("video");
+    media.src=url;
+    media.controls=true;
+  }
+
+  const name=document.createElement("span");
+  name.className="file-name";
+  name.textContent=file.name+" ("+(file.size/1024/1024).toFixed(1)+" MB)";
+
   const item=document.createElement("div");
-  item.className="file-preview";
-  showPreview(f,item);
-  preview.appendChild(item);
- });
+  item.className="file-item";
+  item.append(media,name);
+  container.appendChild(item);
+}
+
+/* NORMAL AD UPLOAD */
+
+document.getElementById("normalFiles").addEventListener("change",event=>{
+  const files=Array.from(event.target.files||[]);
+
+  if(files.some(file=>!validFile(file))){
+    event.target.value="";
+    normalFiles=[];
+    return;
+  }
+
+  normalFiles=files;
+
+  const preview=document.getElementById("normalPreview");
+  preview.innerHTML="";
+
+  files.forEach(file=>{
+    showPreview(file,preview);
+  });
 });
 
-function openDatabase(){
- return new Promise((resolve,reject)=>{
-  const request=indexedDB.open(DB_NAME,1);
-  request.onupgradeneeded=()=>{
-   const db=request.result;
-   if(!db.objectStoreNames.contains(STORE_NAME)){
-    db.createObjectStore(STORE_NAME,{keyPath:"id"});
-   }
-  };
-  request.onsuccess=()=>resolve(request.result);
-  request.onerror=()=>reject(request.error);
- });
-}
-async function saveMedia(file,requestId,slotNumber){
- const db=await openDatabase();
- const id="EGMEDIA-"+Date.now()+"-"+Math.random().toString(36).slice(2,9);
- return new Promise((resolve,reject)=>{
-  const tx=db.transaction(STORE_NAME,"readwrite");
-  tx.objectStore(STORE_NAME).put({
-   id,requestId,slotNumber:slotNumber??null,
-   fileName:file.name,mimeType:file.type,size:file.size,
-   blob:file,uploadedAt:new Date().toISOString()
-  });
-  tx.oncomplete=()=>{db.close();resolve({id,fileName:file.name,mimeType:file.type,size:file.size,slotNumber:slotNumber??null});};
-  tx.onerror=()=>{db.close();reject(tx.error);};
- });
-}
-function getRequests(){
- try{return JSON.parse(localStorage.getItem(REQUEST_KEY)||"[]");}catch(e){return [];}
-}
-function showError(message){
- const el=document.getElementById("error");
- el.textContent=message;el.style.display="block";
-}
-function clearError(){
- const el=document.getElementById("error");
- el.textContent="";el.style.display="none";
-}
-async function submitRequest(){
- clearError();
- const business=document.getElementById("business").value.trim();
- const contact=document.getElementById("contact").value.trim();
- const email=document.getElementById("email").value.trim();
- const phone=document.getElementById("phone").value.trim();
- const title=document.getElementById("title").value.trim();
- const description=document.getElementById("description").value.trim();
- const category=document.getElementById("category").value;
- const terms=document.getElementById("terms").checked;
+/* BILLBOARD UPLOADS */
 
- if(!business||!contact||!email||!phone||!title||!description||!category){
-  showError("Please complete all required advertiser and advertisement details.");return;
- }
- if(!terms){showError("Please confirm the advertising declaration.");return;}
- if(!selectedPackage&&selectedSlots.length===0){
-  showError("Please select an advertising package or billboard slot.");return;
- }
- if(selectedPackage&&selectedSlots.length){
-  showError("Please submit a normal advert or a billboard booking separately.");return;
- }
- if(selectedSlots.length){
-  if(!bookingIsOpen()){showError("Billboard booking is currently closed. Please return on Saturday or Sunday.");return;}
-  const missing=selectedSlots.filter(n=>!slotFiles[n]);
-  if(missing.length){showError("Please upload one image or video for each selected billboard slot. Missing: "+missing.join(", "));return;}
-  const key=dateKey(selectedWeek());
-  const newlyBooked=selectedSlots.filter(n=>isSlotBooked(n,key));
-  if(newlyBooked.length){showError("These slots have just been booked: "+newlyBooked.join(", ")+". Please refresh and select available slots.");renderSlots();return;}
- }else if(!normalFiles.length){
-  showError("Please upload at least one image or video for your Watch and Earn advertisement.");return;
- }
+function renderBillboardUploads(){
+  const container=document.getElementById("billboardUploads");
 
- const button=document.getElementById("submitButton");
- button.disabled=true;button.textContent="Saving your request…";
- try{
-  const id="EG-AD-"+Date.now();
-  const reference="EGAD"+Date.now().toString().slice(-9);
-  const uploads=[];
-  if(selectedSlots.length){
-   for(const n of selectedSlots){
-    uploads.push(await saveMedia(slotFiles[n],id,n));
-   }
-  }else{
-   for(const file of normalFiles){
-    uploads.push(await saveMedia(file,id,null));
-   }
+  if(!selectedSlots.length){
+    container.innerHTML="";
+    updateBillboardSummary();
+    return;
   }
-  const billboard=selectedSlots.length>0;
-  const request={
-   id,reference,
-   type:billboard?"billboard":selectedPackage.type,
-   package:billboard?{
-    id:"billboard-slot",name:"Homepage Billboard",
-    price:BILLBOARD_PRICE,duration:"7 days"
-   }:selectedPackage,
-   slots:billboard?[...selectedSlots]:[],
-   weekStart:billboard?dateKey(selectedWeek()):null,
-   weekEnd:billboard?dateKey(addDays(selectedWeek(),6)):null,
-   amount:billboard?selectedSlots.length*BILLBOARD_PRICE:selectedPackage.price,
-   currency:"NGN",
-   advertiser:{businessName:business,contactName:contact,email,phone},
-   advertisement:{
-    title,description,category,
-    destination:document.getElementById("destination").value.trim(),
-    notes:document.getElementById("notes").value.trim()
-   },
-   media:uploads,
-   paymentStatus:"not_paid",
-   reviewStatus:"pending",
-   publicationStatus:"not_published",
-   status:"pending_payment",
-   createdAt:new Date().toISOString()
-  };
-  const requests=getRequests();
-  requests.unshift(request);
-  localStorage.setItem(REQUEST_KEY,JSON.stringify(requests));
-  document.getElementById("success").innerHTML=
-   `<div class="success"><strong>Advertising request saved.</strong><br>
-   Reference: <strong>${reference}</strong><br>
-   Type: ${billboard?"Homepage billboard":"Watch and Earn"}<br>
-   ${billboard?"Slots: "+selectedSlots.join(", ")+"<br>":""}
-   Amount: <strong>${money(request.amount)}</strong><br>
-   Uploaded creatives: ${uploads.length}<br><br>
-   Your request is awaiting payment and admin review. This demo has saved your request and uploaded files in this browser. No payment has been processed yet.</div>`;
-  document.getElementById("submitButton").classList.add("hidden");
-  document.getElementById("success").scrollIntoView({behavior:"smooth",block:"center"});
- }catch(error){
-  console.error(error);
-  showError("Could not save your uploaded files. Please try again. Your browser may not have enough storage.");
-  button.disabled=false;button.textContent="Submit advertising request";
- }
+
+  container.innerHTML=`
+    <h3 class="upload-title">Upload a creative for each slot</h3>
+    <p class="panel-sub">Each slot needs its own image or video.</p>
+    ${selectedSlots.map(number=>`
+      <div class="upload-box" style="margin-bottom:10px">
+        <strong style="font-size:12px">Billboard Slot ${number}</strong>
+        <p>Upload the creative for this slot.</p>
+        <input type="file" accept="image/*,video/*" data-slot="${number}">
+        <div class="file-preview" id="slotPreview${number}"></div>
+      </div>
+    `).join("")}
+  `;
+
+  container.querySelectorAll("input[type=file]").forEach(input=>{
+    input.addEventListener("change",()=>{
+      const number=Number(input.dataset.slot);
+      const file=input.files[0];
+
+      if(!file)return;
+
+      if(!validFile(file)){
+        input.value="";
+        return;
+      }
+
+      slotFiles[number]=file;
+      showPreview(file,document.getElementById("slotPreview"+number));
+    });
+
+    const number=Number(input.dataset.slot);
+
+    if(slotFiles[number]){
+      showPreview(slotFiles[number],document.getElementById("slotPreview"+number));
+    }
+  });
+
+  updateBillboardSummary();
 }
+
+/* INDEXEDDB MEDIA STORAGE */
+
+function openDatabase(){
+  return new Promise((resolve,reject)=>{
+    const request=indexedDB.open(DB_NAME,1);
+
+    request.onupgradeneeded=()=>{
+      const db=request.result;
+
+      if(!db.objectStoreNames.contains(STORE_NAME)){
+        db.createObjectStore(STORE_NAME,{keyPath:"id"});
+      }
+    };
+
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+  });
+}
+
+async function saveMedia(file,requestId,slotNumber){
+  const db=await openDatabase();
+
+  const id="EGMEDIA-"+Date.now()+"-"+Math.random().toString(36).slice(2,9);
+
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(STORE_NAME,"readwrite");
+
+    tx.objectStore(STORE_NAME).put({
+      id,
+      requestId,
+      slotNumber:slotNumber??null,
+      fileName:file.name,
+      mimeType:file.type,
+      size:file.size,
+      blob:file,
+      uploadedAt:new Date().toISOString()
+    });
+
+    tx.oncomplete=()=>{
+      db.close();
+      resolve({
+        id,
+        fileName:file.name,
+        mimeType:file.type,
+        size:file.size,
+        slotNumber:slotNumber??null
+      });
+    };
+
+    tx.onerror=()=>{
+      db.close();
+      reject(tx.error);
+    };
+  });
+}
+
+/* REQUEST STORAGE */
+
+function getRequests(){
+  try{
+    const value=JSON.parse(localStorage.getItem(REQUEST_KEY)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(error){
+    return [];
+  }
+}
+
+function showError(message){
+  const element=document.getElementById("error");
+  element.textContent=message;
+  element.style.display="block";
+}
+
+function clearError(){
+  const element=document.getElementById("error");
+  element.textContent="";
+  element.style.display="none";
+}
+
+/* VALIDATE AND SUBMIT */
+
+async function submitRequest(){
+  clearError();
+
+  const business=document.getElementById("business").value.trim();
+  const contact=document.getElementById("contact").value.trim();
+  const email=document.getElementById("email").value.trim();
+  const phone=document.getElementById("phone").value.trim();
+  const title=document.getElementById("title").value.trim();
+  const description=document.getElementById("description").value.trim();
+  const category=document.getElementById("category").value;
+  const terms=document.getElementById("terms").checked;
+
+  if(!selectedType){
+    showError("Please choose where you want to advertise.");
+    return;
+  }
+
+  if(selectedType==="watch"&&!selectedPackage){
+    showError("Please select a Watch and Earn campaign duration.");
+    return;
+  }
+
+  if(selectedType==="billboard"&&!selectedSlots.length){
+    showError("Please select at least one available billboard slot.");
+    return;
+  }
+
+  if(!business||!contact||!email||!phone||!title||!description||!category){
+    showError("Please complete all required advertiser and advertisement details.");
+    return;
+  }
+
+  if(!terms){
+    showError("Please confirm the advertising declaration.");
+    return;
+  }
+
+  if(selectedType==="watch"&&!normalFiles.length){
+    showError("Please upload at least one image or video for your advertisement.");
+    return;
+  }
+
+  if(selectedType==="billboard"){
+    if(!bookingIsOpen()){
+      showError("Billboard booking is closed. Please return on Saturday or Sunday.");
+      return;
+    }
+
+    const missing=selectedSlots.filter(number=>!slotFiles[number]);
+
+    if(missing.length){
+      showError("Please upload a creative for every selected slot. Missing slots: "+missing.join(", "));
+      return;
+    }
+
+    const weekKey=dateKey(getNextWeek());
+    const newlyBooked=selectedSlots.filter(number=>isSlotBooked(number,weekKey));
+
+    if(newlyBooked.length){
+      showError("These slots have just been booked: "+newlyBooked.join(", ")+". Refresh and choose available slots.");
+      renderSlots();
+      return;
+    }
+  }
+
+  const button=document.getElementById("submitButton");
+  button.disabled=true;
+  button.textContent="Saving your request...";
+
+  try{
+    const id="EG-AD-"+Date.now();
+    const reference="EGAD"+Date.now().toString().slice(-9);
+    const uploads=[];
+
+    if(selectedType==="billboard"){
+      for(const number of selectedSlots){
+        uploads.push(await saveMedia(slotFiles[number],id,number));
+      }
+    }else{
+      for(const file of normalFiles){
+        uploads.push(await saveMedia(file,id,null));
+      }
+    }
+
+    const isBillboard=selectedType==="billboard";
+
+    const amount=isBillboard
+      ?selectedSlots.length*BILLBOARD_PRICE
+      :selectedPackage.price;
+
+    const request={
+      id,
+      reference,
+      type:isBillboard?"billboard":"time",
+      package:isBillboard
+        ?{
+          id:"billboard-slot",
+          name:"Homepage Billboard",
+          price:BILLBOARD_PRICE,
+          duration:"7 days"
+        }
+        :selectedPackage,
+      slots:isBillboard?[...selectedSlots]:[],
+      weekStart:isBillboard?dateKey(getNextWeek()):null,
+      weekEnd:isBillboard?dateKey(addDays(getNextWeek(),6)):null,
+      amount,
+      currency:"NGN",
+      advertiser:{
+        businessName:business,
+        contactName:contact,
+        email,
+        phone
+      },
+      advertisement:{
+        title,
+        description,
+        category,
+        destination:document.getElementById("destination").value.trim(),
+        notes:document.getElementById("notes").value.trim()
+      },
+      media:uploads,
+      paymentStatus:"not_paid",
+      reviewStatus:"pending",
+      publicationStatus:"not_published",
+      status:"pending_payment",
+      createdAt:new Date().toISOString()
+    };
+
+    const requests=getRequests();
+    requests.unshift(request);
+
+    localStorage.setItem(REQUEST_KEY,JSON.stringify(requests));
+
+    const success=document.getElementById("success");
+
+    success.innerHTML=`
+      <div class="success">
+        <strong>✓ Advertising request saved!</strong><br>
+        Reference: <strong>${reference}</strong><br>
+        Advertising type: ${isBillboard?"Homepage Billboard":"Watch and Earn"}<br>
+        ${isBillboard?"Selected slots: "+selectedSlots.join(", ")+"<br>":""}
+        Campaign cost: <strong>${money(amount)}</strong><br>
+        Uploaded creatives: ${uploads.length}<br><br>
+        Your request is awaiting payment and admin review. No payment has been processed yet.
+      </div>
+    `;
+
+    button.classList.add("hidden");
+    success.scrollIntoView({behavior:"smooth",block:"center"});
+
+  }catch(error){
+    console.error(error);
+
+    showError("Could not save your uploaded files. Please try again. Your browser may not have enough storage.");
+
+    button.disabled=false;
+    button.textContent="Submit advertising request →";
+  }
+}
+
 document.getElementById("submitButton").addEventListener("click",submitRequest);
+
+/* MENU */
+
+function openMenu(){
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeMenu(){
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeMenu();
+});
+
+/* INITIALISE */
 
 renderPackages();
 renderSlots();
-renderUploads();
 </script>
+
 </body>
 </html>
