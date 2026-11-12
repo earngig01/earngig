@@ -115,6 +115,7 @@ button{font:inherit;cursor:pointer}
 }
 .container{max-width:1500px;width:94%;margin:22px auto 50px}
 
+/* SIDE MENU */
 .menu-overlay{
   position:fixed;
   inset:0;
@@ -177,6 +178,7 @@ button{font:inherit;cursor:pointer}
 }
 .side-menu a span{font-size:18px}
 
+/* SEARCH */
 .search-overlay{
   position:fixed;
   inset:0;
@@ -233,6 +235,7 @@ button{font:inherit;cursor:pointer}
 .result-text small{color:#cbb9d9;font-size:11px;margin-top:4px}
 .no-results{padding:22px;text-align:center;color:#cbb9d9}
 
+/* SPONSORED BILLBOARD */
 .billboard{
   border:2px solid #b72aff;
   border-radius:21px;
@@ -305,7 +308,7 @@ button{font:inherit;cursor:pointer}
 .ad-arrow.prev{left:15px}
 .ad-arrow.next{right:15px}
 
-/* MAIN QUICK ACCESS - FOUR CARDS */
+/* FOUR QUICK ACCESS CARDS */
 .shortcut-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -326,6 +329,7 @@ button{font:inherit;cursor:pointer}
 .shortcut strong{display:block;font-size:13px;margin-bottom:5px}
 .shortcut small{color:#c9b7d9;font-size:11px;line-height:1.4}
 
+/* GENERAL SECTIONS */
 .section{margin:30px 0}
 .section-heading{
   display:flex;
@@ -338,6 +342,137 @@ button{font:inherit;cursor:pointer}
 .section-heading h2 span{color:var(--lime)}
 .view-all{color:#e5a6ff;font-size:13px;font-weight:800}
 
+/* MINING */
+.mining-panel{
+  border:1px solid #b34bdf;
+  border-radius:17px;
+  padding:24px;
+  background:linear-gradient(120deg,#30104e,#1c0631);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  box-shadow:0 0 20px #9e1bff20;
+}
+.mining-panel h3{
+  font-size:21px;
+  margin-bottom:10px;
+  color:var(--lime);
+}
+.mining-panel p{
+  font-size:13px;
+  color:#dfcce9;
+  line-height:1.7;
+  max-width:850px;
+}
+.mining-panel a{
+  flex-shrink:0;
+  display:inline-block;
+  padding:13px 22px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#1b0b27;
+  font-size:13px;
+  font-weight:900;
+}
+
+/* MAIN WALLET */
+.wallet-panel{
+  border:1px solid #bd53f0;
+  border-radius:17px;
+  padding:24px;
+  background:linear-gradient(145deg,#38105c,#1c0631);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  box-shadow:0 0 20px #9e1bff20;
+}
+.wallet-heading{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:20px;
+}
+.wallet-coin{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:14px;
+}
+.wallet-coin-icon{
+  width:65px;
+  height:65px;
+  display:grid;
+  place-items:center;
+  font-size:42px;
+  background:#ffffff16;
+  border-radius:50%;
+}
+.wallet-label{color:#ddc9eb;font-size:13px;margin-bottom:5px}
+.wallet-amount{color:var(--lime);font-size:34px;font-weight:900}
+.wallet-naira{font-size:14px;color:#e5d4f0;margin:8px 0 18px}
+.wallet-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.wallet-button{
+  display:block;
+  text-align:center;
+  padding:13px 22px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#1b0b27;
+  font-size:13px;
+  font-weight:900;
+  flex:1;
+}
+.wallet-history{
+  display:block;
+  text-align:center;
+  border:1px solid #d46aff;
+  color:white;
+  padding:12px 22px;
+  border-radius:10px;
+  font-size:12px;
+  flex:1;
+}
+
+/* COMMUNITY */
+.community-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+.community-card{
+  text-align:center;
+  background:linear-gradient(145deg,#351052,#1c0731);
+  border:1px solid #7f36a8;
+  border-radius:16px;
+  padding:18px 10px;
+  min-height:115px;
+  transition:.2s;
+}
+.community-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--lime);
+}
+.community-icon{
+  display:block;
+  font-size:30px;
+  margin-bottom:9px;
+}
+.community-card strong{
+  display:block;
+  font-size:12px;
+  margin-bottom:5px;
+}
+.community-card small{
+  color:#c9b7d9;
+  font-size:10px;
+  line-height:1.4;
+}
+
+/* POPULAR GAMES */
 .game-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .game-card{
   overflow:hidden;
@@ -363,7 +498,7 @@ button{font:inherit;cursor:pointer}
   font-weight:900;
 }
 
-.content-columns{display:grid;grid-template-columns:1fr 280px;gap:17px}
+/* FEATURED NOVELS */
 .novel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
 .novel-card{
   overflow:hidden;
@@ -372,7 +507,7 @@ button{font:inherit;cursor:pointer}
   border:1px solid #a34cce;
 }
 .novel-cover{
-  min-height:150px;
+  min-height:165px;
   padding:12px 7px;
   display:flex;
   flex-direction:column;
@@ -398,73 +533,7 @@ button{font:inherit;cursor:pointer}
   font-weight:800;
 }
 
-.wallet-panel{
-  border:1px solid #bd53f0;
-  border-radius:17px;
-  padding:19px;
-  background:linear-gradient(145deg,#38105c,#1c0631);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.wallet-heading{font-size:18px;font-weight:900;margin-bottom:20px}
-.wallet-coin{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.wallet-coin-icon{
-  width:60px;
-  height:60px;
-  display:grid;
-  place-items:center;
-  font-size:39px;
-  background:#ffffff16;
-  border-radius:50%;
-}
-.wallet-label{color:#ddc9eb;font-size:12px;margin-bottom:5px}
-.wallet-amount{color:var(--lime);font-size:32px;font-weight:900}
-.wallet-naira{font-size:14px;color:#e5d4f0;margin:8px 0 18px}
-.wallet-button{
-  display:block;
-  text-align:center;
-  padding:12px;
-  border-radius:10px;
-  background:var(--lime);
-  color:#1b0b27;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:9px;
-}
-.wallet-history{
-  display:block;
-  text-align:center;
-  border:1px solid #d46aff;
-  color:white;
-  padding:11px;
-  border-radius:10px;
-  font-size:12px;
-}
-
-.mining-panel{
-  border:1px solid #b34bdf;
-  border-radius:17px;
-  padding:20px;
-  background:linear-gradient(120deg,#30104e,#1c0631);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-}
-.mining-panel h3{font-size:19px;margin-bottom:8px;color:var(--lime)}
-.mining-panel p{font-size:13px;color:#dfcce9;line-height:1.6}
-.mining-panel a{
-  flex-shrink:0;
-  display:inline-block;
-  padding:12px 19px;
-  border-radius:10px;
-  background:var(--lime);
-  color:#1b0b27;
-  font-size:13px;
-  font-weight:900;
-}
-
+/* HOW EARNGIG WORKS */
 .how-panel{
   padding:23px;
   border:1px solid #c56bfa;
@@ -488,6 +557,7 @@ button{font:inherit;cursor:pointer}
 .how-step h3{font-size:16px;margin-bottom:7px}
 .how-step p{font-size:12px;line-height:1.5}
 
+/* FOOTER */
 footer{
   border-top:1px solid #8b35b855;
   padding:25px 4%;
@@ -500,23 +570,27 @@ footer{
 }
 .footer-links{display:flex;flex-wrap:wrap;gap:18px}
 
+/* TABLET */
 @media(max-width:1100px){
   .navlinks{gap:10px}
   .navlinks a{font-size:10px}
   .game-grid{grid-template-columns:repeat(5,1fr)}
 }
 
+/* SMALLER SCREENS */
 @media(max-width:800px){
   .topbar{padding:12px 4%}
   .navlinks{display:none}
   .shortcut-grid{grid-template-columns:repeat(2,1fr)}
+  .community-grid{grid-template-columns:repeat(2,1fr)}
   .game-grid{grid-template-columns:repeat(3,1fr)}
-  .content-columns{grid-template-columns:1fr}
-  .novel-grid{grid-template-columns:repeat(5,1fr)}
+  .novel-grid{grid-template-columns:repeat(3,1fr)}
 }
 
+/* MOBILE */
 @media(max-width:540px){
   .brand{font-size:24px}
+
   .ad-stage,.ad-slide{min-height:260px}
   .ad-slide{
     padding:25px 43px;
@@ -530,16 +604,36 @@ footer{
   .ad-visual{min-height:85px;width:100%;min-width:0}
   .ad-orb{width:85px;height:85px;font-size:45px}
   .ad-arrow{width:30px;height:30px;font-size:19px}
+
   .shortcut-grid{grid-template-columns:repeat(2,1fr);gap:9px}
   .shortcut{min-height:110px;padding:15px 7px}
   .shortcut-icon{font-size:27px}
   .shortcut strong{font-size:12px}
   .shortcut small{font-size:10px}
+
+  .mining-panel{
+    align-items:flex-start;
+    flex-direction:column;
+    padding:18px;
+  }
+  .mining-panel a{width:100%;text-align:center}
+
+  .wallet-panel{padding:18px}
+  .wallet-amount{font-size:29px}
+  .wallet-actions{flex-direction:column}
+  .wallet-button,.wallet-history{width:100%;flex:none}
+
+  .community-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .community-card{padding:14px 6px;min-height:105px}
+  .community-icon{font-size:26px}
+  .community-card strong{font-size:11px}
+  .community-card small{font-size:9px}
+
   .game-grid{grid-template-columns:repeat(2,1fr)}
   .novel-grid{grid-template-columns:repeat(2,1fr)}
   .novel-cover{min-height:165px}
   .how-grid{grid-template-columns:repeat(2,1fr)}
-  .mining-panel{align-items:flex-start;flex-direction:column}
+
   footer{justify-content:center;text-align:center}
   .footer-links{justify-content:center}
 }
@@ -548,6 +642,7 @@ footer{
 
 <body>
 
+<!-- HEADER -->
 <header class="topbar">
   <a href="index.html" class="brand">
     <span class="crown" aria-label="EarnGig crown">
@@ -582,22 +677,27 @@ footer{
   </div>
 </header>
 
+<!-- SEARCH OVERLAY -->
 <div class="search-overlay" id="searchOverlay">
   <div class="search-box">
     <div class="search-top">
       <h2>🔎 Search EarnGig</h2>
       <button class="search-close" id="closeSearch">×</button>
     </div>
+
     <input class="search-input" id="searchInput" type="search"
       placeholder="Search EarnGig features..." autocomplete="off">
+
     <div class="search-results" id="searchResults">
       <div class="no-results">Start typing to search.</div>
     </div>
   </div>
 </div>
 
+<!-- MENU OVERLAY -->
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
+<!-- SIDE MENU -->
 <aside class="side-menu" id="sideMenu">
   <div class="menu-header">
     <a href="index.html" class="brand">
@@ -654,9 +754,10 @@ footer{
 
 <main class="container">
 
-  <!-- SPONSORED BILLBOARD -->
+  <!-- 1. SPONSORED BILLBOARD -->
   <section class="billboard">
     <div class="billboard-top">📣 Sponsored Billboard</div>
+
     <div class="ad-stage">
       <button class="ad-arrow prev" onclick="changeSlide(-1)" aria-label="Previous advert">‹</button>
 
@@ -700,7 +801,7 @@ footer{
     </div>
   </section>
 
-  <!-- MAIN DASHBOARD SHORTCUTS: FOUR IMPORTANT FEATURES -->
+  <!-- 2. FOUR MAIN QUICK ACCESS CARDS -->
   <section class="shortcut-grid">
 
     <a class="shortcut" href="marketplace.html">
@@ -729,14 +830,102 @@ footer{
 
   </section>
 
-  <!-- POPULAR GAMES -->
+  <!-- 3. START MINING G-COINS -->
   <section class="section">
+    <div class="mining-panel">
+      <div>
+        <h3>⛏️ Start Mining G-Coins</h3>
+        <p>
+          Visit your Mining page to mine manually or activate an automatic
+          mining plan. Your mined G-Coins are kept in a separate Mining Wallet.
+          Transfer them to your main wallet whenever you are ready.
+        </p>
+      </div>
+
+      <a href="mining.html">Open Mining →</a>
+    </div>
+  </section>
+
+  <!-- 4. MAIN G-COIN WALLET -->
+  <section class="section">
+    <aside class="wallet-panel">
+
+      <div class="wallet-heading">👛 My G-Coin Wallet</div>
+
+      <div class="wallet-coin">
+        <div class="wallet-coin-icon">🪙</div>
+
+        <div>
+          <div class="wallet-label">Main G-Coin Balance</div>
+          <div class="wallet-amount" id="coinBalance">—</div>
+        </div>
+      </div>
+
+      <div class="wallet-naira">
+        Your available main wallet balance
+      </div>
+
+      <div class="wallet-actions">
+        <a href="wallet.html" class="wallet-button">Open Wallet</a>
+        <a href="buy-coins.html" class="wallet-history">Buy More G-Coins</a>
+      </div>
+
+    </aside>
+  </section>
+
+  <!-- 5. EARNGIG COMMUNITY -->
+  <section class="section">
+
+    <div class="section-heading">
+      <h2>🌍 EarnGig <span>Community</span></h2>
+      <a class="view-all" href="earngig-community.html">Explore Community →</a>
+    </div>
+
+    <div class="community-grid">
+
+      <a class="community-card" href="earngig-community.html">
+        <span class="community-icon">🌍</span>
+        <strong>EarnGig Community</strong>
+        <small>Share posts and connect</small>
+      </a>
+
+      <a class="community-card" href="messages.html">
+        <span class="community-icon">💬</span>
+        <strong>Private Messages</strong>
+        <small>Talk to other members</small>
+      </a>
+
+      <a class="community-card" href="referrals.html">
+        <span class="community-icon">🤝</span>
+        <strong>Invite Friends</strong>
+        <small>Earn referral rewards</small>
+      </a>
+
+      <a class="community-card" href="writer-studio.html">
+        <span class="community-icon">✍️</span>
+        <strong>Writer Studio</strong>
+        <small>Write and submit novels</small>
+      </a>
+
+      <a class="community-card" href="leaderboard.html">
+        <span class="community-icon">🏆</span>
+        <strong>Leaderboard</strong>
+        <small>View member rankings</small>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 6. POPULAR GAMES -->
+  <section class="section">
+
     <div class="section-heading">
       <h2>🎮 Popular <span>Games</span></h2>
       <a class="view-all" href="games.html">View All →</a>
     </div>
 
     <div class="game-grid">
+
       <article class="game-card">
         <div class="game-art art-candy">🍬</div>
         <div class="game-info">
@@ -776,164 +965,90 @@ footer{
           <a class="play-button" href="block-puzzle.html">Play</a>
         </div>
       </article>
+
     </div>
   </section>
 
-  <!-- NOVELS AND MAIN WALLET -->
+  <!-- 7. FEATURED NOVELS -->
   <section class="section">
-    <div class="content-columns">
-      <div>
-        <div class="section-heading">
-          <h2>📖 Featured <span>Novels</span></h2>
-          <a class="view-all" href="novels.html">View All →</a>
-        </div>
 
-        <div class="novel-grid">
-          <article class="novel-card">
-            <div class="novel-cover cover-one">
-              <small>Romance</small>
-              <span class="cover-symbol">🌹</span>
-              <h3>The CEO's<br>Secret Wife</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-two">
-              <small>Drama</small>
-              <span class="cover-symbol">🥀</span>
-              <h3>Bound by<br>Revenge</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-three">
-              <small>Teen</small>
-              <span class="cover-symbol">🎓</span>
-              <h3>Campus<br>Crush</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-four">
-              <small>Royal</small>
-              <span class="cover-symbol">👑</span>
-              <h3>The Royal<br>Promise</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-
-          <article class="novel-card">
-            <div class="novel-cover cover-five">
-              <small>Love</small>
-              <span class="cover-symbol">💜</span>
-              <h3>Love<br>Again</h3>
-            </div>
-            <div class="novel-meta">
-              <p>Featured Story</p>
-              <a href="novels.html">Read Now</a>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <aside class="wallet-panel">
-        <div class="wallet-heading">👛 My G-Coin Wallet</div>
-
-        <div class="wallet-coin">
-          <div class="wallet-coin-icon">🪙</div>
-          <div>
-            <div class="wallet-label">Main G-Coin Balance</div>
-            <div class="wallet-amount" id="coinBalance">—</div>
-          </div>
-        </div>
-
-        <div class="wallet-naira">
-          Your available main wallet balance
-        </div>
-
-        <a href="wallet.html" class="wallet-button">Open Wallet</a>
-        <a href="buy-coins.html" class="wallet-history">Buy More G-Coins</a>
-      </aside>
-    </div>
-  </section>
-
-  <!-- MINING PROMOTION -->
-  <section class="section">
-    <div class="mining-panel">
-      <div>
-        <h3>⛏️ Start Mining G-Coins</h3>
-        <p>
-          Visit your Mining page to mine manually or activate an automatic
-          mining plan. Your mined G-Coins are kept in a separate Mining Wallet.
-          Transfer them to your main wallet whenever you are ready.
-        </p>
-      </div>
-      <a href="mining.html">Open Mining →</a>
-    </div>
-  </section>
-
-  <!-- COMMUNITY -->
-  <section class="section">
     <div class="section-heading">
-      <h2>🌍 EarnGig <span>Community</span></h2>
-      <a class="view-all" href="earngig-community.html">Explore Community →</a>
+      <h2>📖 Featured <span>Novels</span></h2>
+      <a class="view-all" href="novels.html">View All →</a>
     </div>
 
-    <div class="shortcut-grid">
+    <div class="novel-grid">
 
-      <a class="shortcut" href="earngig-community.html">
-        <span class="shortcut-icon">🌍</span>
-        <strong>EarnGig Community</strong>
-        <small>Share posts and connect</small>
-      </a>
+      <article class="novel-card">
+        <div class="novel-cover cover-one">
+          <small>Romance</small>
+          <span class="cover-symbol">🌹</span>
+          <h3>The CEO's<br>Secret Wife</h3>
+        </div>
+        <div class="novel-meta">
+          <p>Featured Story</p>
+          <a href="novels.html">Read Now</a>
+        </div>
+      </article>
 
-      <a class="shortcut" href="messages.html">
-        <span class="shortcut-icon">💬</span>
-        <strong>Private Messages</strong>
-        <small>Talk to other members</small>
-      </a>
+      <article class="novel-card">
+        <div class="novel-cover cover-two">
+          <small>Drama</small>
+          <span class="cover-symbol">🥀</span>
+          <h3>Bound by<br>Revenge</h3>
+        </div>
+        <div class="novel-meta">
+          <p>Featured Story</p>
+          <a href="novels.html">Read Now</a>
+        </div>
+      </article>
 
-      <a class="shortcut" href="referrals.html">
-        <span class="shortcut-icon">🤝</span>
-        <strong>Invite Friends</strong>
-        <small>Earn referral rewards</small>
-      </a>
+      <article class="novel-card">
+        <div class="novel-cover cover-three">
+          <small>Teen</small>
+          <span class="cover-symbol">🎓</span>
+          <h3>Campus<br>Crush</h3>
+        </div>
+        <div class="novel-meta">
+          <p>Featured Story</p>
+          <a href="novels.html">Read Now</a>
+        </div>
+      </article>
 
-      <a class="shortcut" href="writer-studio.html">
-        <span class="shortcut-icon">✍️</span>
-        <strong>Writer Studio</strong>
-        <small>Write and submit novels</small>
-      </a>
+      <article class="novel-card">
+        <div class="novel-cover cover-four">
+          <small>Royal</small>
+          <span class="cover-symbol">👑</span>
+          <h3>The Royal<br>Promise</h3>
+        </div>
+        <div class="novel-meta">
+          <p>Featured Story</p>
+          <a href="novels.html">Read Now</a>
+        </div>
+      </article>
 
-      <a class="shortcut" href="leaderboard.html">
-        <span class="shortcut-icon">🏆</span>
-        <strong>Leaderboard</strong>
-        <small>View member rankings</small>
-      </a>
+      <article class="novel-card">
+        <div class="novel-cover cover-five">
+          <small>Love</small>
+          <span class="cover-symbol">💜</span>
+          <h3>Love<br>Again</h3>
+        </div>
+        <div class="novel-meta">
+          <p>Featured Story</p>
+          <a href="novels.html">Read Now</a>
+        </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- HOW EARNGIG WORKS -->
+  <!-- 8. HOW EARNGIG WORKS -->
   <section class="section how-panel">
+
     <h2>✨ How EarnGig Works</h2>
 
     <div class="how-grid">
+
       <article class="how-step">
         <div class="how-icon">👤</div>
         <h3>1. Create Account</h3>
@@ -957,12 +1072,15 @@ footer{
         <h3>4. Manage Your Wallet</h3>
         <p>Manage your G-Coins and submit eligible withdrawal requests.</p>
       </article>
+
     </div>
   </section>
 
 </main>
 
+<!-- FOOTER -->
 <footer>
+
   <a href="index.html" class="brand">
     <span class="crown" aria-label="EarnGig crown">
       <svg viewBox="0 0 32 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -988,9 +1106,12 @@ footer{
   </div>
 
   <span>© 2026 EarnGig. All rights reserved.</span>
+
 </footer>
 
 <script>
+
+/* NOTIFICATIONS */
 const NOTIFICATION_KEY = "earngig_notifications";
 
 const DEFAULT_NOTIFICATIONS = [
@@ -1037,6 +1158,7 @@ function getNotifications(){
 
     const parsed = JSON.parse(saved);
     return Array.isArray(parsed) ? parsed : DEFAULT_NOTIFICATIONS;
+
   }catch(e){
     return DEFAULT_NOTIFICATIONS;
   }
@@ -1059,6 +1181,8 @@ window.addEventListener("storage", e => {
 window.addEventListener("pageshow", updateNotificationCount);
 window.addEventListener("focus", updateNotificationCount);
 
+
+/* SIDE MENU */
 function openMenu(){
   document.getElementById("sideMenu").classList.add("open");
   document.getElementById("menuOverlay").classList.add("open");
@@ -1069,7 +1193,8 @@ function closeMenu(){
   document.getElementById("menuOverlay").classList.remove("open");
 }
 
-/* Searchable platform pages */
+
+/* SEARCHABLE PLATFORM PAGES */
 const searchPages = [
   ["Dashboard","Main page","🏠","dashboard.html","home main account"],
   ["My Wallet","Account","👛","wallet.html","coins balance money withdraw"],
@@ -1152,7 +1277,8 @@ document.addEventListener("keydown",e=>{
   }
 });
 
-/* Sponsored billboard slider */
+
+/* SPONSORED BILLBOARD SLIDER */
 let currentSlide = 0;
 const slides = document.querySelectorAll(".ad-slide");
 const dots = document.querySelectorAll(".ad-dot");
@@ -1187,11 +1313,14 @@ document.addEventListener("visibilitychange",()=>{
   }
 });
 
+
 /*
-  Main wallet balance display only.
+  MAIN WALLET BALANCE DISPLAY
+
   Actual balances must come from the secure EarnGig backend.
   Mining Wallet balance is deliberately not included here.
 */
+
 try{
   const possible = JSON.parse(
     localStorage.getItem("earngig_wallet") || "null"
@@ -1201,7 +1330,9 @@ try{
     document.getElementById("coinBalance").textContent =
       possible.coins.toLocaleString("en-NG");
   }
+
 }catch(e){}
+
 </script>
 
 </body>
