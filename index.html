@@ -28,7 +28,9 @@
   padding:0;
 }
 
-html {scroll-behavior:smooth}
+html {
+  scroll-behavior:smooth;
+}
 
 body {
   font-family:'Nunito',Arial,sans-serif;
@@ -45,7 +47,10 @@ a {
   text-decoration:none;
 }
 
-button {font:inherit;cursor:pointer}
+button {
+  font:inherit;
+  cursor:pointer;
+}
 
 /* HEADER */
 header {
@@ -78,7 +83,9 @@ header {
   line-height:1;
 }
 
-.logo span {color:var(--lime)}
+.logo span {
+  color:var(--lime);
+}
 
 .header-actions {
   display:flex;
@@ -195,8 +202,12 @@ header {
 }
 
 @keyframes headlineFloat {
-  0%,100% {transform:translateY(0) skewX(-3deg)}
-  50% {transform:translateY(-5px) skewX(-3deg)}
+  0%,100% {
+    transform:translateY(0) skewX(-3deg);
+  }
+  50% {
+    transform:translateY(-5px) skewX(-3deg);
+  }
 }
 
 @keyframes limePulse {
@@ -309,7 +320,9 @@ header {
   border:2px solid #c52aff;
   border-radius:27px;
   background:linear-gradient(100deg,#4b087f,#8111b0,#32104f);
-  box-shadow:0 0 30px #a61bff55,inset 0 0 25px #d52aff30;
+  box-shadow:
+    0 0 30px #a61bff55,
+    inset 0 0 25px #d52aff30;
 }
 
 .spotlight-title {
@@ -349,9 +362,11 @@ header {
   margin-bottom:23px;
 }
 
-.section-heading span {color:var(--lime)}
+.section-heading span {
+  color:var(--lime);
+}
 
-/* FEATURE CARDS - DISPLAY ONLY */
+/* FEATURE CARDS - NOT CLICKABLE */
 .feature-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -397,7 +412,7 @@ header {
   color:#e7ddef;
 }
 
-/* DISCOVER CARDS - DISPLAY ONLY */
+/* DISCOVER CARDS - NOT CLICKABLE */
 .discover-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -474,7 +489,9 @@ footer {
   font-weight:700;
 }
 
-footer a:hover {color:var(--lime)}
+footer a:hover {
+  color:var(--lime);
+}
 
 /* TABLET */
 @media(max-width:1000px) {
@@ -534,7 +551,9 @@ footer a:hover {color:var(--lime)}
     max-width:500px;
   }
 
-  .hero-buttons {justify-content:center}
+  .hero-buttons {
+    justify-content:center;
+  }
 
   .hero-buttons .btn {
     padding:14px 17px;
@@ -568,18 +587,26 @@ footer a:hover {color:var(--lime)}
     width:100%;
   }
 
-  .spotlight-copy strong {font-size:20px}
+  .spotlight-copy strong {
+    font-size:20px;
+  }
 
-  .spotlight .btn {width:100%}
+  .spotlight .btn {
+    width:100%;
+  }
 
-  .discover-grid {grid-template-columns:1fr}
+  .discover-grid {
+    grid-template-columns:1fr;
+  }
 
   footer {
     justify-content:center;
     text-align:center;
   }
 
-  .footer-links {justify-content:center}
+  .footer-links {
+    justify-content:center;
+  }
 }
 
 /* SMALL PHONES */
@@ -595,7 +622,9 @@ footer a:hover {color:var(--lime)}
 
   .hero h1 {font-size:39px}
 
-  .feature-grid {grid-template-columns:1fr}
+  .feature-grid {
+    grid-template-columns:1fr;
+  }
 
   .section-heading {font-size:27px}
 
@@ -622,14 +651,20 @@ footer a:hover {color:var(--lime)}
 
 <body>
 
+<!-- HEADER -->
 <header>
-  <a class="logo" href="index.html" aria-label="EarnGig Home">
+  <a class="logo" href="/earngig/index.html" aria-label="EarnGig Home">
     <b class="crown">👑</b>Earn<span>Gig</span>
   </a>
 
   <div class="header-actions">
-    <a class="btn btn-outline" href="login.html">Log In</a>
-    <a class="btn btn-lime" href="register.html">Create Account</a>
+    <a class="btn btn-outline" href="/earngig/login.html">
+      Log In
+    </a>
+
+    <a class="btn btn-lime" href="/earngig/register.html">
+      Create Account
+    </a>
   </div>
 </header>
 
@@ -639,6 +674,7 @@ footer a:hover {color:var(--lime)}
 <section class="hero">
 
   <div class="hero-copy">
+
     <div class="welcome">👑 WELCOME TO EARNGIG</div>
 
     <h1>
@@ -653,18 +689,21 @@ footer a:hover {color:var(--lime)}
     </p>
 
     <div class="hero-buttons">
-      <a class="btn btn-lime" href="register.html">
+
+      <a class="btn btn-lime" href="/earngig/register.html">
         Create Account →
       </a>
 
       <a class="btn btn-outline" href="#discover">
         Explore EarnGig
       </a>
+
     </div>
   </div>
 
-  <!-- ORIGINAL ANIMATED NAIRA ILLUSTRATION -->
+  <!-- ANIMATED MONEY ILLUSTRATION -->
   <div class="hero-art">
+
     <svg class="money-svg" viewBox="0 0 700 500"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
@@ -869,20 +908,25 @@ footer a:hover {color:var(--lime)}
 
 <!-- SPOTLIGHT -->
 <section class="spotlight">
-  <div class="spotlight-title">📣 EARNGIG SPOTLIGHT</div>
+
+  <div class="spotlight-title">
+    📣 EARNGIG SPOTLIGHT
+  </div>
 
   <div class="spotlight-copy">
     <strong>Put your brand in the spotlight.</strong>
     <p>Advertise to the growing EarnGig community.</p>
   </div>
 
-  <a class="btn btn-lime" href="advertise.html">
+  <a class="btn btn-lime" href="/earngig/advertise.html">
     Advertise Now →
   </a>
+
 </section>
 
 <!-- MORE WAYS TO EARN -->
 <section class="section">
+
   <h2 class="section-heading">
     More ways to <span>earn</span> ━
   </h2>
@@ -930,6 +974,7 @@ footer a:hover {color:var(--lime)}
 
 <!-- EXPLORE EARNGIG -->
 <section class="section" id="discover">
+
   <h2 class="section-heading">
     Explore <span>EarnGig</span>
   </h2>
@@ -968,35 +1013,39 @@ footer a:hover {color:var(--lime)}
 
 <!-- JOIN BANNER -->
 <section class="bottom-cta">
+
   <h2>Your next chapter starts here.</h2>
 
   <p>
     Join EarnGig and discover games, stories, rewards and shopping.
   </p>
 
-  <a class="btn btn-lime" href="register.html">
+  <a class="btn btn-lime" href="/earngig/register.html">
     Create your free account →
   </a>
+
 </section>
 
 </main>
 
 <!-- FOOTER -->
 <footer>
-  <a class="logo" href="index.html">
+
+  <a class="logo" href="/earngig/index.html">
     <b class="crown">👑</b>Earn<span>Gig</span>
   </a>
 
   <div class="footer-links">
-    <a href="about.html">About</a>
-    <a href="terms.html">Terms</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="help.html">Help</a>
-    <a href="advertise.html">Advertise</a>
-    <a href="contact.html">Contact</a>
+    <a href="/earngig/about.html">About</a>
+    <a href="/earngig/terms.html">Terms</a>
+    <a href="/earngig/privacy.html">Privacy</a>
+    <a href="/earngig/help.html">Help</a>
+    <a href="/earngig/advertise.html">Advertise</a>
+    <a href="/earngig/contact.html">Contact</a>
   </div>
 
   <small>© 2026 EarnGig. All rights reserved.</small>
+
 </footer>
 
 </body>
