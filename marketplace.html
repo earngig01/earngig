@@ -10,16 +10,19 @@
 :root{
   --purple:#6427c7;
   --deep:#48159b;
-  --light:#f2ebff;
+  --lavender:#f5efff;
+  --lavender-2:#eee4fc;
+  --lavender-border:#e4d6f7;
   --gold:#d6a62e;
   --text:#29243a;
   --muted:#777286;
-  --border:#ece8f3;
-  --bg:#faf9fc;
-  --green:#168653;
+  --white:#ffffff;
+  --bg:#fcfbff;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -28,567 +31,379 @@ body{
   font-family:Arial,Helvetica,sans-serif;
 }
 
-a{text-decoration:none;color:inherit}
-button,input{font:inherit}
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* HEADER */
 
 .topbar{
-  min-height:65px;
-  background:white;
-  border-bottom:1px solid var(--border);
-  display:flex;
+  height:68px;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--lavender-border);
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
   align-items:center;
-  justify-content:space-between;
-  padding:10px 5%;
-  position:sticky;
-  top:0;
-  z-index:20;
+  padding:0 5%;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:8px;
-  color:var(--purple);
-  font-size:22px;
-  font-weight:800;
-}
-
-.brand svg{width:25px;height:25px}
-
-.nav{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  font-size:12px;
-  font-weight:700;
-  color:#5f596e;
-}
-
-.nav a:hover,.nav a.active{color:var(--purple)}
-
-.nav .orders-link{
-  background:var(--purple);
-  color:white;
-  padding:10px 14px;
-  border-radius:8px;
-}
-
-.nav .cart-link{
-  background:var(--light);
-  color:var(--purple);
-  padding:10px 13px;
-  border-radius:8px;
-}
-
-.notification-button{
-  position:relative;
-  border:1px solid var(--border);
-  background:white;
-  border-radius:9px;
-  padding:9px 11px;
-  cursor:pointer;
-  color:var(--purple);
-  font-size:17px;
-}
-
-.notification-count{
-  position:absolute;
-  top:-6px;
-  right:-6px;
-  background:#d93636;
-  color:white;
-  border-radius:20px;
-  font-size:9px;
-  min-width:17px;
-  height:17px;
-  display:grid;
-  place-items:center;
-}
-
-.container{
-  width:100%;
-  max-width:1150px;
-  margin:auto;
-  padding:23px 20px 45px;
-}
-
-.search-area{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:18px;
-}
-
-.search-box{
-  display:flex;
-  flex:1;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:4px 8px;
-  min-width:0;
-}
-
-.search-box input{
-  flex:1;
-  min-width:0;
-  border:0;
-  outline:0;
-  padding:10px 7px;
-  font-size:12px;
-  background:transparent;
-}
-
-.search-box button{
-  border:0;
-  background:var(--purple);
-  color:white;
-  padding:0 16px;
-  border-radius:7px;
-  font-size:11px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.image-search{
-  border:1px solid var(--border);
-  background:white;
-  color:var(--purple);
-  padding:12px;
-  border-radius:9px;
-  font-size:11px;
-  font-weight:700;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-.image-search input{display:none}
-
-.orders-strip{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px 15px;
-  margin-bottom:22px;
-}
-
-.orders-strip strong{font-size:13px}
-.orders-strip p{
-  color:var(--muted);
-  font-size:10px;
-  margin:4px 0 0;
-}
-
-.orders-strip a{
-  color:var(--purple);
-  font-size:11px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.market-section{
-  margin-bottom:25px;
-}
-
-.section-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:12px;
-}
-
-.section-heading h2{
-  font-size:18px;
-  margin:0;
-}
-
-.section-heading p{
-  color:var(--muted);
-  font-size:11px;
-  margin:5px 0 0;
-}
-
-.section-heading a{
-  color:var(--purple);
-  font-size:11px;
-  font-weight:700;
-}
-
-.store-panel{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:16px;
-}
-
-.batch-status{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:14px;
-  flex-wrap:wrap;
-}
-
-.batch-status h3{
-  font-size:14px;
-  margin:0;
-}
-
-.status-label{
-  background:#f1edf7;
-  color:#777286;
-  border-radius:20px;
-  padding:6px 10px;
-  font-size:9px;
-  font-weight:800;
-}
-
-.status-label.open{
-  background:#e5f6ed;
-  color:var(--green);
-}
-
-.batch-message{
-  text-align:center;
-  padding:25px 12px;
-  border:1px dashed #ded5eb;
-  border-radius:9px;
-  background:#fcfbfe;
-}
-
-.batch-message .symbol{
-  font-size:28px;
-  margin-bottom:8px;
-}
-
-.batch-message h3{
-  font-size:15px;
-  margin:0 0 7px;
-}
-
-.batch-message p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
-  max-width:420px;
-  margin:auto;
-}
-
-.batch-details{
-  font-size:10px;
-  color:var(--muted);
-  margin-top:9px;
-}
-
-.category-menu{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  overflow-x:auto;
-  padding:2px 0 12px;
-  margin-bottom:10px;
-}
-
-.category-menu button{
-  flex-shrink:0;
-  border:1px solid var(--border);
-  background:white;
-  color:#625d71;
-  border-radius:20px;
-  padding:8px 12px;
-  font-size:10px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.category-menu button.active{
-  background:var(--light);
-  border-color:#d7c4f4;
-  color:var(--purple);
-}
-
-.products-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:13px;
-}
-
-.product-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  overflow:hidden;
-  min-width:0;
-}
-
-.product-image-wrap{
-  height:165px;
-  background:#f2eff7;
-  position:relative;
-}
-
-.product-image{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.image-placeholder{
-  height:100%;
-  display:grid;
-  place-items:center;
-  font-size:35px;
-  color:#b5a6ce;
-}
-
-.product-info{padding:11px}
-
-.product-name{
-  font-size:12px;
-  font-weight:800;
-  line-height:1.5;
-  margin:0 0 7px;
-}
-
-.product-price{
-  color:var(--purple);
-  font-size:16px;
-  font-weight:800;
-  margin-bottom:7px;
-}
-
-.product-meta{
-  display:flex;
-  justify-content:space-between;
-  gap:5px;
-  font-size:9px;
-  color:var(--muted);
-}
-
-.product-actions{
-  display:flex;
-  gap:6px;
-  margin-top:11px;
-}
-
-.product-actions a,
-.product-actions button{
-  flex:1;
-  text-align:center;
-  border:0;
-  border-radius:6px;
-  padding:9px 4px;
-  font-size:9px;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.view-button{
-  background:var(--light);
-  color:var(--purple);
-}
-
-.add-button{
-  background:var(--purple);
-  color:white;
-}
-
-.vendor-grid{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:13px;
-}
-
-.vendor-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:15px 8px;
-  text-align:center;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.vendor-card:hover{
-  border-color:#d7c4f4;
-  transform:translateY(-2px);
-}
-
-.vendor-logo{
-  width:65px;
-  height:65px;
-  margin:0 auto 9px;
-  border-radius:50%;
-  background:var(--light);
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+  gap:9px;
   color:var(--purple);
   font-size:23px;
   font-weight:800;
+  width:max-content;
 }
 
-.vendor-logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+/* Original EarnGig crown SVG */
+.brand svg{
+  width:43px;
+  height:43px;
+  flex-shrink:0;
 }
 
-.vendor-name{
-  font-size:11px;
-  font-weight:800;
-  overflow-wrap:anywhere;
-}
-
-.vendor-products{
-  font-size:9px;
-  color:var(--muted);
-  margin-top:5px;
-}
-
-.empty{
-  grid-column:1/-1;
-  background:white;
-  border:1px dashed #d9d1e4;
-  border-radius:10px;
-  padding:25px 12px;
+.dashboard-link{
   text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
+  color:var(--deep);
+  font-size:14px;
+  font-weight:700;
 }
 
-.empty strong{
-  display:block;
-  color:var(--text);
-  font-size:13px;
-  margin-bottom:5px;
-}
-
-.notification-panel{
-  display:none;
-  position:fixed;
-  z-index:50;
-  top:72px;
-  right:5%;
-  width:min(350px,92vw);
-  max-height:70vh;
-  overflow:auto;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:11px;
-  box-shadow:0 10px 35px #24113b20;
-  padding:15px;
-}
-
-.notification-panel.show{display:block}
-
-.notification-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-
-.notification-header strong{font-size:13px}
-
-.notification-header button{
-  border:0;
-  background:none;
+.dashboard-link:hover{
   color:var(--purple);
-  font-size:10px;
-  cursor:pointer;
 }
 
-.notification-item{
-  padding:11px 0;
-  border-top:1px solid var(--border);
+.coin-area{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--lavender);
+  border:1px solid var(--lavender-border);
+  padding:8px 15px;
+  border-radius:30px;
+  color:var(--deep);
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
 }
 
-.notification-item a{
-  display:block;
+.coin-icon{
+  width:25px;
+  height:25px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--gold);
+  color:white;
+  font-size:14px;
+  font-weight:800;
+  box-shadow:inset 0 0 0 2px #ffffff70;
+}
+
+/* PAGE */
+
+.container{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  padding:65px 28px 80px;
+}
+
+.page-heading{
+  margin-bottom:42px;
+}
+
+.page-heading h1{
+  color:#30134f;
+  font-size:35px;
+  margin:0 0 10px;
+  font-weight:800;
+  letter-spacing:-.7px;
+}
+
+.page-heading p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+  margin:0;
+}
+
+/* THREE MARKETPLACE OPTIONS */
+
+.market-options{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.market-option{
+  min-height:145px;
+  background:var(--white);
+  border:1px solid var(--lavender-border);
+  border-radius:17px;
+  display:flex;
+  align-items:center;
+  padding:23px 27px;
+  gap:25px;
+  box-shadow:0 5px 17px rgba(75,35,125,.045);
+  transition:border-color .2s, box-shadow .2s, transform .2s;
+}
+
+.market-option:hover{
+  border-color:#c8a8f0;
+  box-shadow:0 8px 24px rgba(75,35,125,.09);
+  transform:translateY(-2px);
+}
+
+.option-icon{
+  width:88px;
+  height:88px;
+  min-width:88px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:var(--lavender);
+  color:var(--purple);
+}
+
+.option-icon svg{
+  width:43px;
+  height:43px;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.option-divider{
+  width:1px;
+  height:65px;
+  background:#e3d4f7;
+  flex-shrink:0;
+}
+
+.option-content{
+  flex:1;
+  min-width:0;
+}
+
+.option-content h2{
+  color:#351354;
+  font-size:23px;
+  margin:0 0 8px;
+  font-weight:800;
+}
+
+.option-content p{
+  color:#686176;
+  font-size:13px;
+  line-height:1.6;
+  margin:0;
+}
+
+.option-status{
+  background:var(--lavender-2);
+  color:var(--deep);
+  padding:9px 15px;
+  border-radius:25px;
   font-size:11px;
   font-weight:700;
-  line-height:1.5;
+  white-space:nowrap;
 }
 
-.notification-item small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-top:5px;
+.option-arrow{
+  width:25px;
+  height:25px;
+  color:var(--purple);
+  flex-shrink:0;
 }
+
+.option-arrow svg{
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* G-STORE ICON BACKGROUND */
+
+.gstore-option .option-icon{
+  background:#fff7e7;
+  color:var(--purple);
+}
+
+/* FOOTER */
 
 .footer{
+  border-top:1px solid var(--lavender-border);
   background:white;
-  border-top:1px solid var(--border);
+  padding:23px 15px;
   text-align:center;
-  padding:23px 12px;
   color:var(--muted);
-  font-size:10px;
+  font-size:11px;
 }
 
 .footer a{
   color:var(--purple);
-  margin:0 7px;
+  margin:0 8px;
 }
 
-@media(max-width:850px){
-  .products-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .vendor-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
+/* MOBILE */
 
-@media(max-width:600px){
+@media(max-width:650px){
+
   .topbar{
-    padding:9px 12px;
-    min-height:58px;
+    height:61px;
+    padding:0 13px;
   }
 
-  .brand{font-size:19px}
-  .brand svg{width:22px;height:22px}
+  .brand{
+    font-size:19px;
+    gap:5px;
+  }
 
-  .nav{gap:6px}
-  .nav a:not(.orders-link):not(.cart-link){display:none}
-  .nav .orders-link,.nav .cart-link{
-    padding:9px 8px;
+  .brand svg{
+    width:34px;
+    height:34px;
+  }
+
+  .dashboard-link{
+    font-size:12px;
+  }
+
+  .coin-area{
+    padding:7px 9px;
+    gap:5px;
+    font-size:12px;
+  }
+
+  .coin-icon{
+    width:22px;
+    height:22px;
+    font-size:12px;
+  }
+
+  .container{
+    padding:38px 15px 55px;
+  }
+
+  .page-heading{
+    margin-bottom:27px;
+  }
+
+  .page-heading h1{
+    font-size:27px;
+    margin-bottom:8px;
+  }
+
+  .page-heading p{
+    font-size:12px;
+    line-height:1.65;
+  }
+
+  .market-options{
+    gap:13px;
+  }
+
+  .market-option{
+    min-height:108px;
+    padding:15px 12px;
+    gap:11px;
+    border-radius:13px;
+  }
+
+  .option-icon{
+    width:53px;
+    height:53px;
+    min-width:53px;
+    border-radius:11px;
+  }
+
+  .option-icon svg{
+    width:29px;
+    height:29px;
+  }
+
+  .option-divider{
+    height:46px;
+  }
+
+  .option-content h2{
+    font-size:16px;
+    margin-bottom:5px;
+  }
+
+  .option-content p{
+    font-size:10px;
+    line-height:1.5;
+  }
+
+  .option-status{
+    padding:6px 8px;
+    font-size:9px;
+  }
+
+  .option-arrow{
+    width:18px;
+    height:18px;
+  }
+}
+
+@media(max-width:370px){
+
+  .brand{
+    font-size:16px;
+  }
+
+  .brand svg{
+    width:29px;
+    height:29px;
+  }
+
+  .dashboard-link{
+    font-size:11px;
+  }
+
+  .coin-area{
+    padding:6px 7px;
     font-size:10px;
   }
 
-  .container{padding:16px 12px 35px}
-
-  .search-area{gap:6px}
-  .search-box button{padding:0 10px}
-  .image-search{padding:11px 9px}
-
-  .orders-strip{padding:11px}
-  .section-heading h2{font-size:16px}
-
-  .products-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;
-  }
-
-  .product-image-wrap{height:145px}
-  .product-info{padding:9px}
-  .product-price{font-size:15px}
-
-  .vendor-grid{
-    grid-template-columns:repeat(3,minmax(0,1fr));
+  .market-option{
     gap:8px;
+    padding:13px 9px;
   }
 
-  .vendor-card{padding:12px 5px}
-  .vendor-logo{width:55px;height:55px}
-}
+  .option-icon{
+    width:45px;
+    height:45px;
+    min-width:45px;
+  }
 
-@media(max-width:360px){
-  .vendor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .option-divider{
+    height:40px;
+  }
+
+  .option-content h2{
+    font-size:14px;
+  }
+
+  .option-content p{
+    font-size:9px;
+  }
+
+  .option-status{
+    font-size:8px;
+    padding:5px 6px;
+  }
 }
 </style>
 </head>
@@ -596,132 +411,153 @@ button,input{font:inherit}
 <body>
 
 <header class="topbar">
+
   <a href="dashboard.html" class="brand">
+
+    <!-- Same crown artwork from your original EarnGig logo -->
     <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
       <path d="M9 19L20 29L31 9L43 29L55 19L50 46H14L9 19Z"
-      fill="#D6A62E" stroke="#B98716" stroke-width="2.5"
-      stroke-linejoin="round"/>
-      <path d="M14 51H50" stroke="#D6A62E"
-      stroke-width="5" stroke-linecap="round"/>
+        fill="#D6A62E"
+        stroke="#B98716"
+        stroke-width="2.5"
+        stroke-linejoin="round"/>
+      <path d="M14 51H50"
+        stroke="#D6A62E"
+        stroke-width="5"
+        stroke-linecap="round"/>
       <circle cx="9" cy="17" r="4" fill="#E9C35D"/>
       <circle cx="31" cy="8" r="4" fill="#E9C35D"/>
       <circle cx="55" cy="17" r="4" fill="#E9C35D"/>
     </svg>
+
     EarnGig
   </a>
 
-  <nav class="nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="games.html">Games</a>
-    <a href="novels.html">Novels</a>
-    <a href="marketplace.html" class="active">Marketplace</a>
-    <button class="notification-button" id="notificationButton"
-      type="button" aria-label="Notifications">
-      ♧
-      <span class="notification-count" id="notificationCount" hidden>0</span>
-    </button>
-    <a href="buyer-orders.html" class="orders-link">My Orders</a>
-    <a href="cart.html" class="cart-link">
-      🛒 Cart <span id="cartCount">0</span>
-    </a>
-  </nav>
+  <a href="dashboard.html" class="dashboard-link">
+    Dashboard
+  </a>
+
+  <div class="coin-area">
+    <span class="coin-icon">G</span>
+    <span id="coinBalance">0</span>
+  </div>
+
 </header>
 
-<div class="notification-panel" id="notificationPanel">
-  <div class="notification-header">
-    <strong>Notifications</strong>
-    <button type="button" id="markReadButton">Mark all as read</button>
-  </div>
-  <div id="notificationList"></div>
-</div>
 
 <main class="container">
 
-  <div class="search-area">
-    <div class="search-box">
-      <input id="searchInput" type="search"
-        placeholder="Search products, categories or stores...">
-      <button type="button" id="searchButton">Search</button>
-    </div>
+  <section class="page-heading">
+    <h1>Marketplace</h1>
+    <p>
+      Shop from EarnGig's official store, explore vendor stores,
+      and manage your orders.
+    </p>
+  </section>
 
-    <label class="image-search">
-      Image search
-      <input type="file" id="imageSearchInput"
-        accept="image/*">
-    </label>
-  </div>
 
-  <div class="orders-strip">
-    <div>
-      <strong>My Orders</strong>
-      <p>Track purchases from G-Store and Vendor Haul.</p>
-    </div>
-    <a href="buyer-orders.html">View orders →</a>
-  </div>
+  <section class="market-options">
 
-  <!-- G-STORE -->
-  <section class="market-section" id="gStoreSection">
+    <!-- MY ORDERS -->
 
-    <div class="section-heading">
-      <div>
-        <h2>G-Store</h2>
-        <p>Shop the official EarnGig collection.</p>
-      </div>
-    </div>
+    <a href="buyer-orders.html" class="market-option">
 
-    <div class="store-panel">
-
-      <div class="batch-status">
-        <h3 id="batchName">G-Store Shopping Batch</h3>
-        <span class="status-label" id="batchStatus">Currently closed</span>
+      <div class="option-icon">
+        <svg viewBox="0 0 48 48">
+          <path d="M7 15L24 6L41 15V35L24 43L7 35V15Z"/>
+          <path d="M7 15L24 24L41 15"/>
+          <path d="M24 24V43"/>
+          <path d="M15 11L32 20"/>
+          <path d="M20 17L28 13"/>
+        </svg>
       </div>
 
-      <div class="batch-message" id="batchMessage">
-        <div class="symbol">🛍️</div>
-        <h3>G-Store is currently closed</h3>
+      <div class="option-divider"></div>
+
+      <div class="option-content">
+        <h2>My Orders</h2>
         <p>
-          There is currently no active shopping batch.
-          Please come back and check again when the next
-          batch opens.
+          Track and manage your purchases from G-Store
+          and Vendor Haul.
         </p>
       </div>
 
-      <div id="gStoreShopping" hidden>
-
-        <div class="batch-details" id="batchDates"></div>
-
-        <div class="category-menu" id="categoryMenu">
-          <button class="active" data-category="all">All</button>
-          <button data-category="fashion">Fashion</button>
-          <button data-category="electronics">Electronics</button>
-          <button data-category="beauty">Beauty</button>
-          <button data-category="home">Home & Living</button>
-          <button data-category="food">Food & Groceries</button>
-          <button data-category="accessories">Accessories</button>
-          <button data-category="other">Others</button>
-        </div>
-
-        <div class="products-grid" id="gStoreProducts"></div>
-
+      <div class="option-arrow">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 5L16 12L9 19"/>
+        </svg>
       </div>
-    </div>
-  </section>
 
-  <!-- VENDOR HAUL -->
-  <section class="market-section" id="vendorSection">
+    </a>
 
-    <div class="section-heading">
-      <div>
+
+    <!-- G-STORE -->
+
+    <a href="g-store.html" class="market-option gstore-option">
+
+      <div class="option-icon">
+        <svg viewBox="0 0 48 48">
+          <path d="M12 17H36L39 40H9L12 17Z"/>
+          <path d="M17 17V12A7 7 0 0 1 31 12V17"/>
+          <path d="M19 28L24 24L29 28"/>
+          <path d="M24 24V33"/>
+        </svg>
+      </div>
+
+      <div class="option-divider"></div>
+
+      <div class="option-content">
+        <h2>G-Store</h2>
+        <p>Shop the official EarnGig collection.</p>
+      </div>
+
+      <span class="option-status" id="gStoreStatus">
+        Currently Closed
+      </span>
+
+      <div class="option-arrow">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 5L16 12L9 19"/>
+        </svg>
+      </div>
+
+    </a>
+
+
+    <!-- VENDOR HAUL -->
+
+    <a href="vendor-haul.html" class="market-option">
+
+      <div class="option-icon">
+        <svg viewBox="0 0 48 48">
+          <path d="M7 20L11 9H37L41 20"/>
+          <path d="M8 20V40H40V20"/>
+          <path d="M8 20C8 25 16 25 16 20C16 25 24 25 24 20C24 25 32 25 32 20C32 25 40 25 40 20"/>
+          <path d="M19 40V29H29V40"/>
+        </svg>
+      </div>
+
+      <div class="option-divider"></div>
+
+      <div class="option-content">
         <h2>Vendor Haul</h2>
-        <p>Discover stores from registered EarnGig vendors.</p>
+        <p>
+          Discover products from registered EarnGig vendors.
+        </p>
       </div>
-    </div>
 
-    <div class="vendor-grid" id="vendorGrid"></div>
+      <div class="option-arrow">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 5L16 12L9 19"/>
+        </svg>
+      </div>
+
+    </a>
 
   </section>
 
 </main>
+
 
 <footer class="footer">
   <p>EarnGig Marketplace</p>
@@ -732,551 +568,99 @@ button,input{font:inherit}
   <a href="contact.html">Contact</a>
 </footer>
 
+
 <script>
 /*
-  MARKETPLACE DATA SETTINGS
+  G-COINS
 
-  Permanent G-Store catalogue:
-  earngig_gstore_products
-
-  Active batch:
-  earngig_gstore_batch
-
-  Existing vendor products:
-  earngig_seller_products
-
-  Vendor/store registrations:
-  earngig_vendor_stores
-
-  Existing cart:
-  earngig_cart
-
-  Notifications:
-  earngig_notifications
-
-  The batch object should contain:
-  {
-    id: "batch-001",
-    name: "November Shopping Batch",
-    status: "active",
-    startDate: "2026-11-01T00:00:00",
-    endDate: "2026-11-15T00:00:00"
-  }
-
-  All dates should be supplied in Nigeria local time.
+  Connect this display to your existing wallet balance key
+  when its exact storage key is confirmed.
 */
+const COIN_BALANCE_KEYS = [
+  "earngig_gcoins",
+  "earngig_coin_balance",
+  "gcoins",
+  "coinBalance"
+];
 
-const KEYS = {
-  gstoreProducts: "earngig_gstore_products",
-  batch: "earngig_gstore_batch",
-  vendorProducts: "earngig_seller_products",
-  marketplaceProducts: "earngig_marketplace_products",
-  vendorStores: "earngig_vendor_stores",
-  cart: "earngig_cart",
-  notifications: "earngig_notifications"
-};
+function displayCoinBalance(){
 
-let selectedCategory = "all";
-let searchTerm = "";
+  let balance = null;
 
-function readJSON(key,fallback){
-  try{
-    const value = JSON.parse(localStorage.getItem(key));
-    return value ?? fallback;
-  }catch(error){
-    return fallback;
+  for(const key of COIN_BALANCE_KEYS){
+
+    const value = localStorage.getItem(key);
+
+    if(value !== null && value !== ""){
+
+      const parsed = Number(value);
+
+      if(Number.isFinite(parsed)){
+        balance = parsed;
+        break;
+      }
+    }
   }
+
+  document.getElementById("coinBalance").textContent =
+    balance === null
+      ? "—"
+      : balance.toLocaleString("en-NG");
 }
 
-function money(value){
-  return "₦" + (Number(value)||0).toLocaleString("en-NG",{
-    maximumFractionDigits:2
-  });
-}
 
-function text(value){
-  return String(value ?? "").trim();
-}
+/*
+  G-STORE BATCH STATUS
 
-function getBatch(){
-  const batch = readJSON(KEYS.batch,null);
+  This only displays an active status when a valid,
+  unexpired batch record exists in this browser.
 
-  if(!batch || typeof batch !== "object") return null;
+  A shared backend will be required for the final
+  site-wide batch status.
+*/
+function updateGStoreStatus(){
 
-  if(String(batch.status || "").toLowerCase() !== "active"){
-    return null;
+  let batch = null;
+
+  try{
+    batch = JSON.parse(
+      localStorage.getItem("earngig_gstore_batch")
+    );
+  }catch(error){
+    batch = null;
+  }
+
+  const status = document.getElementById("gStoreStatus");
+
+  if(!batch || String(batch.status).toLowerCase() !== "active"){
+    status.textContent = "Currently Closed";
+    return;
   }
 
   const start = new Date(batch.startDate).getTime();
   const end = new Date(batch.endDate).getTime();
-
-  if(!Number.isFinite(start) || !Number.isFinite(end)){
-    return null;
-  }
-
   const now = Date.now();
 
-  if(now < start || now >= end) return null;
-
-  return batch;
-}
-
-function getGStoreProducts(){
-  const products = readJSON(KEYS.gstoreProducts,[]);
-
-  if(!Array.isArray(products)) return [];
-
-  return products.filter(product=>{
-    const status = String(product.status || "active").toLowerCase();
-    const stock = Number(product.stock ?? product.quantity ?? 1);
-
-    return !["deleted","removed","draft","inactive","paused"].includes(status)
-      && product.isPublished !== false
-      && stock > 0;
-  }).map((product,index)=>({
-    ...product,
-    id:text(product.id || product.productId || product.reference || "gstore-"+index),
-    name:text(product.name || product.title || "Unnamed Product"),
-    price:Number(product.price || 0),
-    category:text(product.category || "other"),
-    image:text(product.imageUrl || product.image || product.photo || ""),
-    stock:Number(product.stock ?? product.quantity ?? 0)
-  }));
-}
-
-function getVendorProducts(){
-  const products = readJSON(KEYS.vendorProducts,[]);
-  const marketplace = readJSON(KEYS.marketplaceProducts,[]);
-
-  const list = Array.isArray(marketplace)
-    ? marketplace
-    : Array.isArray(products) ? products : [];
-
-  return list.filter(product=>{
-    const status = String(product.status || "active").toLowerCase();
-
-    return !["deleted","removed","draft","inactive","paused"].includes(status)
-      && product.isPublished !== false;
-  });
-}
-
-function renderBatch(){
-  const batch = getBatch();
-
-  const status = document.getElementById("batchStatus");
-  const message = document.getElementById("batchMessage");
-  const shopping = document.getElementById("gStoreShopping");
-
-  if(!batch){
-    document.getElementById("batchName").textContent =
-      "G-Store Shopping Batch";
-
-    status.textContent = "Currently closed";
-    status.classList.remove("open");
-
-    message.hidden = false;
-    shopping.hidden = true;
+  if(
+    !Number.isFinite(start) ||
+    !Number.isFinite(end) ||
+    now < start ||
+    now >= end
+  ){
+    status.textContent = "Currently Closed";
     return;
   }
 
-  document.getElementById("batchName").textContent =
-    text(batch.name || "G-Store Shopping Batch");
-
-  status.textContent = "Batch open";
-  status.classList.add("open");
-
-  message.hidden = true;
-  shopping.hidden = false;
-
-  const start = new Date(batch.startDate);
-  const end = new Date(batch.endDate);
-
-  document.getElementById("batchDates").textContent =
-    "Batch closes: " + end.toLocaleString("en-NG",{
-      dateStyle:"medium",
-      timeStyle:"short"
-    });
-
-  renderGStoreProducts();
+  status.textContent = "Batch Open";
 }
 
-function matchesCategory(product){
-  if(selectedCategory === "all") return true;
-
-  const category = text(product.category).toLowerCase()
-    .replace(/[^a-z]/g,"");
-
-  const aliases = {
-    fashion:["fashion","clothing","apparel","shoes"],
-    electronics:["electronics","phone","computer","gadgets"],
-    beauty:["beauty","skincare","cosmetics","hair"],
-    home:["home","living","furniture","kitchen","decor"],
-    food:["food","groceries","grocery","drinks"],
-    accessories:["accessories","jewellery","jewelry","bags"],
-    other:["other","others","general"]
-  };
-
-  return (aliases[selectedCategory] || [selectedCategory])
-    .some(alias=>category.includes(alias.replace(/[^a-z]/g,"")));
-}
-
-function matchesSearch(product){
-  if(!searchTerm) return true;
-
-  return [
-    product.name,
-    product.description,
-    product.category,
-    product.brand
-  ].join(" ").toLowerCase().includes(searchTerm);
-}
-
-function createProductCard(product){
-  const card = document.createElement("article");
-  card.className = "product-card";
-
-  const imageWrap = document.createElement("div");
-  imageWrap.className = "product-image-wrap";
-
-  if(product.image){
-    const image = document.createElement("img");
-    image.className = "product-image";
-    image.src = product.image;
-    image.alt = product.name;
-    image.loading = "lazy";
-
-    image.onerror = ()=>{
-      image.remove();
-      const placeholder = document.createElement("div");
-      placeholder.className = "image-placeholder";
-      placeholder.textContent = "🛍️";
-      imageWrap.appendChild(placeholder);
-    };
-
-    imageWrap.appendChild(image);
-  }else{
-    const placeholder = document.createElement("div");
-    placeholder.className = "image-placeholder";
-    placeholder.textContent = "🛍️";
-    imageWrap.appendChild(placeholder);
-  }
-
-  const info = document.createElement("div");
-  info.className = "product-info";
-
-  const name = document.createElement("h3");
-  name.className = "product-name";
-  name.textContent = product.name;
-
-  const price = document.createElement("div");
-  price.className = "product-price";
-  price.textContent = money(product.price);
-
-  const meta = document.createElement("div");
-  meta.className = "product-meta";
-
-  const category = document.createElement("span");
-  category.textContent = product.category;
-
-  const stock = document.createElement("span");
-  stock.textContent = product.stock + " available";
-
-  meta.append(category,stock);
-
-  const actions = document.createElement("div");
-  actions.className = "product-actions";
-
-  const view = document.createElement("a");
-  view.className = "view-button";
-  view.href = "product-details.html?id=" +
-    encodeURIComponent(product.id);
-  view.textContent = "View";
-
-  const add = document.createElement("button");
-  add.className = "add-button";
-  add.type = "button";
-  add.textContent = "Add to Cart";
-  add.addEventListener("click",()=>addToCart(product,"gstore"));
-
-  actions.append(view,add);
-  info.append(name,price,meta,actions);
-  card.append(imageWrap,info);
-
-  return card;
-}
-
-function renderGStoreProducts(){
-  const container = document.getElementById("gStoreProducts");
-  container.innerHTML = "";
-
-  const products = getGStoreProducts().filter(product=>
-    matchesCategory(product) && matchesSearch(product)
-  );
-
-  if(!products.length){
-    showEmpty(container,"No products available",
-      "There are no matching products in this batch.");
-    return;
-  }
-
-  products.forEach(product=>{
-    container.appendChild(createProductCard(product));
-  });
-}
-
-function getStores(){
-  const registered = readJSON(KEYS.vendorStores,[]);
-  const products = getVendorProducts();
-
-  const stores = new Map();
-
-  if(Array.isArray(registered)){
-    registered.forEach(store=>{
-      const id = text(store.id || store.sellerId || store.vendorId);
-      if(!id) return;
-
-      stores.set(id,{
-        id,
-        name:text(store.storeName || store.name || store.businessName || "Vendor Store"),
-        logo:text(store.logo || store.logoUrl || store.storeLogo || ""),
-        productCount:0
-      });
-    });
-  }
-
-  products.forEach(product=>{
-    const id = text(product.sellerId || product.vendorId || product.storeId);
-    if(!id) return;
-
-    if(!stores.has(id)){
-      stores.set(id,{
-        id,
-        name:text(product.storeName || product.sellerName ||
-          product.vendorName || "Vendor Store"),
-        logo:text(product.storeLogo || product.logo || ""),
-        productCount:0
-      });
-    }
-
-    stores.get(id).productCount++;
-  });
-
-  return [...stores.values()];
-}
-
-function renderVendors(){
-  const container = document.getElementById("vendorGrid");
-  container.innerHTML = "";
-
-  const stores = getStores().filter(store=>
-    !searchTerm || store.name.toLowerCase().includes(searchTerm)
-  );
-
-  if(!stores.length){
-    showEmpty(container,"No vendors available yet",
-      "New registered Vendor Haul stores will appear here.");
-    return;
-  }
-
-  stores.forEach(store=>{
-    const card = document.createElement("a");
-    card.className = "vendor-card";
-    card.href = "storefront.html?seller=" +
-      encodeURIComponent(store.id);
-
-    const logo = document.createElement("div");
-    logo.className = "vendor-logo";
-
-    if(store.logo){
-      const img = document.createElement("img");
-      img.src = store.logo;
-      img.alt = store.name;
-      img.onerror = ()=>{
-        img.remove();
-        logo.textContent = store.name.charAt(0).toUpperCase();
-      };
-      logo.appendChild(img);
-    }else{
-      logo.textContent = store.name.charAt(0).toUpperCase();
-    }
-
-    const name = document.createElement("div");
-    name.className = "vendor-name";
-    name.textContent = store.name;
-
-    const count = document.createElement("div");
-    count.className = "vendor-products";
-    count.textContent = store.productCount + " products";
-
-    card.append(logo,name,count);
-    container.appendChild(card);
-  });
-}
-
-function showEmpty(container,title,description){
-  const empty = document.createElement("div");
-  empty.className = "empty";
-
-  const heading = document.createElement("strong");
-  heading.textContent = title;
-
-  empty.append(heading,document.createTextNode(description));
-  container.appendChild(empty);
-}
-
-function addToCart(product,source){
-  let cart = readJSON(KEYS.cart,[]);
-  if(!Array.isArray(cart)) cart = [];
-
-  const existing = cart.find(item=>
-    String(item.productId || item.id) === String(product.id)
-  );
-
-  if(existing){
-    existing.quantity = Number(existing.quantity || 1) + 1;
-  }else{
-    cart.push({
-      productId:product.id,
-      id:product.id,
-      name:product.name,
-      price:product.price,
-      image:product.image || "",
-      quantity:1,
-      source:source,
-      sellerName:product.sellerName || "EarnGig",
-      sellerId:product.sellerId || "",
-      location:product.location || ""
-    });
-  }
-
-  localStorage.setItem(KEYS.cart,JSON.stringify(cart));
-  updateCartCount();
-
-  alert(product.name + " added to your cart.");
-}
-
-function updateCartCount(){
-  const cart = readJSON(KEYS.cart,[]);
-  const count = Array.isArray(cart)
-    ? cart.reduce((sum,item)=>sum+Number(item.quantity || 1),0)
-    : 0;
-
-  document.getElementById("cartCount").textContent = count;
-}
-
-function getNotifications(){
-  const notifications = readJSON(KEYS.notifications,[]);
-  return Array.isArray(notifications) ? notifications : [];
-}
-
-function renderNotifications(){
-  const notifications = getNotifications();
-  const unread = notifications.filter(item=>!item.read).length;
-
-  const badge = document.getElementById("notificationCount");
-  badge.textContent = unread > 99 ? "99+" : unread;
-  badge.hidden = unread === 0;
-
-  const list = document.getElementById("notificationList");
-  list.innerHTML = "";
-
-  if(!notifications.length){
-    showEmpty(list,"No notifications yet",
-      "Batch announcements and new vendor updates will appear here.");
-    return;
-  }
-
-  notifications.slice().reverse().forEach(item=>{
-    const row = document.createElement("div");
-    row.className = "notification-item";
-
-    const link = document.createElement("a");
-    link.href = item.link || "marketplace.html";
-    link.textContent = item.message || "EarnGig update";
-
-    const date = document.createElement("small");
-    date.textContent = item.createdAt
-      ? new Date(item.createdAt).toLocaleString("en-NG")
-      : "";
-
-    row.append(link,date);
-    list.appendChild(row);
-  });
-}
-
-function markNotificationsRead(){
-  const notifications = getNotifications().map(item=>({
-    ...item,
-    read:true
-  }));
-
-  localStorage.setItem(KEYS.notifications,
-    JSON.stringify(notifications));
-
-  renderNotifications();
-}
-
-function applyFilters(){
-  searchTerm = document.getElementById("searchInput")
-    .value.trim().toLowerCase();
-
-  renderBatch();
-  renderVendors();
-}
-
-document.getElementById("searchButton")
-  .addEventListener("click",applyFilters);
-
-document.getElementById("searchInput")
-  .addEventListener("keydown",event=>{
-    if(event.key === "Enter") applyFilters();
-  });
-
-document.querySelectorAll("#categoryMenu button")
-  .forEach(button=>{
-    button.addEventListener("click",()=>{
-      document.querySelectorAll("#categoryMenu button")
-        .forEach(item=>item.classList.remove("active"));
-
-      button.classList.add("active");
-      selectedCategory = button.dataset.category;
-      renderGStoreProducts();
-    });
-  });
-
-document.getElementById("notificationButton")
-  .addEventListener("click",()=>{
-    document.getElementById("notificationPanel")
-      .classList.toggle("show");
-  });
-
-document.getElementById("markReadButton")
-  .addEventListener("click",markNotificationsRead);
-
-document.getElementById("imageSearchInput")
-  .addEventListener("change",event=>{
-    const file = event.target.files[0];
-    if(!file) return;
-
-    alert(
-      "Image selected. Visual product matching requires the EarnGig search backend to be connected."
-    );
-  });
-
-/* Refresh shared display when another page in this browser changes data. */
-window.addEventListener("storage",event=>{
-  if(Object.values(KEYS).includes(event.key)){
-    renderBatch();
-    renderVendors();
-    updateCartCount();
-    renderNotifications();
-  }
+displayCoinBalance();
+updateGStoreStatus();
+
+window.addEventListener("storage",()=>{
+  displayCoinBalance();
+  updateGStoreStatus();
 });
-
-renderBatch();
-renderVendors();
-updateCartCount();
-renderNotifications();
 </script>
 
 </body>
