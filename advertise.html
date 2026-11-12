@@ -7,158 +7,183 @@
 <meta name="theme-color" content="#160b2d">
 <title>Advertise | EarnGig</title>
 
-<!-- Flutterwave Inline Checkout -->
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 
 <style>
-:root{
+:root {
   --bg:#10091f;
-  --panel:#1e1234;
-  --panel2:#291b40;
-  --purple:#9865f5;
-  --lime:#b8f34a;
-  --gold:#f5ca65;
+  --panel:#1d1234;
+  --panel2:#261741;
+  --purple:#8b5cf6;
+  --purple2:#a78bfa;
+  --lime:#b7f34a;
+  --gold:#f5c75e;
   --white:#fff;
-  --muted:#bdb1ce;
+  --muted:#b9aecb;
   --border:rgba(255,255,255,.1);
+  --red:#ff7373;
+  --green:#8ee6a2;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;background:var(--bg);color:var(--white);
-  font-family:Arial,Helvetica,sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Inter,Arial,sans-serif;
 }
-button,input,textarea,select{font:inherit}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.container{width:min(100% - 28px,950px);margin:auto}
+a{color:inherit;text-decoration:none}
+.container{width:min(100% - 28px,1000px);margin:auto}
 header{
   position:sticky;top:0;z-index:10;
-  background:rgba(16,9,31,.95);
+  background:rgba(16,9,31,.94);
+  backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px);
 }
-.header{
+.header-inner{
   min-height:65px;display:flex;align-items:center;
-  justify-content:space-between;
+  justify-content:space-between;gap:12px;
 }
-.logo{font-size:24px;font-weight:900;color:white;text-decoration:none}
+.logo{font-size:23px;font-weight:900;letter-spacing:-1px}
 .logo span{color:var(--lime)}
 .back{
-  color:var(--muted);text-decoration:none;
-  border:1px solid var(--border);padding:10px 14px;
-  border-radius:12px;font-size:13px;
+  color:var(--muted);font-size:13px;
+  padding:10px 14px;border:1px solid var(--border);
+  border-radius:12px;
 }
-main{padding:25px 0 50px}
+main{padding:28px 0 55px}
 .hero{
-  padding:25px 21px;border-radius:22px;
-  background:linear-gradient(120deg,#35175e,#1b1030 65%,#2c401c);
-  border:1px solid var(--border);
+  padding:25px 22px;border:1px solid var(--border);
+  border-radius:23px;
+  background:linear-gradient(120deg,#30165b,#1b1031 65%,#263c19);
+  overflow:hidden;
 }
 .eyebrow{
-  color:var(--lime);font-weight:bold;font-size:11px;
+  color:var(--lime);font-size:11px;font-weight:800;
   letter-spacing:2px;text-transform:uppercase;
 }
-h1{font-size:clamp(28px,5vw,43px);line-height:1.1;margin:12px 0}
-.hero p{color:#d5cbe2;line-height:1.6;margin:0;max-width:620px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}
+h1{font-size:clamp(27px,5vw,43px);line-height:1.08;margin:12px 0}
+.hero p{color:#d2c8e1;max-width:620px;line-height:1.65;margin:0}
+.section-title{font-size:20px;margin:30px 0 13px}
+.tabs{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;
+}
 .tab{
-  padding:14px 8px;border-radius:13px;
-  background:var(--panel);color:var(--muted);
-  border:1px solid var(--border);font-weight:bold;
+  border:1px solid var(--border);border-radius:14px;
+  background:#211537;color:var(--muted);
+  padding:14px 10px;font-weight:800;
 }
 .tab.active{background:var(--lime);color:#18220d;border-color:var(--lime)}
 .panel{
-  margin-top:15px;padding:20px;border-radius:19px;
+  margin-top:15px;padding:19px;
   background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;
 }
-h2{font-size:20px;margin:0 0 7px}
-.sub{font-size:13px;color:var(--muted);line-height:1.5}
-.packages{
+.panel h2{font-size:20px;margin:0 0 7px}
+.sub{font-size:13px;color:var(--muted);line-height:1.55}
+.package-grid{
   display:grid;grid-template-columns:repeat(2,1fr);
-  gap:10px;margin:17px 0;
+  gap:10px;margin-top:17px;
 }
 .package{
-  background:var(--panel2);border:1px solid var(--border);
-  color:white;padding:14px;border-radius:14px;text-align:left;
+  padding:15px;border:1px solid var(--border);
+  background:#261a3c;border-radius:15px;text-align:left;
+  color:white;
 }
-.package.selected{border:2px solid var(--lime);padding:13px;background:#30421f}
-.package small{color:var(--muted);display:block;font-size:11px}
-.package strong{display:block;font-size:20px;margin-top:8px}
-.field{margin-top:14px}
-label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
-input,textarea,select{
-  width:100%;padding:13px;border-radius:11px;
-  color:white;background:#120b20;border:1px solid #4a385f;
-  outline:none;
+.package.selected{
+  border:2px solid var(--lime);
+  background:#2b3b1d;padding:14px;
 }
-input:focus,textarea:focus,select:focus{border-color:var(--purple)}
-textarea{min-height:90px;resize:vertical}
+.package .duration{font-size:13px;color:#ddd}
+.package .price{font-size:21px;font-weight:900;margin-top:8px}
+.package small{display:block;color:var(--muted);margin-top:5px}
+.field{margin-top:15px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+input,select,textarea{
+  width:100%;padding:13px 14px;border-radius:12px;
+  background:#120b20;border:1px solid #49375e;
+  color:white;outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple2)}
+textarea{min-height:95px;resize:vertical}
 input[type=file]{padding:10px}
 .hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
-.total{
+.billboard-head{
   display:flex;justify-content:space-between;align-items:center;
-  gap:10px;padding:15px;background:#120b20;
-  border-radius:12px;margin-top:17px;font-size:13px;
+  flex-wrap:wrap;gap:10px;
 }
-.total strong{font-size:20px;color:var(--lime)}
+.week-select{max-width:230px}
+.slot-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:9px;margin-top:17px;
+}
+.slot{
+  min-height:76px;border:1px solid var(--border);
+  background:#291d40;border-radius:13px;color:white;
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;
+}
+.slot strong{font-size:19px}
+.slot small{font-size:10px;color:var(--muted)}
+.slot.available{border-color:#536b39}
+.slot.selected{background:#31451e;border:2px solid var(--lime)}
+.slot.booked,.slot.held{
+  opacity:.48;background:#352b3c;cursor:not-allowed;
+}
+.legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:13px}
+.legend span{font-size:11px;color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.available-dot{background:var(--lime)}
+.booked-dot{background:#81758d}
+.selected-dot{background:#a78bfa}
+.total{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:15px;background:#120b20;border-radius:13px;
+  margin-top:17px;font-size:14px;
+}
+.total strong{color:var(--lime);font-size:19px}
 .primary{
-  width:100%;padding:15px;border:0;border-radius:12px;
-  background:var(--lime);color:#17200d;
-  font-weight:900;margin-top:16px;
+  width:100%;border:0;border-radius:13px;
+  background:var(--lime);color:#18220d;
+  font-weight:900;padding:15px;margin-top:17px;
 }
 .primary:disabled{opacity:.45;cursor:not-allowed}
 .notice{
-  background:#2b2140;border-radius:12px;padding:13px;
-  color:#ded2ed;font-size:12px;line-height:1.6;margin-top:15px;
+  padding:12px 14px;border-radius:12px;
+  background:#2b2140;color:#d7c9ee;
+  font-size:12px;line-height:1.55;margin-top:15px;
 }
-.slot-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);
-  gap:9px;margin-top:16px;
-}
-.slot{
-  min-height:75px;border-radius:12px;
-  background:#2b1e41;color:white;
-  border:1px solid var(--border);
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;gap:5px;
-}
-.slot strong{font-size:20px}
-.slot small{font-size:10px;color:var(--muted)}
-.slot.available{border-color:#607d40}
-.slot.selected{border:2px solid var(--lime);background:#30451e}
-.slot.unavailable{opacity:.45;cursor:not-allowed}
-.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
-.legend span{font-size:11px;color:var(--muted)}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-.green{background:var(--lime)}
-.grey{background:#807487}
-.purple{background:var(--purple)}
 .status{
-  display:none;margin-top:14px;padding:13px;
-  border-radius:11px;font-size:13px;line-height:1.5;
+  display:none;padding:13px;border-radius:12px;
+  margin-top:15px;font-size:13px;line-height:1.5;
 }
 .status.show{display:block}
-.status.error{background:#4b222b;color:#ffd6d6}
-.status.success{background:#1d3d29;color:#c8ffd3}
-.status.info{background:#302344;color:#e3d6f7}
+.status.error{background:#47212b;color:#ffd5d5}
+.status.success{background:#1e3c2a;color:#c8ffd4}
+.status.info{background:#30234b;color:#e1d5ff}
 .hidden{display:none!important}
 footer{
-  text-align:center;padding:22px 0;color:var(--muted);
-  font-size:12px;border-top:1px solid var(--border);
+  border-top:1px solid var(--border);
+  padding:22px 0;color:var(--muted);
+  font-size:12px;text-align:center;
 }
 @media(min-width:700px){
-  .packages{grid-template-columns:repeat(5,1fr)}
+  .package-grid{grid-template-columns:repeat(5,1fr)}
   .panel{padding:24px}
 }
 @media(max-width:420px){
   .slot-grid{grid-template-columns:repeat(2,1fr)}
-  .tab{font-size:12px}
+  .tabs{gap:7px}
+  .tab{font-size:12px;padding:13px 5px}
+  .hero{padding:21px 17px}
 }
 </style>
 </head>
 
 <body>
 <header>
-  <div class="container header">
+  <div class="container header-inner">
     <a class="logo" href="index.html">Earn<span>Gig</span></a>
     <a class="back" href="dashboard.html">← Dashboard</a>
   </div>
@@ -166,234 +191,386 @@ footer{
 
 <main class="container">
   <section class="hero">
-    <div class="eyebrow">EarnGig Advertising</div>
+    <div class="eyebrow">Grow your audience</div>
     <h1>Put your business<br>in the spotlight.</h1>
-    <p>Reach the EarnGig community with Watch and Earn advertising or a homepage billboard campaign.</p>
+    <p>
+      Promote your brand to the EarnGig community. Choose a Watch and Earn
+      advert or reserve a homepage billboard slot.
+    </p>
   </section>
 
   <div class="tabs">
     <button class="tab active" id="timeTab" type="button">Watch and Earn Ads</button>
-    <button class="tab" id="billTab" type="button">Homepage Billboard</button>
+    <button class="tab" id="billboardTab" type="button">Homepage Billboard</button>
   </div>
 
-  <!-- WATCH AND EARN ADVERTISING -->
+  <!-- TIME-BASED ADVERTISING -->
   <section class="panel" id="timePanel">
-    <h2>Watch and Earn Ads</h2>
-    <p class="sub">Choose your campaign duration and pay when submitting your advert.</p>
+    <h2>Watch and Earn Advertising</h2>
+    <p class="sub">Choose how long you want your advert to run. Payment is required when you submit.</p>
 
-    <div class="packages" id="packages">
+    <div class="package-grid" id="packageGrid">
       <button class="package selected" type="button" data-days="1" data-price="10000">
-        24 Hours<strong>₦10,000</strong><small>1-day campaign</small>
+        <div class="duration">24 Hours</div>
+        <div class="price">₦10,000</div>
+        <small>1-day campaign</small>
       </button>
       <button class="package" type="button" data-days="3" data-price="25000">
-        72 Hours<strong>₦25,000</strong><small>3-day campaign</small>
+        <div class="duration">72 Hours</div>
+        <div class="price">₦25,000</div>
+        <small>3-day campaign</small>
       </button>
       <button class="package" type="button" data-days="7" data-price="50000">
-        7 Days<strong>₦50,000</strong><small>1-week campaign</small>
+        <div class="duration">7 Days</div>
+        <div class="price">₦50,000</div>
+        <small>1-week campaign</small>
       </button>
       <button class="package" type="button" data-days="14" data-price="85000">
-        14 Days<strong>₦85,000</strong><small>2-week campaign</small>
+        <div class="duration">14 Days</div>
+        <div class="price">₦85,000</div>
+        <small>2-week campaign</small>
       </button>
       <button class="package" type="button" data-days="30" data-price="150000">
-        30 Days<strong>₦150,000</strong><small>Monthly campaign</small>
+        <div class="duration">30 Days</div>
+        <div class="price">₦150,000</div>
+        <small>Monthly campaign</small>
       </button>
     </div>
 
     <form id="timeForm">
       <div class="field">
-        <label>Business / Advertiser Name</label>
-        <input name="businessName" required maxlength="100">
+        <label for="timeBusiness">Business / Advertiser Name</label>
+        <input id="timeBusiness" name="businessName" required maxlength="100">
       </div>
       <div class="field">
-        <label>Email Address</label>
-        <input name="email" type="email" required>
+        <label for="timeEmail">Email Address</label>
+        <input id="timeEmail" name="email" type="email" required>
       </div>
       <div class="field">
-        <label>Phone Number</label>
-        <input name="phone" type="tel" required>
+        <label for="timePhone">Phone Number</label>
+        <input id="timePhone" name="phone" type="tel" required>
       </div>
       <div class="field">
-        <label>Advert Title</label>
-        <input name="title" required maxlength="120">
+        <label for="timeTitle">Advert Title</label>
+        <input id="timeTitle" name="title" required maxlength="120">
       </div>
       <div class="field">
-        <label>Advert Description</label>
-        <textarea name="description" required maxlength="1000"></textarea>
+        <label for="timeDescription">Advert Description</label>
+        <textarea id="timeDescription" name="description" required maxlength="1000"></textarea>
       </div>
       <div class="field">
-        <label>Website / Social Media Link</label>
-        <input name="link" type="url" placeholder="https://">
+        <label for="timeLink">Website / Social Media Link</label>
+        <input id="timeLink" name="link" type="url" placeholder="https://">
       </div>
       <div class="field">
-        <label>Upload Advert Image or Video</label>
-        <input name="media" type="file" accept="image/*,video/*" required>
-        <div class="hint">Your backend should validate the file type and size.</div>
+        <label for="timeMedia">Upload Advert Media</label>
+        <input id="timeMedia" name="media" type="file" accept="image/*,video/*" required>
+        <div class="hint">Upload an image or video. File size and accepted formats are validated by the server.</div>
       </div>
+
       <div class="total">
-        <span>Campaign price</span>
-        <strong id="timePrice">₦10,000</strong>
+        <span>Selected campaign price</span>
+        <strong id="timeTotal">₦10,000</strong>
       </div>
-      <button class="primary" type="submit" id="timePay">Pay & Submit →</button>
+
+      <button class="primary" id="timeSubmit" type="submit">Pay & Submit →</button>
     </form>
-    <div class="status" id="timeStatus"></div>
+    <div class="status" id="timeStatus" role="status"></div>
   </section>
 
-  <!-- HOMEPAGE BILLBOARD -->
-  <section class="panel hidden" id="billPanel">
-    <h2>Homepage Billboard</h2>
-    <p class="sub">₦100,000 per slot · 10 slots per campaign week · Monday to Sunday.</p>
-
-    <div class="field">
-      <label>Choose Campaign Week</label>
-      <select id="campaignWeek"></select>
+  <!-- BILLBOARD ADVERTISING -->
+  <section class="panel hidden" id="billboardPanel">
+    <div class="billboard-head">
+      <div>
+        <h2>Homepage Billboard</h2>
+        <p class="sub">10 slots per campaign week · Monday to Sunday</p>
+      </div>
+      <div class="week-select">
+        <label for="campaignWeek">Campaign week</label>
+        <select id="campaignWeek"></select>
+      </div>
     </div>
 
     <div class="notice">
-      Select one or more available slots. Selected slots will be temporarily held
-      during checkout. A successful verified payment confirms the booking.
+      Select one or more available slots. Your slots are only confirmed after
+      successful payment. Slots temporarily held by another customer cannot
+      be selected during checkout.
     </div>
 
     <div class="slot-grid" id="slotGrid"></div>
+
     <div class="legend">
-      <span><i class="dot green"></i>Available</span>
-      <span><i class="dot purple"></i>Selected</span>
-      <span><i class="dot grey"></i>Booked / Held</span>
+      <span><i class="dot available-dot"></i>Available</span>
+      <span><i class="dot selected-dot"></i>Selected</span>
+      <span><i class="dot booked-dot"></i>Booked / Held</span>
     </div>
 
     <div class="total">
       <span id="slotCount">0 slots selected</span>
-      <strong id="billPrice">₦0</strong>
+      <strong id="billboardTotal">₦0</strong>
     </div>
 
-    <form id="billForm">
+    <form id="billboardForm">
       <div class="field">
-        <label>Business / Advertiser Name</label>
-        <input name="businessName" required maxlength="100">
+        <label for="billBusiness">Business / Advertiser Name</label>
+        <input id="billBusiness" name="businessName" required maxlength="100">
       </div>
       <div class="field">
-        <label>Email Address</label>
-        <input name="email" type="email" required>
+        <label for="billEmail">Email Address</label>
+        <input id="billEmail" name="email" type="email" required>
       </div>
       <div class="field">
-        <label>Phone Number</label>
-        <input name="phone" type="tel" required>
+        <label for="billPhone">Phone Number</label>
+        <input id="billPhone" name="phone" type="tel" required>
       </div>
       <div class="field">
-        <label>Advert Title</label>
-        <input name="title" required maxlength="120">
+        <label for="billTitle">Advert Title</label>
+        <input id="billTitle" name="title" required maxlength="120">
       </div>
       <div class="field">
-        <label>Advert Description</label>
-        <textarea name="description" required maxlength="1000"></textarea>
+        <label for="billDescription">Advert Description</label>
+        <textarea id="billDescription" name="description" required maxlength="1000"></textarea>
       </div>
       <div class="field">
-        <label>Website / Social Media Link</label>
-        <input name="link" type="url" placeholder="https://">
+        <label for="billLink">Website / Social Media Link</label>
+        <input id="billLink" name="link" type="url" placeholder="https://">
       </div>
       <div class="field">
-        <label>Upload Billboard Media</label>
-        <input name="media" type="file" accept="image/*,video/*" required>
+        <label for="billMedia">Upload Billboard Media</label>
+        <input id="billMedia" name="media" type="file" accept="image/*,video/*">
       </div>
-      <button class="primary" type="submit" id="billPay" disabled>Select a slot to continue</button>
+
+      <button class="primary" id="billSubmit" type="submit" disabled>
+        Select a slot to continue
+      </button>
     </form>
-    <div class="status" id="billStatus"></div>
+    <div class="status" id="billStatus" role="status"></div>
   </section>
 
   <div class="notice">
-    Payments are processed using Flutterwave. An advert is only confirmed
-    after EarnGig verifies the successful payment. Payment does not automatically
-    mean the advert has passed content review.
+    <strong>Secure payment:</strong> Payments are processed through Flutterwave.
+    A campaign or billboard booking is confirmed only after EarnGig's server
+    verifies the successful payment. A payment receipt or return from the
+    payment page alone does not confirm a booking.
   </div>
 </main>
 
-<footer>© <span id="year"></span> EarnGig. All rights reserved.</footer>
+<footer>
+  © <span id="year"></span> EarnGig. All rights reserved.
+</footer>
 
 <script>
 /*
-  EARNGIG PAYMENT CONFIGURATION
-
-  Public key: safe to display in browser.
-  Secret key: MUST remain on your backend.
-
-  Set API_BASE to your deployed backend URL.
+  FLUTTERWAVE TEST MODE PUBLIC KEY
 */
 const FLUTTERWAVE_PUBLIC_KEY =
   "FLWPUBK_TEST-742bc2a25b5bd9348fbfb02c85683b63-X";
 
-const API_BASE = ""; // Example: https://your-backend.example.com
+/*
+  BACKEND URL
+
+  Put your deployed backend URL here.
+  Example:
+  const API_BASE = "https://your-backend.example.com";
+
+  The secret key must NEVER be put in this HTML file.
+*/
+const API_BASE = "";
+
 const BILLBOARD_SLOT_PRICE = 100000;
 
-let selectedPackage = {days:1,price:10000};
-let selectedSlots = new Set();
-let availability = [];
+const TIME_PACKAGES = [
+  {days:1,price:10000},
+  {days:3,price:25000},
+  {days:7,price:50000},
+  {days:14,price:85000},
+  {days:30,price:150000}
+];
 
 const $ = id => document.getElementById(id);
+
+let selectedPackage = TIME_PACKAGES[0];
+let selectedSlots = new Set();
+let currentSlots = [];
+
 $("year").textContent = new Date().getFullYear();
 
-function naira(value){
+function naira(value) {
   return "₦" + Number(value).toLocaleString("en-NG");
 }
-function statusMessage(id,message,type="info"){
+
+function showStatus(id,message,type="info") {
   const el = $(id);
   el.textContent = message;
   el.className = "status show " + type;
 }
-function clearMessage(id){
-  $(id).textContent = "";
-  $(id).className = "status";
+
+function clearStatus(id) {
+  const el = $(id);
+  el.textContent = "";
+  el.className = "status";
 }
-function api(path){
-  return API_BASE.replace(/\/$/,"") + path;
+
+async function request(path,options={}) {
+  const response = await fetch(
+    API_BASE.replace(/\/$/,"") + path,
+    {
+      credentials:"include",
+      ...options
+    }
+  );
+
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch {}
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Unable to complete your request."
+    );
+  }
+
+  return data;
 }
-async function apiRequest(path,options={}){
-  const response = await fetch(api(path),{
-    credentials:"include",
-    ...options
+
+/*
+  OPEN FLUTTERWAVE POPUP
+
+  The backend prepares the pending order and supplies
+  the unique reference and amount. Flutterwave opens
+  immediately after that preparation.
+*/
+function openFlutterwave(order,statusId) {
+
+  if (typeof FlutterwaveCheckout !== "function") {
+    throw new Error(
+      "Flutterwave could not load. Check your internet connection and refresh."
+    );
+  }
+
+  if (!order.txRef || !order.orderId || !order.amount ||
+      !order.customerEmail) {
+    throw new Error(
+      "The payment server returned incomplete payment details."
+    );
+  }
+
+  FlutterwaveCheckout({
+    public_key: FLUTTERWAVE_PUBLIC_KEY,
+
+    tx_ref: order.txRef,
+
+    amount: Number(order.amount),
+
+    currency: order.currency || "NGN",
+
+    payment_options: "card,banktransfer,ussd",
+
+    customer: {
+      email: order.customerEmail,
+      phone_number: order.customerPhone || "",
+      name: order.customerName || "EarnGig Advertiser"
+    },
+
+    customizations: {
+      title: "EarnGig Advertising",
+      description: "Payment for EarnGig advertising",
+      logo: ""
+    },
+
+    callback: async function(payment) {
+
+      showStatus(
+        statusId,
+        "Payment received. Verifying your transaction...",
+        "info"
+      );
+
+      try {
+
+        const result = await request(
+          "/api/advertising/payment/verify",
+          {
+            method:"POST",
+            headers: {
+              "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+              orderId: order.orderId,
+              txRef: order.txRef,
+              transactionId: payment.transaction_id
+            })
+          }
+        );
+
+        if (
+          result.status === "successful" &&
+          result.submissionStatus === "confirmed"
+        ) {
+
+          showStatus(
+            statusId,
+            "Payment successful! Your advertising submission is confirmed.",
+            "success"
+          );
+
+          if (statusId === "billStatus") {
+            selectedSlots.clear();
+            updateBillboardTotal();
+            loadBillboardAvailability();
+          }
+
+        } else {
+
+          showStatus(
+            statusId,
+            "Payment is not yet verified. Your advertising submission is not confirmed yet.",
+            "info"
+          );
+
+        }
+
+      } catch (error) {
+
+        showStatus(
+          statusId,
+          "We could not verify the payment yet. Please do not pay again. Contact EarnGig support with reference: " + order.txRef,
+          "error"
+        );
+
+      }
+    },
+
+    onclose: function() {
+      /*
+        Closing the payment window does not confirm an advert.
+        The backend must expire and release unpaid billboard holds.
+      */
+    }
   });
-  let result={};
-  try{result=await response.json()}catch{}
-  if(!response.ok) throw new Error(result.message || "Request failed. Please try again.");
-  return result;
 }
-
-/* Change advertising tab */
-$("timeTab").onclick=()=>{
-  $("timeTab").classList.add("active");
-  $("billTab").classList.remove("active");
-  $("timePanel").classList.remove("hidden");
-  $("billPanel").classList.add("hidden");
-};
-$("billTab").onclick=()=>{
-  $("billTab").classList.add("active");
-  $("timeTab").classList.remove("active");
-  $("billPanel").classList.remove("hidden");
-  $("timePanel").classList.add("hidden");
-  loadAvailability();
-};
-
-/* Time packages */
-document.querySelectorAll(".package").forEach(button=>{
-  button.onclick=()=>{
-    document.querySelectorAll(".package").forEach(p=>p.classList.remove("selected"));
-    button.classList.add("selected");
-    selectedPackage={
-      days:Number(button.dataset.days),
-      price:Number(button.dataset.price)
-    };
-    $("timePrice").textContent=naira(selectedPackage.price);
-  };
-});
 
 /*
   PREPARE CHECKOUT
 
-  The backend must validate the form, store the advert/media,
-  calculate the real amount, create a pending order and, for
-  billboard adverts, atomically place temporary holds on slots.
+  Required backend endpoint:
+  POST /api/advertising/checkout
+
+  Accepts multipart/form-data.
+
+  For time advertising:
+  type, durationDays, businessName, email, phone,
+  title, description, link, media.
+
+  For billboard advertising:
+  type, campaignWeek, slots, businessName, email,
+  phone, title, description, link, media.
 
   Expected response:
   {
-    "orderId":"order_123",
+    "orderId":"order123",
     "txRef":"unique_reference",
     "amount":10000,
     "currency":"NGN",
@@ -401,286 +578,367 @@ document.querySelectorAll(".package").forEach(button=>{
     "customerEmail":"customer@example.com",
     "customerPhone":"08000000000"
   }
-*/
-async function prepareCheckout(form,advertType,extra={}){
-  const data = new FormData(form);
-  data.set("advertType",advertType);
 
-  Object.entries(extra).forEach(([key,value])=>{
-    data.set(key,typeof value==="object"?JSON.stringify(value):String(value));
+  The backend must calculate the amount and create a
+  pending order. For billboard bookings, it must lock
+  all selected slots atomically before returning.
+*/
+async function prepareCheckout(form,type,extra={}) {
+
+  const data = new FormData(form);
+
+  data.set("type",type);
+
+  Object.entries(extra).forEach(([key,value]) => {
+    data.set(
+      key,
+      typeof value === "object"
+        ? JSON.stringify(value)
+        : String(value)
+    );
   });
 
-  return apiRequest("/api/advertising/prepare",{
+  return request("/api/advertising/checkout",{
     method:"POST",
     body:data
   });
 }
 
-/*
-  Start Flutterwave Inline Checkout popup.
-  Verification is always performed by the backend after callback.
-*/
-function openFlutterwaveCheckout(order,successTarget){
-  if(typeof FlutterwaveCheckout !== "function"){
-    throw new Error("Flutterwave checkout could not load. Check your internet connection and try again.");
-  }
+/* TAB SWITCHING */
 
-  if(!order.txRef || !order.amount || !order.orderId){
-    throw new Error("The payment server returned incomplete checkout information.");
-  }
+$("timeTab").addEventListener("click",() => {
+  $("timeTab").classList.add("active");
+  $("billboardTab").classList.remove("active");
+  $("timePanel").classList.remove("hidden");
+  $("billboardPanel").classList.add("hidden");
+});
 
-  FlutterwaveCheckout({
-    public_key:FLUTTERWAVE_PUBLIC_KEY,
-    tx_ref:order.txRef,
-    amount:Number(order.amount),
-    currency:order.currency || "NGN",
-    payment_options:"card,banktransfer,ussd",
-    customer:{
-      email:order.customerEmail,
-      phone_number:order.customerPhone,
-      name:order.customerName
-    },
-    customizations:{
-      title:"EarnGig Advertising",
-      description:"Payment for EarnGig advertising campaign",
-      logo:""
-    },
-    callback:async function(payment){
-      statusMessage(successTarget,"Payment received. Verifying transaction with EarnGig...","info");
+$("billboardTab").addEventListener("click",() => {
+  $("billboardTab").classList.add("active");
+  $("timeTab").classList.remove("active");
+  $("billboardPanel").classList.remove("hidden");
+  $("timePanel").classList.add("hidden");
+  loadBillboardAvailability();
+});
 
-      try{
-        const verification = await apiRequest("/api/advertising/verify",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({
-            orderId:order.orderId,
-            txRef:order.txRef,
-            transactionId:payment.transaction_id
-          })
-        });
+/* PACKAGE SELECTION */
 
-        if(verification.status==="successful" &&
-           verification.submissionStatus==="confirmed"){
-          statusMessage(
-            successTarget,
-            "Payment successful! Your advertising submission is confirmed. Your advert will proceed to review.",
-            "success"
-          );
-          selectedSlots.clear();
-          updateSlotTotal();
-          if(successTarget==="billStatus") loadAvailability();
-        }else{
-          statusMessage(
-            successTarget,
-            "Your payment is not yet verified. Your submission is not confirmed. Please wait and check again.",
-            "info"
-          );
-        }
-      }catch(error){
-        statusMessage(
-          successTarget,
-          "We could not verify your payment yet. Do not pay again. Contact EarnGig support with reference: "+order.txRef,
-          "error"
-        );
-      }
-    },
-    onclose:async function(){
-      /*
-        Do not mark an advert as submitted when checkout closes.
-        The backend should release the pending order's billboard
-        holds when the hold expires or payment is confirmed failed.
-      */
-      try{
-        await apiRequest("/api/advertising/checkout-closed",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({orderId:order.orderId,txRef:order.txRef})
-        });
-      }catch{}
-    }
+document.querySelectorAll(".package").forEach(button => {
+  button.addEventListener("click",() => {
+
+    document.querySelectorAll(".package").forEach(item => {
+      item.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    selectedPackage = {
+      days:Number(button.dataset.days),
+      price:Number(button.dataset.price)
+    };
+
+    $("timeTotal").textContent =
+      naira(selectedPackage.price);
   });
-}
+});
 
-/* Watch and Earn submission */
-$("timeForm").addEventListener("submit",async event=>{
+/* TIME-BASED ADVERT PAYMENT */
+
+$("timeForm").addEventListener("submit",async event => {
+
   event.preventDefault();
-  clearMessage("timeStatus");
+  clearStatus("timeStatus");
 
-  const button=$("timePay");
-  button.disabled=true;
-  button.textContent="Preparing payment...";
+  const button = $("timeSubmit");
 
-  try{
-    const order=await prepareCheckout(
+  button.disabled = true;
+  button.textContent = "Preparing payment...";
+
+  try {
+
+    const order = await prepareCheckout(
       event.target,
       "time_based",
-      {durationDays:selectedPackage.days}
+      {
+        durationDays:selectedPackage.days
+      }
     );
 
-    if(Number(order.amount)!==selectedPackage.price){
-      throw new Error("The campaign price returned by the server does not match. Please refresh and try again.");
+    if (Number(order.amount) !== selectedPackage.price) {
+      throw new Error("The server payment amount does not match your selected package.");
     }
 
-    openFlutterwaveCheckout(order,"timeStatus");
-    statusMessage("timeStatus","Complete your payment in the Flutterwave popup.","info");
+    /*
+      Flutterwave popup opens here.
+      No redirect to another checkout page.
+    */
+    openFlutterwave(order,"timeStatus");
 
-  }catch(error){
-    statusMessage("timeStatus",error.message,"error");
-  }finally{
-    button.disabled=false;
-    button.textContent="Pay & Submit →";
+  } catch (error) {
+
+    showStatus("timeStatus",error.message,"error");
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Continue to Payment →";
+
   }
 });
 
-/* Generate campaign week options */
-function dateString(date){
-  return [
-    date.getFullYear(),
-    String(date.getMonth()+1).padStart(2,"0"),
-    String(date.getDate()).padStart(2,"0")
-  ].join("-");
-}
-function mondayOf(date){
-  const d=new Date(date);
-  d.setHours(0,0,0,0);
-  d.setDate(d.getDate()+(d.getDay()===0?-6:1-d.getDay()));
-  return d;
-}
-function populateWeeks(){
-  const select=$("campaignWeek");
-  const today=new Date();
-  const monday=mondayOf(today);
-  select.innerHTML="";
+/* BILLBOARD CAMPAIGN WEEKS */
 
-  for(let i=0;i<12;i++){
-    const week=new Date(monday);
+function dateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,"0");
+  const d = String(date.getDate()).padStart(2,"0");
+
+  return `${y}-${m}-${d}`;
+}
+
+function mondayOf(date) {
+  const result = new Date(date);
+
+  result.setHours(0,0,0,0);
+
+  const day = result.getDay();
+
+  result.setDate(
+    result.getDate() + (day === 0 ? -6 : 1-day)
+  );
+
+  return result;
+}
+
+function populateWeeks() {
+
+  const select = $("campaignWeek");
+  const today = new Date();
+  const monday = mondayOf(today);
+
+  select.innerHTML = "";
+
+  for (let i=0;i<12;i++) {
+
+    const week = new Date(monday);
+
     week.setDate(week.getDate()+i*7);
 
-    // Bookings open on Saturday for the following Monday.
-    const opening=new Date(week);
+    const opening = new Date(week);
+
     opening.setDate(opening.getDate()-2);
 
-    if(today<opening) continue;
+    if (today < opening) continue;
 
-    const option=document.createElement("option");
-    option.value=dateString(week);
-    option.textContent=dateString(week)+" campaign week";
+    const option = document.createElement("option");
+
+    option.value = dateString(week);
+    option.textContent = dateString(week) + " campaign week";
+
     select.appendChild(option);
   }
 
-  if(!select.options.length){
-    const next=new Date(monday);
+  if (!select.options.length) {
+
+    const next = new Date(monday);
     next.setDate(next.getDate()+7);
-    const option=document.createElement("option");
-    option.value=dateString(next);
-    option.textContent=dateString(next)+" campaign week";
+
+    const option = document.createElement("option");
+
+    option.value = dateString(next);
+    option.textContent = dateString(next) + " campaign week";
+
     select.appendChild(option);
   }
 }
+
 populateWeeks();
-$("campaignWeek").addEventListener("change",loadAvailability);
 
-/* Live billboard slot availability */
-async function loadAvailability(){
+$("campaignWeek").addEventListener(
+  "change",
+  loadBillboardAvailability
+);
+
+/* BILLBOARD SLOTS */
+
+function renderSlots(slots) {
+
+  const grid = $("slotGrid");
+
+  grid.innerHTML = "";
+
   selectedSlots.clear();
-  updateSlotTotal();
-  $("slotGrid").innerHTML="";
-  statusMessage("billStatus","Loading available slots...","info");
 
-  try{
-    const week=$("campaignWeek").value;
-    const result=await apiRequest(
-      "/api/advertising/billboard/availability?week="+encodeURIComponent(week)
+  currentSlots = slots || [];
+
+  for (let number=1;number<=10;number++) {
+
+    const info = currentSlots.find(
+      item => Number(item.slot) === number
     );
 
-    if(!Array.isArray(result.slots)) throw new Error("Invalid availability response.");
-    availability=result.slots;
-    renderSlots();
-  }catch(error){
-    statusMessage("billStatus",error.message,"error");
-  }
-}
-function renderSlots(){
-  const grid=$("slotGrid");
-  grid.innerHTML="";
+    const state = info?.status || "unavailable";
 
-  for(let number=1;number<=10;number++){
-    const item=availability.find(s=>Number(s.slot)===number);
-    const state=item?.status || "unavailable";
-    const available=state==="available";
+    const available = state === "available";
 
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="slot "+(available?"available":"unavailable");
-    button.disabled=!available;
+    const button = document.createElement("button");
 
-    const strong=document.createElement("strong");
-    strong.textContent=number;
+    button.type = "button";
+    button.className = "slot";
 
-    const small=document.createElement("small");
-    small.textContent=available?"Available":
-      state==="held"?"Temporarily held":
-      state==="booked"?"Booked":"Unavailable";
+    button.classList.add(
+      available ? "available" :
+      state === "held" ? "held" : "booked"
+    );
+
+    const strong = document.createElement("strong");
+    strong.textContent = String(number);
+
+    const small = document.createElement("small");
+
+    small.textContent = available
+      ? "Available"
+      : state === "held"
+        ? "Temporarily held"
+        : state === "booked"
+          ? "Booked"
+          : "Unavailable";
 
     button.append(strong,small);
 
-    button.onclick=()=>{
-      if(!available)return;
+    button.disabled = !available;
 
-      if(selectedSlots.has(number)){
+    button.addEventListener("click",() => {
+
+      if (!available) return;
+
+      if (selectedSlots.has(number)) {
+
         selectedSlots.delete(number);
         button.classList.remove("selected");
-        small.textContent="Available";
-      }else{
+        small.textContent = "Available";
+
+      } else {
+
         selectedSlots.add(number);
         button.classList.add("selected");
-        small.textContent="Selected";
+        small.textContent = "Selected";
+
       }
-      updateSlotTotal();
-    };
+
+      updateBillboardTotal();
+
+    });
 
     grid.appendChild(button);
   }
 
-  const free=availability.filter(s=>s.status==="available").length;
-  if(free===0){
-    statusMessage(
+  const availableCount = currentSlots.filter(
+    slot => slot.status === "available"
+  ).length;
+
+  if (availableCount === 0) {
+
+    showStatus(
       "billStatus",
       "All slots for this week have been booked. Please check the next available week.",
       "info"
     );
-  }else{
-    clearMessage("billStatus");
+
+  } else {
+
+    clearStatus("billStatus");
+
+  }
+
+  updateBillboardTotal();
+}
+
+async function loadBillboardAvailability() {
+
+  clearStatus("billStatus");
+  $("slotGrid").innerHTML = "";
+
+  showStatus(
+    "billStatus",
+    "Loading billboard availability...",
+    "info"
+  );
+
+  try {
+
+    const week = $("campaignWeek").value;
+
+    const result = await request(
+      "/api/advertising/billboard/availability?week=" +
+      encodeURIComponent(week)
+    );
+
+    if (!Array.isArray(result.slots)) {
+      throw new Error("Invalid billboard availability response.");
+    }
+
+    renderSlots(result.slots);
+
+  } catch (error) {
+
+    showStatus("billStatus",error.message,"error");
+
+    $("slotGrid").innerHTML = "";
+    selectedSlots.clear();
+
+    updateBillboardTotal();
+
   }
 }
-function updateSlotTotal(){
-  const count=selectedSlots.size;
-  $("slotCount").textContent=count+" slot"+(count===1?"":"s")+" selected";
-  $("billPrice").textContent=naira(count*BILLBOARD_SLOT_PRICE);
-  $("billPay").disabled=count===0;
-  $("billPay").textContent=count===0
-    ?"Select a slot to continue"
-    :"Pay "+naira(count*BILLBOARD_SLOT_PRICE)+" & Submit →";
+
+function updateBillboardTotal() {
+
+  const count = selectedSlots.size;
+
+  $("slotCount").textContent =
+    `${count} slot${count === 1 ? "" : "s"} selected`;
+
+  $("billboardTotal").textContent =
+    naira(count * BILLBOARD_SLOT_PRICE);
+
+  const button = $("billSubmit");
+
+  button.disabled = count === 0;
+
+  button.textContent = count === 0
+    ? "Select a slot to continue"
+    : `Pay ${naira(count * BILLBOARD_SLOT_PRICE)} and Submit`;
 }
 
-/* Billboard payment submission */
-$("billForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  clearMessage("billStatus");
+/* BILLBOARD PAYMENT */
 
-  if(selectedSlots.size===0){
-    statusMessage("billStatus","Select at least one available slot.","error");
+$("billboardForm").addEventListener("submit",async event => {
+
+  event.preventDefault();
+  clearStatus("billStatus");
+
+  if (selectedSlots.size === 0) {
+
+    showStatus(
+      "billStatus",
+      "Please select at least one available slot.",
+      "error"
+    );
+
     return;
   }
 
-  const button=$("billPay");
-  button.disabled=true;
-  button.textContent="Securing slots...";
+  const button = $("billSubmit");
 
-  try{
-    const slots=[...selectedSlots].sort((a,b)=>a-b);
+  button.disabled = true;
+  button.textContent = "Securing selected slots...";
 
-    const order=await prepareCheckout(
+  try {
+
+    const slots = [...selectedSlots].sort((a,b) => a-b);
+
+    const order = await prepareCheckout(
       event.target,
       "homepage_billboard",
       {
@@ -689,29 +947,57 @@ $("billForm").addEventListener("submit",async event=>{
       }
     );
 
-    const expected=slots.length*BILLBOARD_SLOT_PRICE;
+    const expectedAmount =
+      slots.length * BILLBOARD_SLOT_PRICE;
 
-    if(Number(order.amount)!==expected){
-      throw new Error("The server returned an unexpected billboard price. Please refresh and try again.");
+    if (Number(order.amount) !== expectedAmount) {
+      throw new Error("The server billboard price does not match your selected slots.");
     }
 
-    openFlutterwaveCheckout(order,"billStatus");
-    statusMessage(
+    /*
+      Flutterwave popup opens here.
+      Backend must already have temporarily held
+      the requested slots atomically.
+    */
+    openFlutterwave(order,"billStatus");
+
+    showStatus(
       "billStatus",
-      "Your slots are temporarily held. Complete payment in the Flutterwave popup.",
+      "Your selected slots are temporarily held. Complete your payment in the Flutterwave popup.",
       "info"
     );
 
-  }catch(error){
-    statusMessage("billStatus",error.message,"error");
-    loadAvailability();
-  }finally{
-    updateSlotTotal();
+  } catch (error) {
+
+    showStatus("billStatus",error.message,"error");
+
+    loadBillboardAvailability();
+
+  } finally {
+
+    updateBillboardTotal();
+
   }
 });
 
-/* Initial state */
-updateSlotTotal();
+/*
+  PAYMENT VERIFICATION ENDPOINT
+
+  POST /api/advertising/payment/verify
+
+  Backend must verify the transaction directly with
+  Flutterwave using the SECRET KEY, confirm the amount,
+  currency, reference and successful payment status.
+
+  It must then confirm the advert submission and
+  permanently book billboard slots when applicable.
+
+  A Flutterwave browser callback by itself is NOT proof
+  of payment. A webhook should also process successful
+  transactions in case the advertiser closes the page.
+*/
+
+updateBillboardTotal();
 </script>
 </body>
 </html>
