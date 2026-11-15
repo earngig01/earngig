@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#160F0B">
+  <meta name="theme-color" content="#071629">
   <title>AHRUH | Shop • Save • Play • Earn</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,21 +14,20 @@
 
   <style>
     :root {
-      --bg: #160F0B;
-      --surface: #211710;
-      --surface-2: #2A1D14;
-      --surface-3: #342317;
-      --gold: #F5A623;
-      --gold-light: #FFBD59;
-      --orange: #D97724;
-      --copper: #8E3D1C;
-      --text: #FFF7EC;
-      --muted: #B8A99A;
-      --border: rgba(255,189,89,.15);
-      --danger: #F06B55;
-      --success: #7BCB91;
+      --bg: #071629;
+      --surface: #0D213A;
+      --surface-2: #122D4D;
+      --surface-3: #183B63;
+      --blue: #1685F8;
+      --blue-light: #62B5FF;
+      --blue-pale: #B9DCFF;
+      --text: #F5F9FF;
+      --muted: #A8BBD0;
+      --border: rgba(98,181,255,.19);
+      --danger: #FF7185;
+      --success: #65D6A0;
       --radius: 17px;
-      --shadow: 0 12px 35px rgba(0,0,0,.22);
+      --shadow: 0 12px 35px rgba(0,0,0,.25);
     }
 
     * { box-sizing: border-box; }
@@ -69,8 +68,8 @@
       font-weight: 700;
       letter-spacing: 2px;
       line-height: .9;
-      color: var(--gold-light);
-      text-shadow: 0 0 18px rgba(245,166,35,.22);
+      color: var(--blue-light);
+      text-shadow: 0 0 20px rgba(22,133,248,.28);
     }
 
     .brand-tagline {
@@ -96,28 +95,29 @@
       color: var(--text);
       font-size: 18px;
       border-radius: 12px;
-      background: rgba(255,255,255,.045);
+      background: rgba(98,181,255,.09);
+      border: 1px solid var(--border);
     }
 
     .notification-dot {
       position: absolute;
       width: 7px;
       height: 7px;
-      background: var(--orange);
+      background: var(--blue-light);
       border-radius: 50%;
       top: 7px;
       right: 7px;
       display: none;
     }
 
-    /* Display only. This is deliberately not a link or button. */
+    /* DISPLAY-ONLY WALLET */
     .wallet-mini {
       display: flex;
       align-items: center;
       gap: 7px;
       padding: 8px 10px;
-      border: 1px solid rgba(245,166,35,.28);
-      background: rgba(245,166,35,.08);
+      border: 1px solid rgba(98,181,255,.35);
+      background: linear-gradient(135deg, #123B68, #0D2949);
       border-radius: 12px;
       white-space: nowrap;
       pointer-events: none;
@@ -125,17 +125,17 @@
     }
 
     .wallet-mini i {
-      color: var(--gold);
+      color: var(--blue-light);
       font-size: 14px;
     }
 
     .wallet-mini span {
-      color: var(--gold-light);
+      color: var(--blue-pale);
       font-weight: 800;
       font-size: 12px;
     }
 
-    /* GREETING */
+    /* WELCOME */
     .welcome {
       padding: 23px 0 17px;
       display: flex;
@@ -151,7 +151,7 @@
       letter-spacing: -.5px;
     }
 
-    .welcome h1 span { color: var(--gold-light); }
+    .welcome h1 span { color: var(--blue-light); }
 
     .welcome p {
       color: var(--muted);
@@ -179,7 +179,7 @@
     .batch-status strong {
       display: block;
       font-size: 11px;
-      color: var(--gold-light);
+      color: var(--blue-light);
       overflow-wrap: anywhere;
     }
 
@@ -202,7 +202,7 @@
       padding: 10px 4px;
       border: 1px solid var(--border);
       border-radius: 15px;
-      background: linear-gradient(145deg, #2A1D14, #1D140F);
+      background: linear-gradient(145deg, #153657, #0D213A);
       text-align: center;
       transition: .2s ease;
     }
@@ -215,8 +215,8 @@
       border-radius: 11px;
       display: grid;
       place-items: center;
-      color: var(--gold-light);
-      background: rgba(245,166,35,.11);
+      color: var(--blue-light);
+      background: rgba(22,133,248,.17);
       font-size: 15px;
     }
 
@@ -265,7 +265,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 1 / .92;
-      background: #2A211A;
+      background: #102A47;
       overflow: hidden;
     }
 
@@ -287,11 +287,11 @@
       border: 0;
       border-radius: 50%;
       color: #fff;
-      background: rgba(22,15,11,.78);
+      background: rgba(7,22,41,.85);
       cursor: pointer;
     }
 
-    .favorite-btn.active { color: #FF786B; }
+    .favorite-btn.active { color: var(--danger); }
 
     .product-info { padding: 11px; }
 
@@ -310,7 +310,7 @@
     .product-price {
       font-size: 15px;
       font-weight: 800;
-      color: var(--gold-light);
+      color: var(--blue-light);
       margin-bottom: 10px;
     }
 
@@ -325,8 +325,8 @@
       padding: 9px 7px;
       border: 0;
       border-radius: 9px;
-      color: #24150A;
-      background: linear-gradient(110deg, var(--gold), var(--gold-light));
+      color: #FFFFFF;
+      background: linear-gradient(110deg, #0867CA, #1685F8);
       font-size: 10px;
       font-weight: 800;
       cursor: pointer;
@@ -337,8 +337,8 @@
       flex: 0 0 34px;
       border: 1px solid var(--border);
       border-radius: 9px;
-      color: var(--gold-light);
-      background: transparent;
+      color: var(--blue-light);
+      background: var(--surface-2);
       display: grid;
       place-items: center;
       cursor: pointer;
@@ -348,14 +348,14 @@
       grid-column: 1 / -1;
       text-align: center;
       padding: 45px 18px;
-      background: var(--surface);
-      border: 1px dashed var(--border);
+      background: linear-gradient(145deg, #102A47, #0D213A);
+      border: 1px dashed rgba(98,181,255,.3);
       border-radius: var(--radius);
     }
 
     .empty-state i {
       font-size: 27px;
-      color: var(--gold);
+      color: var(--blue-light);
       margin-bottom: 12px;
     }
 
@@ -370,7 +370,7 @@
       margin: 0;
     }
 
-    /* BOTTOM NAV */
+    /* BOTTOM NAVIGATION */
     .bottom-nav {
       position: fixed;
       z-index: 50;
@@ -379,7 +379,7 @@
       right: 0;
       min-height: 69px;
       padding: 8px 8px max(8px, env(safe-area-inset-bottom));
-      background: rgba(29,20,15,.97);
+      background: rgba(9,27,48,.97);
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -392,14 +392,14 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      color: #9E8D7D;
+      color: #91A8C0;
       font-size: 9px;
       font-weight: 600;
     }
 
     .nav-item i { font-size: 17px; }
 
-    .nav-item.active { color: var(--gold-light); }
+    .nav-item.active { color: var(--blue-light); }
 
     .toast {
       position: fixed;
@@ -409,8 +409,8 @@
       transform: translateX(-50%) translateY(12px);
       opacity: 0;
       pointer-events: none;
-      background: #F5A623;
-      color: #21140A;
+      background: #1685F8;
+      color: #FFFFFF;
       padding: 11px 17px;
       border-radius: 10px;
       font-size: 11px;
@@ -462,7 +462,6 @@
 <body>
   <div class="page">
 
-    <!-- HEADER -->
     <header class="topbar">
       <div class="brand-wrap">
         <div class="brand">AHRUH</div>
@@ -470,7 +469,7 @@
       </div>
 
       <div class="header-actions">
-        <!-- Display-only wallet balance: intentionally not clickable -->
+        <!-- Wallet balance is display-only, not a link or button -->
         <div class="wallet-mini" aria-label="Naira wallet balance">
           <i class="fa-solid fa-wallet"></i>
           <span id="headerWalletBalance">₦0.00</span>
@@ -483,7 +482,6 @@
       </div>
     </header>
 
-    <!-- GREETING AND BATCH STATUS -->
     <section class="welcome">
       <div>
         <h1>Hello, <span id="customerFirstName">Customer</span> 👋</h1>
@@ -496,7 +494,6 @@
       </div>
     </section>
 
-    <!-- FIVE SHORTCUTS -->
     <nav class="shortcuts" aria-label="Shopping shortcuts">
       <a class="shortcut" href="shop.html">
         <span class="shortcut-icon"><i class="fa-solid fa-bag-shopping"></i></span>
@@ -524,7 +521,6 @@
       </a>
     </nav>
 
-    <!-- PRODUCT LISTING -->
     <main>
       <div class="products-heading">
         <h2>Available Products</h2>
@@ -541,7 +537,6 @@
     </main>
   </div>
 
-  <!-- BOTTOM NAVIGATION -->
   <nav class="bottom-nav" aria-label="Main navigation">
     <a class="nav-item active" href="index.html">
       <i class="fa-solid fa-house"></i>
@@ -572,10 +567,6 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    /* -----------------------------------------
-       AHRUH CUSTOMER HOMEPAGE - PROTOTYPE DATA
-       ----------------------------------------- */
-
     const STORAGE = {
       session: "ahruh_customer_session_v1",
       wallet: "ahruh_customer_wallet_v1",
@@ -651,13 +642,9 @@
       }
     }
 
-    /* HEADER NAIRA WALLET BALANCE
-       Display only. No click handler and no link.
-       G-Coins are deliberately not read or displayed here.
-    */
+    /* NAIRA WALLET BALANCE ONLY */
     function loadWalletBalance() {
       const wallet = readStore(STORAGE.wallet, null);
-
       let balance = 0;
 
       if (wallet && typeof wallet === "object") {
@@ -698,7 +685,6 @@
       const activeBatch = ordered.find(batch => {
         const open = parseDate(batch.openDate);
         const close = parseDate(batch.closeDate);
-
         return open && close && now >= open && now <= close;
       });
 
@@ -719,7 +705,7 @@
       }
     }
 
-    /* PRODUCTS */
+    /* PRODUCT DATA */
     function getProductImage(product) {
       if (product.image) return product.image;
 
@@ -739,15 +725,12 @@
       if (product.isActive === false) return false;
       if (product.status === "inactive") return false;
       if (product.status === "archived") return false;
-
       return true;
     }
 
     function getProducts() {
       const products = readStore(STORAGE.products, []);
-
       if (!Array.isArray(products)) return [];
-
       return products.filter(productIsAvailable);
     }
 
@@ -770,7 +753,6 @@
         const id = typeof item === "object"
           ? item.productId || item.id
           : item;
-
         return String(id) === String(productId);
       });
     }
@@ -811,7 +793,7 @@
                           loading="lazy"
                           onerror="this.style.display='none'">`
                   : `<div class="product-image"
-                          style="display:grid;place-items:center;color:#B8A99A">
+                          style="display:grid;place-items:center;color:#A8BBD0">
                        <i class="fa-solid fa-image fa-2x"></i>
                      </div>`
               }
@@ -858,7 +840,6 @@
         const id = typeof item === "object"
           ? item.productId || item.id
           : item;
-
         return String(id) === String(productId);
       });
 
@@ -889,7 +870,6 @@
       }
 
       let cart = readStore(STORAGE.cart, []);
-
       if (!Array.isArray(cart)) cart = [];
 
       const existing = cart.find(item =>
@@ -919,7 +899,7 @@
         "product.html?id=" + encodeURIComponent(productId);
     }
 
-    /* NOTIFICATION INDICATOR */
+    /* NOTIFICATIONS */
     function loadNotificationIndicator() {
       const notifications = readStore(
         "ahruh_customer_notifications_v1",
@@ -936,7 +916,7 @@
         unread ? "block" : "none";
     }
 
-    /* INITIAL PAGE LOAD */
+    /* PAGE INITIALISATION */
     function initialiseHomepage() {
       loadCustomerGreeting();
       loadWalletBalance();
@@ -947,7 +927,6 @@
 
     initialiseHomepage();
 
-    /* Refresh displayed prototype data if changed in another tab. */
     window.addEventListener("storage", event => {
       if (!event.key || Object.values(STORAGE).includes(event.key)) {
         initialiseHomepage();
