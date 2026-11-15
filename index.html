@@ -2,1315 +2,1522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#F4F9FF">
-  <title>AHRUH | Shop • Save • Play • Earn</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-  <style>
-    :root {
-      --bg: #F4F8FE;
-      --white: #FFFFFF;
-      --surface: #FFFFFF;
-      --surface-blue: #EAF3FF;
-      --blue: #1266D6;
-      --blue-dark: #084DAA;
-      --blue-light: #4B9CFA;
-      --blue-pale: #D9EAFF;
-      --text: #172B45;
-      --muted: #71839A;
-      --border: #DFEAF7;
-      --star: #F5A623;
-      --danger: #E6536B;
-      --success: #168B59;
-      --shadow: 0 5px 20px rgba(30,75,130,.07);
-      --radius: 17px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "DM Sans", sans-serif;
-      min-height: 100vh;
-      padding-bottom: 90px;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
-
-    .page {
-      width: min(100%, 1100px);
-      margin: auto;
-      padding: 0 16px;
-    }
-
-    /* CENTRED HEADER */
-    .topbar {
-      height: 76px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-
-    .brand-wrap {
-      grid-column: 2;
-      text-align: center;
-    }
-
-    .brand {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 38px;
-      line-height: .85;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--blue);
-    }
-
-    .brand-tagline {
-      color: var(--muted);
-      font-size: 8px;
-      letter-spacing: 2px;
-      margin-top: 6px;
-      white-space: nowrap;
-    }
-
-    .header-actions {
-      grid-column: 3;
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .notification-link {
-      position: relative;
-      width: 37px;
-      height: 37px;
-      display: grid;
-      place-items: center;
-      color: var(--blue);
-      font-size: 17px;
-      border-radius: 12px;
-      background: var(--surface-blue);
-      border: 1px solid var(--border);
-    }
-
-    .notification-dot {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      background: #E6536B;
-      border-radius: 50%;
-      top: 6px;
-      right: 6px;
-      display: none;
-    }
-
-    /* WALLET DISPLAY ONLY */
-    .wallet-mini {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 9px;
-      border: 1px solid #C8DFFF;
-      background: #EAF3FF;
-      border-radius: 11px;
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .wallet-mini i {
-      color: var(--blue);
-      font-size: 13px;
-    }
-
-    .wallet-mini span {
-      color: var(--blue-dark);
-      font-weight: 800;
-      font-size: 11px;
-    }
-
-    /* WELCOME */
-    .welcome {
-      padding: 23px 0 17px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .welcome h1 {
-      font-size: 21px;
-      margin: 0 0 5px;
-      font-weight: 800;
-      letter-spacing: -.5px;
-    }
-
-    .welcome h1 span { color: var(--blue); }
-
-    .welcome p {
-      color: var(--muted);
-      font-size: 12px;
-      margin: 0;
-    }
-
-    .batch-status {
-      flex: 0 0 auto;
-      max-width: 46%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--white);
-      padding: 9px 11px;
-      text-align: right;
-      box-shadow: var(--shadow);
-    }
-
-    .batch-status small {
-      display: block;
-      color: var(--muted);
-      font-size: 9px;
-      margin-bottom: 4px;
-    }
-
-    .batch-status strong {
-      display: block;
-      font-size: 11px;
-      color: var(--blue);
-      overflow-wrap: anywhere;
-    }
-
-    /* SHORTCUTS */
-    .shortcuts {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 9px;
-      margin: 3px 0 24px;
-    }
-
-    .shortcut {
-      min-width: 0;
-      min-height: 91px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 9px;
-      padding: 10px 4px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      background: var(--white);
-      text-align: center;
-      box-shadow: var(--shadow);
-      transition: .2s ease;
-    }
-
-    .shortcut:active { transform: scale(.97); }
-
-    .shortcut-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
-      display: grid;
-      place-items: center;
-      color: var(--blue);
-      background: var(--blue-pale);
-      font-size: 15px;
-    }
-
-    .shortcut span:last-child {
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    /* PRODUCT LIST */
-    .products-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 0 0 13px;
-    }
-
-    .products-heading h2 {
-      font-size: 17px;
-      margin: 0;
-      font-weight: 800;
-    }
-
-    .products-heading span {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 13px;
-    }
-
-    .product-card {
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--white);
-      box-shadow: var(--shadow);
-    }
-
-    .product-image-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / .92;
-      background: #EAF3FF;
-      overflow: hidden;
-    }
-
-    .product-image {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .favorite-btn {
-      position: absolute;
-      top: 9px;
-      right: 9px;
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      border: 0;
-      border-radius: 50%;
-      color: var(--text);
-      background: rgba(255,255,255,.95);
-      box-shadow: 0 2px 8px rgba(0,0,0,.1);
-      cursor: pointer;
-    }
-
-    .favorite-btn.active { color: var(--danger); }
-
-    .product-info { padding: 11px; }
-
-    .product-name {
-      font-size: 12px;
-      line-height: 1.4;
-      font-weight: 700;
-      min-height: 33px;
-      margin: 0 0 6px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .product-price {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--blue);
-      margin-bottom: 7px;
-    }
-
-    .product-rating {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .stars {
-      color: var(--star);
-      letter-spacing: 1px;
-      font-size: 11px;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 7px;
-    }
-
-    .add-cart {
-      flex: 1;
-      min-width: 0;
-      padding: 9px 7px;
-      border: 0;
-      border-radius: 9px;
-      color: #FFFFFF;
-      background: linear-gradient(110deg, #0755B8, #1685F8);
-      font-size: 10px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .view-product {
-      width: 34px;
-      flex: 0 0 34px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      color: var(--blue);
-      background: var(--surface-blue);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-    }
-
-    .review-link {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--blue);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 10px 0 1px;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .review-link i { margin-right: 4px; }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 45px 18px;
-      background: var(--white);
-      border: 1px dashed #BCD5F1;
-      border-radius: var(--radius);
-    }
-
-    .empty-state i {
-      font-size: 27px;
-      color: var(--blue);
-      margin-bottom: 12px;
-    }
-
-    .empty-state h3 {
-      font-size: 14px;
-      margin: 0 0 6px;
-    }
-
-    .empty-state p {
-      color: var(--muted);
-      font-size: 11px;
-      margin: 0;
-    }
-
-    /* REVIEW MODAL */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(15,35,60,.48);
-    }
-
-    .modal-backdrop.show { display: flex; }
-
-    .review-modal {
-      width: min(100%, 440px);
-      max-height: 85vh;
-      overflow-y: auto;
-      background: var(--white);
-      color: var(--text);
-      border-radius: 19px;
-      padding: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.2);
-    }
-
-    .modal-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .modal-heading h3 {
-      font-size: 17px;
-      margin: 0;
-    }
-
-    .close-modal {
-      border: 0;
-      background: var(--surface-blue);
-      color: var(--blue);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .review-product-name {
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .review-form label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      margin: 13px 0 7px;
-    }
-
-    .review-form input,
-    .review-form textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #F8FBFF;
-      border-radius: 10px;
-      padding: 11px;
-      color: var(--text);
-      font: inherit;
-      font-size: 12px;
-      outline: none;
-    }
-
-    .review-form input:focus,
-    .review-form textarea:focus {
-      border-color: var(--blue-light);
-    }
-
-    .review-form textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .rating-picker {
-      display: flex;
-      gap: 8px;
-      font-size: 27px;
-      color: #D7E0EA;
-    }
-
-    .rating-picker button {
-      border: 0;
-      background: transparent;
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-      cursor: pointer;
-    }
-
-    .rating-picker button.selected { color: var(--star); }
-
-    .submit-review {
-      width: 100%;
-      border: 0;
-      background: var(--blue);
-      color: white;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-top: 16px;
-      cursor: pointer;
-    }
-
-    .review-list {
-      margin-top: 18px;
-      border-top: 1px solid var(--border);
-      padding-top: 13px;
-    }
-
-    .review-list h4 {
-      font-size: 13px;
-      margin: 0 0 12px;
-    }
-
-    .review-item {
-      padding: 11px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .review-item:last-child { border-bottom: 0; }
-
-    .review-item-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .reviewer-name {
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .review-date {
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    .review-item-stars {
-      color: var(--star);
-      font-size: 11px;
-      margin: 5px 0;
-    }
-
-    .review-comment {
-      font-size: 11px;
-      color: #52657C;
-      line-height: 1.55;
-      overflow-wrap: anywhere;
-    }
-
-    .no-reviews {
-      color: var(--muted);
-      font-size: 11px;
-      padding: 10px 0;
-    }
-
-    /* BOTTOM NAV */
-    .bottom-nav {
-      position: fixed;
-      z-index: 50;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      min-height: 69px;
-      padding: 8px 8px max(8px, env(safe-area-inset-bottom));
-      background: rgba(255,255,255,.97);
-      border-top: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      backdrop-filter: blur(16px);
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      color: #8293A8;
-      font-size: 9px;
-      font-weight: 600;
-    }
-
-    .nav-item i { font-size: 17px; }
-    .nav-item.active { color: var(--blue); }
-
-    .toast {
-      position: fixed;
-      z-index: 150;
-      bottom: 85px;
-      left: 50%;
-      transform: translateX(-50%) translateY(12px);
-      opacity: 0;
-      pointer-events: none;
-      background: var(--blue);
-      color: white;
-      padding: 11px 17px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 800;
-      box-shadow: var(--shadow);
-      transition: .2s ease;
-      white-space: nowrap;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    @media (min-width: 650px) {
-      .page { padding: 0 25px; }
-      .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .shortcuts { gap: 14px; }
-      .shortcut { min-height: 105px; }
-      .shortcut span:last-child { font-size: 12px; }
-      .product-image-wrap { aspect-ratio: 1 / .85; }
-    }
-
-    @media (min-width: 900px) {
-      .product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .bottom-nav {
-        left: 50%;
-        right: auto;
-        width: min(100%, 700px);
-        transform: translateX(-50%);
-        border: 1px solid var(--border);
-        border-bottom: 0;
-        border-radius: 17px 17px 0 0;
-      }
-    }
-
-    @media (max-width: 390px) {
-      .brand { font-size: 34px; }
-      .header-actions { gap: 6px; }
-      .wallet-mini { padding: 7px; }
-      .wallet-mini span { font-size: 10px; }
-      .welcome h1 { font-size: 18px; }
-      .batch-status { padding: 8px; }
-      .shortcuts { gap: 6px; }
-      .shortcut span:last-child { font-size: 9px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>AHRUH | Shop • Save • Play • Earn</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root {
+  --blue:#075bd3;
+  --blue2:#1678ed;
+  --ink:#0d1b35;
+  --muted:#71809a;
+  --pale:#eaf3ff;
+  --line:#e4ecf7;
+  --white:#fff;
+  --star:#ffb21c;
+  --shadow:0 8px 24px rgba(25,76,145,.08);
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:#fff;
+  color:var(--ink);
+  font-family:"DM Sans",sans-serif;
+  padding-bottom:82px;
+}
+
+a { text-decoration:none; color:inherit; }
+button { font:inherit; }
+
+.page {
+  width:min(100%,1180px);
+  margin:auto;
+  padding:0 20px;
+}
+
+/* HEADER */
+
+header {
+  height:88px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  gap:12px;
+}
+
+.brand {
+  text-align:center;
+  grid-column:2;
+}
+
+.brand-name {
+  font:700 42px/.8 "Cormorant Garamond",serif;
+  letter-spacing:3px;
+  color:#145bb8;
+}
+
+.brand-tag {
+  font-size:9px;
+  letter-spacing:2.5px;
+  margin-top:9px;
+  color:#52637e;
+}
+
+.header-actions {
+  grid-column:3;
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.wallet {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding:10px 13px;
+  border-radius:30px;
+  background:#eaf3ff;
+  color:#0755bd;
+  font-weight:800;
+  font-size:12px;
+  pointer-events:none;
+  user-select:none;
+}
+
+.wallet i { font-size:15px; }
+
+.bell {
+  height:40px;
+  width:40px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#f1f6fd;
+  color:#123e7b;
+  position:relative;
+}
+
+.dot {
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:8px;
+  height:8px;
+  background:#ef4b53;
+  border-radius:50%;
+  display:none;
+}
+
+/* IMAGE-ONLY BILLBOARD */
+
+.billboard {
+  position:relative;
+  width:100%;
+  height:clamp(190px,32vw,350px);
+  margin:22px 0 24px;
+  border-radius:25px;
+  overflow:hidden;
+  background:#eaf3ff;
+  box-shadow:var(--shadow);
+}
+
+.billboard-track {
+  height:100%;
+  width:100%;
+  position:relative;
+}
+
+.billboard-slide {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .65s ease;
+}
+
+.billboard-slide.active {
+  opacity:1;
+}
+
+.billboard-slide img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.billboard-placeholder {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  color:#4778b7;
+  font-size:13px;
+  font-weight:600;
+}
+
+.billboard-placeholder i { font-size:30px; }
+
+.billboard-dots {
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:7px;
+  padding:7px 11px;
+  border-radius:20px;
+  background:#ffffffd9;
+}
+
+.billboard-dots button {
+  width:9px;
+  height:9px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:#bdcadd;
+  cursor:pointer;
+}
+
+.billboard-dots button.active {
+  background:#075bd3;
+}
+
+/* SHOPPING SHORTCUTS */
+
+.shortcuts {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin:0 0 30px;
+}
+
+.shortcut {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+  text-align:center;
+  font-weight:700;
+  font-size:12px;
+  color:#102342;
+}
+
+.shortcut-icon {
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  background:#eaf3ff;
+  display:grid;
+  place-items:center;
+  color:#075bd3;
+  font-size:25px;
+  transition:.2s;
+}
+
+.shortcut:active .shortcut-icon {
+  transform:scale(.95);
+}
+
+/* PRODUCTS */
+
+.section-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:0 0 15px;
+  gap:12px;
+}
+
+.section-head h2 {
+  font-size:24px;
+  letter-spacing:-.6px;
+  margin:0;
+}
+
+.section-head a {
+  color:#075bd3;
+  font-weight:700;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.products {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:17px;
+}
+
+.product {
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+
+.product-image {
+  height:210px;
+  background:#edf4ff;
+  position:relative;
+  overflow:hidden;
+}
+
+.product-image img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.fav {
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  background:#ffffffed;
+  color:#12213a;
+  cursor:pointer;
+}
+
+.fav.active { color:#e34e68; }
+
+.product-body {
+  padding:13px 14px 15px;
+}
+
+.product-name {
+  font-size:14px;
+  font-weight:700;
+  margin:0 0 7px;
+  min-height:20px;
+}
+
+.rating {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:8px;
+}
+
+.stars {
+  color:var(--star);
+  letter-spacing:1px;
+  font-size:13px;
+}
+
+.price {
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:12px;
+  color:#101f3a;
+}
+
+.add {
+  width:100%;
+  border:0;
+  border-radius:25px;
+  background:linear-gradient(100deg,#075bd3,#167df0);
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  padding:11px;
+  cursor:pointer;
+}
+
+.review-link {
+  border:0;
+  background:none;
+  color:#075bd3;
+  font-weight:700;
+  font-size:11px;
+  padding:11px 0 0;
+  cursor:pointer;
+}
+
+.empty {
+  grid-column:1/-1;
+  text-align:center;
+  padding:45px 15px;
+  border:1px dashed #cbdcf1;
+  border-radius:20px;
+  background:#f8fbff;
+  color:var(--muted);
+}
+
+.empty i {
+  font-size:28px;
+  color:#4389df;
+  margin-bottom:12px;
+}
+
+.empty h3 {
+  color:var(--ink);
+  margin:0 0 6px;
+  font-size:15px;
+}
+
+.empty p {
+  margin:0;
+  font-size:12px;
+}
+
+/* PRODUCT REVIEW MODAL */
+
+.modal-bg {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0c1e3b77;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+
+.modal-bg.show { display:flex; }
+
+.modal {
+  background:white;
+  border-radius:20px;
+  width:min(100%,440px);
+  max-height:85vh;
+  overflow:auto;
+  padding:20px;
+}
+
+.modal-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-top h3 {
+  margin:0;
+  font-size:18px;
+}
+
+.close {
+  border:0;
+  border-radius:50%;
+  width:34px;
+  height:34px;
+  background:#edf4ff;
+  color:#075bd3;
+  cursor:pointer;
+}
+
+.modal label {
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin:13px 0 6px;
+}
+
+.modal input,
+.modal textarea {
+  width:100%;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:inherit;
+  font-size:13px;
+}
+
+.modal textarea {
+  min-height:85px;
+  resize:vertical;
+}
+
+.rating-pick {
+  display:flex;
+  gap:8px;
+}
+
+.rating-pick button {
+  border:0;
+  background:none;
+  color:#d6deea;
+  font-size:28px;
+  padding:0;
+  cursor:pointer;
+}
+
+.rating-pick button.on { color:var(--star); }
+
+.submit {
+  width:100%;
+  margin-top:14px;
+  padding:12px;
+  border:0;
+  border-radius:25px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.review-list {
+  border-top:1px solid var(--line);
+  margin-top:18px;
+  padding-top:12px;
+}
+
+.review-row {
+  padding:11px 0;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+}
+
+.review-row strong { font-size:12px; }
+
+.review-row p {
+  line-height:1.5;
+  color:#52637a;
+  margin:5px 0 0;
+}
+
+.review-date {
+  float:right;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:10;
+  background:#fffffffa;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  padding:9px 8px max(9px,env(safe-area-inset-bottom));
+  backdrop-filter:blur(14px);
+}
+
+.nav {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  color:#71809a;
+  font-size:10px;
+  font-weight:600;
+}
+
+.nav i { font-size:20px; }
+.nav.active { color:#075bd3; }
+
+.toast {
+  position:fixed;
+  bottom:85px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#075bd3;
+  color:white;
+  padding:11px 16px;
+  border-radius:25px;
+  font-size:12px;
+  font-weight:700;
+  display:none;
+  z-index:30;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:650px) {
+  .page { padding:0 15px; }
+
+  header { height:78px; }
+
+  .brand-name { font-size:35px; }
+
+  .brand-tag {
+    font-size:7px;
+    letter-spacing:1.8px;
+  }
+
+  .wallet {
+    padding:9px 10px;
+    font-size:10px;
+  }
+
+  .header-actions { gap:6px; }
+
+  .bell {
+    width:36px;
+    height:36px;
+  }
+
+  .billboard {
+    height:clamp(165px,48vw,245px);
+    margin:16px 0 22px;
+    border-radius:20px;
+  }
+
+  .shortcuts {
+    gap:4px;
+    margin-bottom:26px;
+  }
+
+  .shortcut {
+    font-size:10px;
+    gap:7px;
+  }
+
+  .shortcut-icon {
+    width:53px;
+    height:53px;
+    font-size:20px;
+  }
+
+  .section-head h2 { font-size:20px; }
+  .section-head a { font-size:11px; }
+
+  .products {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px;
+  }
+
+  .product-image {
+    height:auto;
+    aspect-ratio:1/.92;
+  }
+
+  .product-body { padding:10px; }
+  .product-name { font-size:12px; }
+  .price { font-size:15px; }
+  .add { font-size:11px; padding:10px; }
+  .review-link { font-size:10px; }
+}
+
+@media(max-width:360px) {
+  .brand-name { font-size:30px; }
+  .wallet { font-size:9px; padding:8px; }
+  .shortcut-icon {
+    width:46px;
+    height:46px;
+  }
+  .shortcut { font-size:9px; }
+}
+</style>
 </head>
 
 <body>
-  <div class="page">
 
-    <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand">AHRUH</div>
-        <div class="brand-tagline">SHOP • SAVE • PLAY • EARN</div>
+<div class="page">
+
+  <!-- CENTRED AHRUH HEADER -->
+
+  <header>
+    <div></div>
+
+    <div class="brand">
+      <div class="brand-name">AHRUH</div>
+      <div class="brand-tag">SHOP • SAVE • PLAY • EARN</div>
+    </div>
+
+    <div class="header-actions">
+
+      <!-- DISPLAY-ONLY NAIRA WALLET -->
+
+      <div class="wallet" aria-label="Naira wallet balance">
+        <i class="fa-solid fa-wallet"></i>
+        <span id="walletBalance">₦0.00</span>
       </div>
 
-      <div class="header-actions">
-        <div class="wallet-mini" aria-label="Naira wallet balance">
-          <i class="fa-solid fa-wallet"></i>
-          <span id="headerWalletBalance">₦0.00</span>
-        </div>
-
-        <a class="notification-link" href="notifications-user.html" aria-label="Notifications">
-          <i class="fa-regular fa-bell"></i>
-          <span class="notification-dot" id="notificationDot"></span>
-        </a>
-      </div>
-    </header>
-
-    <section class="welcome">
-      <div>
-        <h1>Hello, <span id="customerFirstName">Customer</span> 👋</h1>
-        <p>Welcome to AHRUH</p>
-      </div>
-
-      <div class="batch-status">
-        <small>SHOPPING BATCH</small>
-        <strong id="batchStatusText">No batch scheduled</strong>
-      </div>
-    </section>
-
-    <nav class="shortcuts" aria-label="Shopping shortcuts">
-      <a class="shortcut" href="shop.html">
-        <span class="shortcut-icon"><i class="fa-solid fa-bag-shopping"></i></span>
-        <span>Shop Now</span>
+      <a class="bell" href="notifications-user.html" aria-label="Notifications">
+        <i class="fa-regular fa-bell"></i>
+        <i class="dot" id="notificationDot"></i>
       </a>
 
-      <a class="shortcut" href="categories.html">
-        <span class="shortcut-icon"><i class="fa-solid fa-layer-group"></i></span>
-        <span>Categories</span>
-      </a>
+    </div>
+  </header>
 
-      <a class="shortcut" href="orders.html">
-        <span class="shortcut-icon"><i class="fa-solid fa-box"></i></span>
-        <span>My Orders</span>
-      </a>
+  <!-- IMAGE-ONLY BILLBOARD -->
 
-      <a class="shortcut" href="favorites.html">
-        <span class="shortcut-icon"><i class="fa-regular fa-heart"></i></span>
-        <span>Favorites</span>
-      </a>
+  <section class="billboard" aria-label="AHRUH homepage billboard">
 
-      <a class="shortcut" href="promotions-user.html">
-        <span class="shortcut-icon"><i class="fa-solid fa-tags"></i></span>
-        <span>Deals &amp; Offers</span>
-      </a>
-    </nav>
+    <div class="billboard-track" id="billboardTrack">
 
-    <main>
-      <div class="products-heading">
-        <h2>Available Products</h2>
-        <span id="productCount">0 products</span>
+      <div class="billboard-placeholder">
+        <i class="fa-regular fa-images"></i>
+        <span>Your AHRUH billboard images will appear here</span>
       </div>
 
-      <div class="product-grid" id="productGrid">
-        <div class="empty-state">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <h3>Loading products...</h3>
-          <p>Available products will appear here.</p>
-        </div>
-      </div>
-    </main>
-  </div>
+    </div>
 
-  <nav class="bottom-nav" aria-label="Main navigation">
-    <a class="nav-item active" href="index.html">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
+    <div class="billboard-dots" id="billboardDots"></div>
+
+  </section>
+
+  <!-- SHOPPING SHORTCUTS -->
+
+  <nav class="shortcuts" aria-label="Shopping shortcuts">
+
+    <a class="shortcut" href="shop.html">
+      <span class="shortcut-icon">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </span>
+      Shop Now
     </a>
-    <a class="nav-item" href="categories.html">
-      <i class="fa-solid fa-layer-group"></i>
-      <span>Categories</span>
+
+    <a class="shortcut" href="categories.html">
+      <span class="shortcut-icon">
+        <i class="fa-solid fa-grip"></i>
+      </span>
+      Categories
     </a>
-    <a class="nav-item" href="orders.html">
-      <i class="fa-solid fa-box"></i>
-      <span>Orders</span>
+
+    <a class="shortcut" href="orders.html">
+      <span class="shortcut-icon">
+        <i class="fa-solid fa-cube"></i>
+      </span>
+      My Orders
     </a>
-    <a class="nav-item" href="cart.html">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <span>Cart</span>
+
+    <a class="shortcut" href="favorites.html">
+      <span class="shortcut-icon">
+        <i class="fa-regular fa-heart"></i>
+      </span>
+      Favorites
     </a>
-    <a class="nav-item" href="account.html">
-      <i class="fa-regular fa-user"></i>
-      <span>Account</span>
+
+    <a class="shortcut" href="promotions-user.html">
+      <span class="shortcut-icon">
+        <i class="fa-solid fa-tag"></i>
+      </span>
+      Deals &amp; Offers
     </a>
+
   </nav>
 
-  <!-- PRODUCT REVIEW MODAL -->
-  <div class="modal-backdrop" id="reviewModal" onclick="backdropClose(event)">
-    <section class="review-modal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
-      <div class="modal-heading">
-        <h3 id="reviewModalTitle">Product Reviews</h3>
-        <button class="close-modal" type="button" onclick="closeReviews()" aria-label="Close">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
+  <!-- AVAILABLE PRODUCTS -->
 
-      <div class="review-product-name" id="reviewProductName"></div>
-
-      <form class="review-form" id="reviewForm">
-        <input type="hidden" id="reviewProductId">
-
-        <label>Your name</label>
-        <input id="reviewerName" type="text" maxlength="60" placeholder="Enter your name" required>
-
-        <label>Your rating</label>
-        <div class="rating-picker" id="ratingPicker" aria-label="Choose a star rating">
-          <button type="button" data-rating="1" aria-label="1 star">★</button>
-          <button type="button" data-rating="2" aria-label="2 stars">★</button>
-          <button type="button" data-rating="3" aria-label="3 stars">★</button>
-          <button type="button" data-rating="4" aria-label="4 stars">★</button>
-          <button type="button" data-rating="5" aria-label="5 stars">★</button>
-        </div>
-
-        <label>Your review</label>
-        <textarea id="reviewComment" maxlength="1000" placeholder="Share your experience with this product..." required></textarea>
-
-        <button class="submit-review" type="submit">Submit Review</button>
-      </form>
-
-      <div class="review-list">
-        <h4>Customer ratings and reviews</h4>
-        <div id="reviewListContent"></div>
-      </div>
-    </section>
+  <div class="section-head">
+    <h2>Available Products</h2>
+    <a href="shop.html">
+      See All <i class="fa-solid fa-arrow-right"></i>
+    </a>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <main class="products" id="products">
 
-  <script>
-    const STORAGE = {
-      session: "ahruh_customer_session_v1",
-      wallet: "ahruh_customer_wallet_v1",
-      products: "ahruh_products_prototype_v1",
-      batches: "ahruh_batches_prototype_v1",
-      cart: "ahruh_cart_prototype_v1",
-      favorites: "ahruh_customer_favorites_v1",
-      reviews: "ahruh_product_reviews_v1"
+    <div class="empty">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <h3>Loading products...</h3>
+      <p>Available products will appear here.</p>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="bottom" aria-label="Main navigation">
+
+  <a class="nav active" href="index.html">
+    <i class="fa-solid fa-house"></i>
+    Home
+  </a>
+
+  <a class="nav" href="categories.html">
+    <i class="fa-solid fa-layer-group"></i>
+    Categories
+  </a>
+
+  <a class="nav" href="orders.html">
+    <i class="fa-solid fa-box"></i>
+    Orders
+  </a>
+
+  <a class="nav" href="cart.html">
+    <i class="fa-solid fa-cart-shopping"></i>
+    Cart
+  </a>
+
+  <a class="nav" href="account.html">
+    <i class="fa-regular fa-user"></i>
+    Account
+  </a>
+
+</nav>
+
+<!-- PRODUCT REVIEW MODAL -->
+
+<div class="modal-bg" id="reviewModal"
+     onclick="if(event.target===this)closeReviews()">
+
+  <section class="modal" role="dialog" aria-modal="true">
+
+    <div class="modal-top">
+      <h3>Product Reviews</h3>
+
+      <button class="close" onclick="closeReviews()" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <p id="reviewProductName" style="font-weight:700;font-size:13px"></p>
+
+    <form id="reviewForm">
+
+      <input type="hidden" id="reviewProductId">
+
+      <label for="reviewerName">Your name</label>
+      <input
+        id="reviewerName"
+        maxlength="60"
+        required
+        placeholder="Enter your name">
+
+      <label>Your rating</label>
+
+      <div class="rating-pick" id="ratingPick">
+        <button type="button" data-value="1">★</button>
+        <button type="button" data-value="2">★</button>
+        <button type="button" data-value="3">★</button>
+        <button type="button" data-value="4">★</button>
+        <button type="button" data-value="5">★</button>
+      </div>
+
+      <label for="reviewComment">Your review</label>
+
+      <textarea
+        id="reviewComment"
+        maxlength="1000"
+        required
+        placeholder="Share your experience with this product">
+      </textarea>
+
+      <button class="submit" type="submit">
+        Submit Review
+      </button>
+
+    </form>
+
+    <div class="review-list">
+      <strong>Customer ratings and reviews</strong>
+      <div id="reviewList"></div>
+    </div>
+
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* STORAGE KEYS */
+
+const K = {
+  session:"ahruh_customer_session_v1",
+  wallet:"ahruh_customer_wallet_v1",
+  products:"ahruh_products_prototype_v1",
+  cart:"ahruh_cart_prototype_v1",
+  favorites:"ahruh_customer_favorites_v1",
+  reviews:"ahruh_product_reviews_v1"
+};
+
+let chosenRating = 0;
+
+/* GENERAL HELPERS */
+
+function read(key,fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g,char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+function cash(value) {
+  return "₦" + (Number(value)||0).toLocaleString("en-NG",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function toast(message) {
+  const element = document.getElementById("toast");
+
+  element.textContent = message;
+  element.style.display = "block";
+
+  clearTimeout(toast.timer);
+
+  toast.timer = setTimeout(() => {
+    element.style.display = "none";
+  },2200);
+}
+
+/* PRODUCTS */
+
+function getProducts() {
+  const list = read(K.products,[]);
+
+  return Array.isArray(list)
+    ? list.filter(product =>
+        product.active !== false &&
+        product.isActive !== false &&
+        product.status !== "inactive" &&
+        product.status !== "archived"
+      )
+    : [];
+}
+
+function productId(product) {
+  return product.id ?? product.productId;
+}
+
+function productName(product) {
+  return product.name || product.title || "Product";
+}
+
+function productPrice(product) {
+  return Number(
+    product.price ??
+    product.sellingPrice ??
+    product.amount ??
+    0
+  );
+}
+
+function productImage(product) {
+  if (product.image) return product.image;
+
+  if (Array.isArray(product.images) && product.images.length) {
+    const image = product.images[0];
+
+    if (typeof image === "string") return image;
+    if (image?.url) return image.url;
+    if (image?.src) return image.src;
+  }
+
+  return "";
+}
+
+/* FAVOURITES */
+
+function getFavorites() {
+  const list = read(K.favorites,[]);
+  return Array.isArray(list) ? list : [];
+}
+
+function isFavorite(id) {
+  return getFavorites().some(item => {
+    const itemId = typeof item === "object"
+      ? item.productId || item.id
+      : item;
+
+    return String(itemId) === String(id);
+  });
+}
+
+function toggleFavorite(id) {
+  let list = getFavorites();
+
+  const index = list.findIndex(item => {
+    const itemId = typeof item === "object"
+      ? item.productId || item.id
+      : item;
+
+    return String(itemId) === String(id);
+  });
+
+  if (index >= 0) {
+    list.splice(index,1);
+    toast("Removed from Favorites");
+  } else {
+    list.push({
+      productId:id,
+      addedAt:new Date().toISOString()
+    });
+
+    toast("Added to Favorites");
+  }
+
+  localStorage.setItem(K.favorites,JSON.stringify(list));
+  renderProducts();
+}
+
+/* CART */
+
+function addCart(id) {
+  const product = getProducts().find(item =>
+    String(productId(item)) === String(id)
+  );
+
+  if (!product) {
+    toast("Product not found");
+    return;
+  }
+
+  let cart = read(K.cart,[]);
+
+  if (!Array.isArray(cart)) cart = [];
+
+  const existing = cart.find(item =>
+    String(item.productId || item.id) === String(id)
+  );
+
+  if (existing) {
+    existing.quantity = (Number(existing.quantity)||1)+1;
+  } else {
+    cart.push({
+      productId:id,
+      name:productName(product),
+      price:productPrice(product),
+      image:productImage(product),
+      quantity:1,
+      addedAt:new Date().toISOString()
+    });
+  }
+
+  localStorage.setItem(K.cart,JSON.stringify(cart));
+
+  toast("Added to cart");
+}
+
+/* PRODUCT REVIEWS */
+
+function getAllReviews() {
+  const data = read(K.reviews,{});
+
+  return data && typeof data === "object" && !Array.isArray(data)
+    ? data
+    : {};
+}
+
+function getReviews(id) {
+  const list = getAllReviews()[String(id)];
+
+  return Array.isArray(list) ? list : [];
+}
+
+function ratingSummary(id) {
+  const list = getReviews(id);
+
+  if (!list.length) {
+    return {count:0,average:0};
+  }
+
+  const total = list.reduce(
+    (sum,item) => sum + (Number(item.rating)||0),
+    0
+  );
+
+  return {
+    count:list.length,
+    average:total/list.length
+  };
+}
+
+function starText(value) {
+  const number = Math.round(Number(value)||0);
+
+  return "★".repeat(number) + "☆".repeat(5-number);
+}
+
+function openReviews(id) {
+  const product = getProducts().find(item =>
+    String(productId(item)) === String(id)
+  );
+
+  if (!product) return;
+
+  document.getElementById("reviewProductId").value = id;
+
+  document.getElementById("reviewProductName").textContent =
+    productName(product);
+
+  document.getElementById("reviewForm").reset();
+
+  chosenRating = 0;
+
+  updateRatingStars();
+  renderReviews(id);
+
+  document.getElementById("reviewModal").classList.add("show");
+}
+
+function closeReviews() {
+  document.getElementById("reviewModal").classList.remove("show");
+}
+
+function updateRatingStars() {
+  document.querySelectorAll("#ratingPick button").forEach(button => {
+    button.classList.toggle(
+      "on",
+      Number(button.dataset.value) <= chosenRating
+    );
+  });
+}
+
+document.querySelectorAll("#ratingPick button").forEach(button => {
+  button.addEventListener("click",() => {
+    chosenRating = Number(button.dataset.value);
+    updateRatingStars();
+  });
+});
+
+function renderReviews(id) {
+  const list = getReviews(id);
+  const box = document.getElementById("reviewList");
+
+  if (!list.length) {
+    box.innerHTML =
+      '<p style="font-size:12px;color:#71809a">No reviews yet. Be the first to review this product.</p>';
+    return;
+  }
+
+  box.innerHTML = [...list].reverse().map(review => `
+    <div class="review-row">
+      <span class="review-date">${safe(review.date || "")}</span>
+
+      <strong>${safe(review.name || "Customer")}</strong>
+
+      <div class="stars">
+        ${starText(review.rating)}
+      </div>
+
+      <p>${safe(review.comment || "")}</p>
+    </div>
+  `).join("");
+}
+
+document.getElementById("reviewForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  const id = document.getElementById("reviewProductId").value;
+  const name = document.getElementById("reviewerName").value.trim();
+  const comment = document.getElementById("reviewComment").value.trim();
+
+  if (!chosenRating) {
+    toast("Please choose a star rating");
+    return;
+  }
+
+  const all = getAllReviews();
+
+  if (!Array.isArray(all[String(id)])) {
+    all[String(id)] = [];
+  }
+
+  all[String(id)].push({
+    name,
+    rating:chosenRating,
+    comment,
+    date:new Date().toLocaleDateString("en-NG"),
+    createdAt:new Date().toISOString()
+  });
+
+  localStorage.setItem(K.reviews,JSON.stringify(all));
+
+  renderReviews(id);
+  renderProducts();
+
+  event.target.reset();
+
+  chosenRating = 0;
+  updateRatingStars();
+
+  document.getElementById("reviewProductId").value = id;
+
+  toast("Thank you for your review!");
+});
+
+/* DISPLAY PRODUCTS */
+
+function renderProducts() {
+  const list = getProducts();
+  const root = document.getElementById("products");
+
+  if (!list.length) {
+    root.innerHTML = `
+      <div class="empty">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h3>No products available yet</h3>
+        <p>Products added by the store will appear here.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  root.innerHTML = list.map(product => {
+
+    const id = productId(product);
+    const summary = ratingSummary(id);
+    const image = productImage(product);
+    const favorite = isFavorite(id);
+
+    return `
+      <article class="product">
+
+        <div class="product-image">
+
+          ${
+            image
+              ? `<img
+                   src="${safe(image)}"
+                   alt="${safe(productName(product))}"
+                   loading="lazy"
+                   onerror="this.style.display='none'">`
+              : `<i class="fa-regular fa-image"
+                   style="display:grid;place-items:center;height:100%;font-size:28px;color:#6b9cdb"></i>`
+          }
+
+          <button
+            class="fav ${favorite?"active":""}"
+            type="button"
+            onclick="toggleFavorite('${safe(id)}')"
+            aria-label="Toggle favourite">
+
+            <i class="${favorite?"fa-solid":"fa-regular"} fa-heart"></i>
+
+          </button>
+
+        </div>
+
+        <div class="product-body">
+
+          <h3 class="product-name">
+            ${safe(productName(product))}
+          </h3>
+
+          <div class="rating">
+
+            <span class="stars">
+              ${summary.count
+                ? starText(summary.average)
+                : "☆☆☆☆☆"}
+            </span>
+
+            <span>
+              ${summary.count
+                ? `${summary.average.toFixed(1)} (${summary.count})`
+                : "No reviews"}
+            </span>
+
+          </div>
+
+          <div class="price">
+            ${cash(productPrice(product))}
+          </div>
+
+          <button
+            class="add"
+            type="button"
+            onclick="addCart('${safe(id)}')">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+            &nbsp; Add to Cart
+
+          </button>
+
+          <button
+            class="review-link"
+            type="button"
+            onclick="openReviews('${safe(id)}')">
+
+            Read / Write a review
+
+          </button>
+
+        </div>
+
+      </article>
+    `;
+
+  }).join("");
+}
+
+/* ADMIN-MANAGED BILLBOARD
+   Reads images from the same IndexedDB database
+   used by billboard.html.
+*/
+
+const BILLBOARD_DB = "ahruh_billboard_db";
+const BILLBOARD_STORE = "slides";
+
+let billboardTimer = null;
+let billboardUrls = [];
+
+function openBillboardDB() {
+  return new Promise((resolve,reject) => {
+
+    const request = indexedDB.open(BILLBOARD_DB,1);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+
+      if (!db.objectStoreNames.contains(BILLBOARD_STORE)) {
+        db.createObjectStore(
+          BILLBOARD_STORE,
+          {keyPath:"id"}
+        );
+      }
     };
 
-    let selectedRating = 0;
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
 
-    function readStore(key, fallback) {
-      try {
-        const value = localStorage.getItem(key);
-        return value ? JSON.parse(value) : fallback;
-      } catch (error) {
-        console.warn("Could not read storage:", key, error);
-        return fallback;
-      }
-    }
+  });
+}
 
-    function money(value) {
-      const amount = Number(value) || 0;
-      return "₦" + amount.toLocaleString("en-NG", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-    }
+async function loadBillboardSlides() {
 
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      })[character]);
-    }
+  const track = document.getElementById("billboardTrack");
+  const dots = document.getElementById("billboardDots");
 
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
-    }
+  if (!track || !dots) return;
 
-    /* CUSTOMER GREETING */
-    function loadCustomerGreeting() {
-      const session = readStore(STORAGE.session, null);
-      if (!session) return;
+  try {
 
-      const fullName =
-        session.firstName ||
-        session.firstname ||
-        session.customer?.firstName ||
-        session.customer?.firstname ||
-        session.name ||
-        session.customer?.name ||
-        session.fullName ||
-        session.customer?.fullName ||
-        "";
+    const db = await openBillboardDB();
 
-      const firstName = String(fullName).trim().split(/\s+/)[0];
+    const slides = await new Promise((resolve,reject) => {
 
-      if (firstName) {
-        document.getElementById("customerFirstName").textContent = firstName;
-      }
-    }
+      const transaction =
+        db.transaction(BILLBOARD_STORE,"readonly");
 
-    /* NAIRA WALLET DISPLAY ONLY */
-    function loadWalletBalance() {
-      const wallet = readStore(STORAGE.wallet, null);
-      let balance = 0;
+      const request =
+        transaction.objectStore(BILLBOARD_STORE).getAll();
 
-      if (wallet && typeof wallet === "object") {
-        if (wallet.balance !== undefined) {
-          balance = Number(wallet.balance) || 0;
-        } else if (wallet.nairaBalance !== undefined) {
-          balance = Number(wallet.nairaBalance) || 0;
-        }
-      }
+      request.onsuccess = () => resolve(request.result || []);
+      request.onerror = () => reject(request.error);
 
-      document.getElementById("headerWalletBalance").textContent = money(balance);
-    }
-
-    /* BATCH STATUS */
-    function loadBatchStatus() {
-      const batches = readStore(STORAGE.batches, []);
-      const label = document.getElementById("batchStatusText");
-
-      if (!Array.isArray(batches) || batches.length === 0) {
-        label.textContent = "No batch scheduled";
-        return;
-      }
-
-      const now = new Date();
-
-      const parseDate = value => {
-        if (!value) return null;
-        const date = new Date(value);
-        return Number.isNaN(date.getTime()) ? null : date;
-      };
-
-      const ordered = [...batches].sort((a, b) => {
-        const aDate = parseDate(a.openDate);
-        const bDate = parseDate(b.openDate);
-        return (aDate?.getTime() || 0) - (bDate?.getTime() || 0);
-      });
-
-      const activeBatch = ordered.find(batch => {
-        const open = parseDate(batch.openDate);
-        const close = parseDate(batch.closeDate);
-        return open && close && now >= open && now <= close;
-      });
-
-      if (activeBatch) {
-        label.textContent = activeBatch.name || "Active batch";
-        return;
-      }
-
-      const nextBatch = ordered.find(batch => {
-        const open = parseDate(batch.openDate);
-        return open && open > now;
-      });
-
-      label.textContent = nextBatch
-        ? "Next: " + (nextBatch.name || "Upcoming batch")
-        : "No batch scheduled";
-    }
-
-    /* PRODUCT DATA */
-    function getProductImage(product) {
-      if (product.image) return product.image;
-
-      if (Array.isArray(product.images) && product.images.length) {
-        const first = product.images[0];
-        if (typeof first === "string") return first;
-        if (first?.url) return first.url;
-        if (first?.src) return first.src;
-      }
-
-      return "";
-    }
-
-    function productIsAvailable(product) {
-      if (product.active === false) return false;
-      if (product.isActive === false) return false;
-      if (product.status === "inactive") return false;
-      if (product.status === "archived") return false;
-      return true;
-    }
-
-    function getProducts() {
-      const products = readStore(STORAGE.products, []);
-      return Array.isArray(products) ? products.filter(productIsAvailable) : [];
-    }
-
-    function getProductPrice(product) {
-      return Number(product.price ?? product.sellingPrice ?? product.amount ?? 0);
-    }
-
-    function getFavorites() {
-      const favorites = readStore(STORAGE.favorites, []);
-      return Array.isArray(favorites) ? favorites : [];
-    }
-
-    function isFavorite(productId) {
-      return getFavorites().some(item => {
-        const id = typeof item === "object" ? item.productId || item.id : item;
-        return String(id) === String(productId);
-      });
-    }
-
-    /* PRODUCT REVIEWS */
-    function getAllReviews() {
-      const reviews = readStore(STORAGE.reviews, {});
-      return reviews && typeof reviews === "object" && !Array.isArray(reviews)
-        ? reviews
-        : {};
-    }
-
-    function getProductReviews(productId) {
-      const allReviews = getAllReviews();
-      const reviews = allReviews[String(productId)];
-      return Array.isArray(reviews) ? reviews : [];
-    }
-
-    function getRatingSummary(productId) {
-      const reviews = getProductReviews(productId);
-
-      if (!reviews.length) {
-        return { average: 0, count: 0 };
-      }
-
-      const total = reviews.reduce(
-        (sum, review) => sum + (Number(review.rating) || 0),
-        0
-      );
-
-      return {
-        average: total / reviews.length,
-        count: reviews.length
-      };
-    }
-
-    function starsHTML(rating) {
-      const rounded = Math.round(Number(rating) || 0);
-      return "★".repeat(rounded) + "☆".repeat(5 - rounded);
-    }
-
-    function openReviews(productId) {
-      const product = getProducts().find(item =>
-        String(item.id || item.productId) === String(productId)
-      );
-
-      if (!product) {
-        showToast("Product could not be found");
-        return;
-      }
-
-      const name = product.name || product.title || "Product";
-
-      document.getElementById("reviewProductId").value = productId;
-      document.getElementById("reviewProductName").textContent = name;
-      document.getElementById("reviewModalTitle").textContent = "Product Reviews";
-      selectedRating = 0;
-      updateRatingPicker();
-      document.getElementById("reviewForm").reset();
-      document.getElementById("reviewProductId").value = productId;
-
-      renderReviewList(productId);
-      document.getElementById("reviewModal").classList.add("show");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeReviews() {
-      document.getElementById("reviewModal").classList.remove("show");
-      document.body.style.overflow = "";
-    }
-
-    function backdropClose(event) {
-      if (event.target.id === "reviewModal") closeReviews();
-    }
-
-    function updateRatingPicker() {
-      document.querySelectorAll("#ratingPicker button").forEach(button => {
-        const rating = Number(button.dataset.rating);
-        button.classList.toggle("selected", rating <= selectedRating);
-      });
-    }
-
-    document.querySelectorAll("#ratingPicker button").forEach(button => {
-      button.addEventListener("click", () => {
-        selectedRating = Number(button.dataset.rating);
-        updateRatingPicker();
-      });
     });
 
-    function renderReviewList(productId) {
-      const reviews = getProductReviews(productId);
-      const container = document.getElementById("reviewListContent");
+    db.close();
 
-      if (!reviews.length) {
-        container.innerHTML = '<div class="no-reviews">No reviews yet. Be the first to review this product.</div>';
-        return;
-      }
+    slides.sort((a,b) =>
+      (a.order || 0) - (b.order || 0)
+    );
 
-      container.innerHTML = [...reviews].reverse().map(review => `
-        <div class="review-item">
-          <div class="review-item-top">
-            <span class="reviewer-name">${escapeHTML(review.name || "Customer")}</span>
-            <span class="review-date">${escapeHTML(review.date || "")}</span>
-          </div>
-          <div class="review-item-stars">${starsHTML(review.rating)}</div>
-          <div class="review-comment">${escapeHTML(review.comment || "")}</div>
+    billboardUrls.forEach(url => URL.revokeObjectURL(url));
+    billboardUrls = [];
+
+    if (!slides.length) {
+
+      track.innerHTML = `
+        <div class="billboard-placeholder">
+          <i class="fa-regular fa-images"></i>
+          <span>Your AHRUH billboard images will appear here</span>
         </div>
-      `).join("");
+      `;
+
+      dots.innerHTML = "";
+
+      return;
     }
 
-    document.getElementById("reviewForm").addEventListener("submit", event => {
-      event.preventDefault();
+    track.innerHTML = slides.map((slide,index) => {
 
-      const productId = document.getElementById("reviewProductId").value;
-      const name = document.getElementById("reviewerName").value.trim();
-      const comment = document.getElementById("reviewComment").value.trim();
+      const url = URL.createObjectURL(slide.blob);
 
-      if (!name || !comment || selectedRating < 1) {
-        showToast("Please enter your name, rating and review");
-        return;
-      }
+      billboardUrls.push(url);
 
-      const allReviews = getAllReviews();
+      return `
+        <div class="billboard-slide ${index===0?"active":""}">
+          <img
+            src="${url}"
+            alt="AHRUH billboard image ${index+1}">
+        </div>
+      `;
 
-      if (!Array.isArray(allReviews[String(productId)])) {
-        allReviews[String(productId)] = [];
-      }
+    }).join("");
 
-      allReviews[String(productId)].push({
-        name,
-        rating: selectedRating,
-        comment,
-        date: new Date().toLocaleDateString("en-NG"),
-        createdAt: new Date().toISOString()
+    dots.innerHTML = slides.map((slide,index) => `
+      <button
+        type="button"
+        class="${index===0?"active":""}"
+        data-slide="${index}"
+        aria-label="Show billboard image ${index+1}">
+      </button>
+    `).join("");
+
+    let current = 0;
+
+    function showSlide(next) {
+
+      const slideElements =
+        track.querySelectorAll(".billboard-slide");
+
+      const dotElements =
+        dots.querySelectorAll("button");
+
+      if (!slideElements.length) return;
+
+      current = (next + slideElements.length) %
+        slideElements.length;
+
+      slideElements.forEach((element,index) => {
+        element.classList.toggle(
+          "active",
+          index === current
+        );
       });
 
-      localStorage.setItem(STORAGE.reviews, JSON.stringify(allReviews));
+      dotElements.forEach((element,index) => {
+        element.classList.toggle(
+          "active",
+          index === current
+        );
+      });
 
-      renderReviewList(productId);
-      renderProducts();
-      event.target.reset();
-      selectedRating = 0;
-      updateRatingPicker();
-      document.getElementById("reviewProductId").value = productId;
+    }
 
-      showToast("Thank you for your review!");
+    dots.querySelectorAll("button").forEach(button => {
+
+      button.addEventListener("click",() => {
+
+        showSlide(Number(button.dataset.slide));
+
+        clearInterval(billboardTimer);
+
+        if (slides.length > 1) {
+          billboardTimer = setInterval(() => {
+            showSlide(current+1);
+          },6000);
+        }
+
+      });
+
     });
 
-    /* PRODUCT DISPLAY */
-    function renderProducts() {
-      const products = getProducts();
-      const grid = document.getElementById("productGrid");
+    clearInterval(billboardTimer);
 
-      document.getElementById("productCount").textContent =
-        products.length + (products.length === 1 ? " product" : " products");
+    if (slides.length > 1) {
 
-      if (!products.length) {
-        grid.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <h3>No products available yet</h3>
-            <p>New products will appear here when they become available.</p>
-          </div>
-        `;
-        return;
-      }
+      billboardTimer = setInterval(() => {
+        showSlide(current+1);
+      },6000);
 
-      grid.innerHTML = products.map(product => {
-        const id = product.id || product.productId;
-        const name = product.name || product.title || "Product";
-        const image = getProductImage(product);
-        const price = getProductPrice(product);
-        const favorite = isFavorite(id);
-        const rating = getRatingSummary(id);
+    } else {
 
-        const ratingDisplay = rating.count
-          ? `<span class="stars">${starsHTML(rating.average)}</span>
-             <span>${rating.average.toFixed(1)} (${rating.count})</span>`
-          : `<span>No ratings yet</span>`;
+      billboardTimer = null;
 
-        return `
-          <article class="product-card">
-            <div class="product-image-wrap">
-              ${
-                image
-                  ? `<img class="product-image"
-                          src="${escapeHTML(image)}"
-                          alt="${escapeHTML(name)}"
-                          loading="lazy"
-                          onerror="this.style.display='none'">`
-                  : `<div class="product-image" style="display:grid;place-items:center;color:#1266D6">
-                       <i class="fa-solid fa-image fa-2x"></i>
-                     </div>`
-              }
-
-              <button class="favorite-btn ${favorite ? "active" : ""}"
-                type="button"
-                aria-label="Add to favorites"
-                onclick="toggleFavorite('${escapeHTML(id)}')">
-                <i class="${favorite ? "fa-solid" : "fa-regular"} fa-heart"></i>
-              </button>
-            </div>
-
-            <div class="product-info">
-              <h3 class="product-name">${escapeHTML(name)}</h3>
-              <div class="product-price">${money(price)}</div>
-
-              <div class="product-rating">
-                ${ratingDisplay}
-              </div>
-
-              <div class="product-actions">
-                <button class="add-cart" type="button"
-                  onclick="addToCart('${escapeHTML(id)}')">
-                  <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                </button>
-
-                <button class="view-product" type="button"
-                  aria-label="View product"
-                  onclick="viewProduct('${escapeHTML(id)}')">
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </button>
-              </div>
-
-              <button class="review-link" type="button"
-                onclick="openReviews('${escapeHTML(id)}')">
-                <i class="fa-regular fa-star"></i>
-                Read reviews / Write a review
-              </button>
-            </div>
-          </article>
-        `;
-      }).join("");
     }
 
-    /* FAVORITES */
-    function toggleFavorite(productId) {
-      let favorites = getFavorites();
+  } catch(error) {
 
-      const existingIndex = favorites.findIndex(item => {
-        const id = typeof item === "object" ? item.productId || item.id : item;
-        return String(id) === String(productId);
-      });
+    console.error("AHRUH billboard loading error:",error);
 
-      if (existingIndex >= 0) {
-        favorites.splice(existingIndex, 1);
-        showToast("Removed from Favorites");
-      } else {
-        favorites.push({
-          productId,
-          addedAt: new Date().toISOString()
-        });
-        showToast("Added to Favorites");
-      }
+    track.innerHTML = `
+      <div class="billboard-placeholder">
+        <i class="fa-regular fa-images"></i>
+        <span>Billboard images could not be loaded</span>
+      </div>
+    `;
 
-      localStorage.setItem(STORAGE.favorites, JSON.stringify(favorites));
-      renderProducts();
-    }
+  }
 
-    /* CART */
-    function addToCart(productId) {
-      const product = getProducts().find(item =>
-        String(item.id || item.productId) === String(productId)
-      );
+}
 
-      if (!product) {
-        showToast("Product could not be found");
-        return;
-      }
+/* HEADER DATA */
 
-      let cart = readStore(STORAGE.cart, []);
-      if (!Array.isArray(cart)) cart = [];
+function loadWallet() {
 
-      const existing = cart.find(item =>
-        String(item.productId || item.id) === String(productId)
-      );
+  const wallet = read(K.wallet,null);
 
-      if (existing) {
-        existing.quantity = (Number(existing.quantity) || 1) + 1;
-      } else {
-        cart.push({
-          productId,
-          name: product.name || product.title || "Product",
-          price: getProductPrice(product),
-          image: getProductImage(product),
-          quantity: 1,
-          addedAt: new Date().toISOString()
-        });
-      }
+  const balance =
+    wallet?.balance ??
+    wallet?.nairaBalance ??
+    0;
 
-      localStorage.setItem(STORAGE.cart, JSON.stringify(cart));
-      showToast("Added to your cart");
-    }
+  document.getElementById("walletBalance").textContent =
+    cash(balance);
 
-    function viewProduct(productId) {
-      window.location.href =
-        "product.html?id=" + encodeURIComponent(productId);
-    }
+}
 
-    /* NOTIFICATIONS */
-    function loadNotificationIndicator() {
-      const notifications = readStore(
-        "ahruh_customer_notifications_v1",
-        []
-      );
+function loadNotifications() {
 
-      if (!Array.isArray(notifications)) return;
+  const notifications = read(
+    "ahruh_customer_notifications_v1",
+    []
+  );
 
-      const unread = notifications.some(item =>
-        item.read === false || item.isRead === false
-      );
+  if (!Array.isArray(notifications)) return;
 
-      document.getElementById("notificationDot").style.display =
-        unread ? "block" : "none";
-    }
+  const unread = notifications.some(item =>
+    item.read === false ||
+    item.isRead === false
+  );
 
-    function initialiseHomepage() {
-      loadCustomerGreeting();
-      loadWalletBalance();
-      loadBatchStatus();
-      loadNotificationIndicator();
-      renderProducts();
-    }
+  document.getElementById("notificationDot").style.display =
+    unread ? "block" : "none";
 
+}
+
+/* INITIALISE HOMEPAGE */
+
+function initialiseHomepage() {
+
+  loadWallet();
+  loadNotifications();
+  renderProducts();
+
+}
+
+initialiseHomepage();
+loadBillboardSlides();
+
+/* REFRESH WHEN STORAGE CHANGES IN ANOTHER TAB */
+
+window.addEventListener("storage",event => {
+
+  if (
+    !event.key ||
+    Object.values(K).includes(event.key)
+  ) {
     initialiseHomepage();
+  }
 
-    window.addEventListener("storage", event => {
-      if (!event.key || Object.values(STORAGE).includes(event.key)) {
-        initialiseHomepage();
-      }
-    });
-  </script>
+  if (
+    event.key === null ||
+    event.key === "ahruh_billboard_db"
+  ) {
+    loadBillboardSlides();
+  }
+
+});
+
+</script>
 </body>
 </html>
